@@ -7,7 +7,7 @@
 #
 # Host: localhost (MySQL 5.5.5-10.4.21-MariaDB)
 # Database: juragansem_new
-# Generation Time: 2023-12-08 10:40:33 +0000
+# Generation Time: 2023-12-09 07:53:55 +0000
 # ************************************************************
 
 
@@ -127,7 +127,7 @@ LOCK TABLES `users` WRITE;
 
 INSERT INTO `users` (`id`, `uuid`, `role_uuid`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`)
 VALUES
-	(1,'36fd53cb-e9e8-4152-ba19-8cb8b766f307','2f92bb7f-e5f7-4477-a901-c3a79baa088b','Bayu Yuhartono','bayuyuhartono@gmail.com',NULL,'$2y$12$mC3juzDyyBJWdF7GRCcu5u.eQx5k33wDAA4SsiCpTuyWvNJSai3/y',NULL,'2023-11-26 17:38:05','2023-11-26 17:38:05'),
+	(1,'36fd53cb-e9e8-4152-ba19-8cb8b766f307','2f92bb7f-e5f7-4477-a901-c3a79baa088b','super pesoros','super@gmail.com',NULL,'$2y$12$mC3juzDyyBJWdF7GRCcu5u.eQx5k33wDAA4SsiCpTuyWvNJSai3/y',NULL,'2023-11-26 17:38:05','2023-11-26 17:38:05'),
 	(2,'f1a7124a-c556-4ad8-a80b-04346146cec8','74610f99-13ba-43ec-91f2-e6d986bc9d65','Jajang Sadel Kulit','jajang@gmail.com',NULL,'$2y$12$aRWbHyMUVoUlR3GGalF0s.CoJYZWx6ql1jzVVqKj/oF7YwsOfGBU2',NULL,'2023-11-26 17:38:58','2023-11-26 17:38:58'),
 	(3,'b7a7ea9f-582b-45ac-8c4b-2f7edc6d616a','60b41abd-988b-43c3-a605-a6f6428ed792','Herri Lampu Tidur','herri@gmail.com',NULL,'$2y$12$dQ3dxsDhAJVbyjqaK4NFm.SIhzfmoeT1KiHAEle788GrYjpvenOaO',NULL,'2023-12-02 20:56:41','2023-12-02 20:56:41'),
 	(4,'50f9043e-9f16-44b0-9a3c-8b682bf960ee','2cb92276-1675-468a-8429-f79d5841d292','Junadi Senar Pancing','junadi@gmail.com',NULL,'$2y$12$XWpImmu3VYwukvoVnRVRRuR/kTrighrc53.jJ8VhjEHFL4v4AYuYe',NULL,'2023-12-02 21:00:28','2023-12-02 21:00:28'),
@@ -198,8 +198,8 @@ DROP TABLE IF EXISTS `v2_bus`;
 CREATE TABLE `v2_bus` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uuid` longtext DEFAULT NULL,
+  `class_uuid` longtext DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,
-  `seat` int(11) DEFAULT NULL,
   `registration_number` varchar(13) DEFAULT NULL,
   `brand` varchar(50) DEFAULT NULL,
   `model` varchar(50) DEFAULT NULL,
@@ -212,41 +212,75 @@ CREATE TABLE `v2_bus` (
 LOCK TABLES `v2_bus` WRITE;
 /*!40000 ALTER TABLE `v2_bus` DISABLE KEYS */;
 
-INSERT INTO `v2_bus` (`id`, `uuid`, `name`, `seat`, `registration_number`, `brand`, `model`, `status`, `created_at`, `updated_at`)
+INSERT INTO `v2_bus` (`id`, `uuid`, `class_uuid`, `name`, `registration_number`, `brand`, `model`, `status`, `created_at`, `updated_at`)
 VALUES
-	(12,'657b8b74-b5b2-4cca-88b0-b85e8fd933ad','Pikachu',16,'N 19289 KPL','Scania','HKL-9989',1,'2023-12-08 03:00:39','2023-12-08 03:00:39'),
-	(13,'4eb14f96-5b54-4ac2-8ae8-9f1a620af047','Gundala',13,'N 1789 POJ','Marcedes Benz','E 200 Advantage',1,'2023-12-08 03:13:15','2023-12-08 03:13:15');
+	(12,'657b8b74-b5b2-4cca-88b0-b85e8fd933ad','389f1479-b598-4720-bbc0-da2874128033','Pikachu','N 1929 KPL','Scania','HKL-9989',1,'2023-12-08 03:00:39','2023-12-08 03:00:39'),
+	(13,'4eb14f96-5b54-4ac2-8ae8-9f1a620af047','879c722c-2465-4eb7-9e12-b603fe772801','Gundala','N 1789 POJ','Marcedes Benz','E 200 Advantage',1,'2023-12-08 03:13:15','2023-12-08 03:13:15'),
+	(14,'75f06c85-57a0-48b9-8b89-f9768426df1c','cc940a34-885d-4e6f-82ad-7e5fb4bce273','Fireflies','N 9892 QOL','Hino','Big Dutro',1,'2023-12-09 14:51:05','2023-12-09 14:51:05');
 
 /*!40000 ALTER TABLE `v2_bus` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table v2_bus_facilities
+# Dump of table v2_class
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `v2_bus_facilities`;
+DROP TABLE IF EXISTS `v2_class`;
 
-CREATE TABLE `v2_bus_facilities` (
+CREATE TABLE `v2_class` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `bus_id` int(11) DEFAULT NULL,
-  `facilities_id` int(11) DEFAULT NULL,
+  `uuid` longtext DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `seat` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `v2_bus_facilities` WRITE;
-/*!40000 ALTER TABLE `v2_bus_facilities` DISABLE KEYS */;
+LOCK TABLES `v2_class` WRITE;
+/*!40000 ALTER TABLE `v2_class` DISABLE KEYS */;
 
-INSERT INTO `v2_bus_facilities` (`id`, `bus_id`, `facilities_id`)
+INSERT INTO `v2_class` (`id`, `uuid`, `name`, `seat`)
 VALUES
-	(1,12,1),
-	(2,12,3),
-	(3,12,4),
-	(4,13,1),
-	(5,13,3),
-	(6,13,4),
-	(7,13,5);
+	(5,'cc940a34-885d-4e6f-82ad-7e5fb4bce273','Standard',20),
+	(6,'389f1479-b598-4720-bbc0-da2874128033','Premium',16),
+	(7,'879c722c-2465-4eb7-9e12-b603fe772801','Executive',9);
 
-/*!40000 ALTER TABLE `v2_bus_facilities` ENABLE KEYS */;
+/*!40000 ALTER TABLE `v2_class` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table v2_class_facilities
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `v2_class_facilities`;
+
+CREATE TABLE `v2_class_facilities` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `class_id` longtext DEFAULT NULL,
+  `facilities_id` longtext DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+LOCK TABLES `v2_class_facilities` WRITE;
+/*!40000 ALTER TABLE `v2_class_facilities` DISABLE KEYS */;
+
+INSERT INTO `v2_class_facilities` (`id`, `class_id`, `facilities_id`)
+VALUES
+	(1,'1','6'),
+	(2,'1','9'),
+	(3,'1','4'),
+	(4,'1','5'),
+	(5,'1','6'),
+	(6,'1','9'),
+	(7,'1','1'),
+	(8,'1','3'),
+	(9,'1','4'),
+	(10,'1','5'),
+	(11,'1','6'),
+	(12,'1','7'),
+	(13,'1','8'),
+	(14,'1','9');
+
+/*!40000 ALTER TABLE `v2_class_facilities` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
@@ -257,6 +291,7 @@ DROP TABLE IF EXISTS `v2_facilities`;
 
 CREATE TABLE `v2_facilities` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` longtext DEFAULT NULL,
   `name` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -264,16 +299,18 @@ CREATE TABLE `v2_facilities` (
 LOCK TABLES `v2_facilities` WRITE;
 /*!40000 ALTER TABLE `v2_facilities` DISABLE KEYS */;
 
-INSERT INTO `v2_facilities` (`id`, `name`)
+INSERT INTO `v2_facilities` (`id`, `uuid`, `name`)
 VALUES
-	(1,'AC'),
-	(2,'Televisi'),
-	(3,'Karaoke'),
-	(4,'Head Rest'),
-	(5,'Leg Rest'),
-	(6,'Toilet'),
-	(7,'Smoking Room'),
-	(8,'Recleaning Seat');
+	(1,'2769f9f9-66f0-4da1-8d5d-2f3b13346e0d','AC'),
+	(2,'f1910cb2-fa7e-4baa-8b8b-1854615dcb73','Televisi'),
+	(3,'68f448a3-3772-4f73-a50b-31983b75131d','Karaoke'),
+	(4,'14278662-9f54-4c39-bc49-ce0b7bbb7953','Head Rest'),
+	(5,'221b1ac2-ca37-4ceb-be23-46b3e17c5524','Leg Rest'),
+	(6,'9bd1a85e-474c-47a9-ad37-84851d3632be','Toilet'),
+	(7,'a6612d7c-2c73-4a74-b388-ff3c5a7202c2','Smoking Room'),
+	(8,'79473725-65d1-46c2-a9da-18de4d933551','Recleaning Seat'),
+	(9,'ea39f9e2-b28e-4380-832c-e98709e95a8f','Snack'),
+	(10,NULL,'Dispenser');
 
 /*!40000 ALTER TABLE `v2_facilities` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -313,7 +350,8 @@ VALUES
 	(14,'Address','address','cms/address','cms',13,'<i class=\"far fa-circle nav-icon\"></i>',1,1,'2023-12-04 16:46:03','2023-12-04 16:22:44'),
 	(15,'Master Data','master-data','masterdata','masterdata',NULL,'<i class=\"fas fa-book\"></i>',2,1,'2023-12-07 23:58:27','2023-12-07 23:55:04'),
 	(16,'Bus','bus','masterdata/bus','masterdata',15,'<i class=\"far fa-circle nav-icon\"></i>',1,1,'2023-12-07 23:55:34','2023-12-07 23:55:34'),
-	(18,'Fasilitas','facilities','masterdata/facilities','masterdata',15,'<i class=\"far fa-circle nav-icon\"></i>',2,1,'2023-12-08 03:30:08','2023-12-08 03:30:08');
+	(18,'Fasilitas','facilities','masterdata/facilities','masterdata',15,'<i class=\"far fa-circle nav-icon\"></i>',2,1,'2023-12-08 03:30:08','2023-12-08 03:30:08'),
+	(19,'Kelas','class','masterdata/class','masterdata',15,'<i class=\"far fa-circle nav-icon\"></i>',2,1,'2023-12-09 14:40:42','2023-12-09 14:40:42');
 
 /*!40000 ALTER TABLE `v2_menu` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -367,7 +405,11 @@ VALUES
 	(30,'facilities','show',1,'2023-12-08 03:30:08','2023-12-08 03:30:08'),
 	(31,'facilities','add',1,'2023-12-08 03:30:08','2023-12-08 03:30:08'),
 	(32,'facilities','edit',1,'2023-12-08 03:30:08','2023-12-08 03:30:08'),
-	(33,'facilities','delete',1,'2023-12-08 03:30:08','2023-12-08 03:30:08');
+	(33,'facilities','delete',1,'2023-12-08 03:30:08','2023-12-08 03:30:08'),
+	(34,'class','show',1,'2023-12-09 14:40:42','2023-12-09 14:40:42'),
+	(35,'class','add',1,'2023-12-09 14:40:42','2023-12-09 14:40:42'),
+	(36,'class','edit',1,'2023-12-09 14:40:42','2023-12-09 14:40:42'),
+	(37,'class','delete',1,'2023-12-09 14:40:42','2023-12-09 14:40:42');
 
 /*!40000 ALTER TABLE `v2_permission` ENABLE KEYS */;
 UNLOCK TABLES;
