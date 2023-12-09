@@ -7,7 +7,7 @@
 #
 # Host: localhost (MySQL 5.5.5-10.4.21-MariaDB)
 # Database: juragansem_new
-# Generation Time: 2023-12-09 07:53:55 +0000
+# Generation Time: 2023-12-09 08:08:53 +0000
 # ************************************************************
 
 
@@ -310,7 +310,7 @@ VALUES
 	(7,'a6612d7c-2c73-4a74-b388-ff3c5a7202c2','Smoking Room'),
 	(8,'79473725-65d1-46c2-a9da-18de4d933551','Recleaning Seat'),
 	(9,'ea39f9e2-b28e-4380-832c-e98709e95a8f','Snack'),
-	(10,NULL,'Dispenser');
+	(11,'04670a9b-fbf2-4ad3-9db4-8ae19c9bc2c3','Dispenser');
 
 /*!40000 ALTER TABLE `v2_facilities` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -350,7 +350,7 @@ VALUES
 	(14,'Address','address','cms/address','cms',13,'<i class=\"far fa-circle nav-icon\"></i>',1,1,'2023-12-04 16:46:03','2023-12-04 16:22:44'),
 	(15,'Master Data','master-data','masterdata','masterdata',NULL,'<i class=\"fas fa-book\"></i>',2,1,'2023-12-07 23:58:27','2023-12-07 23:55:04'),
 	(16,'Bus','bus','masterdata/bus','masterdata',15,'<i class=\"far fa-circle nav-icon\"></i>',1,1,'2023-12-07 23:55:34','2023-12-07 23:55:34'),
-	(18,'Fasilitas','facilities','masterdata/facilities','masterdata',15,'<i class=\"far fa-circle nav-icon\"></i>',2,1,'2023-12-08 03:30:08','2023-12-08 03:30:08'),
+	(18,'Fasilitas','facilities','masterdata/facilities','masterdata',15,'<i class=\"far fa-circle nav-icon\"></i>',3,1,'2023-12-09 15:06:56','2023-12-08 03:30:08'),
 	(19,'Kelas','class','masterdata/class','masterdata',15,'<i class=\"far fa-circle nav-icon\"></i>',2,1,'2023-12-09 14:40:42','2023-12-09 14:40:42');
 
 /*!40000 ALTER TABLE `v2_menu` ENABLE KEYS */;

@@ -32,6 +32,7 @@ class MasterdataFacilitiesController extends Controller
         ]);
         
         $data = [
+            'uuid' => generateUuid(),
             'name' => $request->facility_name,
         ];
 
