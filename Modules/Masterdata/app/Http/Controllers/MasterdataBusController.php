@@ -21,7 +21,7 @@ class MasterdataBusController extends Controller
     public function addMasterBus()
     {
         $data['title'] = 'Tambah Master Bus';
-        $data['facilities'] = MasterData::getMasterFacilities();
+        $data['class'] = MasterData::getMasterClassList();
 
         return view('masterdata::bus.add', $data);
     }
@@ -33,7 +33,7 @@ class MasterdataBusController extends Controller
             'registration_number'   => ['required', 'string'],
             'brand'   => ['required', 'string'],
             'model'   => ['required', 'string'],
-            'seat_count'   => ['required', 'string'],
+            'class_uuid'   => ['required', 'string'],
         ]);
         
         $saveData = [
@@ -42,20 +42,13 @@ class MasterdataBusController extends Controller
             'registration_number' => $request->registration_number,
             'brand' => $request->brand,
             'model' => $request->model,
-            'seat' => $request->seat_count,
+            'class_uuid' => $request->class_uuid,
             'status' => 1,
         ];
         
-        $saveBusId = MasterData::SaveMasterBus($saveData);
-        
-        foreach ($request->facilities as $key => $value) {
-            $data[$key]['bus_id'] = $saveBusId;
-            $data[$key]['facilities_id'] = $value;
-        }
+        $saveBus = MasterData::SaveMasterBus($saveData);
 
-        $saveBusFacilities = MasterData::saveBusFacilities($data);
-
-        if ($saveBusId) {
+        if ($saveBus) {
             return back()->with('success', 'Master bus tersimpan!');
         }
 

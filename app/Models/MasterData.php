@@ -9,9 +9,20 @@ class MasterData extends Model
 {
     public function scopeGetMasterBusList($query)
     {
-        $query = DB::table("v2_bus")
-            ->select('uuid','name','seat','registration_number','brand','model','status')
-            ->orderBy('created_at')
+        $query = DB::table("v2_bus AS bus")
+            ->select('bus.uuid','bus.name','bus.registration_number','bus.brand','bus.model','bus.status','class.name AS class')
+            ->join("v2_class AS class", "class.uuid", "=", "bus.class_uuid")
+            ->orderBy('bus.created_at')
+            ->get();
+
+        return $query;
+    }
+
+    public function scopeGetMasterClassList($query)
+    {
+        $query = DB::table("v2_class")
+            ->select('id','uuid','name','seat')
+            ->orderBy('id')
             ->get();
 
         return $query;
@@ -29,14 +40,21 @@ class MasterData extends Model
 
     public function scopeSaveMasterBus($query, $data)
     {
-        $query = DB::table("v2_bus")->insertGetId($data);
+        $query = DB::table("v2_bus")->insert($data);
 
         return $query;
     }
 
-    public function scopeSaveBusFacilities($query, $data)
+    public function scopeSaveMasterClass($query, $data)
     {
-        $query = DB::table("v2_bus_facilities")->insert($data);
+        $query = DB::table("v2_class")->insert($data);
+
+        return $query;
+    }
+
+    public function scopeSaveClassFacilities($query, $data)
+    {
+        $query = DB::table("v2_class_facilities")->insert($data);
 
         return $query;
     }
