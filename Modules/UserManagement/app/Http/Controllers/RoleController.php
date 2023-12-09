@@ -41,6 +41,7 @@ class RoleController extends Controller
         ]);
 
         if ($create) {
+            setUserSession(auth()->user()->email);
             return back()->with('success', 'Role tersimpan!');
         }
 
@@ -81,6 +82,7 @@ class RoleController extends Controller
         $save = Role::saveRolePermission($data);
         
         if ($save) {
+            setUserSession(auth()->user()->email);
             return back()->with('success', 'Akses role berhasil diubah!');
         }
 

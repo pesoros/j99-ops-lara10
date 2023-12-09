@@ -69,6 +69,7 @@ class MenuController extends Controller
         $save = Menu::savePermission($permData);
 
         if ($create) {
+            setUserSession(auth()->user()->email);
             return back()->with('success', 'Menu tersimpan!');
         }
 

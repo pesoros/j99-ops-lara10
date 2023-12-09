@@ -25,15 +25,8 @@ class LoginController extends Controller
         $validateAuth = Auth::attempt($credentials);
 
         if ($validateAuth) {
-            
-            $userRoleInfo = getUserRoleInfo($request->email);
-            $roleAccess = getRoleAccessData($userRoleInfo->role_id);
-            $menu = getMenu($userRoleInfo->role_id);
-            
+            setUserSession($request->email);
             $request->session()->regenerate();
-            $request->session()->put('menu_session', $menu);
-            $request->session()->put('roleaccess_session', $roleAccess);
-            $request->session()->put('role_info_session', $userRoleInfo);
 
             return redirect()->intended('dashboard');
         };
