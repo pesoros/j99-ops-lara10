@@ -1,0 +1,11 @@
+{
+    "name": "Spj",
+    "alias": "spj",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Spj\\app\\Providers\\SpjServiceProvider"
+    ],
+    "files": []
+}

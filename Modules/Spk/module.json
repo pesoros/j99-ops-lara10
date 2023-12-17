@@ -1,0 +1,11 @@
+{
+    "name": "Spk",
+    "alias": "spk",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Spk\\app\\Providers\\SpkServiceProvider"
+    ],
+    "files": []
+}

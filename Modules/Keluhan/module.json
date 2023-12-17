@@ -1,0 +1,11 @@
+{
+    "name": "Keluhan",
+    "alias": "keluhan",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Keluhan\\app\\Providers\\KeluhanServiceProvider"
+    ],
+    "files": []
+}

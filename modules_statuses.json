@@ -4,5 +4,9 @@
     "UserManagement": true,
     "Dashboard": true,
     "Cms": true,
-    "Masterdata": true
+    "Masterdata": true,
+    "Spj": true,
+    "Spb": true,
+    "Spk": true,
+    "Keluhan": true
 }

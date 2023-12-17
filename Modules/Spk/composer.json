@@ -1,0 +1,31 @@
+{
+    "name": "nwidart/spk",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Spk\\": "",
+            "Modules\\Spk\\App\\": "app/",
+            "Modules\\Spk\\Database\\Factories\\": "database/factories/",
+            "Modules\\Spk\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Spk\\Tests\\": "tests/"
+        }
+    }
+}

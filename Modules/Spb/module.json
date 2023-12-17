@@ -1,0 +1,11 @@
+{
+    "name": "Spb",
+    "alias": "spb",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Spb\\app\\Providers\\SpbServiceProvider"
+    ],
+    "files": []
+}
