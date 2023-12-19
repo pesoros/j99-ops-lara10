@@ -18,14 +18,8 @@ use Modules\Masterdata\app\Http\Controllers\MasterdataFacilitiesController;
 
 Route::middleware(['auth','has-permission'])->group(function () {
     Route::prefix('masterdata')->group(function () {
-        Route::get('bus', [MasterdataBusController::class, 'listMasterBus']);
-        Route::get('bus/add', [MasterdataBusController::class, 'addMasterBus']);
-        Route::post('bus/add', [MasterdataBusController::class, 'addMasterBusStore']);
-        Route::get('class', [MasterdataClassController::class, 'listMasterClass']);
-        Route::get('class/add', [MasterdataClassController::class, 'addMasterClass']);
-        Route::post('class/add', [MasterdataClassController::class, 'addMasterClassStore']);
-        Route::get('facilities', [MasterdataFacilitiesController::class, 'listMasterFacilities']);
-        Route::get('facilities/add', [MasterdataFacilitiesController::class, 'addMasterFacilities']);
-        Route::post('facilities/add', [MasterdataFacilitiesController::class, 'addMasterFacilitiesStore']);
+        Route::get('complaintscope', [MasterdataBusController::class, 'listMasterComplaintScope']);
+        Route::get('complaintscope/add', [MasterdataBusController::class, 'addMasterComplaintScope']);
+        Route::post('complaintscope/add', [MasterdataBusController::class, 'addMasterComplaintScopeStore']);
     });
 });

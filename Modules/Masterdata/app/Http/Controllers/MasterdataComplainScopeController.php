@@ -8,17 +8,17 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\MasterData;
 
-class MasterdataBusController extends Controller
+class MasterdataComplaintController extends Controller
 {
-    public function listMasterBus()
+    public function listMasterComplaintScope()
     {
         $data['title'] = 'Bus';
-        $data['list'] = MasterData::getMasterBusList();
+        $data['list'] = MasterData::getMasterComplaintScopeList();
 
         return view('masterdata::bus.index', $data);
     }
 
-    public function addMasterBus()
+    public function addMasterComplaintScope()
     {
         $data['title'] = 'Tambah Master Bus';
         $data['class'] = MasterData::getMasterClassList();
@@ -26,7 +26,7 @@ class MasterdataBusController extends Controller
         return view('masterdata::bus.add', $data);
     }
 
-    public function addMasterBusStore(Request $request)
+    public function addMasterComplaintScopeStore(Request $request)
     {
         $credentials = $request->validate([
             'bus_name'      => ['required', 'string'],
@@ -46,7 +46,7 @@ class MasterdataBusController extends Controller
             'status' => 1,
         ];
         
-        $saveBus = MasterData::SaveMasterBus($saveData);
+        $saveBus = MasterData::SaveMasterComplaintScope($saveData);
 
         if ($saveBus) {
             return back()->with('success', 'Master bus tersimpan!');
