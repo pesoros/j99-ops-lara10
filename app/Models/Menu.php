@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Menu extends Model
 {
-    protected $table = 'v2_menu';
+    protected $table = 'ops_menu';
     protected $fillable = [
         'title',
         'url',
@@ -25,7 +25,7 @@ class Menu extends Model
 
         $query = DB::table("users")
             ->select('users.role_uuid','role.title','role.id as role_id')
-            ->join("v2_role AS role", "role.uuid", "=", "users.role_uuid")
+            ->join("ops_role AS role", "role.uuid", "=", "users.role_uuid")
             ->where('users.email', $email)
             ->first();
 
@@ -34,7 +34,7 @@ class Menu extends Model
 
     public function scopeGetMenuParent($query)
     {
-        $query = DB::table("v2_menu As menu")
+        $query = DB::table("ops_menu As menu")
             ->select('menu.id','menu.title','menu.slug','menu.url','menu.icon')
             ->where('menu.parent_id', NULL)
             ->where('menu.status', 1)
@@ -46,9 +46,9 @@ class Menu extends Model
 
     public function scopeGetMenu($query)
     {
-        $query = DB::table("v2_menu As menu")
+        $query = DB::table("ops_menu As menu")
             ->select('menu.title','menu.slug','menu.url','menu.icon','menu2.title as parent_title')
-            ->leftJoin("v2_menu AS menu2", "menu2.id", "=", "menu.parent_id")
+            ->leftJoin("ops_menu AS menu2", "menu2.id", "=", "menu.parent_id")
             ->where('menu.status', 1)
             ->orderBy('menu2.title')
             ->orderBy('menu.order')
@@ -61,10 +61,10 @@ class Menu extends Model
     {
         $role_id = isset($datas['role_id']) ? $datas['role_id'] : '';
 
-        $query = DB::table("v2_menu AS menu")
+        $query = DB::table("ops_menu AS menu")
             ->select('menu.id', 'menu.title', 'menu.url', 'menu.icon')
-            ->join("v2_permission AS perm", "perm.slug", "=", "menu.slug")
-            ->join("v2_role_permission AS roleperm", "roleperm.permission_id", "=", "perm.id")
+            ->join("ops_permission AS perm", "perm.slug", "=", "menu.slug")
+            ->join("ops_role_permission AS roleperm", "roleperm.permission_id", "=", "perm.id")
             ->where('roleperm.role_id', $role_id)
             ->where('perm.access', 'index')
             ->where('menu.parent_id', NULL)
@@ -80,10 +80,10 @@ class Menu extends Model
         $parent_id = isset($datas['parent_id']) ? $datas['parent_id'] : '';
         $role_id = isset($datas['role_id']) ? $datas['role_id'] : '';
 
-        $query = DB::table("v2_menu AS menu")
+        $query = DB::table("ops_menu AS menu")
             ->select('menu.id', 'menu.title', 'menu.url', 'menu.icon')
-            ->join("v2_permission AS perm", "perm.slug", "=", "menu.slug")
-            ->join("v2_role_permission AS roleperm", "roleperm.permission_id", "=", "perm.id")
+            ->join("ops_permission AS perm", "perm.slug", "=", "menu.slug")
+            ->join("ops_role_permission AS roleperm", "roleperm.permission_id", "=", "perm.id")
             ->where('roleperm.role_id', $role_id)
             ->where('perm.access', 'show')
             ->where('menu.parent_id', $parent_id)
@@ -96,7 +96,7 @@ class Menu extends Model
 
     public function scopeSavePermission($query, $data)
     {
-        $query = DB::table("v2_permission")->insert($data);
+        $query = DB::table("ops_permission")->insert($data);
 
         return $query;
     }

@@ -32,7 +32,7 @@ class User extends Authenticatable
     {
         $query = DB::table("users")
             ->select('users.uuid','users.name','users.email','users.role_uuid','role.title as rolename')
-            ->join("v2_role AS role", "role.uuid", "=", "users.role_uuid")
+            ->join("ops_role AS role", "role.uuid", "=", "users.role_uuid")
             ->orderBy('users.created_at')
             ->get();
 

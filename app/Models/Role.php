@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Role extends Model
 {
-    protected $table = 'v2_role';
+    protected $table = 'ops_role';
     protected $fillable = [
         'uuid',
         'title',
@@ -17,7 +17,7 @@ class Role extends Model
 
     public function scopeGetRole($query)
     {
-        $query = DB::table("v2_role")
+        $query = DB::table("ops_role")
             ->select('uuid','title','slug','description')
             ->where('status', 1)
             ->orderBy('created_at')
@@ -30,9 +30,9 @@ class Role extends Model
     {
         $role_id = isset($datas['role_id']) ? $datas['role_id'] : '';
 
-        $query = DB::table("v2_role_permission AS roleperm")
+        $query = DB::table("ops_role_permission AS roleperm")
             ->select(DB::raw("CONCAT(perm.slug,' ',perm.access) as slugaccess"))
-            ->join("v2_permission AS perm", "perm.id", "=", "roleperm.permission_id")
+            ->join("ops_permission AS perm", "perm.id", "=", "roleperm.permission_id")
             ->where('roleperm.role_id', $role_id)
             ->where('perm.access', '!=' ,'index')
             ->where('perm.status', 1)
@@ -44,7 +44,7 @@ class Role extends Model
 
     public function scopeGetRoleInfo($query, $role_uuid)
     {
-        $query = DB::table("v2_role")
+        $query = DB::table("ops_role")
             ->select('id','uuid','title','slug','description')
             ->where('uuid', $role_uuid)
             ->orderBy('created_at')
@@ -55,7 +55,7 @@ class Role extends Model
 
     public function scopeGetAccess($query)
     {
-        $query = DB::table("v2_access_name AS acname")
+        $query = DB::table("ops_access_name AS acname")
             ->select('name')
             ->orderBy('id')
             ->get();
@@ -65,7 +65,7 @@ class Role extends Model
 
     public function scopeGetPermission($query, $slug, $access)
     {
-        $query = DB::table("v2_permission")
+        $query = DB::table("ops_permission")
             ->select('id AS permid')
             ->where('slug', $slug)
             ->where('access', $access)
@@ -78,7 +78,7 @@ class Role extends Model
 
     public function scopeGetRolePermission($query, $id, $role_id)
     {
-        $query = DB::table("v2_role_permission as roleperm")
+        $query = DB::table("ops_role_permission as roleperm")
             ->where('roleperm.permission_id', $id)
             ->where('roleperm.role_id', $role_id)
             ->exists();
@@ -88,7 +88,7 @@ class Role extends Model
 
     public function scopeGetRoleId($query, $role_uuid)
     {
-        $query = DB::table("v2_role")
+        $query = DB::table("ops_role")
             ->select('id as roleid')
             ->where('uuid', $role_uuid)
             ->first();
@@ -98,14 +98,14 @@ class Role extends Model
 
     public function scopeSaveRolePermission($query, $data)
     {
-        $query = DB::table("v2_role_permission")->insert($data);
+        $query = DB::table("ops_role_permission")->insert($data);
 
         return $query;
     }
 
     public function scopeDeleteRolePermission($query, $role_id)
     {
-        $query = DB::table("v2_role_permission")
+        $query = DB::table("ops_role_permission")
             ->where('role_id', $role_id)
             ->delete();
 

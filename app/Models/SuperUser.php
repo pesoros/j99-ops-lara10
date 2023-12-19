@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class SuperUser extends Model
 {
-    protected $table = 'v2_menu';
+    protected $table = 'ops_menu';
     protected $fillable = [
         'title',
         'url',
@@ -21,9 +21,9 @@ class SuperUser extends Model
 
     public function scopeGetMenuSU($query)
     {
-        $query = DB::table("v2_menu AS menu")
+        $query = DB::table("ops_menu AS menu")
             ->select('menu.id', 'menu.title', 'menu.url', 'menu.icon')
-            ->join("v2_permission AS perm", "perm.slug", "=", "menu.slug")
+            ->join("ops_permission AS perm", "perm.slug", "=", "menu.slug")
             ->where('perm.access', 'index')
             ->where('menu.parent_id', NULL)
             ->where('perm.status', 1)
@@ -37,9 +37,9 @@ class SuperUser extends Model
     {
         $parent_id = isset($datas['parent_id']) ? $datas['parent_id'] : '';
 
-        $query = DB::table("v2_menu AS menu")
+        $query = DB::table("ops_menu AS menu")
             ->select('menu.id', 'menu.title', 'menu.url', 'menu.icon')
-            ->join("v2_permission AS perm", "perm.slug", "=", "menu.slug")
+            ->join("ops_permission AS perm", "perm.slug", "=", "menu.slug")
             ->where('perm.access', 'show')
             ->where('menu.parent_id', $parent_id)
             ->where('perm.status', 1)
@@ -51,7 +51,7 @@ class SuperUser extends Model
 
     public function scopeGetRoleAccess($query)
     {
-        $query = DB::table("v2_permission AS perm")
+        $query = DB::table("ops_permission AS perm")
             ->select(DB::raw("CONCAT(perm.slug,' ',perm.access) as slugaccess"))
             ->where('perm.access', '!=' ,'index')
             ->where('perm.status', 1)

@@ -138,21 +138,21 @@ VALUES
 UNLOCK TABLES;
 
 
-# Dump of table v2_access_name
+# Dump of table ops_access_name
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `v2_access_name`;
+DROP TABLE IF EXISTS `ops_access_name`;
 
-CREATE TABLE `v2_access_name` (
+CREATE TABLE `ops_access_name` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `v2_access_name` WRITE;
-/*!40000 ALTER TABLE `v2_access_name` DISABLE KEYS */;
+LOCK TABLES `ops_access_name` WRITE;
+/*!40000 ALTER TABLE `ops_access_name` DISABLE KEYS */;
 
-INSERT INTO `v2_access_name` (`id`, `name`)
+INSERT INTO `ops_access_name` (`id`, `name`)
 VALUES
 	(1,'index'),
 	(2,'show'),
@@ -160,16 +160,16 @@ VALUES
 	(4,'edit'),
 	(5,'delete');
 
-/*!40000 ALTER TABLE `v2_access_name` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ops_access_name` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table v2_address
+# Dump of table ops_address
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `v2_address`;
+DROP TABLE IF EXISTS `ops_address`;
 
-CREATE TABLE `v2_address` (
+CREATE TABLE `ops_address` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(50) DEFAULT NULL,
   `detail` longtext DEFAULT NULL,
@@ -179,23 +179,23 @@ CREATE TABLE `v2_address` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `v2_address` WRITE;
-/*!40000 ALTER TABLE `v2_address` DISABLE KEYS */;
+LOCK TABLES `ops_address` WRITE;
+/*!40000 ALTER TABLE `ops_address` DISABLE KEYS */;
 
-INSERT INTO `v2_address` (`id`, `title`, `detail`, `phone`, `status`, `order`)
+INSERT INTO `ops_address` (`id`, `title`, `detail`, `phone`, `status`, `order`)
 VALUES
 	(1,'Head Office Malang','Jl.Malang Raya 10/99 12989','081288899838',1,1);
 
-/*!40000 ALTER TABLE `v2_address` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ops_address` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table v2_bus
+# Dump of table ops_bus
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `v2_bus`;
+DROP TABLE IF EXISTS `ops_bus`;
 
-CREATE TABLE `v2_bus` (
+CREATE TABLE `ops_bus` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uuid` longtext DEFAULT NULL,
   `class_uuid` longtext DEFAULT NULL,
@@ -209,25 +209,25 @@ CREATE TABLE `v2_bus` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `v2_bus` WRITE;
-/*!40000 ALTER TABLE `v2_bus` DISABLE KEYS */;
+LOCK TABLES `ops_bus` WRITE;
+/*!40000 ALTER TABLE `ops_bus` DISABLE KEYS */;
 
-INSERT INTO `v2_bus` (`id`, `uuid`, `class_uuid`, `name`, `registration_number`, `brand`, `model`, `status`, `created_at`, `updated_at`)
+INSERT INTO `ops_bus` (`id`, `uuid`, `class_uuid`, `name`, `registration_number`, `brand`, `model`, `status`, `created_at`, `updated_at`)
 VALUES
 	(12,'657b8b74-b5b2-4cca-88b0-b85e8fd933ad','389f1479-b598-4720-bbc0-da2874128033','Pikachu','N 1929 KPL','Scania','HKL-9989',1,'2023-12-08 03:00:39','2023-12-08 03:00:39'),
 	(13,'4eb14f96-5b54-4ac2-8ae8-9f1a620af047','879c722c-2465-4eb7-9e12-b603fe772801','Gundala','N 1789 POJ','Marcedes Benz','E 200 Advantage',1,'2023-12-08 03:13:15','2023-12-08 03:13:15'),
 	(14,'75f06c85-57a0-48b9-8b89-f9768426df1c','cc940a34-885d-4e6f-82ad-7e5fb4bce273','Fireflies','N 9892 QOL','Hino','Big Dutro',1,'2023-12-09 14:51:05','2023-12-09 14:51:05');
 
-/*!40000 ALTER TABLE `v2_bus` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ops_bus` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table v2_class
+# Dump of table ops_class
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `v2_class`;
+DROP TABLE IF EXISTS `ops_class`;
 
-CREATE TABLE `v2_class` (
+CREATE TABLE `ops_class` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uuid` longtext DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,
@@ -235,35 +235,35 @@ CREATE TABLE `v2_class` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `v2_class` WRITE;
-/*!40000 ALTER TABLE `v2_class` DISABLE KEYS */;
+LOCK TABLES `ops_class` WRITE;
+/*!40000 ALTER TABLE `ops_class` DISABLE KEYS */;
 
-INSERT INTO `v2_class` (`id`, `uuid`, `name`, `seat`)
+INSERT INTO `ops_class` (`id`, `uuid`, `name`, `seat`)
 VALUES
 	(5,'cc940a34-885d-4e6f-82ad-7e5fb4bce273','Standard',20),
 	(6,'389f1479-b598-4720-bbc0-da2874128033','Premium',16),
 	(7,'879c722c-2465-4eb7-9e12-b603fe772801','Executive',9);
 
-/*!40000 ALTER TABLE `v2_class` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ops_class` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table v2_class_facilities
+# Dump of table ops_class_facilities
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `v2_class_facilities`;
+DROP TABLE IF EXISTS `ops_class_facilities`;
 
-CREATE TABLE `v2_class_facilities` (
+CREATE TABLE `ops_class_facilities` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `class_id` longtext DEFAULT NULL,
   `facilities_id` longtext DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `v2_class_facilities` WRITE;
-/*!40000 ALTER TABLE `v2_class_facilities` DISABLE KEYS */;
+LOCK TABLES `ops_class_facilities` WRITE;
+/*!40000 ALTER TABLE `ops_class_facilities` DISABLE KEYS */;
 
-INSERT INTO `v2_class_facilities` (`id`, `class_id`, `facilities_id`)
+INSERT INTO `ops_class_facilities` (`id`, `class_id`, `facilities_id`)
 VALUES
 	(1,'1','6'),
 	(2,'1','9'),
@@ -280,26 +280,26 @@ VALUES
 	(13,'1','8'),
 	(14,'1','9');
 
-/*!40000 ALTER TABLE `v2_class_facilities` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ops_class_facilities` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table v2_facilities
+# Dump of table ops_facilities
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `v2_facilities`;
+DROP TABLE IF EXISTS `ops_facilities`;
 
-CREATE TABLE `v2_facilities` (
+CREATE TABLE `ops_facilities` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uuid` longtext DEFAULT NULL,
   `name` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `v2_facilities` WRITE;
-/*!40000 ALTER TABLE `v2_facilities` DISABLE KEYS */;
+LOCK TABLES `ops_facilities` WRITE;
+/*!40000 ALTER TABLE `ops_facilities` DISABLE KEYS */;
 
-INSERT INTO `v2_facilities` (`id`, `uuid`, `name`)
+INSERT INTO `ops_facilities` (`id`, `uuid`, `name`)
 VALUES
 	(1,'2769f9f9-66f0-4da1-8d5d-2f3b13346e0d','AC'),
 	(2,'f1910cb2-fa7e-4baa-8b8b-1854615dcb73','Televisi'),
@@ -312,16 +312,16 @@ VALUES
 	(9,'ea39f9e2-b28e-4380-832c-e98709e95a8f','Snack'),
 	(11,'04670a9b-fbf2-4ad3-9db4-8ae19c9bc2c3','Dispenser');
 
-/*!40000 ALTER TABLE `v2_facilities` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ops_facilities` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table v2_menu
+# Dump of table ops_menu
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `v2_menu`;
+DROP TABLE IF EXISTS `ops_menu`;
 
-CREATE TABLE `v2_menu` (
+CREATE TABLE `ops_menu` (
   `id` int(6) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(50) DEFAULT NULL,
   `slug` varchar(50) DEFAULT NULL,
@@ -336,10 +336,10 @@ CREATE TABLE `v2_menu` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `v2_menu` WRITE;
-/*!40000 ALTER TABLE `v2_menu` DISABLE KEYS */;
+LOCK TABLES `ops_menu` WRITE;
+/*!40000 ALTER TABLE `ops_menu` DISABLE KEYS */;
 
-INSERT INTO `v2_menu` (`id`, `title`, `slug`, `url`, `module`, `parent_id`, `icon`, `order`, `status`, `created_at`, `updated_at`)
+INSERT INTO `ops_menu` (`id`, `title`, `slug`, `url`, `module`, `parent_id`, `icon`, `order`, `status`, `created_at`, `updated_at`)
 VALUES
 	(1,'Dashboard','dashboard','dashboard','dashboard',NULL,'<i class=\"nav-icon fas fa-tachometer-alt\"></i>',1,1,'2023-12-02 22:30:44','2023-12-02 13:15:09'),
 	(2,'Managemen Akun','usermanagement','usermanagement','usermanagement',NULL,'<i class=\"nav-icon fas fa-users\"></i>',23,1,'2023-12-07 23:56:43','2023-12-02 13:17:16'),
@@ -353,16 +353,16 @@ VALUES
 	(18,'Fasilitas','facilities','masterdata/facilities','masterdata',15,'<i class=\"far fa-circle nav-icon\"></i>',3,1,'2023-12-09 15:06:56','2023-12-08 03:30:08'),
 	(19,'Kelas','class','masterdata/class','masterdata',15,'<i class=\"far fa-circle nav-icon\"></i>',2,1,'2023-12-09 14:40:42','2023-12-09 14:40:42');
 
-/*!40000 ALTER TABLE `v2_menu` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ops_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table v2_permission
+# Dump of table ops_permission
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `v2_permission`;
+DROP TABLE IF EXISTS `ops_permission`;
 
-CREATE TABLE `v2_permission` (
+CREATE TABLE `ops_permission` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `slug` varchar(50) DEFAULT NULL,
   `access` varchar(50) DEFAULT NULL,
@@ -372,10 +372,10 @@ CREATE TABLE `v2_permission` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `v2_permission` WRITE;
-/*!40000 ALTER TABLE `v2_permission` DISABLE KEYS */;
+LOCK TABLES `ops_permission` WRITE;
+/*!40000 ALTER TABLE `ops_permission` DISABLE KEYS */;
 
-INSERT INTO `v2_permission` (`id`, `slug`, `access`, `status`, `created_at`, `updated_at`)
+INSERT INTO `ops_permission` (`id`, `slug`, `access`, `status`, `created_at`, `updated_at`)
 VALUES
 	(1,'dashboard','show',1,'2023-12-02 22:48:36','2023-12-02 22:48:36'),
 	(2,'account','show',1,'2023-12-02 22:52:05','2023-12-02 22:52:05'),
@@ -411,16 +411,16 @@ VALUES
 	(36,'class','edit',1,'2023-12-09 14:40:42','2023-12-09 14:40:42'),
 	(37,'class','delete',1,'2023-12-09 14:40:42','2023-12-09 14:40:42');
 
-/*!40000 ALTER TABLE `v2_permission` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ops_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table v2_role
+# Dump of table ops_role
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `v2_role`;
+DROP TABLE IF EXISTS `ops_role`;
 
-CREATE TABLE `v2_role` (
+CREATE TABLE `ops_role` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uuid` varchar(300) DEFAULT NULL,
   `title` varchar(50) DEFAULT NULL,
@@ -432,10 +432,10 @@ CREATE TABLE `v2_role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `v2_role` WRITE;
-/*!40000 ALTER TABLE `v2_role` DISABLE KEYS */;
+LOCK TABLES `ops_role` WRITE;
+/*!40000 ALTER TABLE `ops_role` DISABLE KEYS */;
 
-INSERT INTO `v2_role` (`id`, `uuid`, `title`, `slug`, `description`, `status`, `created_at`, `updated_at`)
+INSERT INTO `ops_role` (`id`, `uuid`, `title`, `slug`, `description`, `status`, `created_at`, `updated_at`)
 VALUES
 	(1,'2f92bb7f-e5f7-4477-a901-c3a79baa088b','Super User','super-user',NULL,1,'2023-12-02 22:06:58','2023-12-02 22:06:58'),
 	(2,'74610f99-13ba-43ec-91f2-e6d986bc9d65','Chief','chief',NULL,1,'2023-12-02 22:07:29','2023-12-02 22:07:29'),
@@ -445,16 +445,16 @@ VALUES
 	(8,'c3586604-fdda-4b49-9a6b-7eaaeaf8adbf','Internship','internship','Akses untuk siswa magang',1,'2023-12-02 23:05:57','2023-12-02 23:05:57'),
 	(9,'380f939c-f3fe-4f95-8642-5d909eef64d5','Driver','driver','Akses untuk pengemudi dan kru',1,'2023-12-03 04:13:05','2023-12-03 04:13:05');
 
-/*!40000 ALTER TABLE `v2_role` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ops_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table v2_role_permission
+# Dump of table ops_role_permission
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `v2_role_permission`;
+DROP TABLE IF EXISTS `ops_role_permission`;
 
-CREATE TABLE `v2_role_permission` (
+CREATE TABLE `ops_role_permission` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `role_id` int(11) DEFAULT NULL,
   `permission_id` int(11) DEFAULT NULL,
@@ -463,10 +463,10 @@ CREATE TABLE `v2_role_permission` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-LOCK TABLES `v2_role_permission` WRITE;
-/*!40000 ALTER TABLE `v2_role_permission` DISABLE KEYS */;
+LOCK TABLES `ops_role_permission` WRITE;
+/*!40000 ALTER TABLE `ops_role_permission` DISABLE KEYS */;
 
-INSERT INTO `v2_role_permission` (`id`, `role_id`, `permission_id`, `created_at`, `updated_at`)
+INSERT INTO `ops_role_permission` (`id`, `role_id`, `permission_id`, `created_at`, `updated_at`)
 VALUES
 	(1,1,1,'2023-12-02 22:54:04','2023-12-02 22:54:04'),
 	(2,1,2,'2023-12-02 22:54:09','2023-12-02 22:54:09'),
@@ -489,7 +489,7 @@ VALUES
 	(67,2,17,'2023-12-05 23:38:03','2023-12-05 23:38:03'),
 	(68,2,18,'2023-12-05 23:38:03','2023-12-05 23:38:03');
 
-/*!40000 ALTER TABLE `v2_role_permission` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ops_role_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
