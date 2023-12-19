@@ -1,0 +1,11 @@
+{
+    "name": "Letter",
+    "alias": "letter",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Letter\\app\\Providers\\LetterServiceProvider"
+    ],
+    "files": []
+}
