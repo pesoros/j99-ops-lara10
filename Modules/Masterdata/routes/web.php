@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Masterdata\app\Http\Controllers\MasterdataBusController;
-use Modules\Masterdata\app\Http\Controllers\MasterdataClassController;
-use Modules\Masterdata\app\Http\Controllers\MasterdataFacilitiesController;
+use Modules\Masterdata\app\Http\Controllers\MasterdataPartsScopeController;
+use Modules\Masterdata\app\Http\Controllers\MasterdataPartsItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,8 +17,11 @@ use Modules\Masterdata\app\Http\Controllers\MasterdataFacilitiesController;
 
 Route::middleware(['auth','has-permission'])->group(function () {
     Route::prefix('masterdata')->group(function () {
-        Route::get('complaintscope', [MasterdataBusController::class, 'listMasterComplaintScope']);
-        Route::get('complaintscope/add', [MasterdataBusController::class, 'addMasterComplaintScope']);
-        Route::post('complaintscope/add', [MasterdataBusController::class, 'addMasterComplaintScopeStore']);
+        Route::get('partsscope', [MasterdataPartsScopeController::class, 'listMasterPartsScope']);
+        Route::get('partsscope/add', [MasterdataPartsScopeController::class, 'addMasterPartsScope']);
+        Route::post('partsscope/add', [MasterdataPartsScopeController::class, 'addMasterPartsScopeStore']);
+        Route::get('partsitem', [MasterdataPartsItemController::class, 'listMasterPartsItem']);
+        Route::get('partsitem/add', [MasterdataPartsItemController::class, 'addMasterPartsItem']);
+        Route::post('partsitem/add', [MasterdataPartsItemController::class, 'addMasterPartsItemStore']);
     });
 });

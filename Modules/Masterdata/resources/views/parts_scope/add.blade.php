@@ -39,36 +39,18 @@
     <div class="card-body row">
       <div class="col-sm-12">
         <div class="form-group">
-          <label for="bus_name">Nama Bus</label>
-          <input type="text" class="form-control" id="bus_name" name="bus_name" placeholder="Masukkan nama bus" value="{{ old('bus_name') }}">
+          <label for="scope_name">Nama</label>
+          <input type="text" class="form-control" id="scope_name" name="scope_name" placeholder="Masukkan nama ruang lingkup" value="{{ old('scope_name') }}">
         </div>
         <div class="form-group">
-          <label for="registration_number">Plat Nomor</label>
-          <input type="text" class="form-control" id="registration_number" name="registration_number" placeholder="Masukkan plat nomor" value="{{ old('registration_number') }}">
-        </div>
-        <div class="form-group">
-          <label for="brand">Brand</label>
-          <input type="text" class="form-control" id="brand" name="brand" placeholder="Masukkan nama brand" value="{{ old('brand') }}">
-        </div>
-        <div class="form-group">
-          <label for="model">Model</label>
-          <input type="text" class="form-control" id="model" name="model" placeholder="Masukkan nama model" value="{{ old('model') }}">
-        </div>
-        <div class="form-group">
-          <label>class</label>
-          <select class="form-control select2bs4" name="class_uuid" style="width: 100%;">
-            @foreach ($class as $classItem)
-                <option value="{{ $classItem->uuid }}" @selected(old('class_uuid') == $classItem)>
-                    {{ $classItem->name }}
-                </option>
-            @endForeach
-          </select>
+          <label for="scope_code">Kode</label>
+          <input type="text" class="form-control" id="scope_code" name="scope_code" placeholder="Masukkan kode" value="{{ old('scope_code') }}">
         </div>
       </div>
     </div>
     <div class="card-footer">
       <button type="submit" class="btn btn-primary">Submit</button>
-      <a href="{{ url('masterdata/bus') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
+      <a href="{{ url('masterdata/partsscope') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
     </div>
   </form>
 </div>
