@@ -1,47 +1,46 @@
 <?php
 
-namespace Modules\Masterdata\app\Http\Controllers;
+namespace Modules\Letter\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Models\MasterData;
 
-class MasterdataPartsItemController extends Controller
+class LetterComplaintController extends Controller
 {
-    public function listMasterPartsItem()
+    public function listMasterpartsarea()
     {
-        $data['title'] = 'Item bagian';
-        $data['list'] = MasterData::getMasterPartsItemList();
+        $data['title'] = 'Surat keluhan';
+        $data['list'] = MasterData::getMasterpartsareaList();
 
         return view('masterdata::parts_item.index', $data);
     }
 
-    public function addMasterPartsItem()
+    public function addMasterpartsarea()
     {
-        $data['title'] = 'Tambah Master item bagian';
-        $data['scopes'] = MasterData::getMasterPartsScopeList();
+        $data['title'] = 'Tambah Surat keluhan';
+        $data['scopes'] = MasterData::getMasterPartsAreaList();
 
         return view('masterdata::parts_item.add', $data);
     }
 
-    public function addMasterPartsItemStore(Request $request)
+    public function addMasterpartsareaStore(Request $request)
     {
         $credentials = $request->validate([
             'item_name'      => ['required', 'string'],
             'item_code'      => ['required', 'string'],
-            'scope_uuid'      => ['required', 'string'],
+            'area_uuid'      => ['required', 'string'],
         ]);
         
         $saveData = [
             'uuid' => generateUuid(),
             'name' => $request->item_name,
             'code' => $request->item_code,
-            'parts_scope_uuid' => $request->scope_uuid,
+            'parts_area_uuid' => $request->area_uuid,
         ];
         
-        $saveItem = MasterData::saveMasterPartsItem($saveData);
+        $saveItem = MasterData::saveMasterpartsarea($saveData);
 
         if ($saveItem) {
             return back()->with('success', 'Master ruang linkup bagian tersimpan!');

@@ -39,28 +39,18 @@
     <div class="card-body row">
       <div class="col-sm-12">
         <div class="form-group">
-          <label>Ruang lingkup</label>
-          <select class="form-control select2bs4" name="scope_uuid" style="width: 100%;">
-            @foreach ($scopes as $scopeItem)
-                <option value="{{ $scopeItem->uuid }}" @selected(old('scope_uuid') == $scopeItem)>
-                    {{ $scopeItem->name }}
-                </option>
-            @endForeach
-          </select>
+          <label for="scope_name">Nama</label>
+          <input type="text" class="form-control" id="scope_name" name="scope_name" placeholder="Masukkan nama ruang lingkup" value="{{ old('scope_name') }}">
         </div>
         <div class="form-group">
-          <label for="item_name">Nama bagian</label>
-          <input type="text" class="form-control" id="item_name" name="item_name" placeholder="Masukkan nama bagian" value="{{ old('scope_name') }}">
-        </div>
-        <div class="form-group">
-          <label for="item_code">Kode</label>
-          <input type="text" class="form-control" id="item_code" name="item_code" placeholder="Masukkan kode" value="{{ old('item_code') }}">
+          <label for="scope_code">Kode</label>
+          <input type="text" class="form-control" id="scope_code" name="scope_code" placeholder="Masukkan kode" value="{{ old('scope_code') }}">
         </div>
       </div>
     </div>
     <div class="card-footer">
       <button type="submit" class="btn btn-primary">Submit</button>
-      <a href="{{ url('masterdata/partsitem') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
+      <a href="{{ url('masterdata/partsarea') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
     </div>
   </form>
 </div>

@@ -12,7 +12,7 @@ class MasterdataPartsScopeController extends Controller
 {
     public function listMasterPartsScope()
     {
-        $data['title'] = 'Ruang lingkup bagian';
+        $data['title'] = 'Item bagian';
         $data['list'] = MasterData::getMasterPartsScopeList();
 
         return view('masterdata::parts_scope.index', $data);
@@ -20,7 +20,8 @@ class MasterdataPartsScopeController extends Controller
 
     public function addMasterPartsScope()
     {
-        $data['title'] = 'Tambah Master ruang lingkup bagian';
+        $data['title'] = 'Tambah Master item bagian';
+        $data['scopes'] = MasterData::getMasterPartsAreaList();
 
         return view('masterdata::parts_scope.add', $data);
     }
@@ -28,22 +29,24 @@ class MasterdataPartsScopeController extends Controller
     public function addMasterPartsScopeStore(Request $request)
     {
         $credentials = $request->validate([
-            'scope_name'      => ['required', 'string'],
-            'scope_code'      => ['required', 'string'],
+            'item_name'      => ['required', 'string'],
+            'item_code'      => ['required', 'string'],
+            'area_uuid'      => ['required', 'string'],
         ]);
         
         $saveData = [
             'uuid' => generateUuid(),
-            'name' => $request->scope_name,
-            'code' => $request->scope_code,
+            'name' => $request->item_name,
+            'code' => $request->item_code,
+            'parts_area_uuid' => $request->area_uuid,
         ];
         
-        $saveScope = MasterData::saveMasterPartsScope($saveData);
+        $saveItem = MasterData::saveMasterPartsScope($saveData);
 
-        if ($saveScope) {
-            return back()->with('success', 'Master ruang lingkup bagian tersimpan!');
+        if ($saveItem) {
+            return back()->with('success', 'Master ruang linkup bagian tersimpan!');
         }
 
-        return back()->with('failed', 'Master ruang lingkup bagian gagal tersimpan!');   
+        return back()->with('failed', 'Master ruang linkup bagian gagal tersimpan!');   
     }
 }

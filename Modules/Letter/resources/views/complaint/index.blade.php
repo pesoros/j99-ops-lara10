@@ -7,7 +7,7 @@
         <h3 class="card-title">List {{ $title }}</h3>
         <div class="float-right">
           @if (permissionCheck('add'))
-            <a href="{{ url('masterdata/partsitem/add') }}" class="btn bg-gradient-primary btn-sm">Tambah data</a>
+            <a href="{{ url('masterdata/partsarea/add') }}" class="btn bg-gradient-primary btn-sm">Tambah data</a>
           @endif
         </div>
     </div>
@@ -17,9 +17,8 @@
         <thead>
         <tr>
           <th>No</th>
-          <th>Nama Item</th>
+          <th>Nama ruang lingkup</th>
           <th>Kode</th>
-          <th>Ruang lingkup</th>
           <th>Aksi</th>
         </tr>
         </thead>
@@ -29,7 +28,6 @@
               <td width="20" class="text-center">{{ intval($key) + 1 }}</td>
               <td>{{ $value->name }}</td>
               <td>{{ $value->code }}</td>
-              <td>{{ $value->scope_code }} | {{ $value->scope_name }}</td>
               <td>
                 <div class="btn-group btn-block">
                   @if (permissionCheck('edit')) <a href="#" class="btn btn-success btn-sm">Edit</a> @endif
