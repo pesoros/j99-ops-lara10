@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="robots" content="noindex,nofollow">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{$title ? $title.' |' : ''}} J99 Trans</title>
-  <link rel="icon" type="image/x-icon" href="{{asset('assets/images/logo/tab_icon.png')}}">
-
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="{{asset('assets/ui/plugins/fontawesome-free/css/all.min.css')}}">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="{{asset('assets/ui/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
-  <!-- Select2 -->
-  <link rel="stylesheet" href="{{asset('assets/ui/plugins/select2/css/select2.min.css')}}">
-  <link rel="stylesheet" href="{{asset('assets/ui/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="{{asset('assets/ui/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="{{asset('assets/ui/plugins/jqvmap/jqvmap.min.css')}}">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="{{asset('assets/ui/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
-  <link rel="stylesheet" href="{{asset('assets/ui/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
-  <link rel="stylesheet" href="{{asset('assets/ui/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="{{asset('assets/ui/dist/css/adminlte.min.css')}}">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="{{asset('assets/ui/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="{{asset('assets/ui/plugins/daterangepicker/daterangepicker.css')}}">
-  <!-- summernote -->
-  <link rel="stylesheet" href="{{asset('assets/ui/plugins/summernote/summernote-bs4.min.css')}}">
-</head>
+  <head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{$title ? $title.' |' : ''}} J99 Trans</title>
+    <link rel="icon" type="image/x-icon" href="{{asset('assets/images/logo/tab_icon.png')}}">
+  
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{asset('assets/ui/plugins/fontawesome-free/css/all.min.css')}}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="{{asset('assets/ui/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{asset('assets/ui/plugins/select2/css/select2.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/ui/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="{{asset('assets/ui/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{asset('assets/ui/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/ui/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/ui/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{asset('assets/ui/dist/css/adminlte.min.css')}}">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="{{asset('assets/ui/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="{{asset('assets/ui/plugins/daterangepicker/daterangepicker.css')}}">
+    <!-- summernote -->
+    <link rel="stylesheet" href="{{asset('assets/ui/plugins/summernote/summernote-bs4.min.css')}}">
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="{{asset('assets/ui/plugins/daterangepicker/daterangepicker.css')}}">
+  </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
@@ -94,7 +94,6 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-
 <!-- jQuery -->
 <script src="{{asset('assets/ui/plugins/jquery/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -124,9 +123,6 @@
 <script src="{{asset('assets/ui/plugins/chart.js/Chart.min.js')}}"></script>
 <!-- Sparkline -->
 <script src="{{asset('assets/ui/plugins/sparklines/sparkline.js')}}"></script>
-<!-- JQVMap -->
-<script src="{{asset('assets/ui/plugins/jqvmap/jquery.vmap.min.js')}}"></script>
-<script src="{{asset('assets/ui/plugins/jqvmap/maps/jquery.vmap.usa.js')}}"></script>
 <!-- jQuery Knob Chart -->
 <script src="{{asset('assets/ui/plugins/jquery-knob/jquery.knob.min.js')}}"></script>
 <!-- daterangepicker -->
@@ -136,14 +132,23 @@
 <script src="{{asset('assets/ui/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
 <!-- Summernote -->
 <script src="{{asset('assets/ui/plugins/summernote/summernote-bs4.min.js')}}"></script>
+<!-- date-range-picker -->
+<script src="{{asset('assets/ui/plugins/daterangepicker/daterangepicker.js')}}"></script>
 <!-- overlayScrollbars -->
 <script src="{{asset('assets/ui/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('assets/ui/dist/js/adminlte.js')}}"></script>
-<script src="{{asset('assets/ui/dist/js/pages/dashboard.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/0.9.0/jquery.mask.min.js" 
+  integrity="sha512-oJCa6FS2+zO3EitUSj+xeiEN9UTr+AjqlBZO58OPadb2RfqwxHpjTU8ckIC8F4nKvom7iru2s8Jwdo+Z8zm0Vg==" 
+  crossorigin="anonymous" referrerpolicy="no-referrer">
+</script>
 <!-- Page specific script -->
-<script>
+@stack('extra-scripts')
+<script type="text/javascript">
   $(function () {
+    // money format input.
+    $('.moneyform').mask('000.000.000', {reverse: true});
+
     $('.select2').select2()
 
     //Initialize Select2 Elements
@@ -154,6 +159,34 @@
       "responsive": true, "lengthChange": false, "autoWidth": false,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#datatable-def_wrapper .col-md-6:eq(0)');
+
+    //Timepicker
+    $('#timepicker').datetimepicker({
+      format: 'LT'
+    })
+
+    //Date picker
+    $('#datepicker').datetimepicker({
+        format: 'L'
+    });
+
+    //Date and time picker
+    $('#datetimepicker').datetimepicker({ icons: { time: 'far fa-clock' } });
+
+    //Date range picker
+    $('#daterangepicker').daterangepicker({
+      locale: {
+        format: 'DD/MM/YYYY'
+      }
+    })
+    //Date range picker with time picker
+    $('#datetimerangepicker').daterangepicker({
+      timePicker: true,
+      timePickerIncrement: 30,
+      locale: {
+        format: 'DD/MM/YYYY hh:mm A'
+      }
+    })
   });
 </script>
 </body>

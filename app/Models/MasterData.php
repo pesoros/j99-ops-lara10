@@ -9,9 +9,9 @@ class MasterData extends Model
 {
     public function scopeGetMasterPartsAreaList($query)
     {
-        $query = DB::table("ops_parts_area AS partscope")
-            ->select('partscope.*')
-            ->orderBy('partscope.id')
+        $query = DB::table("ops_parts_area AS partsarea")
+            ->select('partsarea.*')
+            ->orderBy('partsarea.id')
             ->get();
 
         return $query;
@@ -27,8 +27,8 @@ class MasterData extends Model
     public function scopeGetMasterPartsScopeList($query)
     {
         $query = DB::table("ops_parts_scope AS partsscope")
-            ->select('partsscope.*', 'partscope.name AS scope_name', 'partscope.code AS scope_code')
-            ->join("ops_parts_area AS partscope", "partscope.uuid", "=", "partsscope.parts_area_uuid")
+            ->select('partsscope.*', 'partsarea.name AS scope_name', 'partsarea.code AS scope_code')
+            ->join("ops_parts_area AS partsarea", "partsarea.uuid", "=", "partsscope.parts_area_uuid")
             ->orderBy('partsscope.id')
             ->get();
 

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Letter\app\Http\Controllers\LetterController;
+use Modules\Letter\app\Http\Controllers\LetterComplaintController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,5 +15,9 @@ use Modules\Letter\app\Http\Controllers\LetterController;
 */
 
 Route::group([], function () {
-    Route::resource('letter', LetterController::class)->names('letter');
+    Route::prefix('letter')->group(function () {
+        Route::get('complaint', [LetterComplaintController::class, 'listComplaint']);
+        Route::get('complaint/add', [LetterComplaintController::class, 'addComplaint']);
+        Route::post('complaint/add', [LetterComplaintController::class, 'addComplaintStore']);
+    });
 });

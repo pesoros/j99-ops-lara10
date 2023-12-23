@@ -6,46 +6,60 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Models\Complaint;
 
 class LetterComplaintController extends Controller
 {
-    public function listMasterpartsarea()
+    public function listComplaint()
     {
         $data['title'] = 'Surat keluhan';
-        $data['list'] = MasterData::getMasterpartsareaList();
+        $data['list'] = Complaint::getComplaintList();
 
-        return view('masterdata::parts_item.index', $data);
+        return view('letter::complaint.index', $data);
     }
 
-    public function addMasterpartsarea()
+    public function addComplaint()
     {
         $data['title'] = 'Tambah Surat keluhan';
-        $data['scopes'] = MasterData::getMasterPartsAreaList();
+        $data['bus'] = Complaint::getBusList();
+        $data['partsscope'] = Complaint::getPartsScope();
 
-        return view('masterdata::parts_item.add', $data);
+        return view('letter::complaint.add', $data);
     }
 
-    public function addMasterpartsareaStore(Request $request)
+    public function addComplaintStore(Request $request)
     {
         $credentials = $request->validate([
-            'item_name'      => ['required', 'string'],
-            'item_code'      => ['required', 'string'],
-            'area_uuid'      => ['required', 'string'],
+            'bus_uuid'      => ['required', 'string'],
+            'description'      => ['required', 'string'],
         ]);
-        
-        $saveData = [
-            'uuid' => generateUuid(),
-            'name' => $request->item_name,
-            'code' => $request->item_code,
-            'parts_area_uuid' => $request->area_uuid,
-        ];
-        
-        $saveItem = MasterData::saveMasterpartsarea($saveData);
 
-        if ($saveItem) {
-            return back()->with('success', 'Master ruang linkup bagian tersimpan!');
+        $uuid = generateUuid();
+                
+        $saveData = [
+            'uuid' => $uuid,
+            'created_by' => auth()->user()->uuid,
+            'bus_uuid' => $request->bus_uuid,
+            'description' => $request->description,
+        ];
+
+        $saveDamageData = [];
+        foreach ($request->damage_scope as $key => $value) {
+            $saveDamageData[] = [
+                'uuid' => generateUuid(),
+                'complaint_uuid' =>  $uuid,
+                'scope_uuid' =>  $value,
+                'description' =>  $request->damage_detail[$key],
+            ];
+        }
+        
+        $saveComplaint = Complaint::saveComplaint($saveData);
+        $saveDamages = Complaint::saveDamages($saveDamageData);
+
+        if ($saveComplaint) {
+            return back()->with('success', 'Keluhan tersimpan!');
         }
 
-        return back()->with('failed', 'Master ruang linkup bagian gagal tersimpan!');   
+        return back()->with('failed', 'Keluhan gagal tersimpan!');   
     }
 }

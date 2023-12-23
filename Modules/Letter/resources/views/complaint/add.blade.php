@@ -39,20 +39,77 @@
     <div class="card-body row">
       <div class="col-sm-12">
         <div class="form-group">
-          <label for="scope_name">Nama</label>
-          <input type="text" class="form-control" id="scope_name" name="scope_name" placeholder="Masukkan nama ruang lingkup" value="{{ old('scope_name') }}">
+          <label>Bus</label>
+          <select class="form-control select2bs4" name="bus_uuid" style="width: 100%;">
+            @foreach ($bus as $busItem)
+                <option value="{{ $busItem->uuid }}" @selected(old('bus_uuid') == $busItem->uuid)>
+                    {{ $busItem->name }} | {{ $busItem->registration_number }}
+                </option>
+            @endForeach
+          </select>
         </div>
         <div class="form-group">
-          <label for="scope_code">Kode</label>
-          <input type="text" class="form-control" id="scope_code" name="scope_code" placeholder="Masukkan kode" value="{{ old('scope_code') }}">
+          <label>Deskripsi</label>
+          <textarea class="form-control" name="description" rows="3" placeholder="Masukkan deskripsi keluhan">{{ old('description') }}</textarea>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label for="bus">Kerusakan</label>
+          <div id="damageForm">
+            <div class="row">
+              <div class="col-sm-3">
+                <select class="form-control select2bs4" name="damage_scope[]" style="width: 100%;">
+                  @foreach ($partsscope as $partsscopeItem)
+                      <option value="{{ $partsscopeItem->uuid }}" @selected(old('partsscope_uuid') == $partsscopeItem->uuid)>
+                          {{ $partsscopeItem->scope_name }} | {{ $partsscopeItem->name }} | {{ $partsscopeItem->scope_code }}-{{ $partsscopeItem->code }}
+                      </option>
+                  @endForeach
+                </select>
+              </div>
+              <div class="col-sm-7">
+                <div class="input-group mb-3">
+                  <textarea class="form-control damage_detail_1" name="damage_detail[]" rows="1"  placeholder="Masukkan detail kerusakan" required></textarea>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <a type="button" id="addRow" class="btn btn-success">Tambah</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div class="card-footer">
       <button type="submit" class="btn btn-primary">Submit</button>
-      <a href="{{ url('masterdata/partsarea') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
+      <a href="{{ url('letter/complaint') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
     </div>
   </form>
 </div>
  
 @endsection
+
+@push('extra-scripts')
+<script type="text/javascript">
+    $(function () {
+      const partsScopeData = {!!json_encode($partsscope)!!};
+      let rowCount = 1;
+      
+      $('#addRow').click(function(){
+        let html = '';
+        rowCount++;
+        html += '<div class="row" id="damage_'+ rowCount +'"><div class="col-sm-3"><select class="form-control select2bs4" name="damage_scope[]" style="width: 100%;">';
+        for (let index = 0; index < partsScopeData.length; index++) {
+          html += '<option value="' + partsScopeData[index].uuid + '">' + partsScopeData[index].scope_name + ' | ' + partsScopeData[index].name + ' | ' + partsScopeData[index].scope_code + '-' + partsScopeData[index].code + '</option>';
+        }
+        html += '</select></div><div class="col-sm-7"><div class="input-group mb-3"><div class="input-group-prepend">';
+        html += '</div><textarea class="form-control damage_detail_'+ rowCount +'" name="damage_detail[]" rows="1" placeholder="Masukkan detail kerusakan" required></textarea></div></div><div class="col-sm-1">';
+        html += '<a type="button" id="'+ rowCount +'" class="btn btn-danger removeRow">Hapus</a>';
+        $('#damageForm').append(html);
+        $('.select2bs4:last').select2({
+          theme: 'bootstrap4'
+        });
+      });
+    });
+</script>
+@endpush
