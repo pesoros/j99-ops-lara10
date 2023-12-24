@@ -62,4 +62,35 @@ class LetterComplaintController extends Controller
 
         return back()->with('failed', 'Keluhan gagal tersimpan!');   
     }
+
+    public function detailComplaint(Request $request, $uuid)
+    {
+        $data['title'] = 'Detail Keluhan';
+        $data['detailComplaint'] = Complaint::getComplaint($uuid);
+        $data['damages'] = Complaint::getComplaintDamages($uuid);
+
+        return view('letter::complaint.detail', $data);
+    }
+
+    public function createWorkorder($uuid)
+    {
+        $wotkorderCount = Complaint::getWorkorderCount();
+        $workorderUuid = generateUuid();
+        $saveData = [
+            'uuid' => $workorderUuid,
+            'created_by' => auth()->user()->uuid,
+            'numberid' => genrateLetterNumber('SPK',$wotkorderCount + 1),
+        ];
+
+        $updateData['workorder_uuid'] = $workorderUuid;
+
+        $saveWorkorder = Complaint::saveWorkorder($saveData);
+        $updateComplaint = Complaint::updateComplaint($uuid, $updateData);
+
+        if ($saveWorkorder) {
+            return back()->with('success', 'SPK berhasil dibuat!');
+        }
+
+        return back()->with('failed', 'SPK gagal dibuat!');   
+    }
 }
