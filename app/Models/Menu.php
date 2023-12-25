@@ -23,7 +23,7 @@ class Menu extends Model
     {
         $email = isset($datas['email']) ? $datas['email'] : '';
 
-        $query = DB::table("users")
+        $query = DB::table("v2_users AS users")
             ->select('users.role_uuid','role.title','role.id as role_id')
             ->join("ops_role AS role", "role.uuid", "=", "users.role_uuid")
             ->where('users.email', $email)

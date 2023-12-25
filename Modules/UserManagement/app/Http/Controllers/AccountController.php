@@ -31,7 +31,7 @@ class AccountController extends Controller
     {
         $credentials = $request->validate([
             'name' => ['required', 'string'],
-            'email' => ['required','email', 'unique:users,email'],
+            'email' => ['required','email', 'unique:v2_users,email'],
             'password' => ['required', 'min:8'],
             'role' => ['required', 'string'],
         ]);
