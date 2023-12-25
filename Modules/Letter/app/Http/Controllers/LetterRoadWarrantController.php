@@ -23,7 +23,7 @@ class LetterRoadWarrantController extends Controller
     public function addRoadWarrant()
     {
         $data['title'] = 'Tambah Surat perintah jalan';
-        $data['bus'] = Bus::getBusList();
+        $data['employee'] = RoadWarrant::getEmployee();
 
         return view('letter::roadwarrant.add', $data);
     }

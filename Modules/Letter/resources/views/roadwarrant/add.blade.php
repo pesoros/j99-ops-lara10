@@ -39,58 +39,57 @@
     <div class="card-body row">
       <div class="col-sm-12">
         <div class="form-group">
-          <label>Bus</label>
-          <select class="form-control select2bs4" name="bus_uuid" style="width: 100%;">
-            @foreach ($bus as $busItem)
-                <option value="{{ $busItem->uuid }}" @selected(old('bus_uuid') == $busItem->uuid)>
-                    {{ $busItem->name }} | {{ $busItem->registration_number }}
-                </option>
-            @endForeach
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="driver_allowance">Uang saku driver</label>
+          <label for="driver_allowance_1[]">Uang premi driver 1</label>
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text">Rp</span>
             </div>
-            <input type="text" class="form-control moneyform" name="driver_allowance" placeholder="0" required>
+            <input type="text" class="form-control moneyform" name="driver_allowance_1[]" placeholder="0" required>
           </div>
         </div>
         <div class="form-group">
-          <label for="codriver_allowance">Uang saku co driver</label>
+          <label for="driver_allowance_2[]">Uang premi driver 2</label>
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text">Rp</span>
             </div>
-            <input type="text" class="form-control moneyform" name="codriver_allowance" placeholder="0" required>
+            <input type="text" class="form-control moneyform" name="driver_allowance_2[]" placeholder="0" required>
           </div>
         </div>
         <div class="form-group">
-          <label for="crew_allowance">Uang saku crew</label>
+          <label for="codriver_allowance[]">Uang premi co driver</label>
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text">Rp</span>
             </div>
-            <input type="text" class="form-control moneyform" name="crew_allowance" placeholder="0" required>
+            <input type="text" class="form-control moneyform" name="codriver_allowance[]" placeholder="0" required>
           </div>
         </div>
         <div class="form-group">
-          <label for="fuel_allowance">Uang solar</label>
+          <label for="crew_allowance[]">Uang makan kru per hari</label>
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text">Rp</span>
             </div>
-            <input type="text" class="form-control moneyform" name="fuel_allowance" placeholder="0" required>
+            <input type="text" class="form-control moneyform" name="crew_allowance[]" placeholder="0" required>
           </div>
         </div>
         <div class="form-group">
-          <label for="trip_allowance">Uang jalan</label>
+          <label for="fuel_allowance[]">Uang solar</label>
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text">Rp</span>
             </div>
-            <input type="text" class="form-control moneyform" name="trip_allowance" placeholder="0" required>
+            <input type="text" class="form-control moneyform" name="fuel_allowance[]" placeholder="0" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="trip_allowance[]">Uang jalan</label>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Rp</span>
+            </div>
+            <input type="text" class="form-control moneyform" name="trip_allowance[]" placeholder="0" required>
           </div>
         </div>
       </div>
