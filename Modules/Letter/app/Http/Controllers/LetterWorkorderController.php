@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Workorder;
+use App\Models\Bus;
 
 class LetterWorkorderController extends Controller
 {
@@ -46,6 +47,11 @@ class LetterWorkorderController extends Controller
         $updateData['status'] = 2;
 
         $updateWorkorder = Workorder::updateWorkorder($uuid, $updateData);
+
+        $workorder = Workorder::getWorkorder($uuid);
+        $updateBusData['status'] = 1;
+
+        $saveComplaint = Bus::updateBus($workorder->bus_uuid,$updateBusData);
 
         if ($updateWorkorder) {
             return back()->with('success', 'Status SPK berhasil diubah menjadi selesai!');

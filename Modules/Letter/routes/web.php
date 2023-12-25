@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Letter\app\Http\Controllers\LetterComplaintController;
 use Modules\Letter\app\Http\Controllers\LetterWorkorderController;
+use Modules\Letter\app\Http\Controllers\LetterRoadWarrantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,5 +29,8 @@ Route::group([], function () {
         Route::get('workorder/update/progress/{uuid}', [LetterWorkorderController::class, 'progressWorkorder']);
         Route::get('workorder/update/close/{uuid}', [LetterWorkorderController::class, 'closeWorkorder']);
         Route::post('workorder/update/damagesaction/{uuid}', [LetterWorkorderController::class, 'updateAction']);
+
+        Route::get('roadwarrant', [LetterRoadWarrantController::class, 'listRoadWarrant']);
+        Route::get('roadwarrant/add', [LetterRoadWarrantController::class, 'addRoadWarrant']);
     });
 });

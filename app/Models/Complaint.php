@@ -33,16 +33,6 @@ class Complaint extends Model
         return $query;
     }
 
-    public function scopeGetBusList($query)
-    {
-        $query = DB::table("v2_bus AS bus")
-            ->select('bus.uuid','bus.name','bus.registration_number','bus.brand','bus.model','bus.status')
-            ->orderBy('bus.created_at')
-            ->get();
-
-        return $query;
-    }
-
     public function scopeGetPartsScope($query)
     {
         $query = DB::table("ops_parts_scope AS partsscope")

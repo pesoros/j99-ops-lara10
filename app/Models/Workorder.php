@@ -30,6 +30,7 @@ class Workorder extends Model
                 'workorder.created_at',
                 'complaint.uuid AS complaint_uuid',
                 'complaint.description',
+                'complaint.bus_uuid',
                 'bus.name AS busname'
             )
             ->join("ops_complaint AS complaint", "complaint.workorder_uuid", "=", "workorder.uuid")

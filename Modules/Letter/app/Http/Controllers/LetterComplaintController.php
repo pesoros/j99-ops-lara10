@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Complaint;
+use App\Models\Bus;
 
 class LetterComplaintController extends Controller
 {
@@ -21,7 +22,7 @@ class LetterComplaintController extends Controller
     public function addComplaint()
     {
         $data['title'] = 'Tambah Surat keluhan';
-        $data['bus'] = Complaint::getBusList();
+        $data['bus'] = Bus::getBusList();
         $data['partsscope'] = Complaint::getPartsScope();
 
         return view('letter::complaint.add', $data);
@@ -53,6 +54,9 @@ class LetterComplaintController extends Controller
             ];
         }
         
+        $updateBusData['status'] = 0;
+
+        $saveComplaint = Bus::updateBus($request->bus_uuid,$updateBusData);
         $saveComplaint = Complaint::saveComplaint($saveData);
         $saveDamages = Complaint::saveDamages($saveDamageData);
 
