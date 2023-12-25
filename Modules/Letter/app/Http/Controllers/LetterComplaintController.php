@@ -74,12 +74,15 @@ class LetterComplaintController extends Controller
 
     public function createWorkorder($uuid)
     {
-        $wotkorderCount = Complaint::getWorkorderCount();
         $workorderUuid = generateUuid();
+        $workorderCount = Complaint::getWorkorderCount();
+        $count = !isset($workorderCount->count) ? 1 : $workorderCount->count + 1;
+
         $saveData = [
             'uuid' => $workorderUuid,
             'created_by' => auth()->user()->uuid,
-            'numberid' => genrateLetterNumber('SPK',$wotkorderCount + 1),
+            'numberid' => genrateLetterNumber('SPK',$count),
+            'count' => $count,
         ];
 
         $updateData['workorder_uuid'] = $workorderUuid;

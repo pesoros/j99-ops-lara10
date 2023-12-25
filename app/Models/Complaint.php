@@ -11,7 +11,7 @@ class Complaint extends Model
     public function scopeGetComplaintList($query)
     {
         $query = DB::table("ops_complaint AS complaint")
-            ->select('complaint.uuid','complaint.description','bus.name AS busname')
+            ->select('complaint.uuid','complaint.description','complaint.workorder_uuid','bus.name AS busname')
             ->join("v2_bus AS bus", "bus.uuid", "=", "complaint.bus_uuid")
             ->orderBy('complaint.created_at','DESC')
             ->get();
@@ -28,7 +28,7 @@ class Complaint extends Model
 
     public function scopeSaveDamages($query, $data)
     {
-        $query = DB::table("ops_complaint_damages")->insert($data);
+        $query = DB::table("ops_damages")->insert($data);
 
         return $query;
     }
@@ -69,7 +69,7 @@ class Complaint extends Model
 
     public function scopeGetComplaintDamages($query, $uuid)
     {
-        $query = DB::table("ops_complaint_damages AS damage")
+        $query = DB::table("ops_damages AS damage")
             ->select('damage.uuid','damage.description','scope.name AS scopename','scope.code AS scopecode','area.code AS areacode')
             ->join("ops_parts_scope AS scope", "scope.uuid", "=", "damage.scope_uuid")
             ->join("ops_parts_area AS area", "area.uuid", "=", "scope.parts_area_uuid")
@@ -99,9 +99,11 @@ class Complaint extends Model
     public function scopeGetWorkorderCount($query)
     {
         $query = DB::table("ops_workorder AS workorder")
+            ->select('workorder.count')
             ->whereYear('created_at', Carbon::now()->year)
             ->whereMonth('created_at', Carbon::now()->month)
-            ->count();
+            ->orderby('workorder.count','DESC')
+            ->first();
 
         return $query;
     }
