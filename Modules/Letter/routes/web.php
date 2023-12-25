@@ -31,6 +31,8 @@ Route::group([], function () {
         Route::post('workorder/update/damagesaction/{uuid}', [LetterWorkorderController::class, 'updateAction']);
 
         Route::get('roadwarrant', [LetterRoadWarrantController::class, 'listRoadWarrant']);
-        Route::get('roadwarrant/add', [LetterRoadWarrantController::class, 'addRoadWarrant']);
+        Route::get('roadwarrant/add/{book_uuid}', [LetterRoadWarrantController::class, 'addRoadWarrant']);
+        Route::post('roadwarrant/add/{book_uuid}', [LetterRoadWarrantController::class, 'addRoadWarrantStore']);
+        Route::get('roadwarrant/show/detail/{uuid}', [LetterRoadWarrantController::class, 'detailRoadWarrant']);
     });
 });

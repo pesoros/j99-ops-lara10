@@ -20,76 +20,119 @@
     <div class="col-12">
       <!-- Main content -->
       <div class="invoice p-3 mb-3">
-        <!-- title row -->
-        <div class="row">
-          <div class="col-12">
-            <h4>
-              <img src="http://localhost:8000/assets/images/logo/j99-logo-wide.png" alt="J99 Logo" height="38" style="opacity: .8">
-              <small class="float-right">{{ dateFormat($detailComplaint->created_at) }}</small>
-            </h4>
-          </div>
-          <!-- /.col -->
-        </div>
         <!-- info row -->
         <div class="row invoice-info">
           <div class="col-sm-12 invoice-col">
-            <p class="lead">Detail complaint</p>
+            <p class="lead">Detail reservasi</p>
             <div class="table-responsive">
               <table class="table">
                 <tr>
-                  <th>Nama bus :</th>
-                  <td>{{ $detailComplaint->busname }}</td>
+                  <th width="250">Nomor SPJ :</th>
+                  <td>{{ $roadwarrant->numberid }}</td>
                 </tr>
                 <tr>
-                  <th>Deskripsi :</th>
-                  <td>{{ $detailComplaint->description }}</td>
+                  <th width="250">Kode booking :</th>
+                  <td>{{ $roadwarrant->booking_code }}</td>
                 </tr>
-                @if ($detailComplaint->workorder_numberid)
-                  <tr>
-                    <th>Nomor SPK :</th>
-                    <td>{{ $detailComplaint->workorder_numberid }}</td>
-                  </tr>
-                @endif
+                <tr>
+                  <th>Nama customer :</th>
+                  <td>{{ $roadwarrant->customer_name }}</td>
+                </tr>
+                <tr>
+                  <th>Telephone customer :</th>
+                  <td>{{ numberSpacer($roadwarrant->customer_phone) }}</td>
+                </tr>
+                <tr>
+                  <th>Tanggal berangkat :</th>
+                  <td>{{ dateTimeFormat($roadwarrant->start_date) }}</td>
+                </tr>
+                <tr>
+                  <th>tanggal kembali :</th>
+                  <td>{{ dateTimeFormat($roadwarrant->finish_date) }}</td>
+                </tr>
+                <tr>
+                  <th>Tanggal pemesanan :</th>
+                  <td>{{ dateTimeFormat($roadwarrant->created_at) }}</td>
+                </tr>
+                <tr>
+                  <th>Alamat penjemputan :</th>
+                  <td>{{ $roadwarrant->pickup_address }}</td>
+                </tr>
+                <tr>
+                  <th>Kota penjemputan :</th>
+                  <td>{{ $roadwarrant->city_from }}</td>
+                </tr>
+                <tr>
+                  <th>Kota tujuan :</th>
+                  <td>{{ $roadwarrant->city_to }}</td>
+                </tr>
+                <tr>
+                  <th>Catatan :</th>
+                  <td>{{ $roadwarrant->notes }}</td>
+                </tr>
               </table>
             </div>
           </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-
-        <!-- Table row -->
-        <div class="row">
-          <div class="col-12 table-responsive">
-            <p class="lead">Kerusakan</p>
-            <table class="table table-striped">
-              <thead>
-              <tr>
-                <th width="3">No</th>
-                <th>Bagian</th>
-                <th>Deskripsi</th>
-              </tr>
-              </thead>
-              <tbody>
-                @foreach ($damages as $key => $damage)
-                  <tr>
-                    <td>{{ $key + 1 }}</td>
-                    <td>{{ $damage->areacode }}-{{ $damage->scopecode }} | {{ $damage->scopename }}</td>
-                    <td>{{ $damage->description }}</td>
-                  </tr>
-                @endforeach
-              </tbody>
-            </table>
+          <div class="col-sm-12 invoice-col">
+            <p class="lead">Detail armada</p>
+            <div class="table-responsive">
+              <table class="table">
+                <tr>
+                  <th width="250">Nama bus :</th>
+                  <td>{{ $roadwarrant->busname }}</td>
+                </tr>
+                <tr>
+                  <th>Kelas :</th>
+                  <td>{{ $roadwarrant->classname }}</td>
+                </tr>
+                <tr>
+                  <th>Jumlah kursi :</th>
+                  <td>{{ $roadwarrant->seat }} Kursi</td>
+                </tr>
+                <tr>
+                  <th>Driver 1 :</th>
+                  <td>{{ $roadwarrant->driver_1_name }}</td>
+                </tr>
+                <tr>
+                  <th>Driver 2 :</th>
+                  <td>{{ $roadwarrant->driver_2_name }}</td>
+                </tr>
+                <tr>
+                  <th>Co driver :</th>
+                  <td>{{ $roadwarrant->codriver_name }}</td>
+                </tr>
+                <tr>
+                  <th>Uang saku :</th>
+                  <td>{{ formatAmount($roadwarrant->trip_allowance) }}</td>
+                </tr>
+                <tr>
+                  <th>Uang premi driver 1 :</th>
+                  <td>{{ formatAmount($roadwarrant->driver_allowance_1) }}</td>
+                </tr>
+                <tr>
+                  <th>Uang premi Driver 2 :</th>
+                  <td>{{ formatAmount($roadwarrant->driver_allowance_2) }}</td>
+                </tr>
+                <tr>
+                  <th>Uang premi Co driver :</th>
+                  <td>{{ formatAmount($roadwarrant->codriver_allowance) }}</td>
+                </tr>
+                <tr>
+                  <th>Uang makan kru :</th>
+                  <td>{{ formatAmount($roadwarrant->crew_meal_allowance) }}</td>
+                </tr>
+              </table>
+            </div>
           </div>
-          <!-- /.col -->
         </div>
         <!-- /.row -->
       </div>
       <!-- /.invoice -->
-      <div>
-        @if (permissionCheck('add') && !$detailComplaint->workorder_numberid)
-          <a href="{{ url('letter/complaint/add/createworkorder/'.$detailComplaint->uuid) }}" onclick="return confirm('Anda yakin membuat SPK berdasarkan keluhan ini?')" class="btn bg-gradient-primary btn-sm">Buat SPK berdasarkan keluhan ini</a>
+      {{-- <div>
+        @if (permissionCheck('add'))
+          <a href="{{ url('letter/complaint/add/createworkorder/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin membuat SPK berdasarkan keluhan ini?')" class="btn bg-gradient-primary btn-sm">Buat SPK berdasarkan keluhan ini</a>
         @endif
-      </div>
+      </div> --}}
     </div><!-- /.col -->
   </div><!-- /.row -->
 </div>

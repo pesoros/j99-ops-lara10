@@ -16,54 +16,66 @@ class LetterRoadWarrantController extends Controller
     {
         $data['title'] = 'Surat perintah jalan';
         $data['list'] = RoadWarrant::getRoadWarrantList();
+        $data['bookavailable'] = RoadWarrant::getBookAvailable();
 
         return view('letter::roadwarrant.index', $data);
     }
     
-    public function addRoadWarrant()
+    public function addRoadWarrant($book_uuid)
     {
         $data['title'] = 'Tambah Surat perintah jalan';
+        $data['book'] = RoadWarrant::getBook($book_uuid);
+        $data['bookbus'] = RoadWarrant::getBookBus($book_uuid);
         $data['employee'] = RoadWarrant::getEmployee();
 
         return view('letter::roadwarrant.add', $data);
     }
 
-    public function addComplaintStore(Request $request)
+    public function addRoadWarrantStore(Request $request, $book_uuid)
     {
-        $credentials = $request->validate([
-            'bus_uuid'      => ['required', 'string'],
-            'description'      => ['required', 'string'],
-        ]);
+        $roadWarrantCount = RoadWarrant::getRoadWarrantCount();
+        $count = !isset($roadWarrantCount->count) ? 1 : $roadWarrantCount->count + 1;
 
-        $uuid = generateUuid();
-                
-        $saveData = [
-            'uuid' => $uuid,
-            'created_by' => auth()->user()->uuid,
-            'bus_uuid' => $request->bus_uuid,
-            'description' => $request->description,
-        ];
-
-        $saveDamageData = [];
-        foreach ($request->damage_scope as $key => $value) {
-            $saveDamageData[] = [
-                'uuid' => generateUuid(),
-                'complaint_uuid' =>  $uuid,
-                'scope_uuid' =>  $value,
-                'description' =>  $request->damage_detail[$key],
+        foreach ($request->bus_uuid as $key => $value) {
+            $counter = $count + $key;
+            $saveRoadWarrantData[] = [
+                'uuid'                      =>  generateUuid(),
+                'bus_uuid'                  =>  $value,
+                'manifest_uuid'             =>  $book_uuid,
+                'category'                  =>  2,
+                'numberid'                  =>  genrateLetterNumber('SPJ',$counter),
+                'count'                     =>  $counter,
+                'driver_1'                  =>  $request->driver_1[$key],
+                'driver_2'                  =>  $request->driver_2[$key],
+                'codriver'                  =>  $request->codriver[$key],
+                'driver_allowance_1'        =>  numberClearence($request->driver_allowance_1[$key]),
+                'driver_allowance_2'        =>  numberClearence($request->driver_allowance_2[$key]),
+                'codriver_allowance'        =>  numberClearence($request->codriver_allowance[$key]),
+                'trip_allowance'            =>  numberClearence($request->trip_allowance[$key]),
+                'fuel_allowance'            =>  numberClearence($request->fuel_allowance[$key]),
+                'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance[$key]),
+                'created_by'                =>  auth()->user()->uuid,
             ];
+
         }
         
-        $updateBusData['status'] = 0;
+        $updateBookData['status'] = 1;
+        
+        $saveRoadWarrant = RoadWarrant::saveRoadWarrant($saveRoadWarrantData);
+        $saveComplaint = RoadWarrant::updateBook($book_uuid,$updateBookData);
 
-        $saveComplaint = Bus::updateBus($request->bus_uuid,$updateBusData);
-        $saveComplaint = Complaint::saveComplaint($saveData);
-        $saveDamages = Complaint::saveDamages($saveDamageData);
-
-        if ($saveComplaint) {
-            return back()->with('success', 'Keluhan tersimpan!');
+        if ($saveRoadWarrant) {
+            return redirect('letter/roadwarrant')->with('message', 'Anda berhasil memnbuat SPJ');
         }
 
-        return back()->with('failed', 'Keluhan gagal tersimpan!');   
+        return back()->with('failed', 'SPJ gagal tersimpan!');   
+    }
+
+    public function detailRoadWarrant(Request $request, $uuid)
+    {
+        $data['title'] = 'Detail SPJ';
+        $data['roadwarrant'] = RoadWarrant::getRoadWarrant($uuid);
+
+        return view('letter::roadwarrant.detail', $data);
     }
 }
