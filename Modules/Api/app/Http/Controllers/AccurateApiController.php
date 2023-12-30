@@ -26,14 +26,41 @@ class AccurateApiController extends Controller
 
     public function newtoken(Request $request)
     {
+        $type = 'code';
         $redirect = strval(url(env('ACCURATE_RECEIVETOKEN_ENDPOINT').'/newtoken'));
-        return redirect()->to(env('ACCURATE_AUTH_URI').'?client_id='.env('ACCURATE_CLIENTID').'&response_type=code&redirect_uri='.$redirect.'&scope=item_view warehouse_view');
+        return redirect()->to(env('ACCURATE_AUTH_URI').'?client_id='.env('ACCURATE_CLIENTID').'&response_type='.$type.'&redirect_uri='.$redirect.'&scope=item_view warehouse_view');
     }
 
     public function refreshtoken(Request $request)
     {
-        $redirect = strval(url(env('ACCURATE_RECEIVETOKEN_ENDPOINT').'/refreshtoken'));
-        return redirect()->to(env('ACCURATE_AUTH_URI').'?client_id='.env('ACCURATE_CLIENTID').'&response_type=code&redirect_uri='.$redirect.'&scope=item_view warehouse_view');
+        try {
+            $getToken = Accurate::getToken('token');
+            $getAccessToken = $this->client->request('POST', '/oauth/token',[
+                'headers' => [
+                    'Authorization' => 'Basic '.env('ACCURATE_APITOKEN')
+                ],        
+                'form_params' => [
+                    'grant_type' => 'refresh_token',
+                    'refresh_token' => $getToken->refresh_token
+                ]
+            ])->getBody();
+
+            $getAccessToken = json_decode($getAccessToken);
+            $expires = Carbon::now()->addSeconds($getAccessToken->expires_in)->toDateTimeString();
+            $now = Carbon::now();
+            $data = [
+                'value' => $getAccessToken->access_token,
+                'refresh_token' => $getAccessToken->refresh_token,
+                'expires_at' => $expires,
+                'updated_at' => $now
+            ];
+            $updateToken = Accurate::updateAccurateToken('token',$data);
+        } catch (ClientException $e) {
+            $response = $e->getResponse();
+            return $response->getBody()->getContents();
+        }
+
+        return $getAccessToken;
     }
 
     public function dbsession()
@@ -48,9 +75,11 @@ class AccurateApiController extends Controller
 
             $getDbSession = json_decode($getDbSession);
             $expires = Carbon::parse($getDbSession->accessibleUntil);
+            $now = Carbon::now();
             $data = [
                 'value' => $getDbSession->session,
-                'expires_at' => $expires
+                'expires_at' => $expires,
+                'updated_at' => $now
             ];
             $updateToken = Accurate::updateAccurateToken('db_session',$data);
         } catch (ClientException $e) {
@@ -83,10 +112,12 @@ class AccurateApiController extends Controller
 
             $getAccessToken = json_decode($getAccessToken);
             $expires = Carbon::now()->addSeconds($getAccessToken->expires_in)->toDateTimeString();
+            $now = Carbon::now();
             $data = [
                 'value' => $getAccessToken->access_token,
                 'refresh_token' => $getAccessToken->refresh_token,
-                'expires_at' => $expires
+                'expires_at' => $expires,
+                'updated_at' => $now
             ];
             $updateToken = Accurate::updateAccurateToken('token',$data);
         } catch (ClientException $e) {
@@ -96,41 +127,5 @@ class AccurateApiController extends Controller
 
         return $getAccessToken;
     }
-
-    public function refreshtokenreceive(Request $request)
-    {
-        $params = $request->all();
-
-        if (!isset($params['code'])) {
-            return;
-        }
-
-        try {
-            $getToken = Accurate::getToken('token');
-            $getAccessToken = $this->client->request('POST', '/oauth/token',[
-                'headers' => [
-                    'Authorization' => 'Basic '.env('ACCURATE_APITOKEN')
-                ],        
-                'form_params' => [
-                    'code' => $params['code'],
-                    'grant_type' => 'refresh_token',
-                    'refresh_token' => $getToken->refresh_token
-                ]
-            ])->getBody();
-
-            $getAccessToken = json_decode($getAccessToken);
-            $expires = Carbon::now()->addSeconds($getAccessToken->expires_in)->toDateTimeString();
-            $data = [
-                'value' => $getAccessToken->access_token,
-                'refresh_token' => $getAccessToken->refresh_token,
-                'expires_at' => $expires
-            ];
-            $updateToken = Accurate::updateAccurateToken('token',$data);
-        } catch (ClientException $e) {
-            $response = $e->getResponse();
-            return $response->getBody()->getContents();
-        }
-
-        return $getAccessToken;
-    }
+    
 }

@@ -10,7 +10,7 @@ class Accurate extends Model
     public function scopeGetToken($query, $role)
     {
         $query = DB::table("token_credential")
-            ->select('value AS token','refresh_token')
+            ->select('value AS token','refresh_token','expires_at')
             ->where('vendor','accurate')
             ->where('role',$role)
             ->first();

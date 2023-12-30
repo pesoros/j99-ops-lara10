@@ -20,6 +20,6 @@ Route::group([], function () {
         Route::get('/accurate/refreshtoken', [AccurateApiController::class, 'refreshtoken']);
         Route::get('/accurate/receivetoken/newtoken', [AccurateApiController::class, 'newtokenreceive']);
         Route::get('/accurate/receivetoken/refreshtoken', [AccurateApiController::class, 'refreshtokenreceive']);
-        Route::get('/accurate/debsession', [AccurateApiController::class, 'dbsession']);
+        Route::get('/accurate/dbsession', [AccurateApiController::class, 'dbsession']);
     });
 });
