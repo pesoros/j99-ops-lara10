@@ -31,7 +31,7 @@ class DashboardController extends Controller
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
-            CURLOPT_URL => 'http://localhost:8000/api/accurate/refreshtoken',
+            CURLOPT_URL => url('/api/accurate/refreshtoken'),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -54,7 +54,7 @@ class DashboardController extends Controller
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
-            CURLOPT_URL => 'http://localhost:8000/api/accurate/dbsession',
+            CURLOPT_URL => url('/api/accurate/dbsession'),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
