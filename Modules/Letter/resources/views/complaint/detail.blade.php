@@ -24,7 +24,7 @@
         <div class="row">
           <div class="col-12">
             <h4>
-              <img src="http://localhost:8000/assets/images/logo/j99-logo-wide.png" alt="J99 Logo" height="38" style="opacity: .8">
+              <img src="{{url('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
               <small class="float-right">{{ dateFormat($detailComplaint->created_at) }}</small>
             </h4>
           </div>
