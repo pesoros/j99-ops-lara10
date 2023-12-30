@@ -67,7 +67,52 @@ class LetterComplaintController extends Controller
         return back()->with('failed', 'Keluhan gagal tersimpan!');   
     }
 
-    public function detailComplaint(Request $request, $uuid)
+    public function editComplaint($uuid)
+    {
+        $data['title'] = 'Edit Keluhan';
+        $data['bus'] = Bus::getBusList();
+        $data['partsscope'] = Complaint::getPartsScope();
+        $data['detailComplaint'] = Complaint::getComplaint($uuid);
+        $data['damages'] = Complaint::getComplaintDamages($uuid);
+
+        return view('letter::complaint.edit', $data);
+    }
+
+    public function editComplaintUpdate(Request $request, $uuid)
+    {
+        $credentials = $request->validate([
+            'bus_uuid'      => ['required', 'string'],
+            'description'      => ['required', 'string'],
+        ]);
+
+        $updateData = [
+            'updated_by' => auth()->user()->uuid,
+            'bus_uuid' => $request->bus_uuid,
+            'description' => $request->description,
+        ];
+
+        $saveDamageData = [];
+        foreach ($request->damage_scope as $key => $value) {
+            $saveDamageData[] = [
+                'uuid' => generateUuid(),
+                'complaint_uuid' =>  $uuid,
+                'scope_uuid' =>  $value,
+                'description' =>  $request->damage_detail[$key],
+            ];
+        }
+        
+        $saveComplaint = Complaint::updateComplaint($uuid, $updateData);
+        $saveDamages = Complaint::removeDamages($uuid);
+        $saveDamages = Complaint::saveDamages($saveDamageData);
+
+        if ($saveComplaint) {
+            return back()->with('success', 'Keluhan berhasil diubah!');
+        }
+
+        return back()->with('failed', 'Keluhan gagal diubah!');   
+    }
+
+    public function detailComplaint($uuid)
     {
         $data['title'] = 'Detail Keluhan';
         $data['detailComplaint'] = Complaint::getComplaint($uuid);

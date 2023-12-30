@@ -31,7 +31,7 @@
               <td>
                 <div class="btn-group btn-block">
                   @if (permissionCheck('show')) <a href="{{ url('letter/complaint/show/detail/'.$value->uuid) }}" class="btn btn-warning btn-sm">Detail</a> @endif
-                  @if (permissionCheck('edit')) <a href="#" class="btn btn-success btn-sm">Edit</a> @endif
+                  @if (permissionCheck('edit')) <a href="{{ url('letter/complaint/edit/'.$value->uuid) }}" class="btn btn-success btn-sm">Edit</a> @endif
                   @if (permissionCheck('delete')) <a href="#" onclick="return confirm('Anda yakin menghapus data ini?')" class="btn btn-danger btn-sm {{ $value->workorder_uuid ? 'disabled' : '' }}">Hapus</a> @endif
                 </div>
               </td>

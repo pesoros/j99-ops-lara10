@@ -60,7 +60,7 @@ class Complaint extends Model
     public function scopeGetComplaintDamages($query, $uuid)
     {
         $query = DB::table("ops_damages AS damage")
-            ->select('damage.uuid','damage.description','scope.name AS scopename','scope.code AS scopecode','area.code AS areacode')
+            ->select('damage.uuid','damage.scope_uuid','damage.description','scope.name AS scopename','scope.code AS scopecode','area.code AS areacode')
             ->join("ops_parts_scope AS scope", "scope.uuid", "=", "damage.scope_uuid")
             ->join("ops_parts_area AS area", "area.uuid", "=", "scope.parts_area_uuid")
             ->where('damage.complaint_uuid',$uuid)
@@ -75,6 +75,15 @@ class Complaint extends Model
         $query = DB::table("ops_complaint")
             ->where('uuid',$uuid)
             ->update($data);
+
+        return $query;
+    }
+
+    public function scopeRemoveDamages($query, $complaint_uuid)
+    {
+        $query = DB::table("ops_damages")
+            ->where('complaint_uuid',$complaint_uuid)
+            ->delete();
 
         return $query;
     }
