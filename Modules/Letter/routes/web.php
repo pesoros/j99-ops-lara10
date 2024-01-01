@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\Letter\app\Http\Controllers\LetterComplaintController;
 use Modules\Letter\app\Http\Controllers\LetterWorkorderController;
 use Modules\Letter\app\Http\Controllers\LetterRoadWarrantController;
+use Modules\Letter\app\Http\Controllers\LetterGoodsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,5 +37,7 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('roadwarrant/add/{book_uuid}', [LetterRoadWarrantController::class, 'addRoadWarrant']);
         Route::post('roadwarrant/add/{book_uuid}', [LetterRoadWarrantController::class, 'addRoadWarrantStore']);
         Route::get('roadwarrant/show/detail/{uuid}', [LetterRoadWarrantController::class, 'detailRoadWarrant']);
+
+        Route::get('goodsrequest', [LetterGoodsController::class, 'listGoods']);
     });
 });
