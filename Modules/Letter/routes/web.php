@@ -16,7 +16,7 @@ use Modules\Letter\app\Http\Controllers\LetterRoadWarrantController;
 |
 */
 
-Route::group([], function () {
+Route::middleware(['auth','has-permission'])->group(function () {
     Route::prefix('letter')->group(function () {
         Route::get('complaint', [LetterComplaintController::class, 'listComplaint']);
         Route::get('complaint/add', [LetterComplaintController::class, 'addComplaint']);
