@@ -6,16 +6,23 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Models\Rest;
+use App\Models\Goodsrequest;
 
 class LetterGoodsController extends Controller
 {
-    public function listGoods()
+    public function listGoodsRequest()
     {
-        $goodsList = Rest::getGoodsList();
+        $data['title'] = 'Surat permintaan barang';
+        $data['list'] = Goodsrequest::getGoodsRequestlist();
 
-        $result['status'] = 'tes';
-        $result['goods'] = $goodsList;
-        return $result;
+        return view('letter::goods.index', $data);
+    }
+
+    public function addGoodsRequest()
+    {
+        $data['title'] = 'Tambah Surat permintaan barang';
+        $data['workorder'] = Goodsrequest::getWorkorder();
+
+        return view('letter::goods.add', $data);
     }
 }

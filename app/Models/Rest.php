@@ -23,17 +23,17 @@ class Rest extends Model
         ];
     }
 
-    public function scopeGetGoodsList()
+    public function scopeGetSpareParts($query, $keyword)
     {
         $fetch = $this->client->request(
-            'GET', env('ACCURATE_APP_URI').'/item/list.do?fields=id,name', [
+            'GET', env('ACCURATE_APP_URI').'/item/list.do?fields=id,name&keywords='.$keyword, [
             'headers' => $this->headers,
         ])->getBody();
 
         return json_decode($fetch);
     }
 
-    public function scopeGetGoods($query, $id)
+    public function scopeGetSparePartsDetail($query, $id)
     {
         $fetch = $this->client->request(
             'GET', env('ACCURATE_APP_URI').'/item/detail.do?id='.$id, [
