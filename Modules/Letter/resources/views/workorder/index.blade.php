@@ -40,7 +40,7 @@
               <td>
                 <div class="btn-group btn-block">
                   @if (permissionCheck('show')) <a href="{{ url('letter/workorder/show/detail/'.$value->uuid) }}" class="btn btn-warning btn-sm">Detail</a> @endif
-                  @if (permissionCheck('add','goodsrequest')) <a href="{{ url('letter/goodsrequest/add?workorder_uuid='.$value->uuid) }}" class="btn btn-secondary btn-sm {{ $value->status !== 1 ? 'disabled' : ''}}">Buat SPB</a> @endif
+                  @if (permissionCheck('add','goodsrequest')) <a href="{{ url('letter/goodsrequest/add?workorder_uuid='.$value->uuid) }}" class="btn btn-secondary btn-sm {{ STRVAL($value->status) !== '1' ? 'disabled' : ''}}">Buat SPB</a> @endif
                 </div>
               </td>
             </tr>
