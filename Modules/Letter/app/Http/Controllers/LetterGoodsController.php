@@ -18,10 +18,18 @@ class LetterGoodsController extends Controller
         return view('letter::goods.index', $data);
     }
 
-    public function addGoodsRequest()
+    public function addGoodsRequest(Request $request)
     {
+        $workorder_uuid = $request->query('workorder_uuid');
+        
         $data['title'] = 'Tambah Surat permintaan barang';
-        $data['workorder'] = Goodsrequest::getWorkorder();
+        if (isset($workorder_uuid)) {
+            $data['hasWorkorder'] = true;
+            $data['workorder'] = Goodsrequest::getWorkorder($workorder_uuid);
+        } else {
+            $data['hasWorkorder'] = false;
+            $data['workorder'] = Goodsrequest::getWorkorderList();
+        }
 
         return view('letter::goods.add', $data);
     }
@@ -32,6 +40,10 @@ class LetterGoodsController extends Controller
             'workorder_uuid'    => ['required', 'string'],
             'description'       => ['required', 'string'],
         ]);
+
+        if (!isset($request->part_id)) {
+            return back()->with('failed', 'Anda belum memasukkan item barang');   
+        }
 
         $uuid = generateUuid();
         $goodsrequestCount = Goodsrequest::getGoodsrequestCount();

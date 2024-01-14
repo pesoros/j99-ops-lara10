@@ -40,13 +40,18 @@
       <div class="col-sm-12">
         <div class="form-group">
           <label>Nomor SPK</label>
-          <select class="form-control select2bs4" name="workorder_uuid" style="width: 100%;">
-            @foreach ($workorder as $workorderItem)
-                <option value="{{ $workorderItem->uuid }}" @selected(old('workorder_uuid') == $workorderItem->uuid)>
-                    {{ $workorderItem->numberid }}
-                </option>
-            @endForeach
-          </select>
+          @if ($hasWorkorder)
+              <input type="hidden" class="form-control" id="workorder_uuid" name="workorder_uuid" value="{{ $workorder[0]->uuid }}">
+              <input type="text" class="form-control" id="workorder_name" name="workorder_name" value="{{ $workorder[0]->numberid }}" readonly>
+          @else
+            <select class="form-control select2bs4" name="workorder_uuid" style="width: 100%;">
+              @foreach ($workorder as $workorderItem)
+                  <option value="{{ $workorderItem->uuid }}" @selected(old('workorder_uuid') == $workorderItem->uuid)>
+                      {{ $workorderItem->numberid }}
+                  </option>
+              @endForeach
+            </select>
+          @endif
         </div>
         <div class="form-group">
           <label>Deskripsi</label>
@@ -96,7 +101,7 @@
         </table>
       </div>
       <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-success" data-dismiss="modal">Batal</button>
+        <button type="button" id="modal-close" class="btn btn-success" data-dismiss="modal">Kembali</button>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -141,6 +146,7 @@
         $('#table-item').append(html);
         $('.getItem').click(function(){
           addItem(this.id);
+          $("#modal-close").click()
         });
       }
 
