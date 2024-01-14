@@ -28,7 +28,7 @@
               <td>{{ $value->description }}</td>
               <td>
                 @if ($value->status === 0)
-                  <span class="badge badge-danger">Belum dikerjakan</span>                                        
+                  <span class="badge badge-secondary">Belum dikerjakan</span>                                        
                 @endif
                 @if ($value->status === 1)
                   <span class="badge badge-warning">Sedang dikerjakan</span>                                        

@@ -109,6 +109,10 @@
         $('.select2bs4:last').select2({
           theme: 'bootstrap4'
         });
+        $('.removeRow').click(function(){
+          const id = this.id; 
+          $('#damage_'+id+'').remove();
+        });
       });
     });
 </script>

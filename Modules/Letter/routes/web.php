@@ -40,5 +40,6 @@ Route::middleware(['auth','has-permission'])->group(function () {
 
         Route::get('goodsrequest', [LetterGoodsController::class, 'listGoodsRequest']);
         Route::get('goodsrequest/add', [LetterGoodsController::class, 'addGoodsRequest']);
+        Route::post('goodsrequest/add', [LetterGoodsController::class, 'addGoodsRequestStore']);
     });
 });

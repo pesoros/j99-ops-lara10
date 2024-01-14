@@ -56,7 +56,7 @@ class LetterComplaintController extends Controller
         
         $updateBusData['status'] = 0;
 
-        $saveComplaint = Bus::updateBus($request->bus_uuid,$updateBusData);
+        $updateBusStatus = Bus::updateBus($request->bus_uuid,$updateBusData);
         $saveComplaint = Complaint::saveComplaint($saveData);
         $saveDamages = Complaint::saveDamages($saveDamageData);
 

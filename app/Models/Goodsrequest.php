@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class GoodsRequest extends Model
 {
@@ -25,6 +26,32 @@ class GoodsRequest extends Model
             ->where('workorder.status','!=',2)
             ->orderBy('workorder.created_at','DESC')
             ->get();
+
+        return $query;
+    }
+
+    public function scopeSaveGoodsRequest($query, $data)
+    {
+        $query = DB::table("ops_goodsrequest")->insert($data);
+
+        return $query;
+    }
+
+    public function scopeSaveGoodsRequestParts($query, $data)
+    {
+        $query = DB::table("ops_goodsrequest_parts")->insert($data);
+
+        return $query;
+    }
+
+    public function scopeGetGoodsRequestCount($query)
+    {
+        $query = DB::table("ops_goodsrequest AS goodsrequest")
+            ->select('goodsrequest.count')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->orderby('goodsrequest.count','DESC')
+            ->first();
 
         return $query;
     }
