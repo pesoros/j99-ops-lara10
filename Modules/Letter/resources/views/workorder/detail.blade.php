@@ -51,13 +51,13 @@
                 <tr>
                   <th>Status :</th>
                   <td>
-                    @if ($detailWorkorder->status === 0)
+                    @if (STRVAL($detailWorkorder->status) === '0')
                       <span class="badge badge-danger">Belum dikerjakan</span>                                        
                     @endif
-                    @if ($detailWorkorder->status === 1)
+                    @if (STRVAL($detailWorkorder->status) === '1')
                       <span class="badge badge-warning">Sedang dikerjakan</span>                                        
                     @endif
-                    @if ($detailWorkorder->status === 2)
+                    @if (STRVAL($detailWorkorder->status) === '2')
                       <span class="badge badge-success">Selesai</span>                                        
                     @endif
                   </td>
@@ -81,7 +81,7 @@
                   <th width="3">No</th>
                   <th>Bagian</th>
                   <th>Deskripsi</th>
-                  @if ($detailWorkorder->status === 1)
+                  @if (STRVAL($detailWorkorder->status) === '1')
                     <th>Penanganan</th>
                     <th>Detail penanganan</th>
                   @endif
@@ -93,7 +93,7 @@
                       <td>{{ $key + 1 }}</td>
                       <td>{{ $damage->areacode }}-{{ $damage->scopecode }} | {{ $damage->scopename }}</td>
                       <td>{{ $damage->description }}</td>
-                      @if ($detailWorkorder->status === 1)
+                      @if (STRVAL($detailWorkorder->status) === '1')
                         <td>
                           <input type="hidden" id="damage_uuid" name="damage_uuid[]" value={{ $damage->uuid }}>
                           <select class="form-control select2bs4" name="action_status[]" style="width: 100%;">
@@ -114,10 +114,10 @@
               </table>
               <div class="card-footer">
                 @if (permissionCheck('edit'))
-                  @if ($detailWorkorder->status === 0)
+                  @if (STRVAL($detailWorkorder->status) === '0')
                     <a href="{{ url('letter/workorder/update/progress/'.$detailWorkorder->uuid) }}" onclick="return confirm('Anda yakin memulai SPK ini?')" class="btn bg-gradient-primary">Mulai kerjakan SPK ini</a>
                   @endif
-                  @if ($detailWorkorder->status === 1)
+                  @if (STRVAL($detailWorkorder->status) === '1')
                     <button type="submit" class="btn btn-warning">Update penanganan</button>
                     <a href="{{ url('letter/workorder/update/close/'.$detailWorkorder->uuid) }}" onclick="return confirm('Anda yakin menyelesaikan SPK ini?')" class="btn bg-gradient-primary float-right">Selesaikan SPK ini</a>
                   @endif

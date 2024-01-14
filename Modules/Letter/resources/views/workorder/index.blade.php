@@ -27,14 +27,13 @@
               <td>{{ $value->busname }}</td>
               <td>{{ $value->description }}</td>
               <td>
-                {{$value->status}}
-                @if ($value->status === 0)
+                @if (STRVAL($value->status) === '0')
                   <span class="badge badge-secondary">Belum dikerjakan</span>                                        
                 @endif
-                @if ($value->status === 1)
+                @if (STRVAL($value->status) === '1')
                   <span class="badge badge-warning">Sedang dikerjakan</span>                                        
                 @endif
-                @if ($value->status === 2)
+                @if (STRVAL($value->status) === '2')
                   <span class="badge badge-success">Selesai</span>                                        
                 @endif
               </td>

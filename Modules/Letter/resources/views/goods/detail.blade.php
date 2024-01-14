@@ -58,16 +58,16 @@
                 <tr>
                   <th>Status :</th>
                   <td>
-                    @if ($detailGoodsRequest->status === 0)
+                    @if (STRVAL($detailGoodsRequest->status) === '0')
                       <span class="badge badge-secondary">Menunggu</span>                                        
                     @endif
-                    @if ($detailGoodsRequest->status === 1)
+                    @if (STRVAL($detailGoodsRequest->status) === '1')
                       <span class="badge badge-warning">Sedang diproses</span>                                        
                     @endif
-                    @if ($detailGoodsRequest->status === 2)
+                    @if (STRVAL($detailGoodsRequest->status) === '2')
                       <span class="badge badge-success">Selesai</span>                                        
                     @endif
-                    @if ($detailGoodsRequest->status === 3)
+                    @if (STRVAL($detailGoodsRequest->status) === '3')
                       <span class="badge badge-danger">Ditolak</span>                                        
                     @endif
                   </td>
@@ -92,7 +92,7 @@
                   <th>Item ID</th>
                   <th>Item Name</th>
                   <th>Qty</th>
-                  @if ($detailGoodsRequest->status === 1)
+                  @if (STRVAL($detailGoodsRequest->status) === '1')
                     <th>Penanganan</th>
                     <th>Detail penanganan</th>
                   @endif
@@ -105,7 +105,7 @@
                       <td>{{ $part->part_id }}</td>
                       <td>{{ $part->part_name }}</td>
                       <td>{{ $part->qty }}</td>
-                      @if ($detailGoodsRequest->status === 1)
+                      @if (STRVAL($detailGoodsRequest->status) === '1')
                         <td>
                           <input type="hidden" id="parts_uuid" name="parts_uuid[]" value={{ $part->uuid }}>
                           <select class="form-control select2bs4" name="parts_status[]" style="width: 100%;">
@@ -124,10 +124,10 @@
               </table>
               <div class="card-footer">
                 @if (permissionCheck('edit'))
-                  @if ($detailGoodsRequest->status === 0)
+                  @if (STRVAL($detailGoodsRequest->status) === '0')
                     <a href="{{ url('letter/goodsrequest/update/progress/'.$detailGoodsRequest->uuid) }}" onclick="return confirm('Anda yakin memulai SPB ini?')" class="btn bg-gradient-primary">Mulai kerjakan SPB ini</a>
                   @endif
-                  @if ($detailGoodsRequest->status === 1)
+                  @if (STRVAL($detailGoodsRequest->status) === '1')
                     <button type="submit" class="btn btn-warning">Update penanganan</button>
                     <a href="{{ url('letter/goodsrequest/update/close/'.$detailGoodsRequest->uuid) }}" onclick="return confirm('Anda yakin menyelesaikan SPB ini?')" class="btn bg-gradient-primary float-right">Selesaikan SPB ini</a>
                   @endif

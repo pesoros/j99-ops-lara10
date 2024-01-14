@@ -30,16 +30,16 @@
               <td width="200" >{{ $value->numberid }}</td>
               <td>{{ $value->description }}</td>
               <td>
-                @if ($value->status === 0)
+                @if (STRVAL($value->status) === '0')
                   <span class="badge badge-secondary">Menunggu</span>                                        
                 @endif
-                @if ($value->status === 1)
+                @if (STRVAL($value->status) === '1')
                   <span class="badge badge-warning">Sedang diproses</span>                                        
                 @endif
-                @if ($value->status === 2)
+                @if (STRVAL($value->status) === '2')
                   <span class="badge badge-success">Selesai</span>                                        
                 @endif
-                @if ($value->status === 3)
+                @if (STRVAL($value->status) === '3')
                   <span class="badge badge-danger">Ditolak</span>                                        
                 @endif
               </td>
