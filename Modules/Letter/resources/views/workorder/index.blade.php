@@ -27,6 +27,7 @@
               <td>{{ $value->busname }}</td>
               <td>{{ $value->description }}</td>
               <td>
+                {{$value->status}}
                 @if ($value->status === 0)
                   <span class="badge badge-secondary">Belum dikerjakan</span>                                        
                 @endif
