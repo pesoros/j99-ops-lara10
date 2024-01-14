@@ -41,5 +41,9 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('goodsrequest', [LetterGoodsController::class, 'listGoodsRequest']);
         Route::get('goodsrequest/add', [LetterGoodsController::class, 'addGoodsRequest']);
         Route::post('goodsrequest/add', [LetterGoodsController::class, 'addGoodsRequestStore']);
+        Route::get('goodsrequest/show/detail/{uuid}', [LetterGoodsController::class, 'detailGoodsRequest']);
+        Route::get('goodsrequest/update/progress/{uuid}', [LetterGoodsController::class, 'progressGoodsRequest']);
+        Route::get('goodsrequest/update/close/{uuid}', [LetterGoodsController::class, 'closeGoodsRequest']);
+        Route::post('goodsrequest/update/partsaction/{uuid}', [LetterGoodsController::class, 'updateAction']);
     });
 });

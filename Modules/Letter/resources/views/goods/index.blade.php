@@ -45,7 +45,7 @@
               </td>
               <td>
                 <div class="btn-group btn-block">
-                  @if (permissionCheck('show')) <a href="{{ url('letter/workorder/show/detail/'.$value->uuid) }}" class="btn btn-warning btn-sm">Detail</a> @endif
+                  @if (permissionCheck('show')) <a href="{{ url('letter/goodsrequest/show/detail/'.$value->uuid) }}" class="btn btn-warning btn-sm">Detail</a> @endif
                 </div>
               </td>
             </tr>

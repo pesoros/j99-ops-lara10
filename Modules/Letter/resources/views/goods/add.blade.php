@@ -41,8 +41,8 @@
         <div class="form-group">
           <label>Nomor SPK</label>
           @if ($hasWorkorder)
-              <input type="hidden" class="form-control" id="workorder_uuid" name="workorder_uuid" value="{{ $workorder[0]->uuid }}">
-              <input type="text" class="form-control" id="workorder_name" name="workorder_name" value="{{ $workorder[0]->numberid }}" readonly>
+              <input type="hidden" class="form-control" id="workorder_uuid" name="workorder_uuid" value="{{ $workorder->uuid }}">
+              <input type="text" class="form-control" id="workorder_name" name="workorder_name" value="{{ $workorder->numberid }}" readonly>
           @else
             <select class="form-control select2bs4" name="workorder_uuid" style="width: 100%;">
               @foreach ($workorder as $workorderItem)

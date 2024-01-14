@@ -46,7 +46,7 @@ class LetterGoodsController extends Controller
         }
 
         $uuid = generateUuid();
-        $goodsrequestCount = Goodsrequest::getGoodsrequestCount();
+        $goodsrequestCount = Goodsrequest::getGoodsRequestCount();
         $count = !isset($goodsrequestCount->count) ? 1 : $goodsrequestCount->count + 1;
                 
         $saveData = [
@@ -67,6 +67,7 @@ class LetterGoodsController extends Controller
                 'part_id' =>  $value,
                 'part_name' =>  $request->part_name[$key],
                 'qty' =>  $request->part_qty[$key],
+                'status' => 0,
             ];
         }
 
@@ -78,5 +79,59 @@ class LetterGoodsController extends Controller
         }
 
         return back()->with('failed', 'Surat permintaan barang gagal tersimpan!');   
+    }
+
+    public function detailGoodsRequest(Request $request, $uuid)
+    {
+        $data['title'] = 'Detail SPB';
+        $data['detailGoodsRequest'] = Goodsrequest::getGoodsRequest($uuid);
+        $data['parts'] = Goodsrequest::getGoodsRequestParts($data['detailGoodsRequest']->uuid);
+
+        return view('letter::goods.detail', $data);
+    }
+
+    public function progressGoodsRequest(Request $request, $uuid)
+    {
+        $updateData['status'] = 1;
+
+        $updateGoodsRequest = GoodsRequest::updateGoodsRequest($uuid, $updateData);
+
+        if ($updateGoodsRequest) {
+            return back()->with('success', 'Status SPB berhasil diubah menjadi dikerjakan!');
+        }
+
+        return back()->with('failed', 'Status SPB gagal diubah menjadi dikerjakan!');   
+    }
+
+    public function closeGoodsRequest(Request $request, $uuid)
+    {
+        $checkParts = GoodsRequest::checkPartsValid($uuid);
+
+        if (count($checkParts) > 0) {
+            return back()->with('failed', 'Masih terdapat barang yang statusnya menunggu, Status SPB gagal diubah menjadi selesai!');   
+        }
+
+        $updateData['status'] = 2;
+
+        $updateGoodsRequest = GoodsRequest::updateGoodsRequest($uuid, $updateData);
+
+        if ($updateGoodsRequest) {
+            return back()->with('success', 'Status SPB berhasil diubah menjadi selesai!');
+        }
+
+        return back()->with('failed', 'Status SPB gagal diubah menjadi selesai!');   
+    }
+
+    public function updateAction(Request $request, $uuid)
+    {
+        foreach ($request->parts_uuid as $key => $value) {
+            $updateData = [
+                'status' =>  $request->parts_status[$key],
+                'description' =>  $request->parts_description[$key],
+            ];
+            $updateDamageAction = GoodsRequest::updateGoodsParts($value, $updateData);
+        }
+
+        return back()->with('success', 'Status penanganan barang berhasil diubah!');
     }
 }

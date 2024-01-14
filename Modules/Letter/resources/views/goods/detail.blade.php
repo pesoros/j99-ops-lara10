@@ -25,40 +25,50 @@
           <div class="col-12">
             <h4>
               <img src="{{url('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
-              <small class="float-right">{{ dateFormat($detailWorkorder->created_at) }}</small>
+              <small class="float-right">{{ dateFormat($detailGoodsRequest->created_at) }}</small>
             </h4>
           </div>
           <!-- /.col -->
         </div>
         <!-- info row -->
         <div class="row invoice-info">
-          <div class="col-sm-12 invoice-col">
+          <div class="col-sm-6 invoice-col">
             <p class="lead">Detail complaint</p>
             <div class="table-responsive">
               <table class="table">
                 <tr>
-                  <th>Nama bus :</th>
-                  <td>{{ $detailWorkorder->busname }}</td>
+                  <th>Nomor SPB :</th>
+                  <td>{{ $detailGoodsRequest->numberid }}</td>
                 </tr>
                 <tr>
                   <th>Deskripsi :</th>
-                  <td>{{ $detailWorkorder->description }}</td>
+                  <td>{{ $detailGoodsRequest->description }}</td>
                 </tr>
+              </table>
+            </div>
+          </div>
+          <div class="col-sm-6 invoice-col">
+            <p class="lead">&nbsp;</p>
+            <div class="table-responsive">
+              <table class="table">
                 <tr>
-                  <th>Nomor SPK :</th>
-                  <td>{{ $detailWorkorder->numberid }}</td>
+                  <th>Nomor SPK terkait:</th>
+                  <td>{{ $detailGoodsRequest->workorder_numberid }}</td>
                 </tr>
                 <tr>
                   <th>Status :</th>
                   <td>
-                    @if ($detailWorkorder->status === 0)
-                      <span class="badge badge-danger">Belum dikerjakan</span>                                        
+                    @if ($detailGoodsRequest->status === 0)
+                      <span class="badge badge-secondary">Menunggu</span>                                        
                     @endif
-                    @if ($detailWorkorder->status === 1)
-                      <span class="badge badge-warning">Sedang dikerjakan</span>                                        
+                    @if ($detailGoodsRequest->status === 1)
+                      <span class="badge badge-warning">Sedang diproses</span>                                        
                     @endif
-                    @if ($detailWorkorder->status === 2)
+                    @if ($detailGoodsRequest->status === 2)
                       <span class="badge badge-success">Selesai</span>                                        
+                    @endif
+                    @if ($detailGoodsRequest->status === 3)
+                      <span class="badge badge-danger">Ditolak</span>                                        
                     @endif
                   </td>
                 </tr>
@@ -72,40 +82,40 @@
         <!-- Table row -->
         <div class="row">
           <div class="col-12 table-responsive">
-            <p class="lead">Kerusakan</p>
-            <form action="{{ url('letter/workorder/update/damagesaction/'.$detailWorkorder->uuid) }}" method="post">
+            <p class="lead">Item barang</p>
+            <form action="{{ url('letter/goodsrequest/update/partsaction/'.$detailGoodsRequest->uuid) }}" method="post">
               @csrf
               <table class="table table-striped">
                 <thead>
                 <tr>
                   <th width="3">No</th>
-                  <th>Bagian</th>
-                  <th>Deskripsi</th>
-                  @if ($detailWorkorder->status === 1)
+                  <th>Item ID</th>
+                  <th>Item Name</th>
+                  <th>Qty</th>
+                  @if ($detailGoodsRequest->status === 1)
                     <th>Penanganan</th>
                     <th>Detail penanganan</th>
                   @endif
                 </tr>
                 </thead>
                 <tbody>
-                  @foreach ($damages as $key => $damage)
+                  @foreach ($parts as $key => $part)
                     <tr>
                       <td>{{ $key + 1 }}</td>
-                      <td>{{ $damage->areacode }}-{{ $damage->scopecode }} | {{ $damage->scopename }}</td>
-                      <td>{{ $damage->description }}</td>
-                      @if ($detailWorkorder->status === 1)
+                      <td>{{ $part->part_id }}</td>
+                      <td>{{ $part->part_name }}</td>
+                      <td>{{ $part->qty }}</td>
+                      @if ($detailGoodsRequest->status === 1)
                         <td>
-                          <input type="hidden" id="damage_uuid" name="damage_uuid[]" value={{ $damage->uuid }}>
-                          <select class="form-control select2bs4" name="action_status[]" style="width: 100%;">
-                            @foreach ($actionlist as $actionlistItem)
-                                <option value="{{ $actionlistItem->id }}" @selected($damage->action_status == $actionlistItem->id)>
-                                    {{ $actionlistItem->name }}
-                                </option>
-                            @endForeach
+                          <input type="hidden" id="parts_uuid" name="parts_uuid[]" value={{ $part->uuid }}>
+                          <select class="form-control select2bs4" name="parts_status[]" style="width: 100%;">
+                            <option value="0" @selected($part->status == 0)>Menunggu</option>
+                            <option value="1" @selected($part->status == 1)>Direalisasikan</option>
+                            <option value="2" @selected($part->status == 2)>Batal</option>
                           </select>
                         </td>
                         <td>
-                          <textarea class="form-control" name="action_description[]" rows="1" placeholder="Masukkan detail penanganan">{{ $damage->action_description }}</textarea>
+                          <textarea class="form-control" name="parts_description[]" rows="1" placeholder="Masukkan detail penanganan">{{ $part->description }}</textarea>
                         </td>
                       @endif
                     </tr>
@@ -114,15 +124,15 @@
               </table>
               <div class="card-footer">
                 @if (permissionCheck('edit'))
-                  @if ($detailWorkorder->status === 0)
-                    <a href="{{ url('letter/workorder/update/progress/'.$detailWorkorder->uuid) }}" onclick="return confirm('Anda yakin memulai SPK ini?')" class="btn bg-gradient-primary">Mulai kerjakan SPK ini</a>
+                  @if ($detailGoodsRequest->status === 0)
+                    <a href="{{ url('letter/goodsrequest/update/progress/'.$detailGoodsRequest->uuid) }}" onclick="return confirm('Anda yakin memulai SPB ini?')" class="btn bg-gradient-primary">Mulai kerjakan SPB ini</a>
                   @endif
-                  @if ($detailWorkorder->status === 1)
+                  @if ($detailGoodsRequest->status === 1)
                     <button type="submit" class="btn btn-warning">Update penanganan</button>
-                    <a href="{{ url('letter/workorder/update/close/'.$detailWorkorder->uuid) }}" onclick="return confirm('Anda yakin menyelesaikan SPK ini?')" class="btn bg-gradient-primary float-right">Selesaikan SPK ini</a>
+                    <a href="{{ url('letter/goodsrequest/update/close/'.$detailGoodsRequest->uuid) }}" onclick="return confirm('Anda yakin menyelesaikan SPB ini?')" class="btn bg-gradient-primary float-right">Selesaikan SPB ini</a>
                   @endif
                 @endif
-                <a href="{{ url('letter/workorder') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
+                <a href="{{ url('letter/goodsrequest') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
               </div>
             </form>
           </div>
