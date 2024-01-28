@@ -49,6 +49,7 @@ class LetterComplaintController extends Controller
             $saveDamageData[] = [
                 'uuid' => generateUuid(),
                 'complaint_uuid' =>  $uuid,
+                'bus_uuid' => $request->bus_uuid,
                 'scope_uuid' =>  $value,
                 'description' =>  $request->damage_detail[$key],
             ];
@@ -96,13 +97,14 @@ class LetterComplaintController extends Controller
             $saveDamageData[] = [
                 'uuid' => generateUuid(),
                 'complaint_uuid' =>  $uuid,
+                'bus_uuid' => $request->bus_uuid,
                 'scope_uuid' =>  $value,
                 'description' =>  $request->damage_detail[$key],
             ];
         }
         
         $saveComplaint = Complaint::updateComplaint($uuid, $updateData);
-        $saveDamages = Complaint::removeDamages($uuid);
+        $removeDamages = Complaint::removeDamages($uuid);
         $saveDamages = Complaint::saveDamages($saveDamageData);
 
         if ($saveComplaint) {
