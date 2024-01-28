@@ -14,7 +14,12 @@ class LetterComplaintController extends Controller
     public function listComplaint()
     {
         $data['title'] = 'Surat keluhan';
-        $data['list'] = Complaint::getComplaintList();
+
+        $bus = Bus::getBusList();
+        foreach ($bus as $key => $value) {
+            $value->damages_active = Complaint::getComplaintCount($value->uuid)->counter;
+        }
+        $data['list'] = $bus;
 
         return view('letter::complaint.index', $data);
     }
@@ -22,7 +27,7 @@ class LetterComplaintController extends Controller
     public function addComplaint()
     {
         $data['title'] = 'Tambah Surat keluhan';
-        $data['bus'] = Bus::getBusList();
+        $data['bus'] = Bus::getBusActiveList();
         $data['partsscope'] = Complaint::getPartsScope();
 
         return view('letter::complaint.add', $data);
@@ -71,7 +76,7 @@ class LetterComplaintController extends Controller
     public function editComplaint($uuid)
     {
         $data['title'] = 'Edit Keluhan';
-        $data['bus'] = Bus::getBusList();
+        $data['bus'] = Bus::getBusActiveList();
         $data['partsscope'] = Complaint::getPartsScope();
         $data['detailComplaint'] = Complaint::getComplaint($uuid);
         $data['damages'] = Complaint::getComplaintDamages($uuid);
@@ -117,7 +122,7 @@ class LetterComplaintController extends Controller
     public function detailComplaint($uuid)
     {
         $data['title'] = 'Detail Keluhan';
-        $data['detailComplaint'] = Complaint::getComplaint($uuid);
+        $data['bus'] = Bus::getBus($uuid);
         $data['damages'] = Complaint::getComplaintDamages($uuid);
 
         return view('letter::complaint.detail', $data);

@@ -18,7 +18,7 @@
         <tr>
           <th>No</th>
           <th>Nama Bus</th>
-          <th>Deskripsi keluhan</th>
+          <th>Jumlah keluhan aktif</th>
           <th>Aksi</th>
         </tr>
         </thead>
@@ -26,13 +26,11 @@
           @foreach ($list as $key => $value)
             <tr>
               <td width="20" class="text-center">{{ intval($key) + 1 }}</td>
-              <td>{{ $value->busname }}</td>
-              <td>{{ $value->description }}</td>
+              <td>{{ $value->name }} | {{ $value->registration_number }}</td>
+              <td>{{ STRVAL($value->damages_active) }}</td>
               <td>
                 <div class="btn-group btn-block">
                   @if (permissionCheck('show')) <a href="{{ url('letter/complaint/show/detail/'.$value->uuid) }}" class="btn btn-warning btn-sm">Detail</a> @endif
-                  @if (permissionCheck('edit')) <a href="{{ url('letter/complaint/edit/'.$value->uuid) }}" class="btn btn-success btn-sm">Edit</a> @endif
-                  @if (permissionCheck('delete')) <a href="#" onclick="return confirm('Anda yakin menghapus data ini?')" class="btn btn-danger btn-sm {{ $value->workorder_uuid ? 'disabled' : '' }}">Hapus</a> @endif
                 </div>
               </td>
             </tr>

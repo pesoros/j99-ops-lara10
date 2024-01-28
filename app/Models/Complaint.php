@@ -8,13 +8,13 @@ use Carbon\Carbon;
 
 class Complaint extends Model
 {
-    public function scopeGetComplaintList($query)
+    public function scopeGetComplaintCount($query, $bus_uuid)
     {
-        $query = DB::table("ops_complaint AS complaint")
-            ->select('complaint.uuid','complaint.description','complaint.workorder_uuid','bus.name AS busname')
-            ->join("v2_bus AS bus", "bus.uuid", "=", "complaint.bus_uuid")
-            ->orderBy('complaint.created_at','DESC')
-            ->get();
+        $query = DB::table("ops_damages AS damage")
+            ->selectRaw('count(damage.id) AS counter')
+            ->where('damage.bus_uuid',$bus_uuid)
+            ->where('damage.action_status',1)
+            ->first();
 
         return $query;
     }
@@ -57,13 +57,14 @@ class Complaint extends Model
         return $query;
     }
 
-    public function scopeGetComplaintDamages($query, $uuid)
+    public function scopeGetComplaintDamages($query, $bus_uuid)
     {
         $query = DB::table("ops_damages AS damage")
             ->select('damage.uuid','damage.scope_uuid','damage.description','scope.name AS scopename','scope.code AS scopecode','area.code AS areacode')
             ->join("ops_parts_scope AS scope", "scope.uuid", "=", "damage.scope_uuid")
             ->join("ops_parts_area AS area", "area.uuid", "=", "scope.parts_area_uuid")
-            ->where('damage.complaint_uuid',$uuid)
+            ->where('damage.bus_uuid',$bus_uuid)
+            ->where('damage.action_status',1)
             ->orderBy('damage.created_at','DESC')
             ->get();
 
