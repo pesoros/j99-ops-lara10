@@ -20,10 +20,7 @@ use Modules\Letter\app\Http\Controllers\LetterGoodsController;
 Route::middleware(['auth','has-permission'])->group(function () {
     Route::prefix('letter')->group(function () {
         Route::get('complaint', [LetterComplaintController::class, 'listComplaint']);
-        Route::get('complaint/add', [LetterComplaintController::class, 'addComplaint']);
         Route::post('complaint/add', [LetterComplaintController::class, 'addComplaintStore']);
-        Route::get('complaint/edit/{uuid}', [LetterComplaintController::class, 'editComplaint']);
-        Route::post('complaint/edit/{uuid}', [LetterComplaintController::class, 'editComplaintUpdate']);
         Route::get('complaint/show/detail/{uuid}', [LetterComplaintController::class, 'detailComplaint']);
         Route::get('complaint/add/createworkorder/{uuid}', [LetterComplaintController::class, 'createWorkorder']);
 

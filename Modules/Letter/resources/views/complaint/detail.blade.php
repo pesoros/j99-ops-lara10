@@ -22,7 +22,7 @@
       <div class="invoice p-3 mb-3">
         <div class="row invoice-info">
           <div class="col-sm-6 invoice-col">
-            <p class="lead">Detail complaint</p>
+            <p class="lead">Detail Bus</p>
             <div class="table-responsive">
               <table class="table">
                 <tr>
@@ -64,16 +64,18 @@
         <!-- /.row -->
 
         <!-- Table row -->
-        @if (COUNT($damages) > 0)
-          <div class="row">
-            <div class="col-12 table-responsive">
-              <p class="lead">Kerusakan</p>
+        <div class="row">
+          <div class="col-12 table-responsive">
+            <p class="lead">Kerusakan</p>
+            @if (COUNT($damages) > 0)
               <table class="table table-striped">
                 <thead>
                 <tr>
                   <th width="3">No</th>
                   <th>Bagian</th>
                   <th>Deskripsi</th>
+                  <th>Dibuat oleh</th>
+                  <th>Tanggal lapor</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -82,15 +84,17 @@
                       <td>{{ $key + 1 }}</td>
                       <td>{{ $damage->areacode }}-{{ $damage->scopecode }} | {{ $damage->scopename }}</td>
                       <td>{{ $damage->description }}</td>
+                      <td>{{ $damage->creator }}</td>
+                      <td>{{ dateFormat($damage->created_at) }}</td>
                     </tr>
                   @endforeach
                 </tbody>
               </table>
+            @else
+              <div class="text-center"><p>Belum ada laporan kerusakan</p></div>
+            @endif
             </div>
-            <!-- /.col -->
           </div>
-        @endif
-        <!-- /.row -->
       </div>
       <!-- /.invoice -->
       <div class="card card-primary">

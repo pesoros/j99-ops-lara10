@@ -8,20 +8,13 @@ use Carbon\Carbon;
 
 class Complaint extends Model
 {
-    public function scopeGetComplaintCount($query, $bus_uuid)
+    public function scopeGetDamagesCount($query, $bus_uuid)
     {
         $query = DB::table("ops_damages AS damage")
             ->selectRaw('count(damage.id) AS counter')
             ->where('damage.bus_uuid',$bus_uuid)
             ->where('damage.action_status',1)
             ->first();
-
-        return $query;
-    }
-
-    public function scopeSaveComplaint($query, $data)
-    {
-        $query = DB::table("ops_complaint")->insert($data);
 
         return $query;
     }
@@ -44,25 +37,22 @@ class Complaint extends Model
         return $query;
     }
 
-    public function scopeGetComplaint($query, $uuid)
-    {
-        $query = DB::table("ops_complaint AS complaint")
-            ->select('complaint.*','bus.name AS busname','workorder.numberid AS workorder_numberid')
-            ->join("v2_bus AS bus", "bus.uuid", "=", "complaint.bus_uuid")
-            ->leftJoin("ops_workorder AS workorder", "workorder.uuid", "=", "complaint.workorder_uuid")
-            ->where('complaint.uuid',$uuid)
-            ->orderBy('complaint.created_at','DESC')
-            ->first();
-
-        return $query;
-    }
-
-    public function scopeGetComplaintDamages($query, $bus_uuid)
+    public function scopeGetDamages($query, $bus_uuid)
     {
         $query = DB::table("ops_damages AS damage")
-            ->select('damage.uuid','damage.scope_uuid','damage.description','scope.name AS scopename','scope.code AS scopecode','area.code AS areacode')
+            ->select(
+                'damage.uuid',
+                'damage.scope_uuid',
+                'damage.description',
+                'damage.created_at',
+                'scope.name AS scopename',
+                'scope.code AS scopecode',
+                'area.code AS areacode',
+                'user.name AS creator'
+                )
             ->join("ops_parts_scope AS scope", "scope.uuid", "=", "damage.scope_uuid")
             ->join("ops_parts_area AS area", "area.uuid", "=", "scope.parts_area_uuid")
+            ->join("v2_users AS user", "user.uuid", "=", "damage.created_by")
             ->where('damage.bus_uuid',$bus_uuid)
             ->where('damage.action_status',1)
             ->orderBy('damage.created_at','ASC')
@@ -71,19 +61,10 @@ class Complaint extends Model
         return $query;
     }
 
-    public function scopeUpdateComplaint($query, $uuid, $data)
-    {
-        $query = DB::table("ops_complaint")
-            ->where('uuid',$uuid)
-            ->update($data);
-
-        return $query;
-    }
-
-    public function scopeRemoveDamages($query, $complaint_uuid)
+    public function scopeRemoveDamages($query, $uuid)
     {
         $query = DB::table("ops_damages")
-            ->where('complaint_uuid',$complaint_uuid)
+            ->where('uuid', $uuid)
             ->delete();
 
         return $query;
@@ -115,6 +96,18 @@ class Complaint extends Model
             ->where('workorder.bus_uuid', $bus_uuid)
             ->where('status','!=',2)
             ->first();
+
+        return $query;
+    }
+
+    public function scopeGetValidateDamage($query, $bus_uuid, $scope_uuid)
+    {
+        $query = DB::table("ops_damages AS damage")
+            ->select('damage.uuid')
+            ->where('damage.bus_uuid', $bus_uuid)
+            ->where('damage.scope_uuid', $scope_uuid)
+            ->where('is_closed', 0)
+            ->get();
 
         return $query;
     }
