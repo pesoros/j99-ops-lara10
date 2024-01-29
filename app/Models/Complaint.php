@@ -65,7 +65,7 @@ class Complaint extends Model
             ->join("ops_parts_area AS area", "area.uuid", "=", "scope.parts_area_uuid")
             ->where('damage.bus_uuid',$bus_uuid)
             ->where('damage.action_status',1)
-            ->orderBy('damage.created_at','DESC')
+            ->orderBy('damage.created_at','ASC')
             ->get();
 
         return $query;
@@ -103,6 +103,17 @@ class Complaint extends Model
             ->whereYear('created_at', Carbon::now()->year)
             ->whereMonth('created_at', Carbon::now()->month)
             ->orderby('workorder.count','DESC')
+            ->first();
+
+        return $query;
+    }
+
+    public function scopeGetWorkorderActive($query, $bus_uuid)
+    {
+        $query = DB::table("ops_workorder AS workorder")
+            ->select('workorder.numberid')
+            ->where('workorder.bus_uuid', $bus_uuid)
+            ->where('status','!=',2)
             ->first();
 
         return $query;

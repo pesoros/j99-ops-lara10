@@ -37,36 +37,21 @@ class LetterComplaintController extends Controller
     {
         $credentials = $request->validate([
             'bus_uuid'      => ['required', 'string'],
-            'description'      => ['required', 'string'],
         ]);
 
-        $uuid = generateUuid();
-                
-        $saveData = [
-            'uuid' => $uuid,
-            'created_by' => auth()->user()->uuid,
+        $saveDamageData = [
+            'uuid' => generateUuid(),
             'bus_uuid' => $request->bus_uuid,
-            'description' => $request->description,
+            'scope_uuid' =>  $request->damage_scope,
+            'description' =>  $request->damage_detail,
         ];
-
-        $saveDamageData = [];
-        foreach ($request->damage_scope as $key => $value) {
-            $saveDamageData[] = [
-                'uuid' => generateUuid(),
-                'complaint_uuid' =>  $uuid,
-                'bus_uuid' => $request->bus_uuid,
-                'scope_uuid' =>  $value,
-                'description' =>  $request->damage_detail[$key],
-            ];
-        }
         
         $updateBusData['status'] = 0;
 
-        $updateBusStatus = Bus::updateBus($request->bus_uuid,$updateBusData);
-        $saveComplaint = Complaint::saveComplaint($saveData);
+        $updateBusStatus = Bus::updateBus($request->bus_uuid, $updateBusData);
         $saveDamages = Complaint::saveDamages($saveDamageData);
 
-        if ($saveComplaint) {
+        if ($saveDamages) {
             return back()->with('success', 'Keluhan tersimpan!');
         }
 
@@ -123,7 +108,9 @@ class LetterComplaintController extends Controller
     {
         $data['title'] = 'Detail Keluhan';
         $data['bus'] = Bus::getBus($uuid);
+        $data['workorder'] = Complaint::getWorkorderActive($uuid);
         $data['damages'] = Complaint::getComplaintDamages($uuid);
+        $data['partsscope'] = Complaint::getPartsScope();
 
         return view('letter::complaint.detail', $data);
     }
