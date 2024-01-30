@@ -78,12 +78,10 @@ class LetterComplaintController extends Controller
             'created_by' => auth()->user()->uuid,
             'numberid' => genrateLetterNumber('SPK',$count),
             'count' => $count,
+            'bus_uuid' => $uuid,
         ];
 
-        $updateData['workorder_uuid'] = $workorderUuid;
-
         $saveWorkorder = Complaint::saveWorkorder($saveData);
-        $updateComplaint = Complaint::updateComplaint($uuid, $updateData);
 
         if ($saveWorkorder) {
             return back()->with('success', 'SPK berhasil dibuat!');

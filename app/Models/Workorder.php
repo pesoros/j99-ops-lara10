@@ -10,9 +10,9 @@ class Workorder extends Model
     public function scopeGetWorkorderList($query)
     {
         $query = DB::table("ops_workorder AS workorder")
-            ->select('workorder.uuid','workorder.numberid','workorder.status','bus.name AS busname','complaint.description')
-            ->join("ops_complaint AS complaint", "complaint.workorder_uuid", "=", "workorder.uuid")
-            ->join("v2_bus AS bus", "bus.uuid", "=", "complaint.bus_uuid")
+            ->select('workorder.uuid','workorder.numberid','workorder.status','bus.name AS busname','user.name AS creator')
+            ->join("v2_bus AS bus", "bus.uuid", "=", "workorder.bus_uuid")
+            ->join("v2_users AS user", "user.uuid", "=", "workorder.created_by")
             ->orderBy('workorder.created_at','DESC')
             ->get();
 
@@ -27,13 +27,12 @@ class Workorder extends Model
                 'workorder.numberid',
                 'workorder.status',
                 'workorder.created_at',
-                'complaint.uuid AS complaint_uuid',
-                'complaint.description',
-                'complaint.bus_uuid',
-                'bus.name AS busname'
+                'workorder.bus_uuid',
+                'bus.name AS busname',
+                'user.name AS creator'
             )
-            ->join("ops_complaint AS complaint", "complaint.workorder_uuid", "=", "workorder.uuid")
-            ->join("v2_bus AS bus", "bus.uuid", "=", "complaint.bus_uuid")
+            ->join("v2_bus AS bus", "bus.uuid", "=", "workorder.bus_uuid")
+            ->join("v2_users AS user", "user.uuid", "=", "workorder.created_by")
             ->where('workorder.uuid', $uuid)
             ->orderBy('workorder.created_at','DESC')
             ->first();
@@ -46,27 +45,6 @@ class Workorder extends Model
         $query = DB::table("ops_damages_action AS action")
             ->select('action.*')
             ->orderBy('action.id','ASC')
-            ->get();
-
-        return $query;
-    }
-
-    public function scopeGetComplaintDamages($query, $uuid)
-    {
-        $query = DB::table("ops_damages AS damage")
-            ->select(
-                'damage.uuid',
-                'damage.description',
-                'damage.action_status',
-                'damage.action_description',
-                'scope.name AS scopename',
-                'scope.code AS scopecode',
-                'area.code AS areacode'
-            )
-            ->join("ops_parts_scope AS scope", "scope.uuid", "=", "damage.scope_uuid")
-            ->join("ops_parts_area AS area", "area.uuid", "=", "scope.parts_area_uuid")
-            ->where('damage.complaint_uuid',$uuid)
-            ->orderBy('damage.created_at','DESC')
             ->get();
 
         return $query;

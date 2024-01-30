@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Workorder;
+use App\Models\Complaint;
 use App\Models\Bus;
 
 class LetterWorkorderController extends Controller
@@ -23,7 +24,7 @@ class LetterWorkorderController extends Controller
     {
         $data['title'] = 'Detail Keluhan';
         $data['detailWorkorder'] = Workorder::getWorkorder($uuid);
-        $data['damages'] = Workorder::getComplaintDamages($data['detailWorkorder']->complaint_uuid);
+        $data['damages'] = Complaint::getDamages($data['detailWorkorder']->bus_uuid);
         $data['actionlist'] = Workorder::getActionList();
 
         return view('letter::workorder.detail', $data);

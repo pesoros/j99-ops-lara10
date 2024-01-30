@@ -41,10 +41,6 @@
                   <td>{{ $detailWorkorder->busname }}</td>
                 </tr>
                 <tr>
-                  <th>Deskripsi :</th>
-                  <td>{{ $detailWorkorder->description }}</td>
-                </tr>
-                <tr>
                   <th>Nomor SPK :</th>
                   <td>{{ $detailWorkorder->numberid }}</td>
                 </tr>
@@ -61,6 +57,10 @@
                       <span class="badge badge-success">Selesai</span>                                        
                     @endif
                   </td>
+                </tr>
+                <tr>
+                  <th>Dibuat oleh :</th>
+                  <td>{{ $detailWorkorder->creator }}</td>
                 </tr>
               </table>
             </div>
