@@ -44,6 +44,8 @@ class Complaint extends Model
                 'damage.uuid',
                 'damage.scope_uuid',
                 'damage.description',
+                'damage.action_status',
+                'damage.action_description',
                 'damage.created_at',
                 'scope.name AS scopename',
                 'scope.code AS scopecode',

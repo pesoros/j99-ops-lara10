@@ -96,39 +96,40 @@
             </div>
           </div>
       </div>
-      <!-- /.invoice -->
-      <div class="card card-primary">
-        <form action="{{ url('letter/complaint/add') }}" method="post">
-          @csrf
-          <div class="card-body row">
-            <input type="hidden" class="form-control" id="bus_uuid" name="bus_uuid" value="{{ $bus->uuid }}">
-            <div class="col-sm-12">
-              <div class="form-group">
-                <label for="bus">Tambah laporan kerusakan</label>
-                <div class="row">
-                  <div class="col-sm-3">
-                    <select class="form-control select2bs4" name="damage_scope" style="width: 100%;">
-                      @foreach ($partsscope as $partsscopeItem)
-                          <option value="{{ $partsscopeItem->uuid }}" @selected(old('partsscope_uuid') == $partsscopeItem->uuid)>
-                              {{ $partsscopeItem->scope_name }} | {{ $partsscopeItem->name }} | {{ $partsscopeItem->scope_code }}-{{ $partsscopeItem->code }}
-                          </option>
-                      @endForeach
-                    </select>
-                  </div>
-                  <div class="col-sm-7">
-                    <div class="input-group mb-3">
-                      <textarea class="form-control damage_detail" name="damage_detail" rows="1"  placeholder="Masukkan detail kerusakan" required></textarea>
+      @if (!isset($workorder->numberid))
+        <div class="card card-primary">
+          <form action="{{ url('letter/complaint/add') }}" method="post">
+            @csrf
+            <div class="card-body row">
+              <input type="hidden" class="form-control" id="bus_uuid" name="bus_uuid" value="{{ $bus->uuid }}">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="bus">Tambah laporan kerusakan</label>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <select class="form-control select2bs4" name="damage_scope" style="width: 100%;">
+                        @foreach ($partsscope as $partsscopeItem)
+                            <option value="{{ $partsscopeItem->uuid }}" @selected(old('partsscope_uuid') == $partsscopeItem->uuid)>
+                                {{ $partsscopeItem->scope_name }} | {{ $partsscopeItem->name }} | {{ $partsscopeItem->scope_code }}-{{ $partsscopeItem->code }}
+                            </option>
+                        @endForeach
+                      </select>
                     </div>
-                  </div>
-                  <div class="col-sm-2">
-                    <button type="submit" class="btn btn-success">Tambah</button>
+                    <div class="col-sm-7">
+                      <div class="input-group mb-3">
+                        <textarea class="form-control damage_detail" name="damage_detail" rows="1"  placeholder="Masukkan detail kerusakan" required></textarea>
+                      </div>
+                    </div>
+                    <div class="col-sm-2">
+                      <button type="submit" class="btn btn-success">Tambah</button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </form>
-      </div>
+          </form>
+        </div>
+      @endif
     </div><!-- /.col -->
   </div><!-- /.row -->
 </div>
