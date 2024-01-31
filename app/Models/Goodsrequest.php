@@ -45,24 +45,13 @@ class GoodsRequest extends Model
         return $query;
     }
 
-    public function scopeGetWorkorder($query,$uuid)
+    public function scopeGetWorkorder($query, $uuid)
     {
         $query = DB::table("ops_workorder AS workorder")
-            ->select('workorder.uuid','workorder.numberid')
-            ->where('workorder.uuid',$uuid)
+            ->select('workorder.uuid','workorder.numberid','workorder.bus_uuid')
+            ->where('workorder.uuid', $uuid)
             ->orderBy('workorder.created_at','DESC')
             ->first();
-
-        return $query;
-    }
-
-    public function scopeGetWorkorderList($query)
-    {
-        $query = DB::table("ops_workorder AS workorder")
-            ->select('workorder.uuid','workorder.numberid')
-            ->where('workorder.status','!=',2)
-            ->orderBy('workorder.created_at','DESC')
-            ->get();
 
         return $query;
     }

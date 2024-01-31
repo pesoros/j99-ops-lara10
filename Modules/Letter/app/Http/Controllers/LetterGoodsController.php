@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Goodsrequest;
+use App\Models\Complaint;
 
 class LetterGoodsController extends Controller
 {
@@ -23,13 +24,9 @@ class LetterGoodsController extends Controller
         $workorder_uuid = $request->query('workorder_uuid');
         
         $data['title'] = 'Tambah Surat permintaan barang';
-        if (isset($workorder_uuid)) {
-            $data['hasWorkorder'] = true;
-            $data['workorder'] = Goodsrequest::getWorkorder($workorder_uuid);
-        } else {
-            $data['hasWorkorder'] = false;
-            $data['workorder'] = Goodsrequest::getWorkorderList();
-        }
+        $data['hasWorkorder'] = true;
+        $data['workorder'] = Goodsrequest::getWorkorder($workorder_uuid);
+        $data['damages'] = Complaint::getDamages($data['workorder']->bus_uuid);
 
         return view('letter::goods.add', $data);
     }

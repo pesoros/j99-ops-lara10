@@ -40,26 +40,16 @@
       <div class="col-sm-12">
         <div class="form-group">
           <label>Nomor SPK</label>
-          @if ($hasWorkorder)
-              <input type="hidden" class="form-control" id="workorder_uuid" name="workorder_uuid" value="{{ $workorder->uuid }}">
-              <input type="text" class="form-control" id="workorder_name" name="workorder_name" value="{{ $workorder->numberid }}" readonly>
-          @else
-            <select class="form-control select2bs4" name="workorder_uuid" style="width: 100%;">
-              @foreach ($workorder as $workorderItem)
-                  <option value="{{ $workorderItem->uuid }}" @selected(old('workorder_uuid') == $workorderItem->uuid)>
-                      {{ $workorderItem->numberid }}
-                  </option>
-              @endForeach
-            </select>
-          @endif
+          <input type="hidden" class="form-control" id="workorder_uuid" name="workorder_uuid" value="{{ $workorder->uuid }}">
+          <input type="text" class="form-control" id="workorder_name" name="workorder_name" value="{{ $workorder->numberid }}" readonly>
         </div>
         <div class="form-group">
           <label>Deskripsi</label>
-          <textarea class="form-control" name="description" rows="3" placeholder="Masukkan deskripsi">{{ old('description') }}</textarea>
+          <textarea class="form-control" name="description" rows="3" placeholder="Masukkan deskripsi" required>{{ old('description') }}</textarea>
         </div>
         <div class="form-group">
-          <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#item-modal">
-            Tambah item barang
+          <button type="button" class="btn btn-secondary btn-sm" id="addRow">
+            Tambah
           </button>
         </div>
         <div class="form-group">
@@ -78,7 +68,8 @@
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Pilih item barang</h4>
+        <h4 class="modal-title">Pilih item barang untuk</h4>
+        <input type="hidden" id="damage-row" value="">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -108,14 +99,16 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
- 
+
 @endsection
 
 @push('extra-scripts')
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript">
     $(function () {      
-      let count = 0;
+      const damagesData = {!!json_encode($damages)!!};
+      let rowState = 0;
+      let rowCount = 0;
 
       $("#keyword").keyup(function(e){
         fetchItem(e.target.value)
@@ -151,35 +144,11 @@
       }
 
       function addItem(data) {
-        count++
         const item = data.split("-sprt-")
-        let html = ''
-        html += '<div class="row" id="part_'+ count +'">'
-        html += '  <div class="col-sm-2">'
-        html += '    <div class="input-group mb-3">'
-        html += '      <input type="text" class="form-control" id="part_id'+ count +'" name="part_id[]" value="'+ item[0] +'" readonly>'
-        html += '    </div>'
-        html += '  </div>'
-        html += '  <div class="col-sm-5">'
-        html += '    <div class="input-group mb-3">'
-        html += '      <input type="text" class="form-control" id="part_name'+ count +'" name="part_name[]" value="'+ item[1] +'" readonly>'
-        html += '    </div>'
-        html += '  </div>'
-        html += '  <div class="col-sm-2">'
-        html += '    <div class="input-group mb-3">'
-        html += '      <div class="input-group-prepend"><span class="input-group-text">Qty</span></div><input type="number" class="form-control" id="part_qty'+ count +'" name="part_qty[]" value="1" required>'
-        html += '    </div>'
-        html += '  </div>'
-        html += '  <div class="col-sm-2">'
-        html += '    <a type="button" id="'+ count +'" class="btn btn-danger removeRow">Hapus</a>'
-        html += '  </div>'
-        html += '</div>'
-
-        $('#partForm').append(html);
-        $('.removeRow').click(function(){
-          const id = this.id; 
-          $('#part_'+id+'').remove();
-        });
+        const partname = document.getElementById("part_id_" + rowState);
+        partname.value = item[0];
+        const partid = document.getElementById("part_name_" + rowState);
+        partid.value = item[1];
       }
 
       function debounce(cb, delay = 250) {
@@ -194,6 +163,49 @@
       }
 
       fetchItem('')
+      
+      $('#addRow').click(function(){
+        let html = '';
+        rowCount++;
+        html += '<div class="row" id="damage_'+ rowCount +'">'
+        html += '  <div class="col-sm-3">'
+        html += '    <select class="form-control select2bs4" name="damage_scope[]" style="width: 100%;">'
+          for (let index = 0; index < damagesData.length; index++) {
+            html += '<option value="' + damagesData[index].uuid + '">' + damagesData[index].areacode + '-' + damagesData[index].scopecode + ' | ' + damagesData[index].scopename + '</option>';
+          }
+        html += '    </select>'
+        html += '  </div>'
+        html += '  <div class="col-sm-5">'
+        html += '    <div class="input-group mb-3">'
+        html += '      <input type="text" class="form-control" id="part_name_'+ rowCount +'" name="part_name[]" value="" placeholder="Pilih barang" data-drow="'+ rowCount +'" data-toggle="modal" data-target="#item-modal" readonly>'
+        html += '      <input type="hidden" id="part_id_'+ rowCount +'" name="part_id[]" value="">'
+        html += '    </div>'
+        html += '  </div>'
+        html += '  <div class="col-sm-2">'
+        html += '    <div class="input-group mb-3">'
+        html += '      <div class="input-group-prepend"><span class="input-group-text">Qty</span></div><input type="number" class="form-control" id="part_qty'+ rowCount +'" name="part_qty[]" value="1" required>'
+        html += '    </div>'
+        html += '  </div>'
+        html += '  <div class="col-sm-2">'
+        html += '    <a type="button" id="'+ rowCount +'" class="btn btn-danger removeRow">Hapus</a>'
+        html += '  </div>'
+        html += '</div>'
+        $('#partForm').append(html);
+        $('.select2bs4:last').select2({
+          theme: 'bootstrap4'
+        });
+        $('.removeRow').click(function(){
+          const id = this.id; 
+          $('#damage_'+id+'').remove();
+        });
+        $('#part_name_'+ rowCount).click(function () {
+          let damagerow = '';
+          if (typeof $(this).data('drow') !== 'undefined') {
+            damagerow = $(this).data('drow');
+          }
+          rowState = damagerow;
+        })
+      });
     });
 </script>
 @endpush
