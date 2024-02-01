@@ -25,7 +25,9 @@
           <div class="col-12">
             <h4>
               <img src="{{url('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
-              <small class="float-right">{{ dateFormat($detailWorkorder->created_at) }}</small>
+              @if (STRVAL($detailWorkorder->status) === '1')
+                <a href="{{ url('letter/workorder/update/close/'.$detailWorkorder->uuid) }}" onclick="return confirm('Anda yakin menyelesaikan SPK ini?')" class="btn bg-gradient-primary float-right">Selesaikan SPK ini</a>
+              @endif
             </h4>
           </div>
           <!-- /.col -->
@@ -62,6 +64,10 @@
                   <th>Dibuat oleh :</th>
                   <td>{{ $detailWorkorder->creator }}</td>
                 </tr>
+                <tr>
+                  <th>Dibuat tanggal :</th>
+                  <td>{{ dateFormat($detailWorkorder->created_at) }}</td>
+                </tr>
               </table>
             </div>
           </div>
@@ -75,17 +81,17 @@
             <p class="lead">Kerusakan</p>
             <form action="{{ url('letter/workorder/update/damagesaction/'.$detailWorkorder->uuid) }}" method="post">
               @csrf
-              <table class="table table-striped">
+              <table class="table">
                 <thead>
-                <tr>
-                  <th width="3">No</th>
-                  <th>Bagian</th>
-                  <th>Deskripsi</th>
-                  @if (STRVAL($detailWorkorder->status) === '1')
-                    <th>Penanganan</th>
-                    <th>Detail penanganan</th>
-                  @endif
-                </tr>
+                  <tr>
+                    <th width="3">No</th>
+                    <th>Bagian</th>
+                    <th>Deskripsi</th>
+                    @if (STRVAL($detailWorkorder->status) === '1')
+                      <th>Penanganan</th>
+                      <th>Detail penanganan</th>
+                    @endif
+                  </tr>
                 </thead>
                 <tbody>
                   @foreach ($damages as $key => $damage)
@@ -109,6 +115,14 @@
                         </td>
                       @endif
                     </tr>
+                    @if (COUNT($damage->parts_request) > 0)
+                      @foreach ($damage->parts_request as $part)
+                        <tr>
+                          <td></td>
+                          <td colspan="5">{{ $part->qty }} pcs | {{ $part->part_id }} - {{ $part->part_name }}</td>
+                        </tr>
+                      @endforeach
+                    @endif
                   @endforeach
                 </tbody>
               </table>
@@ -119,10 +133,10 @@
                   @endif
                   @if (STRVAL($detailWorkorder->status) === '1')
                     <button type="submit" class="btn btn-warning">Update penanganan</button>
-                    <a href="{{ url('letter/workorder/update/close/'.$detailWorkorder->uuid) }}" onclick="return confirm('Anda yakin menyelesaikan SPK ini?')" class="btn bg-gradient-primary float-right">Selesaikan SPK ini</a>
                   @endif
                 @endif
                 <a href="{{ url('letter/workorder') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
+                @if (permissionCheck('add','goodsrequest')) <a href="{{ url('letter/goodsrequest/add?workorder_uuid='.$detailWorkorder->uuid) }}" class="btn btn-secondary float-right">Buat SPB (Surat Permintaan Barang)</a> @endif
               </div>
             </form>
           </div>

@@ -104,7 +104,7 @@
                       <td>{{ $key + 1 }}</td>
                       <td>{{ $part->part_id }}</td>
                       <td>{{ $part->part_name }}</td>
-                      <td>{{ $part->qty }}</td>
+                      <td>{{ $part->qty }} pcs</td>
                       @if (STRVAL($detailGoodsRequest->status) === '1')
                         <td>
                           <input type="hidden" id="parts_uuid" name="parts_uuid[]" value={{ $part->uuid }}>

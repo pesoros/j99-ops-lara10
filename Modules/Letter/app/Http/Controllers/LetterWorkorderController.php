@@ -24,7 +24,11 @@ class LetterWorkorderController extends Controller
     {
         $data['title'] = 'Detail Keluhan';
         $data['detailWorkorder'] = Workorder::getWorkorder($uuid);
-        $data['damages'] = Complaint::getDamages($data['detailWorkorder']->bus_uuid);
+        $damages = Complaint::getDamages($data['detailWorkorder']->bus_uuid);
+        foreach ($damages as $key => $damage) {
+            $damage->parts_request = Workorder::getPartsRequest($uuid, $damage->uuid);
+        }
+        $data['damages'] = $damages;
         $data['actionlist'] = Workorder::getActionList();
 
         return view('letter::workorder.detail', $data);

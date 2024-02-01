@@ -50,6 +50,20 @@ class Workorder extends Model
         return $query;
     }
 
+    public function scopeGetPartsRequest($query, $workorder_uuid, $damage_uuid)
+    {
+        $query = DB::table("ops_goodsrequest_parts AS goodparts")
+            ->select('goodparts.part_id','goodparts.part_name','goodparts.qty')
+            ->where('goodparts.status', 0)
+            ->where('good.workorder_uuid', $workorder_uuid)
+            ->where('goodparts.damage', $damage_uuid)
+            ->join("ops_goodsrequest AS good", "good.uuid", "=", "goodparts.goodsrequest_uuid")
+            ->orderBy('goodparts.id','ASC')
+            ->get();
+
+        return $query;
+    }
+
     public function scopeUpdateWorkorder($query, $uuid, $data)
     {
         $query = DB::table("ops_workorder")

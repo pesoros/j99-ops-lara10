@@ -61,6 +61,7 @@ class LetterGoodsController extends Controller
             $savePartData[] = [
                 'uuid' => generateUuid(),
                 'goodsrequest_uuid' =>  $uuid,
+                'damage' =>  $request->damage_scope[$key],
                 'part_id' =>  $value,
                 'part_name' =>  $request->part_name[$key],
                 'qty' =>  $request->part_qty[$key],
