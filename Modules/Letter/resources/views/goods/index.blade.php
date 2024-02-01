@@ -5,11 +5,6 @@
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">List {{ $title }}</h3>
-        <div class="float-right">
-          @if (permissionCheck('add'))
-            <a href="{{ url('letter/goodsrequest/add') }}" class="btn bg-gradient-primary btn-sm">Tambah data</a>
-          @endif
-        </div>
     </div>
     <!-- /.card-header -->
     <div class="card-body">

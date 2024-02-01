@@ -13,7 +13,7 @@ class Complaint extends Model
         $query = DB::table("ops_damages AS damage")
             ->selectRaw('count(damage.id) AS counter')
             ->where('damage.bus_uuid',$bus_uuid)
-            ->where('damage.action_status',1)
+            ->where('damage.is_closed',0)
             ->first();
 
         return $query;
@@ -56,7 +56,7 @@ class Complaint extends Model
             ->join("ops_parts_area AS area", "area.uuid", "=", "scope.parts_area_uuid")
             ->join("v2_users AS user", "user.uuid", "=", "damage.created_by")
             ->where('damage.bus_uuid',$bus_uuid)
-            ->where('damage.action_status',1)
+            ->where('damage.is_closed',0)
             ->orderBy('damage.created_at','ASC')
             ->get();
 
