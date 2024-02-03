@@ -39,4 +39,16 @@ class User extends Authenticatable
 
         return $query;
     }
+
+    public function scopeGetUser($query, $uuid)
+    {
+        $query = DB::table("v2_users AS users")
+            ->select('users.uuid','users.name','users.email','users.role_uuid','role.title as rolename')
+            ->join("ops_role AS role", "role.uuid", "=", "users.role_uuid")
+            ->where('users.uuid', $uuid)
+            ->orderBy('users.created_at')
+            ->first();
+
+        return $query;
+    }
 }

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Goodsrequest;
 use App\Models\Complaint;
+use App\Models\User;
 
 class LetterGoodsController extends Controller
 {
@@ -83,6 +84,7 @@ class LetterGoodsController extends Controller
     {
         $data['title'] = 'Detail SPB';
         $data['detailGoodsRequest'] = Goodsrequest::getGoodsRequest($uuid);
+        $data['creator'] = User::getUser($data['detailGoodsRequest']->created_by);
         $data['parts'] = Goodsrequest::getGoodsRequestParts($data['detailGoodsRequest']->uuid);
 
         return view('letter::goods.detail', $data);

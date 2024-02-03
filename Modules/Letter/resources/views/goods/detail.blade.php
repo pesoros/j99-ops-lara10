@@ -25,7 +25,9 @@
           <div class="col-12">
             <h4>
               <img src="{{url('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
-              <small class="float-right">{{ dateFormat($detailGoodsRequest->created_at) }}</small>
+              @if (STRVAL($detailGoodsRequest->status) === '1')
+                <a href="{{ url('letter/goodsrequest/update/close/'.$detailGoodsRequest->uuid) }}" onclick="return confirm('Anda yakin menyelesaikan SPB ini?')" class="btn bg-gradient-primary float-right">Selesaikan SPB ini</a>
+              @endif
             </h4>
           </div>
           <!-- /.col -->
@@ -43,17 +45,6 @@
                 <tr>
                   <th>Deskripsi :</th>
                   <td>{{ $detailGoodsRequest->description }}</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-          <div class="col-sm-6 invoice-col">
-            <p class="lead">&nbsp;</p>
-            <div class="table-responsive">
-              <table class="table">
-                <tr>
-                  <th>Nomor SPK terkait:</th>
-                  <td>{{ $detailGoodsRequest->workorder_numberid }}</td>
                 </tr>
                 <tr>
                   <th>Status :</th>
@@ -75,6 +66,25 @@
               </table>
             </div>
           </div>
+          <div class="col-sm-6 invoice-col">
+            <p class="lead">&nbsp;</p>
+            <div class="table-responsive">
+              <table class="table">
+                <tr>
+                  <th>Nomor SPK terkait:</th>
+                  <td>{{ $detailGoodsRequest->workorder_numberid }}</td>
+                </tr>
+                <tr>
+                  <th>Dibuat oleh:</th>
+                  <td>{{ $creator->name }}</td>
+                </tr>
+                <tr>
+                  <th>Dibuat tanggal:</th>
+                  <td>{{ dateFormat($detailGoodsRequest->created_at) }}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
           <!-- /.col -->
         </div>
         <!-- /.row -->
@@ -89,6 +99,7 @@
                 <thead>
                 <tr>
                   <th width="3">No</th>
+                  <th>Bagian terkait</th>
                   <th>Item ID</th>
                   <th>Item Name</th>
                   <th>Qty</th>
@@ -102,6 +113,7 @@
                   @foreach ($parts as $key => $part)
                     <tr>
                       <td>{{ $key + 1 }}</td>
+                      <td>{{ $part->areacode }}-{{ $part->scopecode }} | {{ $part->scopename }}</td>
                       <td>{{ $part->part_id }}</td>
                       <td>{{ $part->part_name }}</td>
                       <td>{{ $part->qty }} pcs</td>
@@ -129,7 +141,6 @@
                   @endif
                   @if (STRVAL($detailGoodsRequest->status) === '1')
                     <button type="submit" class="btn btn-warning">Update penanganan</button>
-                    <a href="{{ url('letter/goodsrequest/update/close/'.$detailGoodsRequest->uuid) }}" onclick="return confirm('Anda yakin menyelesaikan SPB ini?')" class="btn bg-gradient-primary float-right">Selesaikan SPB ini</a>
                   @endif
                 @endif
                 <a href="{{ url('letter/goodsrequest') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
