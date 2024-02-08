@@ -83,8 +83,8 @@ class Complaint extends Model
     {
         $query = DB::table("ops_workorder AS workorder")
             ->select('workorder.count')
-            ->whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('workorder.created_at', Carbon::now()->year)
+            ->whereMonth('workorder.created_at', Carbon::now()->month)
             ->orderby('workorder.count','DESC')
             ->first();
 

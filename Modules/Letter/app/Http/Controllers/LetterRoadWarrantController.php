@@ -65,7 +65,7 @@ class LetterRoadWarrantController extends Controller
         $saveComplaint = RoadWarrant::updateBook($book_uuid,$updateBookData);
 
         if ($saveRoadWarrant) {
-            return redirect('letter/roadwarrant')->with('message', 'Anda berhasil memnbuat SPJ');
+            return back()->with('message', 'Anda berhasil membuat SPJ');
         }
 
         return back()->with('failed', 'SPJ gagal tersimpan!');   

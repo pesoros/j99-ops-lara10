@@ -5,6 +5,7 @@ use Modules\Letter\app\Http\Controllers\LetterComplaintController;
 use Modules\Letter\app\Http\Controllers\LetterWorkorderController;
 use Modules\Letter\app\Http\Controllers\LetterRoadWarrantController;
 use Modules\Letter\app\Http\Controllers\LetterGoodsController;
+use Modules\Letter\app\Http\Controllers\LetterPurchaseRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,5 +43,10 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('goodsrequest/update/progress/{uuid}', [LetterGoodsController::class, 'progressGoodsRequest']);
         Route::get('goodsrequest/update/close/{uuid}', [LetterGoodsController::class, 'closeGoodsRequest']);
         Route::post('goodsrequest/update/partsaction/{uuid}', [LetterGoodsController::class, 'updateAction']);
+
+        Route::get('purchaserequest', [LetterPurchaseRequestController::class, 'listPurchaseRequest']);
+        Route::get('purchaserequest/add', [LetterPurchaseRequestController::class, 'addPurchaseRequest']);
+        Route::post('purchaserequest/add', [LetterPurchaseRequestController::class, 'addPurchaseRequestStore']);
+        Route::get('purchaserequest/show/detail/{uuid}', [LetterPurchaseRequestController::class, 'detailPurchaseRequest']);
     });
 });
