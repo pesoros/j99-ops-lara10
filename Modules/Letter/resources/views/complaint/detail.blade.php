@@ -40,9 +40,20 @@
             @if (permissionCheck('add'))
               <div class="float-right">
                 @if (isset($workorder->numberid))
-                  <p class="btn bg-gradient-primary btn-sm">{{ $workorder->numberid }}</p>
+                <p>
+                  <a href="{{ url('letter/workorder/show/detail/'.$workorder->uuid) }}" class="btn bg-gradient-primary btn-sm">
+                    {{ $workorder->numberid }}
+                  </a>
+                </p>
                 @else
-                  <p><a href="{{ url('letter/complaint/add/createworkorder/'.$bus->uuid) }}" onclick="return confirm('Anda yakin membuat SPK berdasarkan keluhan ini?')" class="btn bg-gradient-primary btn-sm">Buat SPK berdasarkan keluhan ini</a></p>
+                  <p>
+                    <a href="{{ url('letter/complaint/add/createworkorder/'.$bus->uuid) }}" 
+                      class="btn bg-gradient-primary btn-sm"
+                      onclick="return confirm('Anda yakin membuat SPK berdasarkan keluhan ini?')" 
+                    >
+                      Buat SPK berdasarkan keluhan ini
+                    </a>
+                  </p>
                 @endif
               </div>
             @endif

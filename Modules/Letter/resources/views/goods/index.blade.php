@@ -13,7 +13,6 @@
         <tr>
           <th>No</th>
           <th>Nomor SPB</th>
-          <th>Deskripsi</th>
           <th>Status</th>
           <th>Aksi</th>
         </tr>
@@ -23,7 +22,6 @@
             <tr>
               <td width="20" class="text-center">{{ intval($key) + 1 }}</td>
               <td width="200" >{{ $value->numberid }}</td>
-              <td>{{ $value->description }}</td>
               <td>
                 @if (STRVAL($value->status) === '0')
                   <span class="badge badge-secondary">Menunggu</span>                                        

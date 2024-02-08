@@ -136,7 +136,7 @@
                   @endif
                 @endif
                 <a href="{{ url('letter/workorder') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
-                @if (permissionCheck('add','goodsrequest')) <a href="{{ url('letter/goodsrequest/add?workorder_uuid='.$detailWorkorder->uuid) }}" class="btn btn-secondary float-right">Buat SPB (Surat Permintaan Barang)</a> @endif
+                @if (permissionCheck('add','goodsrequest') && (STRVAL($detailWorkorder->status) === '1')) <a href="{{ url('letter/goodsrequest/add?workorder_uuid='.$detailWorkorder->uuid) }}" class="btn btn-secondary float-right">Buat SPB (Surat Permintaan Barang)</a> @endif
               </div>
             </form>
           </div>

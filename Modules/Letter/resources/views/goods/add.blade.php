@@ -44,12 +44,8 @@
           <input type="text" class="form-control" id="workorder_name" name="workorder_name" value="{{ $workorder->numberid }}" readonly>
         </div>
         <div class="form-group">
-          <label>Deskripsi</label>
-          <textarea class="form-control" name="description" rows="3" placeholder="Masukkan deskripsi" required>{{ old('description') }}</textarea>
-        </div>
-        <div class="form-group">
           <button type="button" class="btn btn-secondary btn-sm" id="addRow">
-            Tambah
+            Tambah barang
           </button>
         </div>
         <div class="form-group">
@@ -168,16 +164,16 @@
         let html = '';
         rowCount++;
         html += '<div class="row" id="damage_'+ rowCount +'">'
-        html += '  <div class="col-sm-3">'
+        html += '  <div class="col-sm-4">'
         html += '    <select class="form-control select2bs4" name="damage_scope[]" style="width: 100%;">'
           for (let index = 0; index < damagesData.length; index++) {
-            html += '<option value="' + damagesData[index].uuid + '">' + damagesData[index].areacode + '-' + damagesData[index].scopecode + ' | ' + damagesData[index].scopename + '</option>';
+            html += '<option value="' + damagesData[index].uuid + '">' + damagesData[index].areacode + '-' + damagesData[index].scopecode + ' | ' + damagesData[index].scopename +  ' | ' + damagesData[index].description + '</option>';
           }
         html += '    </select>'
         html += '  </div>'
-        html += '  <div class="col-sm-5">'
+        html += '  <div class="col-sm-4">'
         html += '    <div class="input-group mb-3">'
-        html += '      <input type="text" class="form-control" id="part_name_'+ rowCount +'" name="part_name[]" value="" placeholder="Pilih barang" data-drow="'+ rowCount +'" data-toggle="modal" data-target="#item-modal" readonly>'
+        html += '      <input type="text" class="form-control" id="part_name_'+ rowCount +'" name="part_name[]" value="" placeholder="Klik untuk pilih barang" data-drow="'+ rowCount +'" data-toggle="modal" data-target="#item-modal" readonly>'
         html += '      <input type="hidden" id="part_id_'+ rowCount +'" name="part_id[]" value="">'
         html += '    </div>'
         html += '  </div>'
@@ -186,7 +182,7 @@
         html += '      <div class="input-group-prepend"><span class="input-group-text">Qty</span></div><input type="number" class="form-control" id="part_qty'+ rowCount +'" name="part_qty[]" value="1" required>'
         html += '    </div>'
         html += '  </div>'
-        html += '  <div class="col-sm-2">'
+        html += '  <div class="col-sm-1">'
         html += '    <a type="button" id="'+ rowCount +'" class="btn btn-danger removeRow">Hapus</a>'
         html += '  </div>'
         html += '</div>'

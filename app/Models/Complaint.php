@@ -94,7 +94,7 @@ class Complaint extends Model
     public function scopeGetWorkorderActive($query, $bus_uuid)
     {
         $query = DB::table("ops_workorder AS workorder")
-            ->select('workorder.numberid')
+            ->select('workorder.uuid','workorder.numberid')
             ->where('workorder.bus_uuid', $bus_uuid)
             ->where('status','!=',2)
             ->first();

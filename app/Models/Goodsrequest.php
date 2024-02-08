@@ -11,7 +11,7 @@ class GoodsRequest extends Model
     public function scopeGetGoodsRequestlist($query)
     {
         $query = DB::table("ops_goodsrequest AS goodsrequest")
-            ->select('goodsrequest.uuid','goodsrequest.numberid','goodsrequest.description','goodsrequest.status')
+            ->select('goodsrequest.uuid','goodsrequest.numberid','goodsrequest.status')
             ->join("ops_workorder AS workorder", "workorder.uuid", "=", "goodsrequest.workorder_uuid")
             ->orderBy('goodsrequest.created_at','DESC')
             ->get();

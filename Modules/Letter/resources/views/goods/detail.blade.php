@@ -43,10 +43,6 @@
                   <td>{{ $detailGoodsRequest->numberid }}</td>
                 </tr>
                 <tr>
-                  <th>Deskripsi :</th>
-                  <td>{{ $detailGoodsRequest->description }}</td>
-                </tr>
-                <tr>
                   <th>Status :</th>
                   <td>
                     @if (STRVAL($detailGoodsRequest->status) === '0')

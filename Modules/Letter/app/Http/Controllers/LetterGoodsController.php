@@ -36,7 +36,6 @@ class LetterGoodsController extends Controller
     {
         $credentials = $request->validate([
             'workorder_uuid'    => ['required', 'string'],
-            'description'       => ['required', 'string'],
         ]);
 
         if (!isset($request->part_id)) {
@@ -52,7 +51,6 @@ class LetterGoodsController extends Controller
             'created_by' => auth()->user()->uuid,
             'numberid' => genrateLetterNumber('SPB',$count),
             'workorder_uuid' => $request->workorder_uuid,
-            'description' => $request->description,
             'count' => $count,
             'status' => 0,
         ];
