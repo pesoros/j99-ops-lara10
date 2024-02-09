@@ -85,49 +85,86 @@
         <div class="row">
           <div class="col-12 table-responsive">
             <p class="lead">Item barang</p>
-            <form action="{{ url('letter/purchaserequest/update/partsaction/'.$detailPurchaseRequest->uuid) }}" method="post">
-              @csrf
-              <table class="table table-striped">
-                <thead>
-                <tr>
-                  <th width="3">No</th>
-                  <th>Item ID</th>
-                  <th>Item Name</th>
-                  <th>Qty</th>
-                  @if (STRVAL($detailPurchaseRequest->status) === '1')
-                    <th>Penanganan</th>
-                    <th>Detail penanganan</th>
-                  @endif
-                </tr>
-                </thead>
-                <tbody>
-                  @foreach ($parts as $key => $part)
-                    <tr>
-                      <td>{{ $key + 1 }}</td>
-                      <td>{{ $part->part_id }}</td>
-                      <td>{{ $part->part_name }}</td>
-                      <td>{{ $part->qty }} pcs</td>
-                      @if (STRVAL($detailPurchaseRequest->status) === '1')
-                        <td>
-                          <input type="hidden" id="parts_uuid" name="parts_uuid[]" value={{ $part->uuid }}>
-                          <select class="form-control select2bs4" name="parts_status[]" style="width: 100%;">
-                            <option value="0" @selected($part->status == 0)>Menunggu</option>
-                            <option value="1" @selected($part->status == 1)>Direalisasikan</option>
-                            <option value="2" @selected($part->status == 2)>Batal</option>
-                          </select>
-                        </td>
-                        <td>
-                          <textarea class="form-control" name="parts_description[]" rows="1" placeholder="Masukkan detail penanganan">{{ $part->description }}</textarea>
-                        </td>
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th width="3">No</th>
+                <th>Item ID</th>
+                <th>Item Name</th>
+                <th>Qty</th>
+              </tr>
+              </thead>
+              <tbody>
+                @foreach ($parts as $key => $part)
+                  <tr>
+                    <td>{{ $key + 1 }}</td>
+                    <td>{{ $part->part_id }}</td>
+                    <td>{{ $part->part_name }}</td>
+                    <td>{{ $part->qty }} pcs</td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+            <p class="lead">Persetujuan</p>
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th width="3">No</th>
+                <th>Role</th>
+                <th>Status persetujuan</th>
+                <th>Catatan</th>
+              </tr>
+              </thead>
+              <tbody>
+                @foreach ($approval as $key => $app)
+                  <tr>
+                    <td>{{ $key + 1 }}</td>
+                    <td>{{ $app->title }}</td>
+                    <td>
+                      @if (!isset($app->status))
+                        <span class="badge badge-warning">Belum ada persetujuan</span>                                        
                       @endif
-                    </tr>
-                  @endforeach
-                </tbody>
-              </table>
-              <div class="card-footer">
-                <a href="{{ url('letter/purchaserequest') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
+                      @if (STRVAL($app->status) === '1')
+                        <span class="badge badge-success">Disetujui</span>                                        
+                      @endif
+                      @if (STRVAL($app->status) === '2')
+                        <span class="badge badge-danger">Menolak</span>                                        
+                      @endif
+                    </td>
+                    <td>{{ $app->note ? $app->note : '-' }}</td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+            <form action="{{ url('letter/purchaserequest/update/approval/'.$detailPurchaseRequest->uuid) }}" method="post">
+              @csrf
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="bus">Masukkan persetujuan</label>
+                  <div id="damageForm">
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <select class="form-control select2bs4" name="approval_status" style="width: 100%;">
+                          <option value="1" @selected(old('approval_status') == '1')>Setuju</option>
+                          <option value="2" @selected(old('approval_status') == '2')>Tolak</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-7">
+                        <div class="input-group mb-3">
+                          <textarea class="form-control" name="approval_note" rows="1"  placeholder="Masukkan catatan" required></textarea>
+                        </div>
+                      </div>
+                      <div class="col-sm-2">
+                        <button type="submit" id="" class="btn btn-primary">Simpan</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </form>
+            <div class="card-footer">
+              <a href="{{ url('letter/purchaserequest') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
+            </div>
           </div>
           <!-- /.col -->
         </div>

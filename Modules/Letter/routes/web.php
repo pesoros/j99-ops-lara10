@@ -48,5 +48,6 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('purchaserequest/add', [LetterPurchaseRequestController::class, 'addPurchaseRequest']);
         Route::post('purchaserequest/add', [LetterPurchaseRequestController::class, 'addPurchaseRequestStore']);
         Route::get('purchaserequest/show/detail/{uuid}', [LetterPurchaseRequestController::class, 'detailPurchaseRequest']);
+        Route::post('purchaserequest/update/approval/{uuid}', [LetterPurchaseRequestController::class, 'purchaseRequestApproval']);
     });
 });

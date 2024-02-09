@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\PurchaseRequest;
 use App\Models\User;
+use App\Models\Approval;
 
 class LetterPurchaseRequestController extends Controller
 {
@@ -72,7 +73,37 @@ class LetterPurchaseRequestController extends Controller
         $data['detailPurchaseRequest'] = PurchaseRequest::getPurchaseRequest($uuid);
         $data['creator'] = User::getUser($data['detailPurchaseRequest']->created_by);
         $data['parts'] = PurchaseRequest::getPurchaseRequestParts($data['detailPurchaseRequest']->uuid);
+        $data['approval'] = Approval::getApprovalList($uuid, config('constants.purpose.pr'), config('constants.approval_role_needs.pr'));
 
         return view('letter::purchaserequest.detail', $data);
+    }
+
+    public function purchaseRequestApproval(Request $request, $uuid)
+    {
+        $credentials = $request->validate([
+            'approval_status'  => ['required', 'string'],
+            'approval_note'    => ['required', 'string'],
+        ]);
+
+        $roleInfo = Session('role_info_session');
+
+        $saveApprovalData = [
+            'uuid' => generateUuid(),
+            'purpose' => config('constants.purpose.pr'),
+            'approved_by' => auth()->user()->uuid,
+            'role_uuid' => $roleInfo->role_uuid,
+            'related_uuid' => $uuid,
+            'status' => $request->approval_status,
+            'note' =>  $request->approval_note,
+        ];
+        
+        $clearence = Approval::clearance($saveApprovalData);
+        $saveApproval = Approval::saveApproval($saveApprovalData);
+
+        if ($saveApproval) {
+            return back()->with('success', 'Persetujuan tersimpan!');
+        }
+
+        return back()->with('failed', 'Persetujuan gagal tersimpan!');   
     }
 }
