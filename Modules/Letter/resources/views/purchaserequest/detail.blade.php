@@ -125,14 +125,6 @@
                 </tbody>
               </table>
               <div class="card-footer">
-                @if (permissionCheck('edit'))
-                  @if (STRVAL($detailPurchaseRequest->status) === '0')
-                    <a href="{{ url('letter/purchaserequest/update/progress/'.$detailPurchaseRequest->uuid) }}" onclick="return confirm('Anda yakin memulai SPB ini?')" class="btn bg-gradient-primary">Mulai kerjakan SPB ini</a>
-                  @endif
-                  @if (STRVAL($detailPurchaseRequest->status) === '1')
-                    <button type="submit" class="btn btn-warning">Update penanganan</button>
-                  @endif
-                @endif
                 <a href="{{ url('letter/purchaserequest') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
               </div>
             </form>
