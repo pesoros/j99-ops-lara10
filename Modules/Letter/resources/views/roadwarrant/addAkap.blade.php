@@ -34,14 +34,14 @@
   </div>
   <!-- /.card-header -->
   <!-- form start -->
-  <form action="{{ url()->current() }}" method="post">
+  <form action="{{ url()->current() }}" method="post" autocomplete="off">
     @csrf
     <div class="card-body row">
         <div class="col-sm-6">
           <div class="form-group">
             <label>Tanggal :</label>
               <div class="input-group date" id="datepicker" data-target-input="nearest">
-                  <input type="text" name="date" class="form-control datetimepicker-input" data-target="#datepicker" required/>
+                  <input type="text" name="date" class="form-control datetimepicker-input" data-target="#datepicker" required />
                   <div class="input-group-append" data-target="#datepicker" data-toggle="datetimepicker">
                       <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                   </div>
@@ -52,11 +52,9 @@
           <div class="form-group">
             <label>Trip assign</label>
             <select class="form-control select2bs4" name="trip_assign" id="trip_assign" style="width: 100%;" required>
-              <option value="" @selected(old('tripAssign_uuid') == '')>
-                Pilih trip assign
-              </option>
+              <option value="" @selected(old('trip_assign') == '')>Pilih trip assign</option>
               @foreach ($tripAssign as $tripAssignItem)
-                <option value="{{ $tripAssignItem->trasid }}" @selected(old('tripAssign_uuid') == $tripAssignItem->trasid)>
+                <option value="{{ $tripAssignItem->trasid }}" @selected(old('trip_assign') == $tripAssignItem->trasid)>
                     {{ $tripAssignItem->trasid }} | {{ $tripAssignItem->trip_title }}
                 </option>
               @endForeach
@@ -66,7 +64,9 @@
         <div class="col-sm-6">
           <div class="form-group">
             <label>Pilih bus</label>
-            <select class="form-control select2bs4" name="bus_uuid" style="width: 100%;" id="bus-item" required></select>
+            <select class="form-control select2bs4" name="bus_uuid" style="width: 100%;" id="bus-item" required>
+              <option value="">Pilih bus</option>
+            </select>
           </div>
         </div>
     </div>
@@ -106,6 +106,7 @@
 
   function addElementToSelect(data) {
     let html = '';
+    html += '<option value="">Pilih bus</option>'
     for (let index = 0; index < data.length; index++) {
       html += '<option value="'+ data[index].uuid +'">'+ data[index].busname +'</option>'
     }

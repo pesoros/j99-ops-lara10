@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\Models\Workorder;
 use App\Models\RoadWarrant;
 use App\Models\Bus;
+use Carbon\Carbon;
 
 class LetterRoadWarrantController extends Controller
 {
@@ -56,7 +57,6 @@ class LetterRoadWarrantController extends Controller
                 'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance[$key]),
                 'created_by'                =>  auth()->user()->uuid,
             ];
-
         }
         
         $updateBookData['status'] = 1;
@@ -65,7 +65,7 @@ class LetterRoadWarrantController extends Controller
         $saveComplaint = RoadWarrant::updateBook($book_uuid,$updateBookData);
 
         if ($saveRoadWarrant) {
-            return back()->with('message', 'Anda berhasil membuat SPJ');
+            return back()->with('success', 'Anda berhasil membuat SPJ pariwisata');
         }
 
         return back()->with('failed', 'SPJ gagal tersimpan!');   
@@ -77,6 +77,40 @@ class LetterRoadWarrantController extends Controller
         $data['tripAssign'] = RoadWarrant::getTripAssign();
 
         return view('letter::roadwarrant.addAkap', $data);
+    }
+
+    public function addRoadWarrantAkapStore(Request $request)
+    {
+        $roadWarrantCount = RoadWarrant::getRoadWarrantCount();
+        $count = !isset($roadWarrantCount->count) ? 1 : $roadWarrantCount->count + 1;
+
+        $saveRoadWarrantData = [
+            'uuid'                      =>  generateUuid(),
+            'bus_uuid'                  =>  $request->bus_uuid,
+            // 'manifest_uuid'             =>  $book_uuid,
+            'category'                  =>  1,
+            'numberid'                  =>  genrateLetterNumber('SPJ',$count),
+            'count'                     =>  $count,
+            'start_date'                =>  Carbon::createFromFormat('d/m/Y', $request->date)->format('Y-m-d'),
+            // 'driver_1'                  =>  $request->driver_1[$key],
+            // 'driver_2'                  =>  $request->driver_2[$key],
+            // 'codriver'                  =>  $request->codriver[$key],
+            // 'driver_allowance_1'        =>  numberClearence($request->driver_allowance_1[$key]),
+            // 'driver_allowance_2'        =>  numberClearence($request->driver_allowance_2[$key]),
+            // 'codriver_allowance'        =>  numberClearence($request->codriver_allowance[$key]),
+            // 'trip_allowance'            =>  numberClearence($request->trip_allowance[$key]),
+            // 'fuel_allowance'            =>  numberClearence($request->fuel_allowance[$key]),
+            // 'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance[$key]),
+            'created_by'                =>  auth()->user()->uuid,
+        ];
+                
+        $saveRoadWarrant = RoadWarrant::saveRoadWarrant($saveRoadWarrantData);
+
+        if ($saveRoadWarrant) {
+            return back()->with('success', 'Anda berhasil membuat SPJ AKAP');
+        }
+
+        return back()->with('failed', 'SPJ gagal tersimpan!');   
     }
 
     public function detailRoadWarrant(Request $request, $uuid)
