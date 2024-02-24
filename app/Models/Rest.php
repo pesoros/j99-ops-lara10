@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Client;
 
 class Rest extends Model
@@ -41,5 +42,17 @@ class Rest extends Model
         ])->getBody();
 
         return json_decode($fetch);
+    }
+
+    public function scopeGetTrasBus($query, $trasid)
+    {
+        $query = DB::table("v2_bus AS bus")
+            ->select('bus.uuid','bus.name as busname')
+            ->where('bus.assign_id_a',$trasid)
+            ->orWhere('bus.assign_id_b',$trasid)
+            ->orderBy('busname','ASC')
+            ->get();
+
+        return $query;
     }
 }

@@ -17,4 +17,15 @@ class LetterApiController extends Controller
 
         return $spareParts->d;
     }
+
+    public function trasBus(Request $request)
+    {
+        $trasid = $request->query('trasid');
+        if (!$trasid) {
+            return [];
+        }
+        $result = Rest::getTrasBus($trasid);
+
+        return $result;
+    }
 }

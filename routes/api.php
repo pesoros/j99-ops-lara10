@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('spareparts', [LetterApiController::class, 'spareParts']);
+Route::get('trasbus', [LetterApiController::class, 'trasBus']);
