@@ -160,4 +160,15 @@ class RoadWarrant extends Model
 
         return $query;
     }
+
+    function scopeGetTripAssign()
+    {
+        $query = DB::table("trip_assign AS tras")
+            ->select('tras.id as trasid','tras.trip as trip','trip.trip_title')
+            ->join("trip", "trip.trip_id", "=", "tras.trip")
+            ->orderBy('trip.trip_title','ASC')
+            ->get();
+
+        return $query;
+    }
 }

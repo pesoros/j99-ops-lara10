@@ -142,6 +142,8 @@
   integrity="sha512-oJCa6FS2+zO3EitUSj+xeiEN9UTr+AjqlBZO58OPadb2RfqwxHpjTU8ckIC8F4nKvom7iru2s8Jwdo+Z8zm0Vg==" 
   crossorigin="anonymous" referrerpolicy="no-referrer">
 </script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script>dayjs().format()</script>
 <!-- Page specific script -->
 @stack('extra-scripts')
 <script type="text/javascript">
@@ -167,7 +169,7 @@
 
     //Date picker
     $('#datepicker').datetimepicker({
-        format: 'L'
+        format: 'DD/MM/YYYY'
     });
 
     //Date and time picker

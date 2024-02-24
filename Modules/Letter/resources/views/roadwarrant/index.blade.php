@@ -7,7 +7,10 @@
         <h3 class="card-title">List {{ $title }}</h3>
         <div class="float-right">
           @if (permissionCheck('add'))
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#pariwisata-modal">
+            <a href="{{ url('letter/roadwarrant/add') }}" class="btn btn-secondary btn-sm">
+              Buat SPJ AKAP
+            </a>
+            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#pariwisata-modal">
               Buat SPJ Pariwisata
             </button>
           @endif

@@ -23,7 +23,7 @@ class LetterRoadWarrantController extends Controller
     
     public function addRoadWarrant($book_uuid)
     {
-        $data['title'] = 'Tambah Surat perintah jalan';
+        $data['title'] = 'Tambah Surat perintah jalan Pariwisata';
         $data['book'] = RoadWarrant::getBook($book_uuid);
         $data['bookbus'] = RoadWarrant::getBookBus($book_uuid);
         $data['employee'] = RoadWarrant::getEmployee();
@@ -69,6 +69,14 @@ class LetterRoadWarrantController extends Controller
         }
 
         return back()->with('failed', 'SPJ gagal tersimpan!');   
+    }
+
+    public function addRoadWarrantAkap()
+    {
+        $data['title'] = 'Tambah Surat perintah jalan AKAP';
+        $data['tripAssign'] = RoadWarrant::getTripAssign();
+
+        return view('letter::roadwarrant.addAkap', $data);
     }
 
     public function detailRoadWarrant(Request $request, $uuid)
