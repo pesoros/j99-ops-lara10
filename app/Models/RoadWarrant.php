@@ -147,7 +147,14 @@ class RoadWarrant extends Model
 
     public function scopeSaveRoadWarrant($query, $data)
     {
-        $query = DB::table("ops_roadWarrant")->insert($data);
+        $query = DB::table("ops_roadwarrant")->insert($data);
+
+        return $query;
+    }
+
+    public function scopeSaveManifest($query, $data)
+    {
+        $query = DB::table("manifest")->insert($data);
 
         return $query;
     }

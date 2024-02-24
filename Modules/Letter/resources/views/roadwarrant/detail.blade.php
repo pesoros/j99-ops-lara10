@@ -22,7 +22,7 @@
       <div class="invoice p-3 mb-3">
         <!-- info row -->
         <div class="row invoice-info">
-          <div class="col-sm-12 invoice-col">
+          <div class="col-sm-6 invoice-col">
             <p class="lead">Detail reservasi</p>
             <div class="table-responsive">
               <table class="table">
@@ -50,6 +50,13 @@
                   <th>tanggal kembali :</th>
                   <td>{{ dateTimeFormat($roadwarrant->finish_date) }}</td>
                 </tr>
+              </table>
+            </div>
+          </div>
+          <div class="col-sm-6 invoice-col">
+            <p class="lead">&nbsp;</p>
+            <div class="table-responsive">
+              <table class="table">
                 <tr>
                   <th>Tanggal pemesanan :</th>
                   <td>{{ dateTimeFormat($roadwarrant->created_at) }}</td>
