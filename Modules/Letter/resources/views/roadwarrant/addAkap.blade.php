@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="form-group">
-          <label>Bus</label>
+          <label>Trip assign</label>
           <select class="form-control select2bs4" name="bus_uuid" style="width: 100%;">
             @foreach ($tripAssign as $tripAssignItem)
                 <option value="{{ $tripAssignItem->trasid }}" @selected(old('tripAssign_uuid') == $tripAssignItem->trasid)>
