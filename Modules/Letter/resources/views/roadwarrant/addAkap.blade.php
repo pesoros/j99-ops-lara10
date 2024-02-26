@@ -53,7 +53,7 @@
               <option value="">Pilih bus</option>
               @foreach ($bus as $busItem)
                 <option value="{{ $busItem->busuuid }}">
-                    {{ $busItem->busname }}
+                    {{ $busItem->busname }} | {{ $busItem->registration_number }}
                 </option>
               @endForeach
             </select>
@@ -62,11 +62,6 @@
             <label>Trip assign</label>
             <select class="form-control select2bs4" name="trip_assign" id="tras-item" style="width: 100%;" required>
               <option value="" @selected(old('trip_assign') == '')>Pilih trip assign</option>
-              {{-- @foreach ($tripAssign as $tripAssignItem)
-                <option value="{{ $tripAssignItem->trasid }}" @selected(old('trip_assign') == $tripAssignItem->trasid)>
-                    {{ $tripAssignItem->trasid }} | {{ $tripAssignItem->trip_title }}
-                </option>
-              @endForeach --}}
             </select>
           </div>
         </div>
@@ -109,7 +104,7 @@
     let html = '';
     html += '<option value="">Pilih bus</option>'
     for (let index = 0; index < data.length; index++) {
-      html += '<option value="'+ data[index].trasid +'">'+ data[index].trip_title +'</option>'
+      html += '<option value="'+ data[index].trasid +'">'+ data[index].trasid + ' | ' + data[index].trip_title +'</option>'
     }
     $('#tras-item').append(html);
   }
