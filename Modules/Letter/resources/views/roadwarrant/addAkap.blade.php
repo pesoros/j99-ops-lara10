@@ -37,35 +37,36 @@
   <form action="{{ url()->current() }}" method="post" autocomplete="off">
     @csrf
     <div class="card-body row">
-        <div class="col-sm-6">
+        <div class="col-sm-12">
           <div class="form-group">
             <label>Tanggal :</label>
               <div class="input-group date" id="datepicker" data-target-input="nearest">
-                  <input type="text" name="date" class="form-control datetimepicker-input" data-target="#datepicker" required />
-                  <div class="input-group-append" data-target="#datepicker" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                  </div>
+                <div class="input-group-prepend" data-target="#datepicker" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+                <input type="text" name="date" class="form-control datetimepicker-input" data-target="#datepicker" required />
               </div>
           </div>
-        </div>
-        <div class="col-sm-6">
           <div class="form-group">
-            <label>Trip assign</label>
-            <select class="form-control select2bs4" name="trip_assign" id="trip_assign" style="width: 100%;" required>
-              <option value="" @selected(old('trip_assign') == '')>Pilih trip assign</option>
-              @foreach ($tripAssign as $tripAssignItem)
-                <option value="{{ $tripAssignItem->trasid }}" @selected(old('trip_assign') == $tripAssignItem->trasid)>
-                    {{ $tripAssignItem->trasid }} | {{ $tripAssignItem->trip_title }}
+            <label>Pilih bus</label>
+            <select class="form-control select2bs4" name="bus_uuid" id="bus-select" style="width: 100%;" required>
+              <option value="">Pilih bus</option>
+              @foreach ($bus as $busItem)
+                <option value="{{ $busItem->busuuid }}">
+                    {{ $busItem->busname }}
                 </option>
               @endForeach
             </select>
           </div>
-        </div>
-        <div class="col-sm-6">
           <div class="form-group">
-            <label>Pilih bus</label>
-            <select class="form-control select2bs4" name="bus_uuid" style="width: 100%;" id="bus-item" required>
-              <option value="">Pilih bus</option>
+            <label>Trip assign</label>
+            <select class="form-control select2bs4" name="trip_assign" id="tras-item" style="width: 100%;" required>
+              <option value="" @selected(old('trip_assign') == '')>Pilih trip assign</option>
+              {{-- @foreach ($tripAssign as $tripAssignItem)
+                <option value="{{ $tripAssignItem->trasid }}" @selected(old('trip_assign') == $tripAssignItem->trasid)>
+                    {{ $tripAssignItem->trasid }} | {{ $tripAssignItem->trip_title }}
+                </option>
+              @endForeach --}}
             </select>
           </div>
         </div>
@@ -89,13 +90,13 @@
       maxDate : maxDate,
   });
 
-  $("#trip_assign").change(function(e){
+  $("#bus-select").change(function(e){
     fetchItem(e.target.value)
   });
 
   function fetchItem(value) {
-    $('#bus-item').html('');
-    axios.get(`/api/trasbus?trasid=${value}`)
+    $('#tras-item').html('');
+    axios.get(`/api/trasbus?busuuid=${value}`)
       .then((response) => {
         console.log(response.data)
         addElementToSelect(response.data);
@@ -108,9 +109,9 @@
     let html = '';
     html += '<option value="">Pilih bus</option>'
     for (let index = 0; index < data.length; index++) {
-      html += '<option value="'+ data[index].uuid +'">'+ data[index].busname +'</option>'
+      html += '<option value="'+ data[index].trasid +'">'+ data[index].trip_title +'</option>'
     }
-    $('#bus-item').append(html);
+    $('#tras-item').append(html);
   }
 </script>
 @endpush

@@ -20,11 +20,14 @@ class LetterApiController extends Controller
 
     public function trasBus(Request $request)
     {
-        $trasid = $request->query('trasid');
-        if (!$trasid) {
+        $busuuid = $request->query('busuuid');
+        if (!$busuuid) {
             return [];
         }
-        $result = Rest::getTrasBus($trasid);
+
+        $getBus = Rest::getBus($busuuid);
+        $result[] = Rest::getTripAssign($getBus->assign_id_a);
+        $result[] = Rest::getTripAssign($getBus->assign_id_b);
 
         return $result;
     }

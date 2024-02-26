@@ -44,14 +44,25 @@ class Rest extends Model
         return json_decode($fetch);
     }
 
-    public function scopeGetTrasBus($query, $trasid)
+    public function scopeGetBus($query, $busuuid)
     {
         $query = DB::table("v2_bus AS bus")
-            ->select('bus.uuid','bus.name as busname')
-            ->where('bus.assign_id_a',$trasid)
-            ->orWhere('bus.assign_id_b',$trasid)
-            ->orderBy('busname','ASC')
-            ->get();
+            ->select('bus.uuid', 'bus.assign_id_a','bus.assign_id_b')
+            ->where('bus.uuid',$busuuid)
+            ->first();
+
+        return $query;
+    }
+
+    function scopeGetTripAssign($query, $trasid)
+    {
+        $query = DB::table("trip_assign AS tras")
+            ->select('tras.id as trasid','tras.trip as trip','trip.trip_title')
+            ->join("trip", "trip.trip_id", "=", "tras.trip")
+            ->where('tras.status','1')
+            ->where('tras.id',$trasid)
+            ->orderBy('trasid','ASC')
+            ->first();
 
         return $query;
     }

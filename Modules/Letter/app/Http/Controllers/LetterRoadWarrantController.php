@@ -74,7 +74,7 @@ class LetterRoadWarrantController extends Controller
     public function addRoadWarrantAkap()
     {
         $data['title'] = 'Tambah Surat perintah jalan AKAP';
-        $data['tripAssign'] = RoadWarrant::getTripAssign();
+        $data['bus'] = RoadWarrant::getBusAkap();
 
         return view('letter::roadwarrant.addAkap', $data);
     }

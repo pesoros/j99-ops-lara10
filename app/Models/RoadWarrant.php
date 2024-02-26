@@ -168,13 +168,12 @@ class RoadWarrant extends Model
         return $query;
     }
 
-    function scopeGetTripAssign($query)
+    function scopeGetBusAkap($query)
     {
-        $query = DB::table("trip_assign AS tras")
-            ->select('tras.id as trasid','tras.trip as trip','trip.trip_title')
-            ->join("trip", "trip.trip_id", "=", "tras.trip")
-            ->where('tras.status','1')
-            ->orderBy('trasid','ASC')
+        $query = DB::table("v2_bus AS bus")
+            ->select('bus.uuid as busuuid','bus.name as busname','bus.registration_number')
+            ->where('bus.category','AKAP')
+            ->orderBy('busname','ASC')
             ->get();
 
         return $query;
