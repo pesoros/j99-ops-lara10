@@ -52,6 +52,15 @@ class RoadWarrant extends Model
         return $query;
     }
 
+    public function scopeGetRoadWarrantOnly($query, $uuid)
+    {
+        $query = DB::table("ops_roadwarrant AS roadwarrant")
+            ->where('roadwarrant.uuid', $uuid)
+            ->first();
+
+            return $query;
+    }
+
     public function scopeGetEmployee($query)
     {
         $query = DB::table("employee_history AS employee")
@@ -175,6 +184,38 @@ class RoadWarrant extends Model
             ->where('bus.category','AKAP')
             ->orderBy('busname','ASC')
             ->get();
+
+        return $query;
+    }
+
+    function scopeGetBus($query, $bus_uuid)
+    {
+        $query = DB::table("v2_bus AS bus")
+            ->select('bus.uuid as busuuid','bus.name as busname','bus.registration_number')
+            ->where('bus.uuid',$bus_uuid)
+            ->orderBy('busname','ASC')
+            ->first();
+
+        return $query;
+    }
+
+    function scopeGetManifest($query, $manifest_uuid)
+    {
+        $query = DB::table("manifest")
+            ->where('uuid',$manifest_uuid)
+            ->first();
+
+        return $query;
+    }
+
+    function scopeGetTripAssign($query, $trasid)
+    {
+        $query = DB::table("trip_assign AS tras")
+            ->select('tras.*','trip.trip_title')
+            ->join("trip", "trip.trip_id", "=", "tras.trip")
+            ->where('tras.status','1')
+            ->where('tras.id',$trasid)
+            ->first();
 
         return $query;
     }

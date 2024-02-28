@@ -92,9 +92,8 @@ class LetterRoadWarrantController extends Controller
             'status'                    =>  1,
             'trip_date'                 =>  $trip_date,
             'trip_assign'               =>  $request->trip_assign,
-            'bus_uuid'                  =>  $request->bus_uuid,
             'email_assign'              =>  $busData->email,
-            'fleet'                     =>  0,
+            'fleet'                     =>  $request->bus_uuid,
         ];
 
         $saveRoadWarrantData = [
@@ -119,11 +118,25 @@ class LetterRoadWarrantController extends Controller
 
     public function detailRoadWarrant(Request $request, $category, $uuid)
     {
-        $data['title'] = 'Detail SPJ';
-        
         if ($category === '1') {
-            return;
+            $data['title'] = 'Detail SPJ AKAP';
+
+            $roadWarrant = RoadWarrant::getRoadWarrantOnly($uuid);
+            $bus = RoadWarrant::getBus($roadWarrant->bus_uuid);
+            $manifest = RoadWarrant::getManifest($roadWarrant->manifest_uuid);
+            $tras = RoadWarrant::getTripAssign($manifest->trip_assign);
+
+            $data['roadwarrant'] = $roadWarrant;
+            $data['bus'] = $bus;
+            $data['manifest'] = $manifest;
+            $data['tras'] = $tras;
+
+            // echo json_encode($data);
+            // return;
+
+            return view('letter::roadwarrant.detailAkap', $data);
         } else if ($category === '2') {
+            $data['title'] = 'Detail SPJ Pariwisata';
             $data['roadwarrant'] = RoadWarrant::getRoadWarrant($uuid);
     
             return view('letter::roadwarrant.detail', $data);
