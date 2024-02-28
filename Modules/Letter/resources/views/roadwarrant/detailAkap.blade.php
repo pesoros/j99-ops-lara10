@@ -49,18 +49,14 @@
                   <th width="250">Nama bus :</th>
                   <td>{{ $bus->busname }}</td>
                 </tr>
-                {{-- <tr>
+                <tr>
                   <th>Driver 1 :</th>
-                  <td>{{ $roadwarrant->driver_1_name }}</td>
+                  <td>{{ $tras->driver1_name }} {{ $tras->driver1_lastname }}</td>
                 </tr>
                 <tr>
                   <th>Driver 2 :</th>
-                  <td>{{ $roadwarrant->driver_2_name }}</td>
+                  <td>{{ $tras->driver2_name }} {{ $tras->driver2_lastname }}</td>
                 </tr>
-                <tr>
-                  <th>Co driver :</th>
-                  <td>{{ $roadwarrant->codriver_name }}</td>
-                </tr> --}}
                 <tr>
                   <th>Uang saku :</th>
                   <td>{{ formatAmount($tras->allowance) }}</td>
