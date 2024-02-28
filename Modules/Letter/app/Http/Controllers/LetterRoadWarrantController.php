@@ -125,11 +125,13 @@ class LetterRoadWarrantController extends Controller
             $bus = RoadWarrant::getBus($roadWarrant->bus_uuid);
             $manifest = RoadWarrant::getManifest($roadWarrant->manifest_uuid);
             $tras = RoadWarrant::getTripAssign($manifest->trip_assign);
+            $busclass = RoadWarrant::getBusClass($bus->busuuid);
 
             $data['roadwarrant'] = $roadWarrant;
             $data['bus'] = $bus;
             $data['manifest'] = $manifest;
             $data['tras'] = $tras;
+            $data['busclass'] = $busclass;
 
             // echo json_encode($data);
             // return;

@@ -11,9 +11,10 @@ class RoadWarrant extends Model
     public function scopeGetRoadWarrantList($query)
     {
         $query = DB::table("ops_roadwarrant AS roadwarrant")
-            ->select('roadwarrant.*','bus.name AS busname')
+            ->select('roadwarrant.*','bus.name AS busname','manifest.trip_date')
             ->join("v2_bus AS bus", "bus.uuid", "=", "roadwarrant.bus_uuid")
-            ->orderBy('roadwarrant.numberid','DESC')
+            ->join("manifest", "manifest.uuid", "=", "roadwarrant.manifest_uuid")
+            ->orderBy('roadwarrant.id','DESC')
             ->get();
 
         return $query;
@@ -226,6 +227,18 @@ class RoadWarrant extends Model
             ->where('tras.status','1')
             ->where('tras.id',$trasid)
             ->first();
+
+        return $query;
+    }
+
+    function scopeGetBusClass($query, $bus_uuid)
+    {
+        $query = DB::table("v2_bus AS bus")
+            ->select('class.name','class.seat','class.layout')
+            ->join("v2_bus_class as busclass", "busclass.bus_uuid", "=", "bus.uuid")
+            ->join("v2_class as class", "class.uuid", "=", "busclass.class_uuid")
+            ->where('bus.uuid',$bus_uuid)
+            ->get();
 
         return $query;
     }

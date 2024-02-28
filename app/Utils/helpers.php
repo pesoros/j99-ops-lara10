@@ -44,7 +44,7 @@ function numberSpacer($str, $separator = ' ') {
 }
 
 function formatAmount($str, $separator = '.') {
-  return 'Rp '.number_format($str,0,".",".");
+  return 'Rp'.number_format($str,0,".",".");
 }
 
 function removeExceptNumber($str) {

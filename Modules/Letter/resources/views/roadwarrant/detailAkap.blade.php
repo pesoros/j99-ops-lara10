@@ -61,6 +61,26 @@
                   <th>Uang saku :</th>
                   <td>{{ formatAmount($tras->allowance) }}</td>
                 </tr>
+                <tr>
+                  <th>Kelas</th>
+                  <td>
+                    @foreach ($busclass as $item)
+                      <div class="table-responsive">
+                        <p class="lead">{{ $item->name }}</p>
+                        <table class="table">
+                          <tr>
+                            <th>Jumlah kursi :</th>
+                            <td>{{ $item->seat }}</td>
+                          </tr>
+                          <tr>
+                            <th width="250">Layout :</th>
+                            <td>{{ $item->layout }}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    @endforeach
+                  </td>
+                </tr>
               </table>
             </div>
           </div>
