@@ -11,9 +11,8 @@ class RoadWarrant extends Model
     public function scopeGetRoadWarrantList($query)
     {
         $query = DB::table("ops_roadwarrant AS roadwarrant")
-            ->select('roadwarrant.*','bus.name AS busname','manifest.trip_date')
+            ->select('roadwarrant.*','bus.name AS busname')
             ->join("v2_bus AS bus", "bus.uuid", "=", "roadwarrant.bus_uuid")
-            ->join("manifest", "manifest.uuid", "=", "roadwarrant.manifest_uuid")
             ->orderBy('roadwarrant.id','DESC')
             ->get();
 

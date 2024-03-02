@@ -23,7 +23,6 @@
         <tr>
           <th>No</th>
           <th>Nomor SPJ</th>
-          <th>Tanggal keberangkatan</th>
           <th>Kategori Bus</th>
           <th>Nama Bus</th>
           <th>Aksi</th>
@@ -34,7 +33,6 @@
             <tr>
               <td width="20" class="text-center">{{ intval($key) + 1 }}</td>
               <td>{{ $value->numberid }}</td>
-              <td>{{ dateFormat($value->trip_date) }}</td>
               <td>{{ STRVAL($value->category) === '1' ? 'AKAP' : 'Pariwisata' }}</td>
               <td>{{ $value->busname }}</td>
               <td>
