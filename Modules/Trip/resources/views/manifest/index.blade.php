@@ -53,7 +53,7 @@
               <td>{{ $value->email_assign }}</td>
               <td>{{ $value->trip_assign }}</td>
               <td>{{ $value->trip_title }}</td>
-              <td>{{ $value->trip_date }}</td>
+              <td>{{ dateFormat($value->trip_date) }}</td>
               <td>{{ STRVAL($value->status) === '1' ? 'Aktif' : 'Selesai' }}</td>
               <td>
                 <div class="btn-group btn-block">

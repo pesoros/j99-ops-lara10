@@ -39,8 +39,8 @@ function generateUuid()
    return Illuminate\Support\Str::uuid();
 }
 
-function numberSpacer($str, $separator = ' ') {
-  return wordwrap($str, 4, $separator, true);
+function numberSpacer($str, $separator = ' ', $spatial = 4) {
+  return wordwrap($str, $spatial, $separator, true);
 }
 
 function formatAmount($str, $separator = '.') {

@@ -117,13 +117,13 @@
                 @foreach ($passengerList as $key => $passenger)
                   <tr>
                     <td>{{ $key + 1 }}</td>
-                    <td>{{ $passenger->name }} <br> {{ $passenger->phone }}</td>
+                    <td>{{ $passenger->name }} <br> <i class="fas fa-phone"></i> {{ numberSpacer($passenger->phone) }}</td>
                     <td>{{ $passenger->booking_code }}</td>
                     <td>{{ $passenger->ticket_number }}</td>
                     <td>{{ $passenger->seat_number }} | {{ $passenger->class }}</td>
                     <td>{{ $passenger->food_name }}</td>
-                    <td>{{ $passenger->pickup_trip_location }} {{ $passenger->dep_time }}</td>
-                    <td>{{ $passenger->drop_trip_location }} {{ $passenger->arr_time }}</td>
+                    <td>{{ $passenger->pickup_trip_location }} {{ substr($passenger->dep_time, 0, 5) }}</td>
+                    <td>{{ $passenger->drop_trip_location }} {{ substr($passenger->arr_time, 0, 5) }}</td>
                   </tr>
                 @endforeach
               </tbody>
