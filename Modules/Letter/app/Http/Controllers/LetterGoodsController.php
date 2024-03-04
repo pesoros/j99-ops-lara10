@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Models\Goodsrequest;
+use App\Models\GoodsRequest;
 use App\Models\Complaint;
 use App\Models\User;
 
@@ -15,7 +15,7 @@ class LetterGoodsController extends Controller
     public function listGoodsRequest()
     {
         $data['title'] = 'Surat permintaan barang';
-        $data['list'] = Goodsrequest::getGoodsRequestlist();
+        $data['list'] = GoodsRequest::getGoodsRequestlist();
 
         return view('letter::goods.index', $data);
     }
@@ -26,7 +26,7 @@ class LetterGoodsController extends Controller
         
         $data['title'] = 'Tambah Surat permintaan barang';
         $data['hasWorkorder'] = true;
-        $data['workorder'] = Goodsrequest::getWorkorder($workorder_uuid);
+        $data['workorder'] = GoodsRequest::getWorkorder($workorder_uuid);
         $data['damages'] = Complaint::getDamages($data['workorder']->bus_uuid);
 
         return view('letter::goods.add', $data);
@@ -43,7 +43,7 @@ class LetterGoodsController extends Controller
         }
 
         $uuid = generateUuid();
-        $goodsrequestCount = Goodsrequest::getGoodsRequestCount();
+        $goodsrequestCount = GoodsRequest::getGoodsRequestCount();
         $count = !isset($goodsrequestCount->count) ? 1 : $goodsrequestCount->count + 1;
                 
         $saveData = [
@@ -68,8 +68,8 @@ class LetterGoodsController extends Controller
             ];
         }
 
-        $saveGoodsRequest = Goodsrequest::saveGoodsRequest($saveData);
-        $savePartsItem = Goodsrequest::saveGoodsRequestParts($savePartData);
+        $saveGoodsRequest = GoodsRequest::saveGoodsRequest($saveData);
+        $savePartsItem = GoodsRequest::saveGoodsRequestParts($savePartData);
 
         if ($saveGoodsRequest) {
             return back()->with('success', 'Surat permintaan barang tersimpan!');
@@ -81,9 +81,9 @@ class LetterGoodsController extends Controller
     public function detailGoodsRequest(Request $request, $uuid)
     {
         $data['title'] = 'Detail SPB';
-        $data['detailGoodsRequest'] = Goodsrequest::getGoodsRequest($uuid);
+        $data['detailGoodsRequest'] = GoodsRequest::getGoodsRequest($uuid);
         $data['creator'] = User::getUser($data['detailGoodsRequest']->created_by);
-        $data['parts'] = Goodsrequest::getGoodsRequestParts($data['detailGoodsRequest']->uuid);
+        $data['parts'] = GoodsRequest::getGoodsRequestParts($data['detailGoodsRequest']->uuid);
 
         return view('letter::goods.detail', $data);
     }

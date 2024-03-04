@@ -4,8 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Modules\Letter\app\Http\Controllers\LetterComplaintController;
 use Modules\Letter\app\Http\Controllers\LetterWorkorderController;
 use Modules\Letter\app\Http\Controllers\LetterRoadWarrantController;
-use Modules\Letter\app\Http\Controllers\LetterGoodsController;
 use Modules\Letter\app\Http\Controllers\LetterPurchaseRequestController;
+use Modules\Letter\app\Http\Controllers\LetterGoodsController;
+use Modules\Letter\app\Http\Controllers\LetterGoodsReleaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,5 +52,13 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::post('purchaserequest/add', [LetterPurchaseRequestController::class, 'addPurchaseRequestStore']);
         Route::get('purchaserequest/show/detail/{uuid}', [LetterPurchaseRequestController::class, 'detailPurchaseRequest']);
         Route::post('purchaserequest/update/approval/{uuid}', [LetterPurchaseRequestController::class, 'purchaseRequestApproval']);
+
+        Route::get('goodsrelease', [LetterGoodsReleaseController::class, 'listGoodsRelease']);
+        Route::get('goodsrelease/add', [LetterGoodsReleaseController::class, 'addGoodsRelease']);
+        Route::post('goodsrelease/add', [LetterGoodsReleaseController::class, 'addGoodsReleaseStore']);
+        Route::get('goodsrelease/show/detail/{uuid}', [LetterGoodsReleaseController::class, 'detailGoodsRelease']);
+        Route::get('goodsrelease/update/progress/{uuid}', [LetterGoodsReleaseController::class, 'progressGoodsRelease']);
+        Route::get('goodsrelease/update/close/{uuid}', [LetterGoodsReleaseController::class, 'closeGoodsRelease']);
+        Route::post('goodsrelease/update/partsaction/{uuid}', [LetterGoodsReleaseController::class, 'updateAction']);
     });
 });
