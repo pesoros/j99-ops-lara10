@@ -60,9 +60,9 @@
                   <a href="{{ url('trip/manifest/detail/'.$value->id) }}" class="btn btn-primary btn-sm">Detail</a>
                   <a href="{{ url('trip/manifest/expenses/'.$value->id) }}" class="btn btn-success btn-sm">Keuangan</a>
                   @if (STRVAL($value->status) === '1')
-                    <a href="{{ url('trip/manifest/deactivate/'.$value->id) }}" class="btn btn-danger btn-sm">Selesaikan</a>
+                    <a href="{{ url('trip/manifest/close/'.$value->id) }}" class="btn btn-danger btn-sm">Selesaikan</a>
                   @else
-                    <a href="{{ url('trip/manifest/activate/'.$value->id) }}" class="btn btn-warning btn-sm">Aktifkan</a>
+                    <a href="{{ url('trip/manifest/open/'.$value->id) }}" class="btn btn-warning btn-sm">Aktifkan</a>
                   @endif
                 </div>
               </td>

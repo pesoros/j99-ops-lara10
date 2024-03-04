@@ -17,9 +17,9 @@ use Modules\Trip\app\Http\Controllers\TripManifestController;
 Route::middleware(['auth','has-permission'])->group(function () {
     Route::prefix('trip')->group(function () {
         Route::get('manifest', [TripManifestController::class, 'listManifest']);
-        Route::get('manifest/detail/{id}', [TripManifestController::class, 'listManifest']);
+        Route::get('manifest/detail/{id}', [TripManifestController::class, 'detailManifest']);
         Route::get('manifest/expenses/{id}', [TripManifestController::class, 'listManifest']);
-        Route::get('manifest/activate/{id}', [TripManifestController::class, 'listManifest']);
-        Route::get('manifest/deactivate/{id}', [TripManifestController::class, 'listManifest']);
+        Route::get('manifest/open/{id}', [TripManifestController::class, 'listManifest']);
+        Route::get('manifest/close/{id}', [TripManifestController::class, 'listManifest']);
     });
 });
