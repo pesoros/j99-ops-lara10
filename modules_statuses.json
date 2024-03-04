@@ -11,5 +11,6 @@
     "Keluhan": true,
     "Letter": true,
     "Api": true,
-    "Employee": true
+    "Employee": true,
+    "Trip": true
 }
