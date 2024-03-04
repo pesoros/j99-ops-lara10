@@ -25,11 +25,6 @@
           <div class="col-12">
             <h4>
             <img src="{{url('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
-            @if (STRVAL($detailManifest->status) === '1')
-            <a href="{{ url('trip/manifest/close/'.$detailManifest->id) }}" onclick="return confirm('Anda yakin menyelesaikan Manifest ini?')" class="btn bg-gradient-primary float-right">Selesaikan manifest ini</a>
-            @else
-            <a href="{{ url('trip/manifest/open/'.$detailManifest->id) }}" onclick="return confirm('Anda yakin mermbuks Manifest ini?')" class="btn bg-gradient-danger float-right">Aktifkan kembali manifest ini</a>
-            @endif
             <a href="{{ url('trip/manifest') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success float-right mr-1">Kembali</a>
             </h4>
           </div>
@@ -99,31 +94,67 @@
         <!-- Table row -->
         <div class="row">
           <div class="col-12 table-responsive">
-            <p class="lead">List penumpang</p>
+            <p class="lead">Laporan transaksi</p>
             <table class="table table-striped">
               <thead>
               <tr>
                 <th width="3">No</th>
-                <th>Nama</th>
-                <th>Kode booking</th>
-                <th>Nomor tiket</th>
-                <th>Kursi</th>
-                <th>Makanan</th>
-                <th>Titik jemput</th>
-                <th>Titik turun</th>
+                <th>Deskripsi</th>
+                <th>Tanggal</th>
+                <th>Kategori</th>
+                <th>Nominal</th>
+                <th>Status</th>
+                <th>File</th>
+                <th>Aksi</th>
               </tr>
               </thead>
               <tbody>
-                @foreach ($passengerList as $key => $passenger)
+
+                <td></td>
+                <td>Saldo awal</td>
+                <td></td>
+                <td></td>
+                <td>{{ $detailManifest->allowance }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+                @foreach ($expensesList as $key => $expense)
                   <tr>
                     <td>{{ $key + 1 }}</td>
-                    <td>{{ $passenger->name }} <br> <i class="fas fa-phone"></i> {{ numberSpacer($passenger->phone) }}</td>
-                    <td>{{ $passenger->booking_code }}</td>
-                    <td>{{ $passenger->ticket_number }}</td>
-                    <td>{{ $passenger->seat_number }} | {{ $passenger->class }}</td>
-                    <td>{{ $passenger->food_name }}</td>
-                    <td>{{ $passenger->pickup_trip_location }} {{ substr($passenger->dep_time, 0, 5) }}</td>
-                    <td>{{ $passenger->drop_trip_location }} {{ substr($passenger->arr_time, 0, 5) }}</td>
+                    <td>{{ $expense->description }}</td>
+                    <td>{{ $expense->created_at }}</td>
+                    <td>{{ $expense->action }}</td>
+                    <td>{{ formatAmount($expense->nominal) }}</td>
+                    <td>{{ $expense->status == 1 ? "-" : (($expense->status == 0) ? "Ditolak" : "Diterima") }}</td>
+                    <td>
+                      @if (!empty($expense->file))
+                        <img 
+                          src="{{ env('BACKEND_URL').'uploads/manifest/expense/'.$expense->file }}"
+                          class="img" 
+                          width="150" 
+                          height="150"
+                        >
+                      @else
+                        <img 
+                          src="{{ env('ADMINV1_URL').'assets/img/icons/empty.jpg' }}"
+                          class="img"
+                          width="150" 
+                          height="150" 
+                          style="object-fit: cover;"
+                        >
+                      @endif
+                    </td>
+                    <td>
+                      <a 
+                        href="{{ url('trip/manifest/expense/accept/'.$expense->id) }}"
+                        class="btn btn-xs btn-success"
+                      >Terima</a>
+                      <a 
+                        href="{{ url('trip/manifest/expense/reject/'.$expense->id) }}"
+                        class="btn btn-xs btn-danger"
+                      >Tolak</a>
+                    </td>
                   </tr>
                 @endforeach
               </tbody>

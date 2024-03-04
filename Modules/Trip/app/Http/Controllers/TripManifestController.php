@@ -26,4 +26,45 @@ class TripManifestController extends Controller
 
         return view('trip::manifest.detail', $data);
     }
+
+    public function expensesReport(Request $request, $id)
+    {
+        $data['title'] = 'Laporan keuangan';
+        $data['detailManifest'] = Trip::getManifest($id);
+        $data['expensesList'] = Trip::getExpensesList($id);
+
+        return view('trip::manifest.expenses', $data);
+    }
+
+    public function closeManifest(Request $request, $id)
+    {
+        $data['status'] = 2;
+        $closeManifest = Trip::updateManifest($id, $data);
+
+        return back()->with('success', 'Status Manifest berhasil diubah menjadi selesai!');
+    }
+
+    public function openManifest(Request $request, $id)
+    {
+        $data['status'] = 1;
+        $closeManifest = Trip::updateManifest($id, $data);
+
+        return back()->with('success', 'Status Manifest berhasil diubah menjadi aktif!');
+    }
+
+    public function expenseAccept(Request $request, $id)
+    {
+        $data['status'] = 2;
+        $closeManifest = Trip::updateExpense($id, $data);
+
+        return back()->with('success', 'Transaksi berhasil diterima!');
+    }
+
+    public function expenseReject(Request $request, $id)
+    {
+        $data['status'] = 0;
+        $closeManifest = Trip::updateExpense($id, $data);
+
+        return back()->with('success', 'Transaksi berhasil ditolak!');
+    }
 }

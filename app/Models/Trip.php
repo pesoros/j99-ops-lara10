@@ -49,6 +49,7 @@ class Trip extends Model
                 'emp2.second_name as driver2_lastname',
                 'freg.reg_no as fleetname',
                 'bus.name as busname',
+                'tras.allowance',
             )
             ->join('trip_assign as tras', 'tras.id', 'manif.trip_assign')
             ->join("trip", "trip.trip_id", "=", "tras.trip")
@@ -102,6 +103,43 @@ class Trip extends Model
             ->whereDate('tbook.booking_date',$booking_date)
             ->orderBy('tps.seat_number','ASC')
             ->get();
+
+        return $query;
+    }
+
+    public function scopeGetExpensesList($query, $id)
+    {
+        $query = DB::table('manifest as manif')
+            ->select(
+                'expense.*',
+                'tras.allowance'
+            )
+            ->join('trip_assign as tras', 'tras.id', '=', 'manif.trip_assign')
+            ->join('trip_expenses as expense', function($leftJoin) {
+                $leftJoin->on('expense.trip_id_no', '=', 'tras.id')
+                    ->on('expense.trip_date', '=', 'manif.trip_date');
+            })
+            ->where('manif.id',$id)
+            ->orderBy('expense.id', 'ASC')
+            ->get();
+
+        return $query;
+    }
+
+    public function scopeUpdateManifest($query, $id, $data)
+    {
+        $query = DB::table("manifest")
+            ->where('id',$id)
+            ->update($data);
+
+        return $query;
+    }
+
+    public function scopeUpdateExpense($query, $id, $data)
+    {
+        $query = DB::table("trip_expenses")
+            ->where('id',$id)
+            ->update($data);
 
         return $query;
     }
