@@ -10,5 +10,6 @@
     "Spk": true,
     "Keluhan": true,
     "Letter": true,
-    "Api": true
+    "Api": true,
+    "Employee": true
 }
