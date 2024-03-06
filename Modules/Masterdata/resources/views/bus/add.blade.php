@@ -74,7 +74,7 @@
             <option value="" @selected(old('tras_a') == "")>Pilih trip assign A</option>
             @foreach ($tras as $trasItem)
                 <option value="{{ $trasItem->trasid }}" @selected(old('tras_a') == $trasItem->trasid)>
-                    {{ $trasItem->trasid }} | {{ $trasItem->trip_title }}
+                    {{ $trasItem->trasid }} | {{ $trasItem->trip_title }} | {{ $trasItem->reg_no }}
                 </option>
             @endForeach
           </select>
@@ -85,7 +85,7 @@
             <option value="" @selected(old('tras_b') == "")>Pilih trip assign B</option>
             @foreach ($tras as $trasItem)
                 <option value="{{ $trasItem->trasid }}" @selected(old('tras_b') == $trasItem->trasid)>
-                    {{ $trasItem->trasid }} | {{ $trasItem->trip_title }}
+                    {{ $trasItem->trasid }} | {{ $trasItem->trip_title }} | {{ $trasItem->reg_no }}
                 </option>
             @endForeach
           </select>
