@@ -121,7 +121,8 @@
           </div>
           <div class="form-group">
             <label>Driver 1</label>
-            <select class="form-control select2bs4" name="driver_1[]" style="width: 100%;">
+            <select class="form-control select2bs4" name="driver_1[]" style="width: 100%;" required>
+              <option value="">Pilih</option>
               @foreach ($employee as $employeeItem)
                   @if ($employeeItem->position === 'Driver')
                     <option value="{{ $employeeItem->id }}" @selected(old('driver_1[]') == $employeeItem->id)>
@@ -133,7 +134,8 @@
           </div>
           <div class="form-group">
             <label>Driver 2</label>
-            <select class="form-control select2bs4" name="driver_2[]" style="width: 100%;">
+            <select class="form-control select2bs4" name="driver_2[]" style="width: 100%;" required>
+              <option value="">Pilih</option>
               @foreach ($employee as $employeeItem)
                   @if ($employeeItem->position === 'Driver')
                     <option value="{{ $employeeItem->id }}" @selected(old('driver_2[]') == $employeeItem->id)>
@@ -145,7 +147,8 @@
           </div>
           <div class="form-group">
             <label>Co driver</label>
-            <select class="form-control select2bs4" name="codriver[]" style="width: 100%;">
+            <select class="form-control select2bs4" name="codriver[]" style="width: 100%;" required>
+              <option value="">Pilih</option>
               @foreach ($employee as $employeeItem)
                   @if ($employeeItem->position === 'Assistant')
                     <option value="{{ $employeeItem->id }}" @selected(old('codriver[]') == $employeeItem->id)>

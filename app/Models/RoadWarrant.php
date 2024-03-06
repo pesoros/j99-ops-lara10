@@ -52,9 +52,18 @@ class RoadWarrant extends Model
         return $query;
     }
 
-    public function scopeGetRoadWarrantOnly($query, $uuid)
+    public function scopeGetRoadWarrantAkap($query, $uuid)
     {
         $query = DB::table("ops_roadwarrant AS roadwarrant")
+            ->select(
+                'roadwarrant.*',
+                DB::raw("CONCAT(driver_1.first_name,' ',driver_1.second_name) as driver_1_name"),
+                DB::raw("CONCAT(driver_2.first_name,' ',driver_2.second_name) as driver_2_name"),
+                DB::raw("CONCAT(codriver.first_name,' ',codriver.second_name) as codriver_name"),
+            )
+            ->leftJoin("employee_history AS driver_1", "driver_1.id", "=", "roadwarrant.driver_1")
+            ->leftJoin("employee_history AS driver_2", "driver_2.id", "=", "roadwarrant.driver_2")
+            ->leftJoin("employee_history AS codriver", "codriver.id", "=", "roadwarrant.codriver")
             ->where('roadwarrant.uuid', $uuid)
             ->first();
 

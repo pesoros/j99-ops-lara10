@@ -75,8 +75,9 @@ class LetterRoadWarrantController extends Controller
     {
         $data['title'] = 'Tambah Surat perintah jalan AKAP';
         $data['bus'] = RoadWarrant::getBusAkap();
+        $data['employee'] = RoadWarrant::getEmployee();
 
-        return view('letter::roadwarrant.addAkap', $data);
+        return view('letter::roadwarrantakap.add', $data);
     }
 
     public function addRoadWarrantAkapStore(Request $request)
@@ -86,6 +87,7 @@ class LetterRoadWarrantController extends Controller
         $trip_date = Carbon::createFromFormat('d/m/Y', $request->date)->format('Y-m-d');
         $busData = Bus::getBus($request->bus_uuid);
         $manifest_uuid = generateUuid();
+        $tras = RoadWarrant::getTripAssign($request->trip_assign);
 
         $saveManifestData = [
             'uuid'                      =>  $manifest_uuid,
@@ -103,6 +105,16 @@ class LetterRoadWarrantController extends Controller
             'category'                  =>  1,
             'numberid'                  =>  genrateLetterNumber('SPJ',$count),
             'count'                     =>  $count,
+            'driver_1'                  =>  $request->driver_1,
+            'driver_2'                  =>  $request->driver_2,
+            'codriver'                  =>  $request->codriver,
+            'resto_id'                  =>  $tras->resto_id,
+            'driver_allowance_1'        =>  numberClearence($request->driver_allowance_1),
+            'driver_allowance_2'        =>  numberClearence($request->driver_allowance_2),
+            'codriver_allowance'        =>  numberClearence($request->codriver_allowance),
+            'trip_allowance'            =>  numberClearence($request->trip_allowance),
+            'fuel_allowance'            =>  numberClearence($request->fuel_allowance),
+            'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance),
             'created_by'                =>  auth()->user()->uuid,
         ];
                 
@@ -121,7 +133,7 @@ class LetterRoadWarrantController extends Controller
         if ($category === '1') {
             $data['title'] = 'Detail SPJ AKAP';
 
-            $roadWarrant = RoadWarrant::getRoadWarrantOnly($uuid);
+            $roadWarrant = RoadWarrant::getRoadWarrantAkap($uuid);
             $bus = RoadWarrant::getBus($roadWarrant->bus_uuid);
             $manifest = RoadWarrant::getManifest($roadWarrant->manifest_uuid);
             $tras = RoadWarrant::getTripAssign($manifest->trip_assign);
@@ -133,10 +145,7 @@ class LetterRoadWarrantController extends Controller
             $data['tras'] = $tras;
             $data['busclass'] = $busclass;
 
-            // echo json_encode($data);
-            // return;
-
-            return view('letter::roadwarrant.detailAkap', $data);
+            return view('letter::roadwarrantakap.detail', $data);
         } else if ($category === '2') {
             $data['title'] = 'Detail SPJ Pariwisata';
             $data['roadwarrant'] = RoadWarrant::getRoadWarrant($uuid);

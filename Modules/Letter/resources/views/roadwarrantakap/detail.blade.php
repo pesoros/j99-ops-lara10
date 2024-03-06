@@ -50,18 +50,6 @@
                   <td>{{ $bus->busname }}</td>
                 </tr>
                 <tr>
-                  <th>Driver 1 :</th>
-                  <td>{{ $tras->driver1_name }} {{ $tras->driver1_lastname }}</td>
-                </tr>
-                <tr>
-                  <th>Driver 2 :</th>
-                  <td>{{ $tras->driver2_name }} {{ $tras->driver2_lastname }}</td>
-                </tr>
-                <tr>
-                  <th>Uang saku :</th>
-                  <td>{{ formatAmount($tras->allowance) }}</td>
-                </tr>
-                <tr>
                   <th>Kelas</th>
                   <td>
                     @foreach ($busclass as $item)
@@ -80,6 +68,38 @@
                       </div>
                     @endforeach
                   </td>
+                </tr>
+                <tr>
+                  <th>Driver 1 :</th>
+                  <td>{{ $roadwarrant->driver_1_name }}</td>
+                </tr>
+                <tr>
+                  <th>Driver 2 :</th>
+                  <td>{{ $roadwarrant->driver_2_name }}</td>
+                </tr>
+                <tr>
+                  <th>Co driver :</th>
+                  <td>{{ $roadwarrant->codriver_name }}</td>
+                </tr>
+                <tr>
+                  <th>Uang saku :</th>
+                  <td>{{ formatAmount($roadwarrant->trip_allowance) }}</td>
+                </tr>
+                <tr>
+                  <th>Uang premi driver 1 :</th>
+                  <td>{{ formatAmount($roadwarrant->driver_allowance_1) }}</td>
+                </tr>
+                <tr>
+                  <th>Uang premi Driver 2 :</th>
+                  <td>{{ formatAmount($roadwarrant->driver_allowance_2) }}</td>
+                </tr>
+                <tr>
+                  <th>Uang premi Co driver :</th>
+                  <td>{{ formatAmount($roadwarrant->codriver_allowance) }}</td>
+                </tr>
+                <tr>
+                  <th>Uang makan kru :</th>
+                  <td>{{ formatAmount($roadwarrant->crew_meal_allowance) }}</td>
                 </tr>
               </table>
             </div>
