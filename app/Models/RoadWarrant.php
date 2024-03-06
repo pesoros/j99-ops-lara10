@@ -223,15 +223,8 @@ class RoadWarrant extends Model
             ->select(
                 'tras.*',
                 'trip.trip_title',
-                'emp1.first_name', 
-                'emp1.first_name as driver1_name', 
-                'emp1.second_name as driver1_lastname', 
-                'emp2.first_name as driver2_name', 
-                'emp2.second_name as driver2_lastname', 
             )
             ->join("trip", "trip.trip_id", "=", "tras.trip")
-            ->leftJoin("employee_history as emp1", "emp1.id", "=", "tras.driver_id")
-            ->leftJoin("employee_history as emp2", "emp2.id", "=", "tras.driver_id_second")
             ->where('tras.status','1')
             ->where('tras.id',$trasid)
             ->first();
