@@ -97,6 +97,14 @@
                   <td>{{ $roadwarrant->seat }} Kursi</td>
                 </tr>
                 <tr>
+                  <th width="250">Kilometer awal :</th>
+                  <td>{{ $roadwarrant->km_start ? 'Km '.$roadwarrant->km_start : '-' }}</td>
+                </tr>
+                <tr>
+                  <th width="250">Kilometer akhir :</th>
+                  <td>{{ $roadwarrant->km_end ? 'Km '.$roadwarrant->km_end : '-' }}</td>
+                </tr>
+                <tr>
                   <th>Driver 1 :</th>
                   <td>{{ $roadwarrant->driver_1_name }}</td>
                 </tr>

@@ -59,6 +59,15 @@
             </select>
           </div>
           <div class="form-group">
+            <label for="km_start">Kilometer awal</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Km</span>
+              </div>
+              <input type="number" class="form-control" name="km_start" placeholder="0" value="" required>
+            </div>
+          </div>
+          <div class="form-group">
             <label>Trip assign</label>
             <select class="form-control select2bs4" name="trip_assign" id="tras-item" style="width: 100%;" required>
               <option value="" @selected(old('trip_assign') == '')>Pilih</option>

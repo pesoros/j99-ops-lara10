@@ -46,6 +46,7 @@ class LetterRoadWarrantController extends Controller
                 'category'                  =>  2,
                 'numberid'                  =>  genrateLetterNumber('SPJ',$counter),
                 'count'                     =>  $counter,
+                'km_start'                  =>  $request->km_start[$key],
                 'driver_1'                  =>  $request->driver_1[$key],
                 'driver_2'                  =>  $request->driver_2[$key],
                 'codriver'                  =>  $request->codriver[$key],
@@ -56,6 +57,7 @@ class LetterRoadWarrantController extends Controller
                 'fuel_allowance'            =>  numberClearence($request->fuel_allowance[$key]),
                 'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance[$key]),
                 'created_by'                =>  auth()->user()->uuid,
+                'status'                    =>  1,
             ];
         }
         
@@ -105,6 +107,7 @@ class LetterRoadWarrantController extends Controller
             'category'                  =>  1,
             'numberid'                  =>  genrateLetterNumber('SPJ',$count),
             'count'                     =>  $count,
+            'km_start'                  =>  $request->km_start,
             'driver_1'                  =>  $request->driver_1,
             'driver_2'                  =>  $request->driver_2,
             'codriver'                  =>  $request->codriver,
@@ -116,6 +119,7 @@ class LetterRoadWarrantController extends Controller
             'fuel_allowance'            =>  numberClearence($request->fuel_allowance),
             'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance),
             'created_by'                =>  auth()->user()->uuid,
+            'status'                    =>  1,
         ];
                 
         $saveRoadWarrant = RoadWarrant::saveManifest($saveManifestData);

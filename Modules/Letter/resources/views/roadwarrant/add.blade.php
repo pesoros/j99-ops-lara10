@@ -104,19 +104,28 @@
           <div class="form-group">
             <label for="bus_name[]">Nama bus</label>
             <div class="input-group mb-3">
-              <input type="text" class="form-control" name="bus_name[]" placeholder="0" value="{{ $bus->name }}" readonly>
+              <input type="text" class="form-control" name="bus_name[]" value="{{ $bus->name }}" readonly>
             </div>
           </div>
           <div class="form-group">
             <label for="class_name[]">Kelas bus</label>
             <div class="input-group mb-3">
-              <input type="text" class="form-control" name="class_name[]" placeholder="0" value="{{ $bus->classname }}" readonly>
+              <input type="text" class="form-control" name="class_name[]" value="{{ $bus->classname }}" readonly>
             </div>
           </div>
           <div class="form-group">
             <label for="seat_count[]">Jumlah kursi bus</label>
             <div class="input-group mb-3">
-              <input type="text" class="form-control" name="seat_count[]" placeholder="0" value="{{ $bus->seat }} Kursi" readonly>
+              <input type="text" class="form-control" name="seat_count[]" value="{{ $bus->seat }} Kursi" readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="km_start[]">Kilometer awal</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Km</span>
+              </div>
+              <input type="number" class="form-control" name="km_start[]" placeholder="0" value="" required>
             </div>
           </div>
           <div class="form-group">
