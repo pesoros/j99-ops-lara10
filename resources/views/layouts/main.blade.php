@@ -5,7 +5,7 @@
     <meta name="robots" content="noindex,nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{$title ? $title.' |' : ''}} J99 Trans</title>
-    <link rel="icon" type="image/x-icon" href="{{asset('assets/images/logo/tab_icon.png')}}">
+    <link rel="icon" type="image/x-icon" href="{{asset('assets/images/logo/j99-favicon.png')}}">
   
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -40,7 +40,7 @@
 
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="{{asset('assets/images/logo/j99-logo-wide.png')}}" alt="J99 logo preloader" >
+    <img class="animation__shake" src="{{asset('assets/images/logo/j99-favicon.png')}}" alt="J99 logo preloader" style="width: 10%">
   </div>
 
   <!-- Navbar -->
@@ -52,7 +52,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="/" class="brand-link">
         <img src="{{asset('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
         <span class="brand-text font-weight-light"></span>
     </a>
