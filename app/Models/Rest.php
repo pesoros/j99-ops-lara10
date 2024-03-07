@@ -27,8 +27,11 @@ class Rest extends Model
     public function scopeGetSpareParts($query, $keyword)
     {
         $fields = 'id,name,quantity';
+        $pageSize = '&sp.pageSize=80';
+        $search = '&filter.keywords.op=CONTAIN&filter.keywords.val='.$keyword;
+
         $fetch = $this->client->request(
-            'GET', env('ACCURATE_APP_URI').'/item/list.do?fields='.$fields.'&keywords='.$keyword, [
+            'GET', env('ACCURATE_APP_URI').'/item/list.do?fields='.$fields.$pageSize.$search, [
             'headers' => $this->headers,
         ])->getBody();
 
@@ -83,6 +86,7 @@ class Rest extends Model
                 $dateRange = '&filter.transDate.val='.$startDate;
             }
         }
+
         $fetch = $this->client->request(
             'GET', env('ACCURATE_APP_URI').'/purchase-invoice/list.do?fields='.$fields.'&sp.sort=transDate|asc'.$paging.$dateRange, [
             'headers' => $this->headers,

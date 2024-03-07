@@ -5,6 +5,7 @@ use Modules\Masterdata\app\Http\Controllers\MasterdataPartsAreaController;
 use Modules\Masterdata\app\Http\Controllers\MasterdataPartsScopeController;
 use Modules\Masterdata\app\Http\Controllers\MasterdataBusController;
 use Modules\Masterdata\app\Http\Controllers\MasterdataClassController;
+use Modules\Masterdata\app\Http\Controllers\MasterdataSparePartsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,5 +38,6 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('class/edit/{uuid}', [MasterdataClassController::class, 'editMasterClass']);
         Route::post('class/edit/{uuid}', [MasterdataClassController::class, 'editMasterClassUpdate']);
         Route::get('class/delete/{uuid}', [MasterdataClassController::class, 'deleteMasterClass']);
+        Route::get('spareparts', [MasterdataSparePartsController::class, 'listMasterSpareParts']);
     });
 });
