@@ -31,4 +31,24 @@ class LetterApiController extends Controller
 
         return $result;
     }
+
+    public function invoice(Request $request)
+    {
+        $page = $request->query('page');
+        $startDate = $request->query('startDate');
+        $endDate = $request->query('endDate');
+        $invoice = Rest::getInvoice($page, $startDate, $endDate);
+
+        $result['pageInfo'] = $invoice->sp;
+        $result['data'] = $invoice->d;
+
+        return $result;
+    }
+
+    public function invoiceDetail(Request $request, $id)
+    {
+        $spareParts = Rest::getInvoiceDetail($id);
+
+        return $spareParts->d;
+    }
 }

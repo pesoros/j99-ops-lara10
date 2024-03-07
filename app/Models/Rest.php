@@ -67,4 +67,37 @@ class Rest extends Model
 
         return $query;
     }
+
+    public function scopeGetInvoice($query, $page, $startDate, $endDate)
+    {
+        $fields = 'id,billNumber,description,transDate,totalAmount,approvalStatus';
+        $paging = '';
+        $dateRange = '';
+        if ($page) {
+            $paging = '&sp.page='.$page;
+        }
+        if ($startDate) {
+            if ($endDate) {
+                $dateRange = '&filter.transDate.op=BETWEEN&filter.transDate.val='.$startDate.'&filter.transDate.val='.$endDate;
+            } else {
+                $dateRange = '&filter.transDate.val='.$startDate;
+            }
+        }
+        $fetch = $this->client->request(
+            'GET', env('ACCURATE_APP_URI').'/purchase-invoice/list.do?fields='.$fields.'&sp.sort=transDate|asc'.$paging.$dateRange, [
+            'headers' => $this->headers,
+        ])->getBody();
+
+        return json_decode($fetch);
+    }
+
+    public function scopeGetInvoiceDetail($query, $id)
+    {
+        $fetch = $this->client->request(
+            'GET', env('ACCURATE_APP_URI').'/purchase-invoice/detail.do?id='.$id, [
+            'headers' => $this->headers,
+        ])->getBody();
+
+        return json_decode($fetch);
+    }
 }
