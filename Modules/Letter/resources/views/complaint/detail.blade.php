@@ -85,7 +85,6 @@
                   <th width="3">No</th>
                   <th>Bagian</th>
                   <th>Deskripsi</th>
-                  <th>Dibuat oleh</th>
                   <th>Tanggal lapor</th>
                 </tr>
                 </thead>
@@ -95,7 +94,6 @@
                       <td>{{ $key + 1 }}</td>
                       <td>{{ $damage->areacode }}-{{ $damage->scopecode }} | {{ $damage->scopename }}</td>
                       <td>{{ $damage->description }}</td>
-                      <td>{{ $damage->creator }}</td>
                       <td>{{ dateFormat($damage->created_at) }}</td>
                     </tr>
                   @endforeach
