@@ -61,10 +61,6 @@
                   </td>
                 </tr>
                 <tr>
-                  <th>Dibuat oleh :</th>
-                  <td>{{ $detailWorkorder->creator }}</td>
-                </tr>
-                <tr>
                   <th>Dibuat tanggal :</th>
                   <td>{{ dateFormat($detailWorkorder->created_at) }}</td>
                 </tr>
