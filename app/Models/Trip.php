@@ -115,10 +115,8 @@ class Trip extends Model
                 'tras.allowance'
             )
             ->join('trip_assign as tras', 'tras.id', '=', 'manif.trip_assign')
-            ->join('trip_expenses as expense', function($leftJoin) {
-                $leftJoin->on('expense.trip_id_no', '=', 'tras.id')
-                    ->on('expense.trip_date', '=', 'manif.trip_date');
-            })
+            ->join('ops_roadwarrant as roadwarrant', 'roadwarrant.manifest_uuid', '=', 'manif.uuid')
+            ->join('trip_expenses as expense', 'expense.roadwarrant_uuid', '=', 'roadwarrant.uuid')
             ->where('manif.id',$id)
             ->orderBy('expense.id', 'ASC')
             ->get();

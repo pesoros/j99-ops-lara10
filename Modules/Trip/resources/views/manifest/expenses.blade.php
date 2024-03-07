@@ -114,7 +114,7 @@
                 <td>Saldo awal</td>
                 <td></td>
                 <td></td>
-                <td>{{ $detailManifest->allowance }}</td>
+                <td>{{ formatAmount($detailManifest->allowance) }}</td>
                 <td></td>
                 <td></td>
                 <td></td>

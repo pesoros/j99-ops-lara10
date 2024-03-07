@@ -243,4 +243,14 @@ class RoadWarrant extends Model
 
         return $query;
     }
+
+    public function scopeGetExpensesList($query, $id)
+    {
+        $query = DB::table('trip_expenses as expense')
+            ->where('expense.roadwarrant_uuid',$id)
+            ->orderBy('expense.id', 'ASC')
+            ->get();
+
+        return $query;
+    }
 }

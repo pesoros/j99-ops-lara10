@@ -115,6 +115,79 @@
         </div>
         <!-- /.row -->
       </div>
+      <div class="invoice p-3 mb-3">
+        <!-- info row -->
+        <div class="row invoice-info">
+          <div class="col-12 table-responsive">
+            <p class="lead">Laporan transaksi</p>
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th width="3">No</th>
+                <th>Deskripsi</th>
+                <th>Tanggal</th>
+                <th>Kategori</th>
+                <th>Nominal</th>
+                <th>Status</th>
+                <th>File</th>
+                <th>Aksi</th>
+              </tr>
+              </thead>
+              <tbody>
+
+                <td></td>
+                <td>Saldo awal</td>
+                <td></td>
+                <td></td>
+                <td>{{ formatAmount($roadwarrant->trip_allowance) }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+                @foreach ($expensesList as $key => $expense)
+                  <tr>
+                    <td>{{ $key + 1 }}</td>
+                    <td>{{ $expense->description }}</td>
+                    <td>{{ $expense->created_at }}</td>
+                    <td>{{ $expense->action }}</td>
+                    <td>{{ formatAmount($expense->nominal) }}</td>
+                    <td>{{ $expense->status == 1 ? "-" : (($expense->status == 0) ? "Ditolak" : "Diterima") }}</td>
+                    <td>
+                      @if (!empty($expense->file))
+                        <img 
+                          src="{{ env('BACKEND_URL').'uploads/manifest/expense/'.$expense->file }}"
+                          class="img" 
+                          width="150" 
+                          height="150"
+                        >
+                      @else
+                        <img 
+                          src="{{ env('ADMINV1_URL').'assets/img/icons/empty.jpg' }}"
+                          class="img"
+                          width="150" 
+                          height="150" 
+                          style="object-fit: cover;"
+                        >
+                      @endif
+                    </td>
+                    <td>
+                      <a 
+                        href="{{ url('trip/manifest/expense/accept/'.$expense->id) }}"
+                        class="btn btn-xs btn-success"
+                      >Terima</a>
+                      <a 
+                        href="{{ url('trip/manifest/expense/reject/'.$expense->id) }}"
+                        class="btn btn-xs btn-danger"
+                      >Tolak</a>
+                    </td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- /.row -->
+      </div>
       <!-- /.invoice -->
       {{-- <div>
         @if (permissionCheck('add'))

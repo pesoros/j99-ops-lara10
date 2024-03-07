@@ -148,11 +148,13 @@ class LetterRoadWarrantController extends Controller
             $data['manifest'] = $manifest;
             $data['tras'] = $tras;
             $data['busclass'] = $busclass;
+            $data['expensesList'] = Roadwarrant::getExpensesList($uuid);
 
             return view('letter::roadwarrantakap.detail', $data);
         } else if ($category === '2') {
             $data['title'] = 'Detail SPJ Pariwisata';
             $data['roadwarrant'] = RoadWarrant::getRoadWarrant($uuid);
+            $data['expensesList'] = Roadwarrant::getExpensesList($uuid);
     
             return view('letter::roadwarrant.detail', $data);
         }
