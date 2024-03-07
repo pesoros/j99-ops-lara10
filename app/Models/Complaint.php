@@ -50,11 +50,9 @@ class Complaint extends Model
                 'scope.name AS scopename',
                 'scope.code AS scopecode',
                 'area.code AS areacode',
-                'user.name AS creator'
             )
             ->join("ops_parts_scope AS scope", "scope.uuid", "=", "damage.scope_uuid")
             ->join("ops_parts_area AS area", "area.uuid", "=", "scope.parts_area_uuid")
-            ->join("v2_users AS user", "user.uuid", "=", "damage.created_by")
             ->where('damage.bus_uuid',$bus_uuid)
             ->where('damage.is_closed',0)
             ->orderBy('damage.created_at','ASC')
