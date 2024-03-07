@@ -28,7 +28,7 @@ class AccurateApiController extends Controller
     {
         $type = 'code';
         $redirect = strval(url(env('ACCURATE_RECEIVETOKEN_ENDPOINT').'/newtoken'));
-        return redirect()->to(env('ACCURATE_AUTH_URI').'?client_id='.env('ACCURATE_CLIENTID').'&response_type='.$type.'&redirect_uri='.$redirect.'&scope=item_view warehouse_view');
+        return redirect()->to(env('ACCURATE_AUTH_URI').'?client_id='.env('ACCURATE_CLIENTID').'&response_type='.$type.'&redirect_uri='.$redirect.'&scope='.env('ACCURATE_SCOPE'));
     }
 
     public function refreshtoken(Request $request)

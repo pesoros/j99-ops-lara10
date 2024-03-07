@@ -81,6 +81,7 @@
             <th>No</th>
             <th>ID Item</th>
             <th>Nama Item</th>
+            <th>Stok</th>
             <th>Aksi</th>
           </tr>
           </thead>
@@ -127,6 +128,7 @@
           html += '<td width="20" class="text-center">'+ (index + 1) +'</td>'
           html += '<td>'+ data[index].id +'</td>'
           html += '<td>'+ data[index].name +'</td>'
+          html += '<td>'+ data[index].quantity +' Pcs</td>'
           html += '<td><div class="btn-group btn-block">'
           html += '<a type="button" id="'+ data[index].id + '-sprt-' + data[index].name +'" class="btn btn-warning getItem">Pilih</a>';
           html += '</div></td>'

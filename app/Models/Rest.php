@@ -26,8 +26,9 @@ class Rest extends Model
 
     public function scopeGetSpareParts($query, $keyword)
     {
+        $fields = 'id,name,quantity';
         $fetch = $this->client->request(
-            'GET', env('ACCURATE_APP_URI').'/item/list.do?fields=id,name&keywords='.$keyword, [
+            'GET', env('ACCURATE_APP_URI').'/item/list.do?fields='.$fields.'&keywords='.$keyword, [
             'headers' => $this->headers,
         ])->getBody();
 
