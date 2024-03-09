@@ -1,0 +1,81 @@
+@extends('layouts.main', ['title' => $title ])
+
+@section('content')
+ 
+<div class="card">
+    <!-- /.card-header -->
+    <div class="card-body">
+      <table id="example" class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th>No</th>
+          <th>Tanggal pembelian</th>
+          <th>Titik jemput</th>
+          <th>Titik turun</th>
+          <th>Agen</th>
+        </tr>
+        </thead>
+        <tbody id="table-item"></tbody>
+      </table>
+    </div>
+    <!-- /.card-body -->
+  </div>
+ 
+@endsection
+
+@push('extra-scripts')
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+    $(function () {      
+      let rowState = 0;
+      let rowCount = 0;
+      const apiUrl = '{!! env('BACKEND_URL'); !!}'
+
+      const fetchItem = debounce(value => {
+        const payload = {
+          startDate: '2023-10-01 00:00:00.000',
+          endDate: '2023-10-31 23:59:59.000'
+        }
+        const headers = { 
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+
+        axios.post(`${apiUrl}report/allakapsales`, payload,{headers})
+        .then((response) => {
+          addElementToSelect(response.data.data)
+        }, (error) => {
+          console.log(error)
+        });
+      }, 1000)
+
+      function addElementToSelect(data) {
+        let saleData = [];
+        for (let index = 0; index < data.length; index++) {
+          saleData[index] = [
+            index + 1,
+            data[index].booking_date,
+            data[index].pickup_trip_location,
+            data[index].drop_trip_location,
+            data[index].agent
+          ]
+        }
+        $('#example').DataTable( {
+            data: saleData
+        })
+      }
+
+      function debounce(cb, delay = 250) {
+        let timeout
+
+        return (...args) => {
+          clearTimeout(timeout)
+          timeout = setTimeout(() => {
+            cb(...args)
+          }, delay)
+        }
+      }
+
+      fetchItem('')
+    });
+</script>
+@endpush

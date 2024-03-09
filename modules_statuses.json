@@ -12,5 +12,6 @@
     "Letter": true,
     "Api": true,
     "Employee": true,
-    "Trip": true
+    "Trip": true,
+    "Sales": true
 }

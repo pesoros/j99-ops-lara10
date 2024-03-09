@@ -61,18 +61,6 @@
           html += '</tr>'
         }
         $('#table-item').append(html);
-        $('.getItem').click(function(){
-          addItem(this.id);
-          $("#modal-close").click()
-        });
-      }
-
-      function addItem(data) {
-        const item = data.split("-sprt-")
-        const partname = document.getElementById("part_id_" + rowState);
-        partname.value = item[0];
-        const partid = document.getElementById("part_name_" + rowState);
-        partid.value = item[1];
       }
 
       function debounce(cb, delay = 250) {
@@ -87,42 +75,6 @@
       }
 
       fetchItem('')
-      
-      $('#addRow').click(function(){
-        let html = '';
-        rowCount++;
-        html += '<div class="row" id="damage_'+ rowCount +'">'
-        html += '  <div class="col-sm-5">'
-        html += '    <div class="input-group mb-3">'
-        html += '      <input type="text" class="form-control" id="part_name_'+ rowCount +'" name="part_name[]" value="" placeholder="Klik untuk pilih barang" data-drow="'+ rowCount +'" data-toggle="modal" data-target="#item-modal" readonly>'
-        html += '      <input type="hidden" id="part_id_'+ rowCount +'" name="part_id[]" value="">'
-        html += '    </div>'
-        html += '  </div>'
-        html += '  <div class="col-sm-2">'
-        html += '    <div class="input-group mb-3">'
-        html += '      <div class="input-group-prepend"><span class="input-group-text">Qty</span></div><input type="number" class="form-control" id="part_qty'+ rowCount +'" name="part_qty[]" value="1" required>'
-        html += '    </div>'
-        html += '  </div>'
-        html += '  <div class="col-sm-1">'
-        html += '    <a type="button" id="'+ rowCount +'" class="btn btn-danger removeRow">Hapus</a>'
-        html += '  </div>'
-        html += '</div>'
-        $('#partForm').append(html);
-        $('.select2bs4:last').select2({
-          theme: 'bootstrap4'
-        });
-        $('.removeRow').click(function(){
-          const id = this.id; 
-          $('#damage_'+id+'').remove();
-        });
-        $('#part_name_'+ rowCount).click(function () {
-          let damagerow = '';
-          if (typeof $(this).data('drow') !== 'undefined') {
-            damagerow = $(this).data('drow');
-          }
-          rowState = damagerow;
-        })
-      });
     });
 </script>
 @endpush
