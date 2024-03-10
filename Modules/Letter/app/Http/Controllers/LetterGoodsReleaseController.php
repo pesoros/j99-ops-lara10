@@ -38,7 +38,6 @@ class LetterGoodsReleaseController extends Controller
         $uuid = generateUuid();
         $goodsReleaseCount = GoodsRelease::getGoodsReleaseCount();
         $count = !isset($goodsReleaseCount->count) ? 1 : $goodsReleaseCount->count + 1;
-        $stockDataRaw = [];
         
         $saveData = [
             'uuid' => $uuid,
@@ -58,18 +57,8 @@ class LetterGoodsReleaseController extends Controller
                 'qty' =>  $request->part_qty[$key],
                 'status' => 0,
             ];
-
-            $getItemDetail = Rest::getSparePartsDetail($value);
-            $qty = INTVAL($getItemDetail->d->totalUnit1Quantity) - INTVAL($request->part_qty[$key]);
-            
-            $stockDataRaw['detail'][] = [
-                'warehouseName' => 'Warehouse',
-                'itemNo' => $value,
-                'targetQuantity' => $qty
-            ];
         }
 
-        $updateStock = Rest::postItemStock($stockDataRaw);
         $saveGoodsRelease = GoodsRelease::saveGoodsRelease($saveData);
         $savePartsItem = GoodsRelease::saveGoodsReleaseParts($savePartData);
 
@@ -108,11 +97,26 @@ class LetterGoodsReleaseController extends Controller
         $checkParts = GoodsRelease::checkPartsValid($uuid);
 
         if (count($checkParts) > 0) {
-            return back()->with('failed', 'Masih terdapat barang yang statusnya menunggu, Status SKB gagal diubah menjadi selesai!');   
+            return back()->with('failed', 'Masih terdapat barang yang belum memiliki status penanganan, Status SKB gagal diubah menjadi selesai!');   
         }
 
         $updateData['status'] = 2;
+        $stockDataRaw = [];
+        $parts = GoodsRelease::getGoodsReleaseParts($uuid);
+        foreach ($parts as $key => $value) {
+            if ($value->status === 1) {
+                $getItemDetail = Rest::getSparePartsDetail($value->part_id);
+                $qty = INTVAL($getItemDetail->d->totalUnit1Quantity) - INTVAL($value->qty);
+                
+                $stockDataRaw['detail'][] = [
+                    'warehouseName' => 'Warehouse',
+                    'itemNo' => $value->part_id,
+                    'targetQuantity' => $qty
+                ];
+            }
+        }
 
+        $updateStock = Rest::postItemStock($stockDataRaw);
         $updateGoodsRelease = GoodsRelease::updateGoodsRelease($uuid, $updateData);
 
         if ($updateGoodsRelease) {
@@ -127,7 +131,6 @@ class LetterGoodsReleaseController extends Controller
         foreach ($request->parts_uuid as $key => $value) {
             $updateData = [
                 'status' =>  $request->parts_status[$key],
-                'description' =>  $request->parts_description[$key],
             ];
             $updateDamageAction = GoodsRelease::updateGoodsParts($value, $updateData);
         }

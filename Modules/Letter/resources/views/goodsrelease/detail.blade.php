@@ -96,7 +96,6 @@
                   <th>Qty</th>
                   @if (STRVAL($detailGoodsRelease->status) === '1')
                     <th>Penanganan</th>
-                    <th>Detail penanganan</th>
                   @endif
                 </tr>
                 </thead>
@@ -111,13 +110,10 @@
                         <td>
                           <input type="hidden" id="parts_uuid" name="parts_uuid[]" value={{ $part->uuid }}>
                           <select class="form-control select2bs4" name="parts_status[]" style="width: 100%;">
-                            <option value="0" @selected($part->status == 0)>Menunggu</option>
+                            <option value="0" @selected($part->status == 0)>Pilih status penanganan</option>
                             <option value="1" @selected($part->status == 1)>Direalisasikan</option>
                             <option value="2" @selected($part->status == 2)>Batal</option>
                           </select>
-                        </td>
-                        <td>
-                          <textarea class="form-control" name="parts_description[]" rows="1" placeholder="Masukkan detail penanganan">{{ $part->description }}</textarea>
                         </td>
                       @endif
                     </tr>
