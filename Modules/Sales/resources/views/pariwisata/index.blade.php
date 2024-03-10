@@ -93,9 +93,11 @@
             data[index].pickup_address
           ]
         }
-        $('#table-wrap').DataTable( {
-            data: saleData
-        })
+        $("#table-wrap").DataTable({
+          "responsive": true, "lengthChange": false, "autoWidth": false,
+          "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+          data: saleData
+        }).buttons().container().appendTo('#datatable-def_wrapper .col-md-6:eq(0)')
       }
 
       function generateYears() {
