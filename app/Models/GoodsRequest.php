@@ -44,9 +44,9 @@ class GoodsRequest extends Model
                 'area.code as areacode'
             )
             ->where('goodsrequest_parts.goodsrequest_uuid',$goodsrequest_uuid)
-            ->join("ops_damages AS damage", "damage.uuid", "=", "goodsrequest_parts.damage")
-            ->join("ops_parts_scope AS scope", "scope.uuid", "=", "damage.scope_uuid")
-            ->join("ops_parts_area AS area", "area.uuid", "=", "scope.parts_area_uuid")
+            ->leftJoin("ops_damages AS damage", "damage.uuid", "=", "goodsrequest_parts.damage")
+            ->leftJoin("ops_parts_scope AS scope", "scope.uuid", "=", "damage.scope_uuid")
+            ->leftJoin("ops_parts_area AS area", "area.uuid", "=", "scope.parts_area_uuid")
             ->orderBy('goodsrequest_parts.id','ASC')
             ->get();
 

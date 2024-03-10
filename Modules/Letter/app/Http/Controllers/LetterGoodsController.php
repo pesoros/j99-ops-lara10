@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\Models\GoodsRequest;
 use App\Models\Complaint;
 use App\Models\User;
+use App\Models\Rest;
 
 class LetterGoodsController extends Controller
 {
@@ -110,7 +111,22 @@ class LetterGoodsController extends Controller
         }
 
         $updateData['status'] = 2;
+        $stockDataRaw = [];
+        $parts = GoodsRequest::getGoodsRequestParts($uuid);
+        foreach ($parts as $key => $value) {
+            if ($value->status === 1) {
+                $getItemDetail = Rest::getSparePartsDetail($value->part_id);
+                $qty = INTVAL($getItemDetail->d->totalUnit1Quantity) - INTVAL($value->qty);
+                
+                $stockDataRaw['detail'][] = [
+                    'warehouseName' => 'Warehouse',
+                    'itemNo' => $value->part_id,
+                    'targetQuantity' => $qty
+                ];
+            }
+        }
 
+        $updateStock = Rest::postItemStock($stockDataRaw);
         $updateGoodsRequest = GoodsRequest::updateGoodsRequest($uuid, $updateData);
 
         if ($updateGoodsRequest) {
@@ -125,7 +141,6 @@ class LetterGoodsController extends Controller
         foreach ($request->parts_uuid as $key => $value) {
             $updateData = [
                 'status' =>  $request->parts_status[$key],
-                'description' =>  $request->parts_description[$key],
             ];
             $updateDamageAction = GoodsRequest::updateGoodsParts($value, $updateData);
         }
