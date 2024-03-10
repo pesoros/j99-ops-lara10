@@ -104,7 +104,7 @@ class LetterGoodsReleaseController extends Controller
         $stockDataRaw = [];
         $parts = GoodsRelease::getGoodsReleaseParts($uuid);
         foreach ($parts as $key => $value) {
-            if ($value->status === 1) {
+            if (INTVAL($value->status) === 1) {
                 $getItemDetail = Rest::getSparePartsDetail($value->part_id);
                 $qty = INTVAL($getItemDetail->d->totalUnit1Quantity) - INTVAL($value->qty);
                 

@@ -35,7 +35,7 @@
         <!-- info row -->
         <div class="row invoice-info">
           <div class="col-sm-6 invoice-col">
-            <p class="lead">Detail complaint</p>
+            <p class="lead">Detail permintaan barang</p>
             <div class="table-responsive">
               <table class="table">
                 <tr>
