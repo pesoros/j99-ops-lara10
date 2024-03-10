@@ -26,7 +26,7 @@ class Rest extends Model
 
     public function scopeGetSpareParts($query, $keyword)
     {
-        $fields = 'id,name,quantity';
+        $fields = 'id,name,quantity,no';
         $pageSize = '&sp.pageSize=80';
         $search = '&filter.keywords.op=CONTAIN&filter.keywords.val='.$keyword;
 
@@ -38,10 +38,10 @@ class Rest extends Model
         return json_decode($fetch);
     }
 
-    public function scopeGetSparePartsDetail($query, $id)
+    public function scopeGetSparePartsDetail($query, $no)
     {
         $fetch = $this->client->request(
-            'GET', env('ACCURATE_APP_URI').'/item/detail.do?id='.$id, [
+            'GET', env('ACCURATE_APP_URI').'/item/detail.do?no='.$no, [
             'headers' => $this->headers,
         ])->getBody();
 
@@ -100,6 +100,22 @@ class Rest extends Model
         $fetch = $this->client->request(
             'GET', env('ACCURATE_APP_URI').'/purchase-invoice/detail.do?id='.$id, [
             'headers' => $this->headers,
+        ])->getBody();
+
+        return json_decode($fetch);
+    }
+
+    public function scopePostItemStock($query, $raw)
+    {
+        $headers = [
+            ...$this->headers,
+            'Content-Type' => 'application/json'
+        ];
+
+        $fetch = $this->client->request(
+            'POST', env('ACCURATE_APP_URI').'/item-adjustment/save-target-quantity.do', [
+            'body' => json_encode($raw),
+            'headers' => $headers,
         ])->getBody();
 
         return json_decode($fetch);

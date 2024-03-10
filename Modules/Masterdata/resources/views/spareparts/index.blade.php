@@ -16,7 +16,7 @@
         <thead>
         <tr>
           <th>No</th>
-          <th>ID Item</th>
+          <th>Item No</th>
           <th>Nama Item</th>
           <th>Stok</th>
         </tr>
@@ -55,7 +55,7 @@
         for (let index = 0; index < data.length; index++) {
           html += '<tr>'
           html += '<td width="20" class="text-center">'+ (index + 1) +'</td>'
-          html += '<td>'+ data[index].id +'</td>'
+          html += '<td>'+ data[index].no +'</td>'
           html += '<td>'+ data[index].name +'</td>'
           html += '<td>'+ data[index].quantity +' Pcs</td>'
           html += '</tr>'

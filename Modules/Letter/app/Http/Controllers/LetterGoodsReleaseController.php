@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\Models\GoodsRelease;
 use App\Models\Complaint;
 use App\Models\User;
+use App\Models\Rest;
 
 class LetterGoodsReleaseController extends Controller
 {
@@ -37,7 +38,8 @@ class LetterGoodsReleaseController extends Controller
         $uuid = generateUuid();
         $goodsReleaseCount = GoodsRelease::getGoodsReleaseCount();
         $count = !isset($goodsReleaseCount->count) ? 1 : $goodsReleaseCount->count + 1;
-                
+        $stockDataRaw = [];
+        
         $saveData = [
             'uuid' => $uuid,
             'created_by' => auth()->user()->uuid,
@@ -56,8 +58,18 @@ class LetterGoodsReleaseController extends Controller
                 'qty' =>  $request->part_qty[$key],
                 'status' => 0,
             ];
+
+            $getItemDetail = Rest::getSparePartsDetail($value);
+            $qty = INTVAL($getItemDetail->d->totalUnit1Quantity) - INTVAL($request->part_qty[$key]);
+            
+            $stockDataRaw['detail'][] = [
+                'warehouseName' => 'Warehouse',
+                'itemNo' => $value,
+                'targetQuantity' => $qty
+            ];
         }
 
+        $updateStock = Rest::postItemStock($stockDataRaw);
         $saveGoodsRelease = GoodsRelease::saveGoodsRelease($saveData);
         $savePartsItem = GoodsRelease::saveGoodsReleaseParts($savePartData);
 
