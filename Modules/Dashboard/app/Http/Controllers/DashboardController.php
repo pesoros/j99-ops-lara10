@@ -16,6 +16,12 @@ class DashboardController extends Controller
     {
         $data['title'] = 'Dashboard';
         $this->checkToken();
+        $roleData = Session('role_info_session');
+
+        console_log([
+            'role' => strtoupper(sluggify($roleData->title,'_')),
+        ]);
+
         return view('dashboard::dashboard.index', $data);
     }
 

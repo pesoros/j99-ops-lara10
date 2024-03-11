@@ -12,6 +12,11 @@ class LoginController extends Controller
         if (Auth::check()) {
             return redirect()->intended('dashboard');
         }
+
+        console_log([
+            'role' => ''
+        ]);
+
         return view('auth.login');
     }
     
