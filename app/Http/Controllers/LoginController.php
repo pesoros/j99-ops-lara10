@@ -13,10 +13,6 @@ class LoginController extends Controller
             return redirect()->intended('dashboard');
         }
 
-        console_log([
-            'role' => ''
-        ]);
-
         return view('auth.login');
     }
     

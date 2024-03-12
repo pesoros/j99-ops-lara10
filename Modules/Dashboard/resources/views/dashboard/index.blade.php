@@ -9,3 +9,15 @@
 </div>
  
 @endsection
+
+@push('extra-scripts')
+<script type="text/javascript">
+    $(function () {
+        const role = {!! json_encode($roleData) !!}
+        const message = {
+            role: role.title.toUpperCase().replace(' ','_'),
+        }
+        postMessage(message);
+    });
+</script>
+@endpush
