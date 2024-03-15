@@ -62,9 +62,9 @@
         </div>
         <div class="form-group">
           <label>Fasilitas</label>
-          <select class="select2 select2-hidden-accessible" multiple="" name="facilities[]" data-placeholder="Pilih fasilitas" style="width: 100%;" data-select2-id="7" tabindex="-1" aria-hidden="true">
+          <select class="select2" multiple="multiple" name="facilities[]" data-placeholder="Pilih fasilitas" style="width: 100%;">
             @foreach ($facilities as $facility)
-                <option data-select2-id="{{ $facility->id }}" value="{{ $facility->id }}">
+                <option value="{{ $facility->id }}">
                     {{ $facility->name }}
                 </option>
             @endForeach
