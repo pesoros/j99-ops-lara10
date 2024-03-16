@@ -77,10 +77,7 @@
 <script src="{{asset('assets/ui/dist/js/adminlte.min.js')}}"></script>
 <script type="text/javascript">
   $(function () {
-      const message = {
-          role: '',
-      }
-      postMessage(message);
+      console.log('');
   });
 </script>
 </body>

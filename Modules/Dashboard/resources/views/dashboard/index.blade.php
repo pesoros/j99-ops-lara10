@@ -14,10 +14,7 @@
 <script type="text/javascript">
     $(function () {
         const role = {!! json_encode($roleData) !!}
-        const message = {
-            role: role.title.toUpperCase().replace(' ','_'),
-        }
-        postMessage(message);
+        console.log(role.title.toUpperCase().replace(' ','_'));
     });
 </script>
 @endpush
