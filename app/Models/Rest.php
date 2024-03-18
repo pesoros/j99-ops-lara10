@@ -120,4 +120,23 @@ class Rest extends Model
 
         return json_decode($fetch);
     }
+
+    public function scopePushNotif($query, $raw)
+    {
+        $serverKey = env('FIREBASE_ACCESSTOKEN');
+        $url = env('FIREBASE_URL');
+
+        $headers = [
+            'Authorization' => 'key='.$serverKey,
+            'Content-Type' => 'application/json',
+        ];
+
+        $fetch = $this->client->request(
+            'POST', $url, [
+            'body' => json_encode($raw),
+            'headers' => $headers,
+        ])->getBody();
+
+        return json_decode($fetch);
+    }
 }

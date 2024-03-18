@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Complaint;
 use App\Models\Bus;
+use App\Models\Rest;
 
 class LetterComplaintController extends Controller
 {
@@ -81,7 +82,25 @@ class LetterComplaintController extends Controller
             'bus_uuid' => $uuid,
         ];
 
+        $notifTitle = 'Notification Title';
+        $notifBody = 'Notification Body';
+        $notifUrl = '/letter/workorder/show/detail/'.$workorderUuid;
+
+        $rawPushNotif = [
+            'to' => env('MECHANIC_TOPIC'),
+            'notification' => [
+                'title' => $notifTitle,
+                'body' => $notifBody,  
+            ],
+            'data' => [
+                'title' => $notifTitle,
+                'body' => $notifBody,  
+                'url' => $notifUrl,
+            ]
+        ];
+
         $saveWorkorder = Complaint::saveWorkorder($saveData);
+        $sendNotif = Rest::pushNotif($rawPushNotif);
 
         if ($saveWorkorder) {
             return back()->with('success', 'SPK berhasil dibuat!');
