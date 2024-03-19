@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\Letter\app\Http\Controllers\LetterApiController;
+use App\Http\Controllers\ToolsApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +24,4 @@ Route::get('spareparts', [LetterApiController::class, 'spareParts']);
 Route::get('trasbus', [LetterApiController::class, 'trasBus']);
 Route::get('invoice', [LetterApiController::class, 'invoice']);
 Route::get('invoice/{id}', [LetterApiController::class, 'invoiceDetail']);
+Route::get('fcm-test', [ToolsApiController::class, 'fcmTest']);

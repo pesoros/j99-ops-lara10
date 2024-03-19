@@ -16,7 +16,7 @@ class Fcm extends Model
     public function scopeSendPushNotification($query, $raw)
     {
         $firebase = (new Factory)
-            ->withServiceAccount(__DIR__.'/../../firebase_credentials.json');
+            ->withServiceAccount(__DIR__.'/../../firebase_credential.json');
  
         $messaging = $firebase->createMessaging();
  
