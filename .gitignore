@@ -9,6 +9,7 @@
 .env.backup
 .env.production
 .phpunit.result.cache
+firebase_credential.json
 Homestead.json
 Homestead.yaml
 auth.json
