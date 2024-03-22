@@ -32,6 +32,9 @@ class RoadWarrant extends Model
                 'customer.phone AS customer_phone',
                 'city_from.name as city_from',
                 'city_to.name as city_to',
+                'driver_1.id as driver_1_id',
+                'driver_2.id as driver_2_id',
+                'codriver.id as codriver_id',
                 DB::raw("CONCAT(driver_1.first_name,' ',driver_1.second_name) as driver_1_name"),
                 DB::raw("CONCAT(driver_2.first_name,' ',driver_2.second_name) as driver_2_name"),
                 DB::raw("CONCAT(codriver.first_name,' ',codriver.second_name) as codriver_name"),
@@ -57,6 +60,9 @@ class RoadWarrant extends Model
         $query = DB::table("ops_roadwarrant AS roadwarrant")
             ->select(
                 'roadwarrant.*',
+                'driver_1.id as driver_1_id',
+                'driver_2.id as driver_2_id',
+                'codriver.id as codriver_id',
                 DB::raw("CONCAT(driver_1.first_name,' ',driver_1.second_name) as driver_1_name"),
                 DB::raw("CONCAT(driver_2.first_name,' ',driver_2.second_name) as driver_2_name"),
                 DB::raw("CONCAT(codriver.first_name,' ',codriver.second_name) as codriver_name"),
@@ -258,6 +264,15 @@ class RoadWarrant extends Model
     {
         $query = DB::table("trip_expenses")
             ->where('id',$id)
+            ->update($data);
+
+        return $query;
+    }
+
+    public function scopeUpdateRoadWarrant($query, $uuid, $data)
+    {
+        $query = DB::table("ops_roadwarrant")
+            ->where('uuid',$uuid)
             ->update($data);
 
         return $query;

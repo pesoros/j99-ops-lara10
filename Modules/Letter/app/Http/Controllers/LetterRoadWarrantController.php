@@ -160,6 +160,55 @@ class LetterRoadWarrantController extends Controller
         }
     }
 
+    public function editRoadWarrant(Request $request, $category, $uuid)
+    {
+        if ($category === '1') {
+            $data['title'] = 'Edit Surat perintah jalan AKAP';
+            $data['bus'] = RoadWarrant::getBusAkap();
+            $data['employee'] = RoadWarrant::getEmployee();
+            $data['roadwarrant'] = RoadWarrant::getRoadWarrantAkap($uuid);
+
+            return view('letter::roadwarrantakap.edit', $data);
+        } else if ($category === '2') {
+            $data['title'] = 'Edit Surat perintah jalan Pariwisata';
+            $roadwarrant = RoadWarrant::getRoadWarrant($uuid);
+
+            $data['roadwarrant'] = $roadwarrant;
+            $data['book'] = RoadWarrant::getBook($roadwarrant->manifest_uuid);
+            $data['employee'] = RoadWarrant::getEmployee();
+
+            return view('letter::roadwarrant.edit', $data);
+        }
+    }
+
+    public function editRoadWarrantStore(Request $request, $category, $uuid)
+    {
+            $editRoadWarrantData = [
+                'km_start'                  =>  $request->km_start,
+                'km_end'                    =>  $request->km_end,
+                'driver_1'                  =>  $request->driver_1,
+                'driver_2'                  =>  $request->driver_2,
+                'codriver'                  =>  $request->codriver,
+                'driver_allowance_1'        =>  numberClearence($request->driver_allowance_1),
+                'driver_allowance_2'        =>  numberClearence($request->driver_allowance_2),
+                'codriver_allowance'        =>  numberClearence($request->codriver_allowance),
+                'trip_allowance'            =>  numberClearence($request->trip_allowance),
+                'fuel_allowance'            =>  numberClearence($request->fuel_allowance),
+                'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance),
+                'updated_by'                =>  auth()->user()->uuid,
+                'updated_at'                =>  Carbon::now(),
+            ];
+                    
+            $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
+
+            if ($editRoadWarrant) {
+                $categoryname = $category === '1' ? 'AKAP' : 'Pariwisata';
+                return back()->with('success', 'Anda berhasil edit data SPJ '.$categoryname);
+            }
+
+            return back()->with('failed', 'SPJ gagal di edit!');
+    }
+    
     public function expenseStatusUpdate(Request $request, $category, $uuid, $expense_uuid, $status_id)
     {
         $updateExpense['status'] = $status_id;
