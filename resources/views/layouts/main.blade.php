@@ -34,6 +34,13 @@
     <link rel="stylesheet" href="{{asset('assets/ui/plugins/summernote/summernote-bs4.min.css')}}">
     <!-- daterange picker -->
     <link rel="stylesheet" href="{{asset('assets/ui/plugins/daterangepicker/daterangepicker.css')}}">
+    <style>
+      @media print {
+        footer  {
+          display: none;
+        }
+      }
+    </style>
   </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
