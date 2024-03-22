@@ -155,6 +155,7 @@
                 <th>Tanggal</th>
                 <th>Kategori</th>
                 <th>Nominal</th>
+                <th>Koordinat (lat, long)</th>
                 <th>Status</th>
                 <th>File</th>
                 <th>Aksi</th>
@@ -170,6 +171,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
 
                 @foreach ($expensesList as $key => $expense)
                   <tr>
@@ -178,6 +180,7 @@
                     <td>{{ $expense->created_at }}</td>
                     <td>{{ $expense->action }}</td>
                     <td>{{ formatAmount($expense->nominal) }}</td>
+                    <td> <a href="https://www.google.com/maps/search/{{ $expense->location_lat }},{{ $expense->location_long }}?sa=X&ved=1t:242&ictx=111" target="_blank">{{ $expense->location_lat }}, {{ $expense->location_long }}</a></td>
                     <td>{{ $expense->status == 1 ? "-" : (($expense->status == 0) ? "Ditolak" : "Diterima") }}</td>
                     <td>
                       @if (!empty($expense->file))
