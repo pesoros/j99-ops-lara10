@@ -181,11 +181,11 @@
                     </td>
                     <td>
                       <a 
-                        href="{{ url('trip/manifest/expense/accept/'.$expense->id) }}"
+                        href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/2') }}"
                         class="btn btn-xs btn-success"
                       >Terima</a>
                       <a 
-                        href="{{ url('trip/manifest/expense/reject/'.$expense->id) }}"
+                        href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/0') }}"
                         class="btn btn-xs btn-danger"
                       >Tolak</a>
                     </td>

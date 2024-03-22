@@ -159,4 +159,12 @@ class LetterRoadWarrantController extends Controller
             return view('letter::roadwarrant.detail', $data);
         }
     }
+
+    public function expenseStatusUpdate(Request $request, $category, $uuid, $expense_uuid, $status_id)
+    {
+        $updateExpense['status'] = $status_id;
+        $saveComplaint = RoadWarrant::updateExpense($expense_uuid, $updateExpense);
+
+        return back()->with('success', 'Status berhasil dirubah');
+    }
 }

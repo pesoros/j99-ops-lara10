@@ -253,4 +253,13 @@ class RoadWarrant extends Model
 
         return $query;
     }
+
+    public function scopeUpdateExpense($query, $id, $data)
+    {
+        $query = DB::table("trip_expenses")
+            ->where('id',$id)
+            ->update($data);
+
+        return $query;
+    }
 }
