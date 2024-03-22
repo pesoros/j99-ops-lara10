@@ -144,7 +144,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
+                <td class="no-print"></td>
 
                 @foreach ($expensesList as $key => $expense)
                   <tr>
