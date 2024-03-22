@@ -131,7 +131,7 @@
                 <th>Koordinat (lat, long)</th>
                 <th>Status</th>
                 <th>File</th>
-                <th>Aksi</th>
+                <th class="no-print">Aksi</th>
               </tr>
               </thead>
               <tbody>
@@ -179,7 +179,7 @@
                         >
                       @endif
                     </td>
-                    <td>
+                    <td class="no-print">
                       <a 
                         href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/2') }}"
                         class="btn btn-xs btn-success"
