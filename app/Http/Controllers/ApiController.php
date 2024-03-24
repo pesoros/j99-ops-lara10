@@ -14,9 +14,9 @@ class ApiController extends Controller
         $getBus = Bus::getBusList();
 
         foreach ($getBus as $key => $value) {
-            if ($value->status === 0) {
+            if (INTVAL($value->status) === INTVAL(0)) {
                 $busMaintenance[] = $value;
-            } else if ($value->status === 1) {
+            } else if (INTVAL($value->status) === INTVAL(1)) {
                 $busReady[] = $value;
             }
         }
