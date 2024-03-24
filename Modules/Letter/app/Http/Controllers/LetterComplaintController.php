@@ -46,9 +46,6 @@ class LetterComplaintController extends Controller
             'is_closed' =>  0,
         ];
         
-        $updateBusData['status'] = 0;
-
-        $updateBusStatus = Bus::updateBus($request->bus_uuid, $updateBusData);
         $saveDamages = Complaint::saveDamages($saveDamageData);
 
         if ($saveDamages) {
@@ -69,7 +66,7 @@ class LetterComplaintController extends Controller
         return view('letter::complaint.detail', $data);
     }
 
-    public function createWorkorder($uuid)
+    public function createWorkorder($bus_uuid)
     {
         $workorderUuid = generateUuid();
         $workorderCount = Complaint::getWorkorderCount();
@@ -80,7 +77,7 @@ class LetterComplaintController extends Controller
             'created_by' => auth()->user()->uuid,
             'numberid' => genrateLetterNumber('SPK',$count),
             'count' => $count,
-            'bus_uuid' => $uuid,
+            'bus_uuid' => $bus_uuid,
         ];
 
         $notifTitle = 'Notification Title';
@@ -100,8 +97,11 @@ class LetterComplaintController extends Controller
             ]
         ];
 
+        $updateBusData['status'] = 0;
+
         $saveWorkorder = Complaint::saveWorkorder($saveData);
         $sendNotif = Fcm::sendPushNotification($rawPushNotif);
+        $updateBusStatus = Bus::updateBus($bus_uuid, $updateBusData);
 
         if ($saveWorkorder) {
             return back()->with('success', 'SPK berhasil dibuat!');
