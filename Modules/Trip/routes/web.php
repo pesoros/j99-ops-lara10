@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Trip\app\Http\Controllers\TripManifestController;
+use Modules\Trip\app\Http\Controllers\TripBusStatusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,5 +24,6 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('manifest/expenses/{id}', [TripManifestController::class, 'expensesReport']);
         Route::get('manifest/expenses/accept/{id}', [TripManifestController::class, 'expenseAccept']);
         Route::get('manifest/expenses/reject/{id}', [TripManifestController::class, 'expenseReject']);
+        Route::get('busstatus', [TripBusStatusController::class, 'busStatuskanban']);
     });
 });
