@@ -62,19 +62,20 @@
       }
 
       function elementGenerate(data) {
-        let el = '';
+        let el = ''
+        const badgeColor = data.category === "AKAP" ? "info" : "secondary"
         el += '<div class="card card-danger card-outline">'
         el += '  <div class="card-header">'
         el += '    <div>'
         el += '      <h5 class="card-title">'+ data.name +'</h5>'
         el += '    </div>'
         el += '    <div class="card-tools">'
-        el += '      <span class="">'+ data.category +'</span>'
+        el += '      <span class="badge badge-'+ badgeColor +'">'+ data.category +'</span>'
         el += '    </div>'
         el += '  </div>'
         el += '</div>'
 
-        return el;
+        return el
       }
 
       window.setInterval(function () {
