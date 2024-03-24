@@ -32,7 +32,8 @@
 <script type="text/javascript">
     $(function () {
 
-      function fetchItem() {
+      function fetchBus() {
+        console.log('fetch');
         axios.get(`/api/busstatus`)
           .then((response) => {
             addElementReadyWrap(response.data.busReady)
@@ -43,6 +44,7 @@
       }
 
       function addElementReadyWrap(data) {
+        $('#readyWrap').empty();
         let html = '';
         for (let index = 0; index < data.length; index++) {
           html += elementGenerate(data[index])
@@ -51,6 +53,7 @@
       }
       
       function addElementMaintenanceWrap(data) {
+        $('#maintenanceWrap').empty();
         let html = '';
         for (let index = 0; index < data.length; index++) {
           html += elementGenerate(data[index])
@@ -62,9 +65,11 @@
         let el = '';
         el += '<div class="card card-danger card-outline">'
         el += '  <div class="card-header">'
-        el += '    <h5 class="card-title">Gavan</h5>'
+        el += '    <div>'
+        el += '      <h5 class="card-title">'+ data.name +'</h5>'
+        el += '    </div>'
         el += '    <div class="card-tools">'
-        el += '      <a href="#" class="btn btn-tool btn-link">-</a>'
+        el += '      <span class="">'+ data.category +'</span>'
         el += '    </div>'
         el += '  </div>'
         el += '</div>'
@@ -72,7 +77,11 @@
         return el;
       }
 
-      fetchItem('')
+      window.setInterval(function () {
+        fetchBus()
+      }, 60000); // 60000 means 5 minutes
+      
+      fetchBus()
     });
 </script>
 @endpush
