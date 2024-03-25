@@ -59,6 +59,7 @@
               <td>
                 <div class="btn-group btn-block">
                   <a href="{{ url('employee/crew/detail/'.$value->id) }}" class="btn btn-success btn-sm">Detail</a>
+                  @if (permissionCheck('edit')) <a href="{{ url('employee/crew/edit/'.$value->id) }}" class="btn btn-warning btn-sm">Edit</a> @endif
                 </div>
               </td>
             </tr>

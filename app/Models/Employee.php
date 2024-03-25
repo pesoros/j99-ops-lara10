@@ -51,4 +51,13 @@ class Employee extends Model
 
         return $query;
     }
+
+    public function scopeUpdateCrew($query, $uuid, $data)
+    {
+        $query = DB::table("employee_history")
+            ->where('id',$uuid)
+            ->update($data);
+
+        return $query;
+    }
 }

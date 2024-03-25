@@ -28,64 +28,60 @@
   </div>
 @endif
  
-<div class="card">
+  <div class="card">
     <div class="card-header">
-        <h3 class="card-title">List {{ $title }}</h3>
-        <div class="float-right">
-            <a href="{{ url('employee/crew') }}" class="btn bg-gradient-primary btn-sm">Kembali</a>
+      <h3 class="card-title">{{ $title }}</h3>
+      <div class="float-right">
+          <a href="{{ url('employee/crew') }}" class="btn bg-gradient-primary btn-sm">Kembali</a>
+          @if (permissionCheck('edit')) <a href="{{ url('employee/crew/edit/'.$current->id) }}" class="btn btn-warning btn-sm">Edit</a> @endif
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="table-responsive">
+          <table class="table">
+            <tr>
+              <th>Nama Depan :</th>
+              <td>{{ $current->first_name }}</td>
+            </tr>
+            <tr>
+              <th>Nama Belakang :</th>
+              <td>{{ $current->second_name }}</td>
+            </tr>
+            <tr>
+              <th>Jabatan :</th>
+              <td>{{ $current->position }}</td>
+            </tr>
+            <tr>
+              <th>Nomor KTP :</th>
+              <td>{{ $current->document_id }}</td>
+            </tr>
+          </table>
         </div>
       </div>
-        <!-- info row -->
-        <div class="row">
-          <div class="col-sm-6">
-            <div class="table-responsive">
-              <table class="table">
-                <tr>
-                  <th>Nama Depan :</th>
-                  <td>{{ $current->first_name }}</td>
-                </tr>
-                <tr>
-                  <th>Nama Belakang :</th>
-                  <td>{{ $current->second_name }}</td>
-                </tr>
-                <tr>
-                  <th>Jabatan :</th>
-                  <td>{{ $current->position }}</td>
-                </tr>
-                <tr>
-                  <th>Nomor KTP :</th>
-                  <td>{{ $current->document_id }}</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-          <!-- /.col -->
-          <div class="col-sm-6">
-            <div class="table-responsive">
-              <table class="table">
-                <tr>
-                  <th>No. Telepon :</th>
-                  <td>{{ $current->phone_no }}</td>
-                </tr>
-                <tr>
-                  <th>Email :</th>
-                  <td>{{ $current->email_no }}</td>
-                </tr>
-                <tr>
-                  <th>Alamat :</th>
-                  <td>{{ $current->address_line_1 }} {{ $current->address_line_2 }}</td>
-                </tr>
-                <tr>
-                  <th></th>
-                  <td>{{ $current->country }} {{ $current->city }} {{ $current->zip }}</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-          <!-- /.col -->
+      <div class="col-sm-6">
+        <div class="table-responsive">
+          <table class="table">
+            <tr>
+              <th>No. Telepon :</th>
+              <td>{{ $current->phone_no }}</td>
+            </tr>
+            <tr>
+              <th>Email :</th>
+              <td>{{ $current->email_no }}</td>
+            </tr>
+            <tr>
+              <th>Alamat :</th>
+              <td>{{ $current->address_line_1 }} {{ $current->address_line_2 }}</td>
+            </tr>
+            <tr>
+              <th></th>
+              <td>{{ $current->country }} {{ $current->city }} {{ $current->zip }}</td>
+            </tr>
+          </table>
         </div>
-        <!-- /.row -->
-    <!-- /.card-header -->
+      </div>
+    </div>
     <div class="card-body">
       <table id="datatable-def" class="table table-bordered table-striped">
         <thead>
