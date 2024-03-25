@@ -17,6 +17,8 @@ use Modules\Employee\app\Http\Controllers\EmployeeCrewController;
 Route::middleware(['auth','has-permission'])->group(function () {
     Route::prefix('employee')->group(function () {
         Route::get('crew', [EmployeeCrewController::class, 'listCrew']);
-        Route::get('crew/attendance/{uuid}', [EmployeeCrewController::class, 'attendanceCrew']);
+        Route::get('crew/add', [EmployeeCrewController::class, 'addCrew']);
+        Route::post('crew/add', [EmployeeCrewController::class, 'addCrewStore']);
+        Route::get('crew/detail/{uuid}', [EmployeeCrewController::class, 'detailCrew']);
     });
 });

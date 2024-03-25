@@ -36,4 +36,19 @@ class Employee extends Model
 
         return $query;
     }
+
+    public function scopeGetPosition($query)
+    {
+        $query = DB::table("employee_type")
+            ->get();
+
+        return $query;
+    }
+
+    public function scopeSaveCrew($query, $data)
+    {
+        $query = DB::table("employee_history")->insert($data);
+
+        return $query;
+    }
 }

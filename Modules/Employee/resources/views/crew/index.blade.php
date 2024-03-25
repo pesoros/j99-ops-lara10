@@ -31,6 +31,13 @@
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">List {{ $title }}</h3>
+        <div class="float-right">
+          @if (permissionCheck('add'))
+            <a href="{{ url('employee/crew/add') }}" class="btn btn-primary btn-sm">
+              Tambah data crew
+            </a>
+          @endif
+        </div>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
@@ -51,7 +58,7 @@
               <td>{{ $value->position }}</td>
               <td>
                 <div class="btn-group btn-block">
-                  <a href="{{ url('employee/crew/attendance/'.$value->id) }}" class="btn btn-success btn-sm">Absen</a>
+                  <a href="{{ url('employee/crew/detail/'.$value->id) }}" class="btn btn-success btn-sm">Detail</a>
                 </div>
               </td>
             </tr>

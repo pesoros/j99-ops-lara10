@@ -20,10 +20,65 @@ class EmployeeCrewController extends Controller
 
         return view('employee::crew.index', $data);
     }
-    
-    public function attendanceCrew($uuid)
+
+    public function addCrew()
     {
-        $data['title'] = 'Absensi Crew';
+        $data['title'] = 'Tambah Crew';
+        $data['position'] = Employee::getPosition();
+
+        return view('employee::crew.add', $data);
+    }
+
+    public function addCrewStore(Request $request)
+    {
+        $credentials = $request->validate([
+            'first_name' => ['required', 'string'],
+            'last_name' => ['required', 'string'],
+            'phone' => ['required', 'string'],
+            'email' => ['required', 'string'],
+            'position' => ['required', 'string'],
+        ]);
+
+        $imageNameCrew = '-';
+        $imageNameIdCard = '-';
+        
+        if ($image = $request->file('crew_image')){
+            $imageNameCrew = time().'-'.uniqid().'.'.$image->getClientOriginalExtension();
+            $image->move('uploads/images/crew', $imageNameCrew);
+        }
+
+        if ($image = $request->file('idcard_image')){
+            $imageNameIdCard = time().'-'.uniqid().'.'.$image->getClientOriginalExtension();
+            $image->move('uploads/images/idcard', $imageNameIdCard);
+        }
+
+        $crewData = [
+            'first_name'   => $request->first_name,
+            'second_name'  => $request->last_name,
+            'position'     => $request->position,
+            'phone_no'     => $request->phone,
+            'picture'      => $imageNameCrew,
+            'document_pic' => $imageNameIdCard,
+            'email_no'     => $request->email,
+            'document_id'  => $request->idcard,
+            'address_line_1'=> $request->address,
+            'blood_group'   => $request->blood_group,
+            'city'         => $request->city,
+            'zip'          => $request->zipcode,
+        ];
+
+        $create = Employee::saveCrew($crewData);
+
+        if ($create) {
+            return back()->with('success', 'Crew tersimpan!');
+        }
+
+        return back()->with('failed', 'Crew gagal tersimpan!');        
+    }
+
+    public function detailCrew($uuid)
+    {
+        $data['title'] = 'Detail Crew';
         $data['current'] = Employee::getCrew($uuid);
         $data['list'] = Employee::getCrewAttendance($uuid);
 
