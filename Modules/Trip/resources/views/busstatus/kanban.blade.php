@@ -73,6 +73,13 @@
         el += '      <span class="badge badge-'+ badgeColor +'">'+ data.category +'</span>'
         el += '    </div>'
         el += '  </div>'
+        if (data.damagesActive.length > 0) {
+          el += '  <div class="card-body">'
+          data.damagesActive.map(((val, index) => {
+            el += '    <p>'+ parseInt(index + 1) +'. '+ val.scopename +' - '+ val.description +'</p>'
+          }))
+          el += '  </div>'
+        }
         el += '</div>'
 
         return el
