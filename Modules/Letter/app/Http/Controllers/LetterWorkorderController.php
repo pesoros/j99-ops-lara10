@@ -58,6 +58,8 @@ class LetterWorkorderController extends Controller
 
         $saveComplaint = Bus::updateBus($workorder->bus_uuid,$updateBusData);
 
+        $damagesStatusUpdate = Complaint::updateDamages($workorder->bus_uuid);
+        
         if ($updateWorkorder) {
             return back()->with('success', 'Status SPK berhasil diubah menjadi selesai!');
         }

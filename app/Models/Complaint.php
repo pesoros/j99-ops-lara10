@@ -111,4 +111,17 @@ class Complaint extends Model
 
         return $query;
     }
+
+    public function scopeUpdateDamages($query, $bus_uuid)
+    {
+        $data['is_closed'] = 1;
+        $query = DB::table("ops_damages")
+            ->where('bus_uuid', $bus_uuid)
+            ->where('is_closed', 0)
+            ->where('action_status', 2)
+            ->orWhere('action_status', 3)
+            ->update($data);
+
+        return $query;
+    }
 }

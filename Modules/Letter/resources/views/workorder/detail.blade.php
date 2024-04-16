@@ -71,6 +71,7 @@
         </div>
         <!-- /.row -->
 
+        @if (STRVAL($detailWorkorder->status) !== '2')
         <!-- Table row -->
         <div class="row">
           <div class="col-12 table-responsive">
@@ -138,6 +139,7 @@
           </div>
           <!-- /.col -->
         </div>
+        @endif
         <!-- /.row -->
         <div>
           
