@@ -71,17 +71,18 @@ class LetterComplaintController extends Controller
         $workorderUuid = generateUuid();
         $workorderCount = Complaint::getWorkorderCount();
         $count = !isset($workorderCount->count) ? 1 : $workorderCount->count + 1;
+        $workorderNumber = genrateLetterNumber('SPK',$count);
 
         $saveData = [
             'uuid' => $workorderUuid,
             'created_by' => auth()->user()->uuid,
-            'numberid' => genrateLetterNumber('SPK',$count),
+            'numberid' => $workorderNumber,
             'count' => $count,
             'bus_uuid' => $bus_uuid,
         ];
 
-        $notifTitle = 'Notification Title';
-        $notifBody = 'Notification Body';
+        $notifTitle = 'Surat Perintah Kerja';
+        $notifBody = $workorderNumber;
         $notifUrl = '/letter/workorder/show/detail/'.$workorderUuid;
 
         $rawPushNotif = [
