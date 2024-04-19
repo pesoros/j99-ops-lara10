@@ -117,9 +117,12 @@
                             <option value="0" @selected($part->status == 0)>Pilih status penanganan</option>
                             <option value="1" @selected($part->status == 1)>Direalisasikan</option>
                             <option value="2" @selected($part->status == 2)>Batal</option>
+                            <option value="3" @selected($part->status == 3)>Dipasang</option>
                           </select>
                         @else
-                          {{ $part->status == 1 ? 'Direalisasikan' : 'Batal' }}
+                          {{ $part->status === 1 ? 'Direalisasikan' : '' }}
+                          {{ $part->status === 2 ? 'Batal' : '' }}
+                          {{ $part->status === 3 ? 'Dipasang' : '' }}
                         @endif
                       </td>
                     </tr>
