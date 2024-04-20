@@ -58,6 +58,10 @@
                       <span class="badge badge-danger">Ditolak</span>                                        
                     @endif
                   </td>
+                  <tr>
+                    <th>Bus :</th>
+                    <td>{{ $detailGoodsRequest->bus_name }} | {{ $detailGoodsRequest->registration_number }}</td>
+                  </tr>
                 </tr>
               </table>
             </div>

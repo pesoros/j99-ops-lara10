@@ -24,9 +24,12 @@ class GoodsRequest extends Model
         $query = DB::table("ops_goodsrequest AS goodsrequest")
             ->select(
                 'goodsrequest.*',
-                'workorder.numberid AS workorder_numberid'
+                'workorder.numberid AS workorder_numberid',
+                'bus.name AS bus_name',
+                'bus.registration_number AS registration_number'
             )
             ->join("ops_workorder AS workorder", "workorder.uuid", "=", "goodsrequest.workorder_uuid")
+            ->join("v2_bus AS bus", "bus.uuid", "=", "workorder.bus_uuid")
             ->where('goodsrequest.uuid',$uuid)
             ->orderBy('goodsrequest.created_at','DESC')
             ->first();
