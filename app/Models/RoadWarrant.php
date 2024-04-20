@@ -86,6 +86,23 @@ class RoadWarrant extends Model
         return $query;
     }
 
+    public function scopeGetAssignee($query, $date, $driverid)
+    {
+        $query = DB::table("ops_roadwarrant AS roadwarrant")
+            ->select('manifest.trip_date')
+            ->join("manifest", "manifest.uuid", "=", "roadwarrant.manifest_uuid")
+            ->where('manifest.trip_date', $date)
+            ->where(function ($query) use ($driverid) {
+                $query->where('roadwarrant.driver_1', '=', $driverid)
+                    ->orWhere('roadwarrant.driver_2', '=', $driverid)
+                    ->orWhere('roadwarrant.codriver', '=', $driverid);
+            })
+            ->orderBy('roadwarrant.created_at','ASC')
+            ->get();
+
+        return $query;
+    }
+
     public function scopeGetBookAvailable($query)
     {
         $startDate = Carbon::today();

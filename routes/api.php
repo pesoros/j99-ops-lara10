@@ -27,3 +27,4 @@ Route::get('invoice', [LetterApiController::class, 'invoice']);
 Route::get('invoice/{id}', [LetterApiController::class, 'invoiceDetail']);
 Route::get('fcm-test', [ToolsApiController::class, 'fcmTest']);
 Route::get('busstatus', [ApiController::class, 'busStatus']);
+Route::get('employeeready', [ApiController::class, 'employeeReady']);

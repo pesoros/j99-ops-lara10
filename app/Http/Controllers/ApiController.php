@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Bus;
 use App\Models\Complaint;
+use App\Models\RoadWarrant;
 
 class ApiController extends Controller
 {
@@ -29,5 +30,17 @@ class ApiController extends Controller
         ];
 
         return $result;
+    }
+
+    function employeeReady(Request $request) 
+    {
+        $date = $request->query('date');
+        $employee = RoadWarrant::getEmployee();
+
+        foreach ($employee as $key => $value) {
+            $value->assignee = RoadWarrant::getAssignee($date, $value->id);
+        }
+
+        return $employee;
     }
 }

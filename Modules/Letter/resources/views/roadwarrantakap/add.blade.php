@@ -75,41 +75,20 @@
           </div>
           <div class="form-group">
             <label>Driver 1</label>
-            <select class="form-control select2bs4" name="driver_1" style="width: 100%;" required>
+            <select class="form-control select2bs4" id="driver1" name="driver_1" style="width: 100%;" required>
               <option value="">Pilih</option>
-              @foreach ($employee as $employeeItem)
-                  @if ($employeeItem->position === 'Driver')
-                    <option value="{{ $employeeItem->id }}" @selected(old('driver_1') == $employeeItem->id)>
-                        {{ $employeeItem->first_name.' '.$employeeItem->second_name }}
-                    </option>
-                  @endif
-              @endForeach
             </select>
           </div>
           <div class="form-group">
             <label>Driver 2</label>
-            <select class="form-control select2bs4" name="driver_2" style="width: 100%;" required>
+            <select class="form-control select2bs4" id="driver2" name="driver_2" style="width: 100%;" required>
               <option value="">Pilih</option>
-              @foreach ($employee as $employeeItem)
-                  @if ($employeeItem->position === 'Driver')
-                    <option value="{{ $employeeItem->id }}" @selected(old('driver_2') == $employeeItem->id)>
-                        {{ $employeeItem->first_name.' '.$employeeItem->second_name }}
-                    </option>
-                  @endif
-              @endForeach
             </select>
           </div>
           <div class="form-group">
             <label>Co driver</label>
-            <select class="form-control select2bs4" name="codriver" style="width: 100%;" required>
+            <select class="form-control select2bs4" id="codriver" name="codriver" style="width: 100%;" required>
               <option value="">Pilih</option>
-              @foreach ($employee as $employeeItem)
-                  @if ($employeeItem->position === 'Assistant')
-                    <option value="{{ $employeeItem->id }}" @selected(old('codriver') == $employeeItem->id)>
-                        {{ $employeeItem->first_name.' '.$employeeItem->second_name }}
-                    </option>
-                  @endif
-              @endForeach
             </select>
           </div>
         </div>
@@ -184,9 +163,9 @@
 <script type="text/javascript">
   let maxDate = dayjs().add(7, 'day').format('YYYY-MM-DD')
   $('#datepicker').datetimepicker({
-      format: 'DD/MM/YYYY',
-      minDate : 'now',
-      maxDate : maxDate,
+    format: 'DD/MM/YYYY',
+    minDate : 'now',
+    maxDate : maxDate,
   });
 
   $("#bus-select").change(function(e){
@@ -197,7 +176,6 @@
     $('#tras-item').html('');
     axios.get(`/api/trasbus?busuuid=${value}`)
       .then((response) => {
-        console.log(response.data)
         addElementToSelect(response.data);
       }, (error) => {
         console.log(error);
@@ -211,6 +189,36 @@
       html += '<option value="'+ data[index].trasid +'">'+ data[index].trasid + ' | ' + data[index].trip_title +'</option>'
     }
     $('#tras-item').append(html);
+  }
+
+  $("#datepicker").on("change.datetimepicker", ({date}) => {
+    const dateConv = dayjs(date._d).format('YYYY-MM-DD')
+    fetchEmployee(dateConv)
+  })
+
+  function fetchEmployee(value) {
+    $('#driver1').html('');
+    $('#driver2').html('');
+    $('#codriver').html('');
+    axios.get(`/api/employeeready?date=${value}`)
+      .then((response) => {
+        addElementToSelectEmployee(response.data);
+      }, (error) => {
+        console.log(error);
+      });
+  }
+
+  function addElementToSelectEmployee(data) {
+    let html = '';
+    html += '<option value="">Pilih</option>'
+    for (let index = 0; index < data.length; index++) {
+      if (data[index].assignee.length === 0) {
+        html += '<option value="'+ data[index].id +'">'+ data[index].first_name + ' ' + data[index].second_name +'</option>'
+      }
+    }
+    $('#driver1').append(html);
+    $('#driver2').append(html);
+    $('#codriver').append(html);
   }
 </script>
 @endpush
