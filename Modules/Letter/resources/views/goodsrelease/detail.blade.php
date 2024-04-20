@@ -120,7 +120,7 @@
                   @endforeach
                 </tbody>
               </table>
-              <div class="card-footer">
+              <div class="card-footer no-print">
                 @if (permissionCheck('edit'))
                   @if (STRVAL($detailGoodsRelease->status) === '0')
                     <a href="{{ url('letter/goodsrelease/update/progress/'.$detailGoodsRelease->uuid) }}" onclick="return confirm('Anda yakin memulai SPB ini?')" class="btn bg-gradient-primary">Mulai kerjakan SKB ini</a>
@@ -140,9 +140,25 @@
           
         </div>
       </div>
+      <div class="row no-print">
+        <div class="col-12">
+          <a href="#" rel="noopener" target="_blank" class="btn btn-default printPage"><i class="fas fa-print"></i> Print</a>
+        </div>
+      </div>
+      <br>
       <!-- /.invoice -->
     </div><!-- /.col -->
   </div><!-- /.row -->
 </div>
  
 @endsection
+@push('extra-scripts')
+<script type="text/javascript">
+    $(function () {
+      $('a.printPage').click(function(){
+           window.print();
+           return false;
+      });
+    });
+</script>
+@endpush

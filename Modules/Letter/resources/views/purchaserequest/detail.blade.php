@@ -138,7 +138,7 @@
             </table>
             <form action="{{ url('letter/purchaserequest/update/approval/'.$detailPurchaseRequest->uuid) }}" method="post">
               @csrf
-              <div class="col-sm-12">
+              <div class="col-sm-12 no-print">
                 <div class="form-group">
                   <label for="bus">Masukkan persetujuan</label>
                   <div id="damageForm">
@@ -162,7 +162,7 @@
                 </div>
               </div>
             </form>
-            <div class="card-footer">
+            <div class="card-footer no-print">
               <a href="{{ url('letter/purchaserequest') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
             </div>
           </div>
@@ -173,9 +173,25 @@
           
         </div>
       </div>
+      <div class="row no-print">
+        <div class="col-12">
+          <a href="#" rel="noopener" target="_blank" class="btn btn-default printPage"><i class="fas fa-print"></i> Print</a>
+        </div>
+      </div>
+      <br>
       <!-- /.invoice -->
     </div><!-- /.col -->
   </div><!-- /.row -->
 </div>
  
 @endsection
+@push('extra-scripts')
+<script type="text/javascript">
+    $(function () {
+      $('a.printPage').click(function(){
+           window.print();
+           return false;
+      });
+    });
+</script>
+@endpush

@@ -26,7 +26,7 @@
             <h4>
               <img src="{{url('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
               @if (STRVAL($detailGoodsRequest->status) === '1')
-                <a href="{{ url('letter/goodsrequest/update/close/'.$detailGoodsRequest->uuid) }}" onclick="return confirm('Anda yakin menyelesaikan SPB ini?')" class="btn bg-gradient-primary float-right">Selesaikan SPB ini</a>
+                <a href="{{ url('letter/goodsrequest/update/close/'.$detailGoodsRequest->uuid) }}" onclick="return confirm('Anda yakin menyelesaikan SPB ini?')" class="btn bg-gradient-primary float-right no-print">Selesaikan SPB ini</a>
               @endif
             </h4>
           </div>
@@ -129,7 +129,7 @@
                   @endforeach
                 </tbody>
               </table>
-              <div class="card-footer">
+              <div class="card-footer no-print">
                 @if (permissionCheck('edit'))
                   @if (STRVAL($detailGoodsRequest->status) === '0')
                     <a href="{{ url('letter/goodsrequest/update/progress/'.$detailGoodsRequest->uuid) }}" onclick="return confirm('Anda yakin memulai SPB ini?')" class="btn bg-gradient-primary">Mulai kerjakan SPB ini</a>
@@ -149,9 +149,25 @@
           
         </div>
       </div>
+      <div class="row no-print">
+        <div class="col-12">
+          <a href="#" rel="noopener" target="_blank" class="btn btn-default printPage"><i class="fas fa-print"></i> Print</a>
+        </div>
+      </div>
+      <br>
       <!-- /.invoice -->
     </div><!-- /.col -->
   </div><!-- /.row -->
 </div>
  
 @endsection
+@push('extra-scripts')
+<script type="text/javascript">
+    $(function () {
+      $('a.printPage').click(function(){
+           window.print();
+           return false;
+      });
+    });
+</script>
+@endpush

@@ -20,6 +20,14 @@
     <div class="col-12">
       <!-- Main content -->
       <div class="invoice p-3 mb-3">
+        <div class="row">
+          <div class="col-12">
+            <h4>
+              <img src="{{url('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
+            </h4>
+          </div>
+          <!-- /.col -->
+        </div>
         <!-- info row -->
         <div class="row invoice-info">
           <div class="col-sm-6 invoice-col">
@@ -158,7 +166,7 @@
                 <th>Koordinat (lat, long)</th>
                 <th>Status</th>
                 <th>File</th>
-                <th>Aksi</th>
+                <th class="no-print">Aksi</th>
               </tr>
               </thead>
               <tbody>
@@ -171,7 +179,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
+                <td class="no-print"></td>
 
                 @foreach ($expensesList as $key => $expense)
                   <tr>
@@ -206,7 +214,7 @@
                         >
                       @endif
                     </td>
-                    <td>
+                    <td class="no-print">
                       <a 
                         href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/2') }}"
                         class="btn btn-xs btn-success"
@@ -225,6 +233,12 @@
         <!-- /.row -->
       </div>
       <!-- /.invoice -->
+      <div class="row no-print">
+        <div class="col-12">
+          <a href="#" rel="noopener" target="_blank" class="btn btn-default printPage"><i class="fas fa-print"></i> Print</a>
+        </div>
+      </div>
+      <br>
       {{-- <div>
         @if (permissionCheck('add'))
           <a href="{{ url('letter/complaint/add/createworkorder/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin membuat SPK berdasarkan keluhan ini?')" class="btn bg-gradient-primary btn-sm">Buat SPK berdasarkan keluhan ini</a>
@@ -235,3 +249,13 @@
 </div>
  
 @endsection
+@push('extra-scripts')
+<script type="text/javascript">
+    $(function () {
+      $('a.printPage').click(function(){
+           window.print();
+           return false;
+      });
+    });
+</script>
+@endpush

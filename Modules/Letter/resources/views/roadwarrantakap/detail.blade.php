@@ -20,6 +20,14 @@
     <div class="col-12">
       <!-- Main content -->
       <div class="invoice p-3 mb-3">
+        <div class="row">
+          <div class="col-12">
+            <h4>
+              <img src="{{url('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
+            </h4>
+          </div>
+          <!-- /.col -->
+        </div>
         <!-- info row -->
         <div class="row invoice-info">
           <div class="col-sm-12 invoice-col">
