@@ -39,6 +39,7 @@ class ApiController extends Controller
 
         foreach ($employee as $key => $value) {
             $value->assignee = RoadWarrant::getAssignee($date, $value->id);
+            $value->assignee_akap = RoadWarrant::getAssigneeAkap($date, $value->id);
         }
 
         return $employee;

@@ -212,7 +212,7 @@
     let html = '';
     html += '<option value="">Pilih</option>'
     for (let index = 0; index < data.length; index++) {
-      if (data[index].assignee.length === 0) {
+      if (data[index].assignee.length === 0 && data[index].assignee_akap.length === 0) {
         html += '<option value="'+ data[index].id +'">'+ data[index].first_name + ' ' + data[index].second_name +'</option>'
       }
     }
