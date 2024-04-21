@@ -39,6 +39,10 @@
     <div class="card-body row">
       <div class="col-sm-12">
         <div class="form-group">
+          <label>Tujuan</label>
+          <textarea class="form-control" name="deliver_to" rows="3" placeholder="Masukkan tujuan">{{ old('deliver_to') }}</textarea>
+        </div>
+        <div class="form-group">
           <button type="button" class="btn btn-secondary btn-sm" id="addRow">
             Tambah barang
           </button>

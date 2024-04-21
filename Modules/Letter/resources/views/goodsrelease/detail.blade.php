@@ -59,6 +59,10 @@
                     @endif
                   </td>
                 </tr>
+                <tr>
+                  <th>Tujuan :</th>
+                  <td>{{ $detailGoodsRelease->deliver_to }}</td>
+                </tr>
               </table>
             </div>
           </div>

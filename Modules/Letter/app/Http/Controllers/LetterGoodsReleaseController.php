@@ -45,6 +45,7 @@ class LetterGoodsReleaseController extends Controller
             'numberid' => genrateLetterNumber('SKB',$count),
             'count' => $count,
             'status' => 0,
+            'deliver_to' => $request->deliver_to,
         ];
 
         $savePartData = [];
