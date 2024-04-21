@@ -39,6 +39,13 @@
     <div class="card-body row">
       <div class="col-sm-12">
         <div class="form-group">
+          <label>Permintaan Operasional</label>
+          <select class="form-control select2bs4" name="is_ops_needs" style="width: 100%;" required>
+              <option value="0" @selected(old('is_ops_needs') == '0')>Tidak</option>
+              <option value="1" @selected(old('is_ops_needs') == '1')>Ya</option>
+          </select>
+        </div>
+        <div class="form-group">
           <button type="button" class="btn btn-secondary btn-sm" id="addRow">
             Tambah barang
           </button>

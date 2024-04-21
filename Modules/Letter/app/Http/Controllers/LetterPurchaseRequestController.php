@@ -43,6 +43,7 @@ class LetterPurchaseRequestController extends Controller
             'numberid' => genrateLetterNumber('PR',$count),
             'count' => $count,
             'status' => 0,
+            'is_ops_needs' => $request->is_ops_needs,
         ];
 
         $savePartData = [];
@@ -73,7 +74,8 @@ class LetterPurchaseRequestController extends Controller
         $data['detailPurchaseRequest'] = PurchaseRequest::getPurchaseRequest($uuid);
         $data['creator'] = User::getUser($data['detailPurchaseRequest']->created_by);
         $data['parts'] = PurchaseRequest::getPurchaseRequestParts($data['detailPurchaseRequest']->uuid);
-        $data['approval'] = Approval::getApprovalList($uuid, config('constants.purpose.pr'), config('constants.approval_role_needs.pr'));
+        $approvalRoleData = $data['detailPurchaseRequest']->is_ops_needs === 1 ? config('constants.approval_role_needs.pr_ops') : config('constants.approval_role_needs.pr');
+        $data['approval'] = Approval::getApprovalList($uuid, config('constants.purpose.pr'), $approvalRoleData);
 
         return view('letter::purchaserequest.detail', $data);
     }
