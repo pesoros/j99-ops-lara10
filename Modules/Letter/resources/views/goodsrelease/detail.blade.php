@@ -140,9 +140,6 @@
           <!-- /.col -->
         </div>
         <!-- /.row -->
-        <div>
-          
-        </div>
       </div>
       <div class="row no-print">
         <div class="col-12">
@@ -154,8 +151,35 @@
     </div><!-- /.col -->
   </div><!-- /.row -->
 </div>
+<div class="row signTable no-screen">
+  <div class="plate">PEMBUAT</div>
+  <div class="plate">PENGIRIM</div>
+  <div class="plate">SECURITY</div>
+  <div class="plate">PENERIMA</div>
+</div>
  
 @endsection
+@push('extra-styles')
+<style>
+  .signTable {
+    margin-left: 16px;
+    margin-right: 16px;
+    justify-content:space-between;
+    margin-top: 128px;
+  }
+  .plate {
+    width: 23%;
+    text-align: center;
+    border-top: 2px solid black;
+  }
+  @media screen {
+    .no-screen  {
+      display: none;
+    }
+  }
+</style>
+@endpush
+
 @push('extra-scripts')
 <script type="text/javascript">
     $(function () {
