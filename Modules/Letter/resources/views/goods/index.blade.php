@@ -30,9 +30,12 @@
                   <span class="badge badge-warning">Sedang diproses</span>                                        
                 @endif
                 @if (STRVAL($value->status) === '2')
-                  <span class="badge badge-success">Selesai</span>                                        
+                  <span class="badge badge-success">Siap diambil</span>                                        
                 @endif
                 @if (STRVAL($value->status) === '3')
+                  <span class="badge badge-danger">Selesai</span>                                        
+                @endif
+                @if (STRVAL($value->status) === '4')
                   <span class="badge badge-danger">Ditolak</span>                                        
                 @endif
               </td>

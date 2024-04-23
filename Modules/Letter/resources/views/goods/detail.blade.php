@@ -26,6 +26,9 @@
             <h4>
               <img src="{{url('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
               @if (STRVAL($detailGoodsRequest->status) === '1')
+                <a href="{{ url('letter/goodsrequest/update/ready/'.$detailGoodsRequest->uuid) }}" onclick="return confirm('Anda yakin mengubah status menjadi sudah siap?')" class="btn bg-gradient-success float-right no-print">Barang sudah siap</a>
+              @endif
+              @if (STRVAL($detailGoodsRequest->status) === '2')
                 <a href="{{ url('letter/goodsrequest/update/close/'.$detailGoodsRequest->uuid) }}" onclick="return confirm('Anda yakin menyelesaikan SPB ini?')" class="btn bg-gradient-primary float-right no-print">Selesaikan SPB ini</a>
               @endif
             </h4>
@@ -52,9 +55,12 @@
                       <span class="badge badge-warning">Sedang diproses</span>                                        
                     @endif
                     @if (STRVAL($detailGoodsRequest->status) === '2')
-                      <span class="badge badge-success">Selesai</span>                                        
+                      <span class="badge badge-default">Siap diambil</span>                                        
                     @endif
                     @if (STRVAL($detailGoodsRequest->status) === '3')
+                      <span class="badge badge-danger">Selesai</span>                                        
+                    @endif
+                    @if (STRVAL($detailGoodsRequest->status) === '4')
                       <span class="badge badge-danger">Ditolak</span>                                        
                     @endif
                   </td>

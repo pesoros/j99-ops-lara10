@@ -102,6 +102,19 @@ class LetterGoodsController extends Controller
         return back()->with('failed', 'Status SPB gagal diubah menjadi dikerjakan!');   
     }
 
+    public function readyGoodsRequest(Request $request, $uuid)
+    {
+        $updateData['status'] = 2;
+
+        $updateGoodsRequest = GoodsRequest::updateGoodsRequest($uuid, $updateData);
+
+        if ($updateGoodsRequest) {
+            return back()->with('success', 'Status SPB berhasil diubah menjadi siap diambil!');
+        }
+
+        return back()->with('failed', 'Status SPB gagal diubah menjadi siap diambil!');
+    }
+
     public function closeGoodsRequest(Request $request, $uuid)
     {
         $checkParts = GoodsRequest::checkPartsValid($uuid);
@@ -110,7 +123,7 @@ class LetterGoodsController extends Controller
             return back()->with('failed', 'Masih terdapat barang yang statusnya menunggu, Status SPB gagal diubah menjadi selesai!');   
         }
 
-        $updateData['status'] = 2;
+        $updateData['status'] = 3;
         $stockDataRaw = [];
         $parts = GoodsRequest::getGoodsRequestParts($uuid);
         foreach ($parts as $key => $value) {
@@ -133,7 +146,7 @@ class LetterGoodsController extends Controller
             return back()->with('success', 'Status SPB berhasil diubah menjadi selesai!');
         }
 
-        return back()->with('failed', 'Status SPB gagal diubah menjadi selesai!');   
+        return back()->with('failed', 'Status SPB gagal diubah menjadi selesai!');    
     }
 
     public function updateAction(Request $request, $uuid)
