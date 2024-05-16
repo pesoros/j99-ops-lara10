@@ -157,7 +157,6 @@ class MasterData extends Model
             ->select('tras.id as trasid','tras.trip as trip','trip.trip_title', 'freg.reg_no')
             ->join("trip", "trip.trip_id", "=", "tras.trip")
             ->leftJoin("fleet_registration as freg", "freg.id", "=", "tras.fleet_registration_id")
-            ->where('tras.status','1')
             ->orderBy('trasid','ASC')
             ->get();
 
