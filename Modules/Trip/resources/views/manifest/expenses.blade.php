@@ -25,7 +25,7 @@
           <div class="col-12">
             <h4>
             <img src="{{url('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
-            <a href="{{ url('trip/manifest') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success float-right mr-1">Kembali</a>
+            <a href="{{ url('trip/manifest') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success float-right mr-1 no-print">Kembali</a>
             </h4>
           </div>
           <!-- /.col -->
@@ -170,12 +170,26 @@
         </div>
         <!-- /.row -->
         <div>
-          
         </div>
       </div>
       <!-- /.invoice -->
+      <div class="row no-print">
+        <div class="col-12">
+          <a href="#" rel="noopener" target="_blank" class="btn btn-default printPage"><i class="fas fa-print"></i> Print</a>
+        </div>
+      </div>
     </div><!-- /.col -->
   </div><!-- /.row -->
 </div>
  
 @endsection
+@push('extra-scripts')
+<script type="text/javascript">
+    $(function () {
+      $('a.printPage').click(function(){
+           window.print();
+           return false;
+      });
+    });
+</script>
+@endpush
