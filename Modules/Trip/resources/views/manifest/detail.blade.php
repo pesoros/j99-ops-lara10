@@ -26,11 +26,11 @@
             <h4>
             <img src="{{url('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
             @if (STRVAL($detailManifest->status) === '1')
-            <a href="{{ url('trip/manifest/close/'.$detailManifest->id) }}" onclick="return confirm('Anda yakin menyelesaikan Manifest ini?')" class="btn bg-gradient-primary float-right">Selesaikan manifest ini</a>
+            <a href="{{ url('trip/manifest/close/'.$detailManifest->id) }}" onclick="return confirm('Anda yakin menyelesaikan Manifest ini?')" class="btn bg-gradient-primary float-right no-print">Selesaikan manifest ini</a>
             @else
-            <a href="{{ url('trip/manifest/open/'.$detailManifest->id) }}" onclick="return confirm('Anda yakin mermbuks Manifest ini?')" class="btn bg-gradient-danger float-right">Aktifkan kembali manifest ini</a>
+            <a href="{{ url('trip/manifest/open/'.$detailManifest->id) }}" onclick="return confirm('Anda yakin mermbuks Manifest ini?')" class="btn bg-gradient-danger float-right no-print">Aktifkan kembali manifest ini</a>
             @endif
-            <a href="{{ url('trip/manifest') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success float-right mr-1">Kembali</a>
+            <a href="{{ url('trip/manifest') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success float-right mr-1 no-print">Kembali</a>
             </h4>
           </div>
           <!-- /.col -->
