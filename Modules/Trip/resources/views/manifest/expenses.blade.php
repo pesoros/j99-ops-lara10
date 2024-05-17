@@ -111,7 +111,7 @@
                 <th>Nominal</th>
                 <th>Status</th>
                 <th>File</th>
-                <th class="no-print">Aksi</th>
+                <!-- <th class="no-print">Aksi</th> -->
               </tr>
               </thead>
               <tbody>
@@ -151,7 +151,7 @@
                         >
                       @endif
                     </td>
-                    <td class="no-print">
+                    <!-- <td class="no-print">
                       <a 
                         href="{{ url('trip/manifest/expense/accept/'.$expense->id) }}"
                         class="btn btn-xs btn-success"
@@ -160,7 +160,7 @@
                         href="{{ url('trip/manifest/expense/reject/'.$expense->id) }}"
                         class="btn btn-xs btn-danger"
                       >Tolak</a>
-                    </td>
+                    </td> -->
                   </tr>
                 @endforeach
               </tbody>
