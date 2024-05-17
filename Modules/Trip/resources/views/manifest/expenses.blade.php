@@ -84,6 +84,12 @@
                     {{ $detailManifest->driver2_name }} {{ $detailManifest->driver2_lastname }}
                   </td>
                 </tr>
+                <tr>
+                  <th>Co Driver :</th>
+                  <td>
+                    {{ $detailManifest->codriver_name }} {{ $detailManifest->codriver_lastname }}
+                  </td>
+                </tr>
               </table>
             </div>
           </div>
