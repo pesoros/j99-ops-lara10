@@ -143,8 +143,23 @@
         </div>
       </div>
       <!-- /.invoice -->
+      <div class="row no-print">
+        <div class="col-12">
+          <a href="#" rel="noopener" target="_blank" class="btn btn-default printPage"><i class="fas fa-print"></i> Print</a>
+        </div>
+      </div>
     </div><!-- /.col -->
   </div><!-- /.row -->
 </div>
  
 @endsection
+@push('extra-scripts')
+<script type="text/javascript">
+    $(function () {
+      $('a.printPage').click(function(){
+           window.print();
+           return false;
+      });
+    });
+</script>
+@endpush
