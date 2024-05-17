@@ -123,7 +123,7 @@
                 <td>{{ formatAmount($detailManifest->allowance) }}</td>
                 <td></td>
                 <td></td>
-                <td></td>
+                <!-- <td></td> -->
 
                 @foreach ($expensesList as $key => $expense)
                   <tr>
