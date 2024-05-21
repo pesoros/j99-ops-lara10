@@ -94,27 +94,31 @@
                   <td>{{ $roadwarrant->driver_2_name }}</td>
                 </tr>
                 <tr>
-                  <th>Co driver :</th>
+                  <th>Co-driver :</th>
                   <td>{{ $roadwarrant->codriver_name }}</td>
                 </tr>
                 <tr>
-                  <th>Uang saku :</th>
+                  <th>Uang Saku :</th>
                   <td>{{ formatAmount($roadwarrant->trip_allowance) }}</td>
                 </tr>
                 <tr>
-                  <th>Uang premi driver 1 :</th>
+                  <th>Uang Bensin :</th>
+                  <td>{{ formatAmount($roadwarrant->fuel_allowance) }}</td>
+                </tr>
+                <tr>
+                  <th>Uang Premi Driver 1 :</th>
                   <td>{{ formatAmount($roadwarrant->driver_allowance_1) }}</td>
                 </tr>
                 <tr>
-                  <th>Uang premi Driver 2 :</th>
+                  <th>Uang Premi Driver 2 :</th>
                   <td>{{ formatAmount($roadwarrant->driver_allowance_2) }}</td>
                 </tr>
                 <tr>
-                  <th>Uang premi Co driver :</th>
+                  <th>Uang Premi Co-driver :</th>
                   <td>{{ formatAmount($roadwarrant->codriver_allowance) }}</td>
                 </tr>
                 <tr>
-                  <th>Uang makan kru :</th>
+                  <th>Uang Makan Crew :</th>
                   <td>{{ formatAmount($roadwarrant->crew_meal_allowance) }}</td>
                 </tr>
               </table>
@@ -143,17 +147,6 @@
               </tr>
               </thead>
               <tbody>
-
-                <td></td>
-                <td>Saldo awal</td>
-                <td></td>
-                <td></td>
-                <td>{{ formatAmount($roadwarrant->trip_allowance) }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td class="no-print"></td>
-
                 @foreach ($expensesList as $key => $expense)
                   <tr>
                     <td>{{ $key + 1 }}</td>
