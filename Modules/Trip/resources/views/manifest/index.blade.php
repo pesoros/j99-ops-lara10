@@ -64,7 +64,7 @@
               <td>
                 <div class="btn-group btn-block">
                   <a href="{{ url('trip/manifest/detail/'.$manifest->id) }}" class="btn btn-primary btn-sm">Detail</a>
-                  <a href="{{ url('trip/manifest/expenses/'.$manifest->id) }}" class="btn btn-success btn-sm">Keuangan</a>
+                  <!-- <a href="{{ url('trip/manifest/expenses/'.$manifest->id) }}" class="btn btn-success btn-sm">Keuangan</a> -->
                 </div>
               </td>
             </tr>
