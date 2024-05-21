@@ -76,7 +76,7 @@
         if (data.damagesActive.length > 0) {
           el += '  <div class="card-body">'
           data.damagesActive.map(((val, index) => {
-            el += '    <p>'+ parseInt(index + 1) +'. '+ val.scopename +' - '+ val.description +'</p>'
+            el += '    <p>'+'. '+ val.scopename +' - '+ val.description +' | '+ val.action_description +'</p>'
           }))
           el += '  </div>'
         }
