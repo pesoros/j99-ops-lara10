@@ -123,12 +123,19 @@ class Rest extends Model
 
     public function scopeSendWaPassenger($query, $phone)
     {
+        $headers = [
+            ...$this->headers,
+            'Content-Type' => 'application/json'
+        ];
         $formatPhone = formatPhone('081288855773');
         $formatPhone = str_replace('+', '', $formatPhone);
         $text = '%20ini%20adalah%20kode%20OTP%20anda.%20Untuk%20keamanan%20anda,%20jangan%20bagikan%20kode%20ini%20dengan%20orang%20lain.';
         $url = getenv('WA_BASEURL').'/api/sendText?phone='.$formatPhone.'&text='.$text.'&session=default';
 
-        $fetch = $this->client->request('GET', $url)->getBody();
+        $fetch = $this->client->request(
+            'GET', $url, [
+            'headers' => $headers,
+        ])->getBody();
 
         return json_decode($fetch);
     }
