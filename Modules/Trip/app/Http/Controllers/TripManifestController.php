@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Trip;
+use App\Models\Rest;
 
 class TripManifestController extends Controller
 {
@@ -93,5 +94,18 @@ class TripManifestController extends Controller
         $updateExpense = Trip::updateExpense($expenseid, $updateData);
 
         return redirect('trip/manifest/expenses/'.$id);
+    }
+
+    public function sendWaToPassengers(Request $request, $id)
+    {
+        $manifest = Trip::getManifest($id);
+        $passengers = Trip::getPassengerList($manifest->trip_assign, $manifest->trip_date);
+
+        foreach ($passengers as $key => $value) {
+            $sendWa = Rest::sendWaPassenger($value->phone);
+        }
+
+        // return back()->with('success', 'Broadcast berhasil');
+        return json_encode($passengers);
     }
 }

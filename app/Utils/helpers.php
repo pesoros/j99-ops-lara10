@@ -83,3 +83,25 @@ function console_log($output, $with_script_tags = true) {
   }
   echo $js_code;
 }
+
+function formatPhone($nomorhp) {
+  $nomorhp = trim($nomorhp);
+  $nomorhp = strip_tags($nomorhp);     
+  $nomorhp = str_replace(" ","",$nomorhp);
+  $nomorhp = str_replace("(","",$nomorhp);
+  $nomorhp = str_replace(")","",$nomorhp);
+  $nomorhp = str_replace(".","",$nomorhp); 
+
+  if(!preg_match('/[^+0-9]/',trim($nomorhp))){
+      if(substr(trim($nomorhp), 0, 3)=='+62'){
+          $nomorhp= trim($nomorhp);
+      }
+      else if(substr(trim($nomorhp), 0, 2)=='62'){
+          $nomorhp= '+'.$nomorhp;
+      }
+      else if(substr($nomorhp, 0, 1)=='0'){
+          $nomorhp= '+62'.substr($nomorhp, 1);
+      }
+  }
+  return $nomorhp;
+}
