@@ -105,7 +105,6 @@ class TripManifestController extends Controller
             $sendWa = Rest::sendWaPassenger($value->phone);
         }
 
-        // return back()->with('success', 'Broadcast berhasil');
-        return json_encode($passengers);
+        return back()->with('success', 'Broadcast berhasil');
     }
 }
