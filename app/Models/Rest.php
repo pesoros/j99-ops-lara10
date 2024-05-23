@@ -130,7 +130,6 @@ class Rest extends Model
 
         $fetch = $this->client->request(
             'GET', $url, [
-            'headers' => $this->headers,
         ])->getBody();
 
         return json_decode($fetch);
