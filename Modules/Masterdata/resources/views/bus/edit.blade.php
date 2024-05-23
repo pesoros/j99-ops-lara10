@@ -59,17 +59,17 @@
           <select class="select2 select2-hidden-accessible" multiple="" name="class[]" data-placeholder="Pilih kelas" style="width: 100%;" data-select2-id="7" tabindex="-1" aria-hidden="true" required>
             @foreach ($class as $classItem)
                 <option data-select2-id="{{ $classItem->uuid }}" value="{{ $classItem->uuid }}">
-                    {{ $classItem->name }}
+                    {{ $classItem->name }} - {{ $classItem->seat }} Seat
                 </option>
             @endForeach
             @foreach ($class as $classItem)
               @if(in_array($classItem->uuid, $selectedClass))
               <option value="{{ $classItem->uuid }}" selected>
-                  {{ $classItem->name }}
+                  {{ $classItem->name }} - {{ $classItem->seat }} Seat
               </option>
               @else
               <option value="{{ $classItem->uuid }}">
-                  {{ $classItem->name }}
+                  {{ $classItem->name }} - {{ $classItem->seat }} Seat
               </option>
               @endif 
             @endForeach

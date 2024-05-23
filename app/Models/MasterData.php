@@ -157,7 +157,6 @@ class MasterData extends Model
             ->select('tras.id as trasid','tras.trip as trip','trip.trip_title', 'freg.reg_no')
             ->join("trip", "trip.trip_id", "=", "tras.trip")
             ->leftJoin("fleet_registration as freg", "freg.id", "=", "tras.fleet_registration_id")
-            ->where('tras.status','1')
             ->orderBy('trasid','ASC')
             ->get();
 
@@ -196,6 +195,24 @@ class MasterData extends Model
     {
         $query = DB::table("v2_bus_class")
             ->where('bus_uuid',$uuid)
+            ->delete();
+
+        return $query;
+    }
+
+    public function scopeCheckClassContains($query, $uuid)
+    {
+        $query = DB::table("v2_bus")
+            ->where('class_uuid',$uuid)
+            ->get();
+
+        return $query;
+    }
+
+    public function scopeRemoveMasterClass($query, $uuid)
+    {
+        $query = DB::table("v2_class")
+            ->where('uuid',$uuid)
             ->delete();
 
         return $query;
