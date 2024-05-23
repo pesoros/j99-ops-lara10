@@ -30,7 +30,7 @@
             @else
             <a href="{{ url('trip/manifest/open/'.$detailManifest->id) }}" onclick="return confirm('Anda yakin mermbuks Manifest ini?')" class="btn bg-gradient-danger float-right no-print">Aktifkan kembali manifest ini</a>
             @endif
-            <a href="{{ url('trip/manifest/broadcast/'.$detailManifest->id) }}" onclick="return confirm('Anda yakin broadcast WA penumpang pada manifest ini?')" class="btn bg-gradient-success float-right no-print">Selesaikan manifest ini</a>
+            <a href="{{ url('trip/manifest/broadcast/'.$detailManifest->id) }}" onclick="return confirm('Anda yakin broadcast WA penumpang pada manifest ini?')" class="btn bg-gradient-warning float-right mr-1 no-print">Broadcast</a>
             <a href="{{ url('trip/manifest') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success float-right mr-1 no-print">Kembali</a>
             </h4>
           </div>
