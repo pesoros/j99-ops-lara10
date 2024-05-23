@@ -208,4 +208,13 @@ class MasterData extends Model
 
         return $query;
     }
+
+    public function scopeRemoveMasterClass($query, $uuid)
+    {
+        $query = DB::table("v2_class")
+            ->where('uuid',$uuid)
+            ->delete();
+
+        return $query;
+    }
 }
