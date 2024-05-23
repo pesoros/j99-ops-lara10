@@ -24,6 +24,8 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('manifest/expenses/{id}', [TripManifestController::class, 'expensesReport']);
         Route::get('manifest/expenses/accept/{id}', [TripManifestController::class, 'expenseAccept']);
         Route::get('manifest/expenses/reject/{id}', [TripManifestController::class, 'expenseReject']);
+        Route::get('manifest/expense/edit/{id}/{expenseid}', [TripManifestController::class, 'expenseEdit']);
+        Route::post('manifest/expense/edit/{id}/{expenseid}', [TripManifestController::class, 'expenseUpdate']);
         Route::get('busstatus', [TripBusStatusController::class, 'busStatuskanban']);
     });
 });

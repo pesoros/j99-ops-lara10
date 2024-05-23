@@ -154,6 +154,10 @@
                         href="{{ url('trip/manifest/expense/reject/'.$expense->id) }}"
                         class="btn btn-xs btn-danger"
                       >Tolak</a>
+                      <a 
+                        href="{{ url('trip/manifest/expense/edit/'.$id.'/'.$expense->id) }}"
+                        class="btn btn-xs btn-warning"
+                      >Edit</a>
                     </td>
                   </tr>
                 @endforeach

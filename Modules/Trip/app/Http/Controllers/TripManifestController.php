@@ -32,6 +32,7 @@ class TripManifestController extends Controller
         $data['title'] = 'Laporan keuangan';
         $data['detailManifest'] = Trip::getManifest($id);
         $data['expensesList'] = Trip::getExpensesList($id);
+        $data['id'] = $id;
 
         return view('trip::manifest.expenses', $data);
     }
@@ -66,5 +67,31 @@ class TripManifestController extends Controller
         $closeManifest = Trip::updateExpense($id, $data);
 
         return back()->with('success', 'Transaksi berhasil ditolak!');
+    }
+
+    public function expenseEdit(Request $request, $id, $expenseid)
+    {
+        $data['title'] = 'Edit transaksi';
+        $data['expense'] = Trip::getExpense($expenseid);
+        $data['id'] = $id;
+
+        return view('trip::manifest.editexpense', $data);
+    }
+
+    public function expenseUpdate(Request $request, $id, $expenseid)
+    {
+        $credentials = $request->validate([
+            'description'   => ['required', 'string'],
+            'nominal'       => ['required', 'string'],
+        ]);
+
+        $updateData = [
+            'description'   => $request->description,
+            'nominal'       => numberClearence($request->nominal),
+        ];
+
+        $updateExpense = Trip::updateExpense($expenseid, $updateData);
+
+        return redirect('trip/manifest/expenses/'.$id);
     }
 }
