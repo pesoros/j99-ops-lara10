@@ -128,9 +128,7 @@ class Rest extends Model
         $text = '%20ini%20adalah%20kode%20OTP%20anda.%20Untuk%20keamanan%20anda,%20jangan%20bagikan%20kode%20ini%20dengan%20orang%20lain.';
         $url = getenv('WA_BASEURL').'/api/sendText?phone='.$formatPhone.'&text='.$text.'&session=default';
 
-        $fetch = $this->client->request(
-            'GET', $url, [
-        ])->getBody();
+        $fetch = $this->client->request('GET', $url)->getBody();
 
         return json_decode($fetch);
     }
