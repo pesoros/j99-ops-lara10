@@ -52,7 +52,6 @@ class Trip extends Model
                 'freg.reg_no as fleetname',
                 'bus.name as busname',
                 'tras.allowance',
-
             )
             ->join('trip_assign as tras', 'tras.id', 'manif.trip_assign')
             ->join("trip", "trip.trip_id", "=", "tras.trip")
