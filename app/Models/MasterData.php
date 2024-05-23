@@ -199,4 +199,13 @@ class MasterData extends Model
 
         return $query;
     }
+
+    public function scopeCheckClassContains($query, $uuid)
+    {
+        $query = DB::table("v2_bus")
+            ->where('class_uuid',$uuid)
+            ->get();
+
+        return $query;
+    }
 }
