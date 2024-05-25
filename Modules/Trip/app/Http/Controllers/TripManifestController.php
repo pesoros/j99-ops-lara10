@@ -124,7 +124,8 @@ class TripManifestController extends Controller
         ';
 
         foreach ($point as $key => $value) {
-            $text .= $value->dep_point.' : '.$value->dep_time.' WIB';
+            $text .= $value->dep_point.' : '.$value->dep_time.' WIB
+            ';
         }
         
         $text .= 'Atas perhatian dan pengertiannya kami sampaikan terima kasih
