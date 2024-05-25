@@ -147,7 +147,7 @@ class Rest extends Model
             'url'       => 'https://github.com/devlikeapro/whatsapp-http-api/raw/core/examples/dev.likeapro.jpg'
         ];
         try {
-            $url = getenv('WA_BASEURL').'/api/sendText';
+            $url = getenv('WA_BASEURL').'/api/sendImage';
             $formatPhone = formatPhone('081288855773');
             $formatPhone = str_replace('+', '', $formatPhone);
             $fetch = $this->client->request('POST', $url,[
