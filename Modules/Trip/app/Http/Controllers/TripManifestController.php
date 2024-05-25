@@ -102,9 +102,41 @@ class TripManifestController extends Controller
         $passengers = Trip::getPassengerList($manifest->trip_assign, $manifest->trip_date);
 
         foreach ($passengers as $key => $value) {
-            $sendWa = Rest::sendWaPassenger($value->phone);
+            $text = generateEncodingTextWa($value->name, $manifest->trip_date);
+            // $sendWa = Rest::sendWaPassenger($value->phone);
         }
 
+        echo $text;
+        return;
+
         return back()->with('success', 'Broadcast berhasil');
+    }
+
+    function generateEncodingTextWa($name, $departureDate) {
+        $text = 'Selamat Sore Bapak/ibu UMAR, 
+        Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu '.strtoupper($name).' bersama Bus Juragan 99 Trans Unit GARFIELD   besok '.$departureDate.'
+        
+        
+        Keberangkatan sore Comfort Class (Sleeper top atas, Sleeper top bawah, Sleeper atas & Sleeper bawah:
+        1. GarasiJ99, Malang: 15.00 WIB
+        2. KP Klojen, Malang : 15.50 WIB
+        3. Terminal Arjosari, Malang: 16.30 WIB (Jalur 7/8)
+        4. Pandaan : 16.45 WIB
+        5. Medaeng, SBY : 17.30 WIB
+        
+        Atas perhatian dan pengertiannya kami sampaikan terima kasih
+        
+        Apabila ada perubahan titik naik mohon segera di Konfirmasikan
+        
+        Mohon sudah berada di titik keberangkatan maksimal 30 menit sebelum jam keberangkatan yang sudah kami informasikan
+        
+        Dan setelah menggunakan armada kami Juragan99Trans, adapun kesan pesan yang ingin disampaikan mengenai pelayanan armada kami silahkan mengisi link :
+        go.watzap.id/zHeqjeg
+        
+        Demikian konfirmasi dari kami, mohon maaf mengganggu waktunya 😊🙏
+        
+        Sekian&Terimakasih';
+
+        return urlencode($text);
     }
 }
