@@ -137,6 +137,6 @@ class TripManifestController extends Controller
         
         Sekian&Terimakasih';
 
-        return urlencode(utf8_encode($text));
+        return rawurlencode($text);
     }
 }
