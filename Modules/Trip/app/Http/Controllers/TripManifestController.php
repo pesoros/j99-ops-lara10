@@ -111,8 +111,8 @@ class TripManifestController extends Controller
     }
 
     function generateEncodingTextWa($name, $departureDate, $point) {
-        $text = 'Selamat Sore Bapak/ibu '.strtoupper($name).', 
-    Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu '.strtoupper($name).' bersama Bus Juragan 99 Trans Unit GARFIELD   besok '.dateFormat($departureDate).'
+        $text = 'Selamat Sore Bapak/ibu '.strtoupper($name).', ';
+        $text = 'Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu '.strtoupper($name).' bersama Bus Juragan 99 Trans Unit GARFIELD   besok '.dateFormat($departureDate).'
         
     ';
         
