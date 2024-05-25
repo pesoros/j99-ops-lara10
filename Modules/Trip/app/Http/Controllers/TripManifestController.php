@@ -111,29 +111,28 @@ class TripManifestController extends Controller
     }
 
     function generateEncodingTextWa($name, $departureDate, $point) {
-        $text = 'Selamat Sore Bapak/ibu UMAR, 
-Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu UMAR bersama Bus Juragan 99 Trans Unit GARFIELD   besok 24 Mei 2024
+        $text = 'Selamat Sore Bapak/ibu '.strtoupper($name).', 
+Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu '.strtoupper($name).' bersama Bus Juragan 99 Trans Unit GARFIELD   besok '.dateFormat($departureDate).'
+
+Keberangkatan';
+
+        foreach ($point as $key => $value) {
+            $text .= ($key + 1).'. '.$value->dep_point.' : '.$value->dep_time.' WIB
+        ';
+        }
         
+        $text .= '
+Atas perhatian dan pengertiannya kami sampaikan terima kasih
         
-        Keberangkatan sore Comfort Class (Sleeper top atas, Sleeper top bawah, Sleeper atas & Sleeper bawah:
-        1. GarasiJ99, Malang: 15.00 WIB
-        2. KP Klojen, Malang : 15.50 WIB
-        3. Terminal Arjosari, Malang: 16.30 WIB (Jalur 7/8)
-        4. Pandaan : 16.45 WIB
-        5. Medaeng, SBY : 17.30 WIB
+Apabila ada perubahan titik naik mohon segera di Konfirmasikan
         
-        Atas perhatian dan pengertiannya kami sampaikan terima kasih
+Mohon sudah berada di titik keberangkatan maksimal 30 menit sebelum jam keberangkatan yang sudah kami informasikan
         
-        Apabila ada perubahan titik naik mohon segera di Konfirmasikan
+Dan setelah menggunakan armada kami Juragan99Trans, adapun kesan pesan yang ingin disampaikan mengenai pelayanan armada kami silahkan mengisi link : go.watzap.id/zHeqjeg
         
-        Mohon sudah berada di titik keberangkatan maksimal 30 menit sebelum jam keberangkatan yang sudah kami informasikan
+Demikian konfirmasi dari kami, mohon maaf mengganggu waktunya 😊🙏
         
-        Dan setelah menggunakan armada kami Juragan99Trans, adapun kesan pesan yang ingin disampaikan mengenai pelayanan armada kami silahkan mengisi link :
-        go.watzap.id/zHeqjeg
-        
-        Demikian konfirmasi dari kami, mohon maaf mengganggu waktunya 😊🙏
-        
-        Sekian&Terimakasih';
+Sekian&Terimakasih';
 
         return rawurlencode($text);
     }
