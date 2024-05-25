@@ -121,10 +121,10 @@ class TripManifestController extends Controller
         
         
         $text .= 'Keberangkatan sore Comfort Class (Sleeper top atas, Sleeper top bawah, Sleeper atas & Sleeper bawah:
-        ';
+            ';
 
         foreach ($point as $key => $value) {
-            $text .= $value->dep_point.' : '.$value->dep_time.' WIB
+            $text .= $key.'. '.$value->dep_point.' : '.$value->dep_time.' WIB
             ';
         }
         
