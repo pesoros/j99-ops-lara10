@@ -100,10 +100,16 @@ class TripManifestController extends Controller
     {
         $manifest = Trip::getManifest($id);
         $passengers = Trip::getPassengerList($manifest->trip_assign, $manifest->trip_date);
-        $point = Trip::getPoint($manifest->trip_assign);
 
         foreach ($passengers as $key => $value) {
-            $text = $this->generateEncodingTextWa($value->name, $manifest->trip_date, $point);
+            $text = $this->generateEncodingTextWa(
+                $value->name, 
+                $manifest->trip_date, 
+                $value->pickup_trip_location, 
+                $value->ticket_number,
+                $value->class,
+                $value->seat_number,
+            );
             $sendWa = Rest::sendWaPassenger($value->phone,$text);
             sleep(3);
         }
@@ -111,18 +117,14 @@ class TripManifestController extends Controller
         return back()->with('success', 'Broadcast berhasil');
     }
 
-    function generateEncodingTextWa($name, $departureDate, $point) {
+    function generateEncodingTextWa($name, $departureDate, $pickup, $ticket, $class, $seat) {
         $text = 'Selamat Sore Bapak/ibu '.strtoupper($name).', 
 Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu '.strtoupper($name).' bersama Bus Juragan 99 Trans Unit GARFIELD   besok '.dateFormat($departureDate).'
 
-Keberangkatan:
-';
-foreach ($point as $key => $value) {
-    $text .= ($key + 1).'. '.$value->dep_point.' : '.substr($value->dep_time,0,5).' WIB
-';
-}
-        
-        $text .= '
+Keberangkatan: '.$pickup.'
+Nomor tiket: '.$ticket.'
+Kelas / Kursi: '.$class.' / '.$seat.'
+
 Atas perhatian dan pengertiannya kami sampaikan terima kasih
         
 Apabila ada perubahan titik naik mohon segera di Konfirmasikan
