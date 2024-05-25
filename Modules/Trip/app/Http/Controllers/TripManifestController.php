@@ -100,32 +100,31 @@ class TripManifestController extends Controller
     {
         $manifest = Trip::getManifest($id);
         $passengers = Trip::getPassengerList($manifest->trip_assign, $manifest->trip_date);
-        $point = Trip::getPoint($manifest->trip_assign, $manifest->trip_date);
+        $point = Trip::getPoint($manifest->trip_assign);
 
         foreach ($passengers as $key => $value) {
-            $text = $this->generateEncodingTextWa($value->name, $manifest->trip_date);
+            $text = $this->generateEncodingTextWa($value->name, $manifest->trip_date, $point);
             // $sendWa = Rest::sendWaPassenger($value->phone);
         }
 
-        echo $point;
+        echo $text;
         return;
 
         return back()->with('success', 'Broadcast berhasil');
     }
 
-    function generateEncodingTextWa($name, $departureDate) {
+    function generateEncodingTextWa($name, $departureDate, $point) {
         $text = 'Selamat Sore Bapak/ibu '.strtoupper($name).', 
-        Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu '.strtoupper($name).' bersama Bus Juragan 99 Trans Unit GARFIELD   besok '.$departureDate.'
+        Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu '.strtoupper($name).' bersama Bus Juragan 99 Trans Unit GARFIELD   besok '.$departureDate;
         
         
-        Keberangkatan sore Comfort Class (Sleeper top atas, Sleeper top bawah, Sleeper atas & Sleeper bawah:
-        1. GarasiJ99, Malang: 15.00 WIB
-        2. KP Klojen, Malang : 15.50 WIB
-        3. Terminal Arjosari, Malang: 16.30 WIB (Jalur 7/8)
-        4. Pandaan : 16.45 WIB
-        5. Medaeng, SBY : 17.30 WIB
+        $text .= 'Keberangkatan sore Comfort Class (Sleeper top atas, Sleeper top bawah, Sleeper atas & Sleeper bawah:';
+
+        foreach ($point as $key => $value) {
+            $text .= $value->dep_point.' : '.$value->dep_time.' WIB';
+        }
         
-        Atas perhatian dan pengertiannya kami sampaikan terima kasih
+        $text .= 'Atas perhatian dan pengertiannya kami sampaikan terima kasih
         
         Apabila ada perubahan titik naik mohon segera di Konfirmasikan
         
