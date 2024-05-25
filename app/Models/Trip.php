@@ -159,7 +159,7 @@ class Trip extends Model
     {
         $query = DB::table("trip_point")
             ->where('trip_assign_id',$id)
-            ->groupBy('arr_point')
+            ->groupBy('dep_point')
             ->get();
 
         return $query;
