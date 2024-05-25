@@ -114,12 +114,12 @@ class TripManifestController extends Controller
         $text = 'Selamat Sore Bapak/ibu '.strtoupper($name).', 
 Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu '.strtoupper($name).' bersama Bus Juragan 99 Trans Unit GARFIELD   besok '.dateFormat($departureDate).'
 
-Keberangkatan';
-
-        foreach ($point as $key => $value) {
-            $text .= ($key + 1).'. '.$value->dep_point.' : '.$value->dep_time.' WIB
-        ';
-        }
+Keberangkatan
+';
+foreach ($point as $key => $value) {
+    $text .= ($key + 1).'. '.$value->dep_point.' : '.$value->dep_time.' WIB
+';
+}
         
         $text .= '
 Atas perhatian dan pengertiannya kami sampaikan terima kasih
