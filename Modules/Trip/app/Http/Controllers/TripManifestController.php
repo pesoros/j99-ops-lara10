@@ -110,7 +110,7 @@ class TripManifestController extends Controller
                 $value->class,
                 $value->seat_number,
             );
-            $sendWa = Rest::sendWaPassengerPost($value->phone,$text);
+            $sendWa = Rest::scopeSendWaPassenger($value->phone,$text);
             sleep(3);
         }
 
