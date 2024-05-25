@@ -123,7 +123,7 @@ class TripManifestController extends Controller
         $text = 'Selamat Sore Bapak/ibu '.strtoupper($name).', 
 Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu '.strtoupper($name).' bersama Bus Juragan 99 Trans Unit '.$busname.'   besok '.dateFormat($departureDate).'
 
-Keberangkatan: '.$pickup.' '.$dep_time.'
+Keberangkatan: '.$pickup.' '.substr($dep_time,0,5).'
 Nomor tiket: '.$ticket.'
 Kelas / Kursi: '.$class.' / '.$seat.'
 
