@@ -112,7 +112,7 @@ class TripManifestController extends Controller
 
     function generateEncodingTextWa($name, $departureDate, $point) {
         $text = 'Selamat Sore Bapak/ibu UMAR, 
-        Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu UMAR bersama Bus Juragan 99 Trans Unit GARFIELD   besok 24 Mei 2024
+Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu UMAR bersama Bus Juragan 99 Trans Unit GARFIELD   besok 24 Mei 2024
         
         
         Keberangkatan sore Comfort Class (Sleeper top atas, Sleeper top bawah, Sleeper atas & Sleeper bawah:
