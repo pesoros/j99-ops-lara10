@@ -148,6 +148,8 @@ class Rest extends Model
         ];
         try {
             $url = getenv('WA_BASEURL').'/api/sendText';
+            $formatPhone = formatPhone('081288855773');
+            $formatPhone = str_replace('+', '', $formatPhone);
             $fetch = $this->client->request('POST', $url,[
                 'headers' => [
                     ...$this->headers,
@@ -156,7 +158,7 @@ class Rest extends Model
                 'form_params' => [
                     'session'   => 'default',
                     'caption'   => $text,
-                    'chatId'    => $phone,
+                    'chatId'    => $formatPhone,
                     'file'      => $file
                 ]
             ])->getBody();
