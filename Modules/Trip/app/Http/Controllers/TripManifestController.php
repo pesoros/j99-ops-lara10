@@ -112,9 +112,9 @@ class TripManifestController extends Controller
 
     function generateEncodingTextWa($name, $departureDate, $point) {
         $text = 'Selamat Sore Bapak/ibu '.strtoupper($name).', 
-        Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu '.strtoupper($name).' bersama Bus Juragan 99 Trans Unit GARFIELD   besok '.dateFormat($departureDate).'
+    Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu '.strtoupper($name).' bersama Bus Juragan 99 Trans Unit GARFIELD   besok '.dateFormat($departureDate).'
         
-        ';
+    ';
         
         
         $text .= 'Keberangkatan:
@@ -125,18 +125,19 @@ class TripManifestController extends Controller
         ';
         }
         
-        $text .= 'Atas perhatian dan pengertiannya kami sampaikan terima kasih
+        $text .= '
+    Atas perhatian dan pengertiannya kami sampaikan terima kasih
         
-        Apabila ada perubahan titik naik mohon segera di Konfirmasikan
+    Apabila ada perubahan titik naik mohon segera di Konfirmasikan
         
-        Mohon sudah berada di titik keberangkatan maksimal 30 menit sebelum jam keberangkatan yang sudah kami informasikan
+    Mohon sudah berada di titik keberangkatan maksimal 30 menit sebelum jam keberangkatan yang sudah kami informasikan
         
-        Dan setelah menggunakan armada kami Juragan99Trans, adapun kesan pesan yang ingin disampaikan mengenai pelayanan armada kami silahkan mengisi link :
-        go.watzap.id/zHeqjeg
+    Dan setelah menggunakan armada kami Juragan99Trans, adapun kesan pesan yang ingin disampaikan mengenai pelayanan armada kami silahkan mengisi link :
+    go.watzap.id/zHeqjeg
         
-        Demikian konfirmasi dari kami, mohon maaf mengganggu waktunya 😊🙏
+    Demikian konfirmasi dari kami, mohon maaf mengganggu waktunya 😊🙏
         
-        Sekian&Terimakasih';
+    Sekian&Terimakasih';
 
         return rawurlencode($text);
     }
