@@ -138,4 +138,62 @@ class Rest extends Model
 
         return json_decode($fetch);
     }
+
+    public function scopeSendWaPassengerPost($query, $phone, $text)
+    {
+        $file =[
+            'mimetype'  => 'image/jpg',
+            'filename'  => 'j99/jpg',
+            'url'       => 'https://github.com/devlikeapro/whatsapp-http-api/raw/core/examples/dev.likeapro.jpg'
+        ];
+        try {
+            $url = getenv('WA_BASEURL').'/api/sendText';
+            $fetch = $this->client->request('POST', $url,[
+                'headers' => [
+                    ...$this->headers,
+                    'Content-Type' => 'application/json'
+                ],        
+                'form_params' => [
+                    'session'   => 'default',
+                    'caption'   => $text,
+                    'chatId'    => $phone,
+                    'file'      => $file
+                ]
+            ])->getBody();
+
+            $getAccessToken = json_decode($getAccessToken);
+            $expires = Carbon::now()->addSeconds($getAccessToken->expires_in)->toDateTimeString();
+            $now = Carbon::now();
+            $data = [
+                'value' => $getAccessToken->access_token,
+                'refresh_token' => $getAccessToken->refresh_token,
+                'expires_at' => $expires,
+                'updated_at' => $now
+            ];
+            $updateToken = Accurate::updateAccurateToken('token',$data);
+        } catch (ClientException $e) {
+            $response = $e->getResponse();
+            return $response->getBody()->getContents();
+        }
+
+        return $getAccessToken;
+    }
+
+    public function scopeSendWaPassengerPost($query, $phone, $text)
+    {
+        $headers = [
+            ...$this->headers,
+            'Content-Type' => 'application/json'
+        ];
+        $formatPhone = formatPhone('081288855773');
+        $formatPhone = str_replace('+', '', $formatPhone);
+        $url = getenv('WA_BASEURL').'/api/sendText?phone='.$formatPhone.'&text='.$text.'&session=default';
+
+        $fetch = $this->client->request(
+            'GET', $url, [
+            'headers' => $headers,
+        ])->getBody();
+
+        return json_decode($fetch);
+    }
 }
