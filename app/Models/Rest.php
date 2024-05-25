@@ -179,7 +179,7 @@ class Rest extends Model
         return $getAccessToken;
     }
 
-    public function scopeSendWaPassengerPost($query, $phone, $text)
+    public function scopeSendWaPassengerPostA($query, $phone, $text)
     {
         $headers = [
             ...$this->headers,
