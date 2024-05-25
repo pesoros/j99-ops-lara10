@@ -141,11 +141,6 @@ class Rest extends Model
 
     public function scopeSendWaPassengerPost($query, $phone, $text)
     {
-        $file =[
-            'mimetype'  => 'image/jpg',
-            'filename'  => 'j99/jpg',
-            'url'       => 'https://github.com/devlikeapro/whatsapp-http-api/raw/core/examples/dev.likeapro.jpg'
-        ];
         try {
             $url = getenv('WA_BASEURL').'/api/sendImage';
             $formatPhone = formatPhone('081288855773');
@@ -159,7 +154,11 @@ class Rest extends Model
                     'session'   => 'default',
                     'caption'   => $text,
                     'chatId'    => $formatPhone,
-                    'file'      => $file
+                    'file'      => [
+                        'mimetype'  => 'image/jpg',
+                        'filename'  => 'j99/jpg',
+                        'url'       => 'https://github.com/devlikeapro/whatsapp-http-api/raw/core/examples/dev.likeapro.jpg'
+                    ]            
                 ]
             ])->getBody();
         } catch (ClientException $e) {
