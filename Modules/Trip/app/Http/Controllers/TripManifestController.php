@@ -104,11 +104,8 @@ class TripManifestController extends Controller
 
         foreach ($passengers as $key => $value) {
             $text = $this->generateEncodingTextWa($value->name, $manifest->trip_date, $point);
-            // $sendWa = Rest::sendWaPassenger($value->phone);
+            $sendWa = Rest::sendWaPassenger($value->phone);
         }
-
-        echo $text;
-        return;
 
         return back()->with('success', 'Broadcast berhasil');
     }
