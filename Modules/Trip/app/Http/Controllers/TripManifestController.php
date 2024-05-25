@@ -100,13 +100,14 @@ class TripManifestController extends Controller
     {
         $manifest = Trip::getManifest($id);
         $passengers = Trip::getPassengerList($manifest->trip_assign, $manifest->trip_date);
+        $point = Trip::getPoint($manifest->trip_assign, $manifest->trip_date);
 
         foreach ($passengers as $key => $value) {
             $text = $this->generateEncodingTextWa($value->name, $manifest->trip_date);
-            // $sendWa = Rest::sendWaPassenger($value->phone);
+            $sendWa = Rest::sendWaPassenger($value->phone);
         }
 
-        echo $text;
+        echo $point;
         return;
 
         return back()->with('success', 'Broadcast berhasil');

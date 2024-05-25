@@ -154,4 +154,13 @@ class Trip extends Model
 
         return $query;
     }
+
+    public function scopeGetPoint($query, $id)
+    {
+        $query = DB::table("trip_point")
+            ->where('trip_assign_id',$id)
+            ->get();
+
+        return $query;
+    }
 }
