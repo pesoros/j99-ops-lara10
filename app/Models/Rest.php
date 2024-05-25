@@ -146,9 +146,6 @@ class Rest extends Model
             $formatPhone = formatPhone('081288855773');
             $formatPhone = str_replace('+', '', $formatPhone);
             $fetch = $this->client->request('POST', $url,[
-                'headers' => [
-                    'Content-Type' => 'application/json'
-                ],        
                 'form_params' => [
                     'session'   => 'default',
                     'caption'   => $text,
