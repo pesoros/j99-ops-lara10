@@ -102,7 +102,7 @@ class TripManifestController extends Controller
         $passengers = Trip::getPassengerList($manifest->trip_assign, $manifest->trip_date);
 
         foreach ($passengers as $key => $value) {
-            $text = generateEncodingTextWa($value->name, $manifest->trip_date);
+            $text = $this->generateEncodingTextWa($value->name, $manifest->trip_date);
             // $sendWa = Rest::sendWaPassenger($value->phone);
         }
 
