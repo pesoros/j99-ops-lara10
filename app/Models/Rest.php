@@ -160,40 +160,11 @@ class Rest extends Model
                     'file'      => $file
                 ]
             ])->getBody();
-
-            $getAccessToken = json_decode($getAccessToken);
-            $expires = Carbon::now()->addSeconds($getAccessToken->expires_in)->toDateTimeString();
-            $now = Carbon::now();
-            $data = [
-                'value' => $getAccessToken->access_token,
-                'refresh_token' => $getAccessToken->refresh_token,
-                'expires_at' => $expires,
-                'updated_at' => $now
-            ];
-            $updateToken = Accurate::updateAccurateToken('token',$data);
         } catch (ClientException $e) {
             $response = $e->getResponse();
             return $response->getBody()->getContents();
         }
 
-        return $getAccessToken;
-    }
-
-    public function scopeSendWaPassengerPostA($query, $phone, $text)
-    {
-        $headers = [
-            ...$this->headers,
-            'Content-Type' => 'application/json'
-        ];
-        $formatPhone = formatPhone('081288855773');
-        $formatPhone = str_replace('+', '', $formatPhone);
-        $url = getenv('WA_BASEURL').'/api/sendText?phone='.$formatPhone.'&text='.$text.'&session=default';
-
-        $fetch = $this->client->request(
-            'GET', $url, [
-            'headers' => $headers,
-        ])->getBody();
-
-        return json_decode($fetch);
+        return $fetch;
     }
 }
