@@ -106,9 +106,11 @@ class TripManifestController extends Controller
                 $value->name, 
                 $manifest->trip_date, 
                 $value->pickup_trip_location, 
+                $value->dep_time, 
                 $value->ticket_number,
                 $value->class,
                 $value->seat_number,
+                $manifest->bus_name,
             );
             $sendWa = Rest::sendWaPassenger($value->phone, $text);
             sleep(3);
@@ -117,11 +119,11 @@ class TripManifestController extends Controller
         return back()->with('success', 'Broadcast berhasil');
     }
 
-    function generateEncodingTextWa($name, $departureDate, $pickup, $ticket, $class, $seat) {
+    function generateEncodingTextWa($name, $departureDate, $pickup, $dep_time, $ticket, $class, $seat, $busname) {
         $text = 'Selamat Sore Bapak/ibu '.strtoupper($name).', 
-Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu '.strtoupper($name).' bersama Bus Juragan 99 Trans Unit GARFIELD   besok '.dateFormat($departureDate).'
+Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu '.strtoupper($name).' bersama Bus Juragan 99 Trans Unit '.$busname.'   besok '.dateFormat($departureDate).'
 
-Keberangkatan: '.$pickup.'
+Keberangkatan: '.$pickup.' '.$dep_time.'
 Nomor tiket: '.$ticket.'
 Kelas / Kursi: '.$class.' / '.$seat.'
 
