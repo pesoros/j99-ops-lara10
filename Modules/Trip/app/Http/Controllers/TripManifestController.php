@@ -105,6 +105,7 @@ class TripManifestController extends Controller
         foreach ($passengers as $key => $value) {
             $text = $this->generateEncodingTextWa($value->name, $manifest->trip_date, $point);
             $sendWa = Rest::sendWaPassenger($value->phone,$text);
+            sleep(3);
         }
 
         return back()->with('success', 'Broadcast berhasil');
@@ -114,10 +115,10 @@ class TripManifestController extends Controller
         $text = 'Selamat Sore Bapak/ibu '.strtoupper($name).', 
 Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu '.strtoupper($name).' bersama Bus Juragan 99 Trans Unit GARFIELD   besok '.dateFormat($departureDate).'
 
-Keberangkatan
+Keberangkatan:
 ';
 foreach ($point as $key => $value) {
-    $text .= ($key + 1).'. '.$value->dep_point.' : '.$value->dep_time.' WIB
+    $text .= ($key + 1).'. '.$value->dep_point.' : '.substr($value->dep_time,0,5).' WIB
 ';
 }
         
