@@ -20,7 +20,7 @@
           <th>Nama Role</th>
           <th>Slug</th>
           <th>Description</th>
-          <th>Aksi</th>
+          <!-- <th>Aksi</th> -->
         </tr>
         </thead>
         <tbody>
@@ -33,8 +33,8 @@
               <td>
                 <div class="btn-group btn-block">
                   @if (permissionCheck('edit')) <a href="{{ url('usermanagement/role/permission/'.$value->uuid) }}" class="btn btn-warning btn-sm">Hak Akses</a> @endif
-                  @if (permissionCheck('edit')) <a href="#" class="btn btn-success btn-sm">Edit</a> @endif
-                  @if (permissionCheck('delete')) <a href="#" onclick="return confirm('Anda yakin menghapus data ini?')" class="btn btn-danger btn-sm">Hapus</a> @endif
+                  <!-- @if (permissionCheck('edit')) <a href="#" class="btn btn-success btn-sm">Edit</a> @endif
+                  @if (permissionCheck('delete')) <a href="#" onclick="return confirm('Anda yakin menghapus data ini?')" class="btn btn-danger btn-sm">Hapus</a> @endif -->
                 </div>
               </td>
             </tr>

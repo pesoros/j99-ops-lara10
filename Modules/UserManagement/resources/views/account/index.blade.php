@@ -20,7 +20,7 @@
           <th>Nama</th>
           <th>Email</th>
           <th>Role</th>
-          <th>Aksi</th>
+          <!-- <th>Aksi</th> -->
         </tr>
         </thead>
         <tbody>
@@ -30,12 +30,12 @@
               <td>{{ $value->name }}</td>
               <td>{{ $value->email }}</td>
               <td>{{ $value->rolename }}</td>
-              <td>
+              <!-- <td>
                 <div class="btn-group btn-block">
                   @if (permissionCheck('edit')) <a href="#" class="btn btn-success btn-sm">Edit</a> @endif
                   @if (permissionCheck('delete')) <a href="#" onclick="return confirm('Anda yakin menghapus data ini?')" class="btn btn-danger btn-sm">Hapus</a> @endif
                 </div>
-              </td>
+              </td> -->
             </tr>
           @endforeach
         </tbody>
