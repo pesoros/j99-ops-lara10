@@ -53,14 +53,14 @@ class Trip extends Model
                 'bus.name as busname',
                 'tras.allowance',
             )
-            ->join('trip_assign as tras', 'tras.id', 'manif.trip_assign')
+            ->leftJoin('trip_assign as tras', 'tras.id', 'manif.trip_assign')
             ->join("trip", "trip.trip_id", "=", "tras.trip")
             ->join("ops_roadwarrant as rw", "manif.uuid", "=", "rw.manifest_uuid")
-            ->join("v2_bus as bus", "bus.uuid", "=", "manif.fleet")
-            ->join("fleet_registration as freg", "freg.id", "=", "manif.fleet")
             ->leftJoin("employee_history as emp1", "emp1.id", "=", "rw.driver_1")
             ->leftJoin("employee_history as emp2", "emp2.id", "=", "rw.driver_2")
             ->leftJoin("employee_history as emp3", "emp3.id", "=", "rw.codriver")
+            ->leftJoin("fleet_registration as freg", "freg.id", "=", "manif.fleet")
+            ->leftJoin("v2_bus as bus", "bus.uuid", "=", "manif.fleet")
             ->where('manif.id', $id)
             ->first();
 
