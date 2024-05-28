@@ -19,12 +19,12 @@ class Trip extends Model
                 'manif.trip_assign',
                 'tr.trip_title',
                 'freg.reg_no as fleetname',
-                // 'bus.name as busname',
+                'bus.name as busname',
             )
+            ->join("v2_bus as bus", "bus.uuid", "=", "manif.fleet")
             ->leftJoin('trip_assign as tras', 'manif.trip_assign', 'tras.id')
             ->leftJoin('trip as tr', 'tras.trip', 'tr.trip_id')
             ->leftJoin("fleet_registration as freg", "freg.id", "=", "manif.fleet")
-            // ->leftJoin("v2_bus as bus", "bus.uuid", "=", "manif.fleet")
             ->orderBy('manif.id', 'desc')
             ->take(100)
             ->get();
@@ -50,17 +50,17 @@ class Trip extends Model
                 'emp3.first_name as codriver_name', 
                 'emp3.second_name as codriver_lastname',
                 'freg.reg_no as fleetname',
-                // 'bus.name as busname',
+                'bus.name as busname',
                 'tras.allowance',
             )
             ->join('trip_assign as tras', 'tras.id', 'manif.trip_assign')
             ->join("trip", "trip.trip_id", "=", "tras.trip")
+            ->join("v2_bus as bus", "bus.uuid", "=", "manif.fleet")
             ->join("ops_roadwarrant as rw", "manif.uuid", "=", "rw.manifest_uuid")
             ->leftJoin("employee_history as emp1", "emp1.id", "=", "rw.driver_1")
             ->leftJoin("employee_history as emp2", "emp2.id", "=", "rw.driver_2")
             ->leftJoin("employee_history as emp3", "emp3.id", "=", "rw.codriver")
             ->leftJoin("fleet_registration as freg", "freg.id", "=", "manif.fleet")
-            // ->leftJoin("v2_bus as bus", "bus.uuid", "=", "manif.fleet")
             ->where('manif.id', $id)
             ->first();
 
