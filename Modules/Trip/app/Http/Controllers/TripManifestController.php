@@ -25,7 +25,9 @@ class TripManifestController extends Controller
         $data['detailManifest'] = Trip::getManifest($id);
         $data['passengerList'] = Trip::getPassengerList($data['detailManifest']->trip_assign, $data['detailManifest']->trip_date);
 
-        return view('trip::manifest.detail', $data);
+        echo($data['detailManifest']);
+
+        // return view('trip::manifest.detail', $data);
     }
 
     public function expensesReport(Request $request, $id)
