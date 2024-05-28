@@ -27,7 +27,7 @@ class TripManifestController extends Controller
 
         // echo($data['detailManifest']);
         // echo("<script>console.log('PHP: " . $data['detailManifest'] . "');</script>");
-        var_dump($data['detailManifest']);
+        print_r($data['detailManifest']);
 
         // return view('trip::manifest.detail', $data);
     }
