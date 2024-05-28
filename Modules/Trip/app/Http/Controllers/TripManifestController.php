@@ -26,7 +26,8 @@ class TripManifestController extends Controller
         // $data['passengerList'] = Trip::getPassengerList($data['detailManifest']->trip_assign, $data['detailManifest']->trip_date);
 
         // echo($data['detailManifest']);
-        echo("<script>console.log('PHP: " . $data['detailManifest'] . "');</script>");
+        // echo("<script>console.log('PHP: " . $data['detailManifest'] . "');</script>");
+        error_log($data['detailManifest']);
 
         // return view('trip::manifest.detail', $data);
     }
