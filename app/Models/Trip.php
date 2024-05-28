@@ -52,7 +52,7 @@ class Trip extends Model
                 'freg.reg_no as fleetname',
                 'tras.allowance',
             )
-            ->leftJoin('trip_assign as tras', 'tras.id', 'manif.trip_assign')
+            ->join('trip_assign as tras', 'tras.id', 'manif.trip_assign')
             ->join("trip", "trip.trip_id", "=", "tras.trip")
             ->join("ops_roadwarrant as rw", "manif.uuid", "=", "rw.manifest_uuid")
             ->leftJoin("employee_history as emp1", "emp1.id", "=", "rw.driver_1")
