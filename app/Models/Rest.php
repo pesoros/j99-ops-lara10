@@ -127,7 +127,7 @@ class Rest extends Model
             ...$this->headers,
             'Content-Type' => 'application/json'
         ];
-        $formatPhone = formatPhone('081288855773');
+        $formatPhone = formatPhone($phone);
         $formatPhone = str_replace('+', '', $formatPhone);
         $url = getenv('WA_BASEURL').'/api/sendText?phone='.$formatPhone.'&text='.$text.'&session=default';
 
@@ -143,7 +143,7 @@ class Rest extends Model
     {
         try {
             $url = getenv('WA_BASEURL').'/api/sendImage';
-            $formatPhone = formatPhone('081288855773');
+            $formatPhone = formatPhone($phone);
             $formatPhone = str_replace('+', '', $formatPhone);
             $fetch = $this->client->request('POST', $url,[
                 'form_params' => [
