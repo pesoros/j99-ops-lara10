@@ -47,6 +47,7 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::post('goodsrequest/add', [LetterGoodsController::class, 'addGoodsRequestStore']);
         Route::get('goodsrequest/show/detail/{uuid}', [LetterGoodsController::class, 'detailGoodsRequest']);
         Route::get('goodsrequest/update/progress/{uuid}', [LetterGoodsController::class, 'progressGoodsRequest']);
+        Route::get('goodsrequest/update/ready/{uuid}', [LetterGoodsController::class, 'readyGoodsRequest']);
         Route::get('goodsrequest/update/close/{uuid}', [LetterGoodsController::class, 'closeGoodsRequest']);
         Route::post('goodsrequest/update/partsaction/{uuid}', [LetterGoodsController::class, 'updateAction']);
 
