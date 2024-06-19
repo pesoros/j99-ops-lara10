@@ -69,6 +69,36 @@ class MasterData extends Model
         return $query;
     }
 
+    public function scopeGetMasterPartsScope($query, $uuid)
+    {
+        $query = DB::table("ops_parts_scope AS partsscope")
+            ->select('partsscope.*', 'partsarea.name AS scope_name', 'partsarea.code AS scope_code')
+            ->join("ops_parts_area AS partsarea", "partsarea.uuid", "=", "partsscope.parts_area_uuid")
+            ->orderBy('partsscope.id')
+            ->where('partsscope.uuid', $uuid)
+            ->first();
+
+        return $query;
+    }
+
+    public function scopeUpdateMasterPartsScope($query, $uuid, $data)
+    {
+        $query = DB::table("ops_parts_scope")
+            ->where('uuid',$uuid)
+            ->update($data);
+
+        return $query;
+    }
+
+    public function scopeRemoveMasterPartsScope($query, $uuid)
+    {
+        $query = DB::table("ops_parts_scope")
+            ->where('uuid',$uuid)
+            ->delete();
+
+        return $query;
+    }
+
     // BUS
     public function scopeGetMasterBusList($query)
     {

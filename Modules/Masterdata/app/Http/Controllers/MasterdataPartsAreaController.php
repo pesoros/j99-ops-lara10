@@ -73,7 +73,7 @@ class MasterdataPartsAreaController extends Controller
             return back()->with('success', 'Master ruang lingkup bagian berhasil diubah!');
         }
 
-        return back()->with('failed', 'Master ruang lingkup bagian gagal berhasil diubah!');   
+        return back()->with('failed', 'Master ruang lingkup bagian gagal diubah!');   
     }
 
     public function deleteMasterPartsArea($uuid)

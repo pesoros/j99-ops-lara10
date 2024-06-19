@@ -29,6 +29,9 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('partsscope', [MasterdataPartsScopeController::class, 'listMasterPartsScope']);
         Route::get('partsscope/add', [MasterdataPartsScopeController::class, 'addMasterPartsScope']);
         Route::post('partsscope/add', [MasterdataPartsScopeController::class, 'addMasterPartsScopeStore']);
+        Route::get('partsscope/edit/{uuid}', [MasterdataPartsScopeController::class, 'editMasterPartsScope']);
+        Route::post('partsscope/edit/{uuid}', [MasterdataPartsScopeController::class, 'editMasterPartsScopeUpdate']);
+        Route::get('partsscope/delete/{uuid}', [MasterdataPartsScopeController::class, 'deleteMasterPartsScope']);
         Route::get('bus', [MasterdataBusController::class, 'listMasterBus']);
         Route::get('bus/add', [MasterdataBusController::class, 'addMasterBus']);
         Route::post('bus/add', [MasterdataBusController::class, 'addMasterBusStore']);
