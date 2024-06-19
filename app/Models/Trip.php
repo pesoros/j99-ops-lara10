@@ -55,7 +55,7 @@ class Trip extends Model
             )
             ->join('trip_assign as tras', 'tras.id', 'manif.trip_assign')
             ->join("trip", "trip.trip_id", "=", "tras.trip")
-            ->join("ops_roadwarrant as rw", "manif.uuid", "=", "rw.manifest_uuid")
+            ->leftJoin("ops_roadwarrant as rw", "manif.uuid", "=", "rw.manifest_uuid")
             ->leftJoin("employee_history as emp1", "emp1.id", "=", "rw.driver_1")
             ->leftJoin("employee_history as emp2", "emp2.id", "=", "rw.driver_2")
             ->leftJoin("employee_history as emp3", "emp3.id", "=", "rw.codriver")
