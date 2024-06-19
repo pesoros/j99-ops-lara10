@@ -23,6 +23,9 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('partsarea', [MasterdataPartsAreaController::class, 'listMasterPartsArea']);
         Route::get('partsarea/add', [MasterdataPartsAreaController::class, 'addMasterPartsArea']);
         Route::post('partsarea/add', [MasterdataPartsAreaController::class, 'addMasterPartsAreaStore']);
+        Route::get('partsarea/edit/{uuid}', [MasterdataPartsAreaController::class, 'editMasterPartsArea']);
+        Route::post('partsarea/edit/{uuid}', [MasterdataPartsAreaController::class, 'editMasterPartsAreaUpdate']);
+        Route::get('partsarea/delete/{uuid}', [MasterdataPartsAreaController::class, 'deleteMasterPartsArea']);
         Route::get('partsscope', [MasterdataPartsScopeController::class, 'listMasterPartsScope']);
         Route::get('partsscope/add', [MasterdataPartsScopeController::class, 'addMasterPartsScope']);
         Route::post('partsscope/add', [MasterdataPartsScopeController::class, 'addMasterPartsScopeStore']);

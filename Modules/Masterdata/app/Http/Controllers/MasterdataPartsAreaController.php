@@ -46,4 +46,40 @@ class MasterdataPartsAreaController extends Controller
 
         return back()->with('failed', 'Master ruang lingkup bagian gagal tersimpan!');   
     }
+
+    public function editMasterPartsArea($uuid)
+    {
+        $data['title'] = 'Edit Master ruang lingkup bagian';
+        $data['current'] = MasterData::GetMasterPartsArea($uuid);
+
+        return view('masterdata::parts_area.edit', $data);
+    }
+
+    public function editMasterPartsAreaUpdate(Request $request, $uuid)
+    {
+        $credentials = $request->validate([
+            'area_name'      => ['required', 'string'],
+            'area_code'      => ['required', 'string'],
+        ]);
+        
+        $updateData = [
+            'name' => $request->area_name,
+            'code' => $request->area_code,
+        ];
+        
+        $updateArea = MasterData::updateMasterPartsArea($uuid, $updateData);
+
+        if ($updateArea) {
+            return back()->with('success', 'Master ruang lingkup bagian berhasil diubah!');
+        }
+
+        return back()->with('failed', 'Master ruang lingkup bagian gagal berhasil diubah!');   
+    }
+
+    public function deleteMasterPartsArea($uuid)
+    {
+        $delete = MasterData::removeMasterPartsArea($uuid);
+
+        return back()->with('success', 'Master ruang lingkup terhapus!');
+    }
 }
