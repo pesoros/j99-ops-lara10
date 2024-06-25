@@ -147,7 +147,7 @@
               </tr>
               </thead>
               <tbody>
-                @php($summary = 0)
+                @php $summary = 0; @endphp
                 @foreach ($expensesList as $key => $expense)
                   <tr>
                     <td>{{ $key + 1 }}</td>
