@@ -121,6 +121,10 @@
                   <th>Uang Makan Crew :</th>
                   <td>{{ formatAmount($roadwarrant->crew_meal_allowance) }}</td>
                 </tr>
+                <tr>
+                  <th>Total Pengeluaran :</th>
+                  <td>{{ formatAmount($summary) }}</td>
+                </tr>
               </table>
             </div>
           </div>
@@ -209,11 +213,11 @@
         <!-- /.row -->
       </div>
       <!-- /.invoice -->
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-12">
           <p>TOTAL PENGELUARAN: {{$summary}}</p>
         </div>
-      </div>
+      </div> -->
       <div class="row no-print">
         <div class="col-12">
           <a href="#" rel="noopener" target="_blank" class="btn btn-default printPage"><i class="fas fa-print"></i> Print</a>
