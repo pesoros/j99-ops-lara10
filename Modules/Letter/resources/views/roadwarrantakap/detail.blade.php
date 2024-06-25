@@ -193,7 +193,7 @@
                     </td>
                   </tr>
                   @if ($expense->action == 'spend') 
-                      @if ($value->status == 2)
+                      @if ($expense->status == 2)
                         @php $summary = $summary - $expense->nominal; @endphp
                       @endif
                   @else
