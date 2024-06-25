@@ -16,9 +16,6 @@
   {{ session('failed') }}
   </div>
 @endif
-
-@php $summary = 0; @endphp
-
   <div class="row">
     <div class="col-12">
       <!-- Main content -->
@@ -154,6 +151,7 @@
               </tr>
               </thead>
               <tbody>
+                @php $summary = 0; @endphp
                 @foreach ($expensesList as $key => $expense)
                   <tr>
                     <td>{{ $key + 1 }}</td>
@@ -215,11 +213,11 @@
         <!-- /.row -->
       </div>
       <!-- /.invoice -->
-      <!-- <div class="row">
+      <div class="row">
         <div class="col-12">
-          <p>TOTAL PENGELUARAN: {{$summary}}</p>
+          <p><strong>TOTAL PENGELUARAN: {{$summary}}</strong></p>
         </div>
-      </div> -->
+      </div>
       <div class="row no-print">
         <div class="col-12">
           <a href="#" rel="noopener" target="_blank" class="btn btn-default printPage"><i class="fas fa-print"></i> Print</a>
