@@ -147,6 +147,7 @@
               </tr>
               </thead>
               <tbody>
+                @php($summary = 0)
                 @foreach ($expensesList as $key => $expense)
                   <tr>
                     <td>{{ $key + 1 }}</td>
@@ -191,6 +192,15 @@
                       >Tolak</a>
                     </td>
                   </tr>
+                  @if ($value->action == 'spend') 
+                      @if ($value->status == 2)
+                        @php $summary = $summary - $value->nominal; @endphp
+                      @endif
+                  @else
+                      @if ($value->status == 2)
+                        @php $summary = $summary + $value->nominal; @endphp
+                      @endif
+                  @endif
                 @endforeach
               </tbody>
             </table>
@@ -199,6 +209,11 @@
         <!-- /.row -->
       </div>
       <!-- /.invoice -->
+      <div class="row">
+        <div class="col-12">
+          <p>TOTAL PENGELUARAN: {{$summary}}</p>
+        </div>
+      </div>
       <div class="row no-print">
         <div class="col-12">
           <a href="#" rel="noopener" target="_blank" class="btn btn-default printPage"><i class="fas fa-print"></i> Print</a>
