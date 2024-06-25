@@ -16,6 +16,9 @@
   {{ session('failed') }}
   </div>
 @endif
+
+@php $summary = 0; @endphp
+
   <div class="row">
     <div class="col-12">
       <!-- Main content -->
@@ -151,7 +154,6 @@
               </tr>
               </thead>
               <tbody>
-                @php $summary = 0; @endphp
                 @foreach ($expensesList as $key => $expense)
                   <tr>
                     <td>{{ $key + 1 }}</td>
