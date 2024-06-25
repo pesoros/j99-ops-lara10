@@ -194,11 +194,11 @@
                   </tr>
                   @if ($value->action == 'spend') 
                       @if ($value->status == 2)
-                        @php $summary = $summary - $value->nominal; @endphp
+                        @php $summary = $summary - $expense->nominal; @endphp
                       @endif
                   @else
                       @if ($value->status == 2)
-                        @php $summary = $summary + $value->nominal; @endphp
+                        @php $summary = $summary + $expense->nominal; @endphp
                       @endif
                   @endif
                 @endforeach
