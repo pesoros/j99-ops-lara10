@@ -192,12 +192,12 @@
                       >Tolak</a>
                     </td>
                   </tr>
-                  @if ($value->action == 'spend') 
+                  @if ($expense->action == 'spend') 
                       @if ($value->status == 2)
                         @php $summary = $summary - $expense->nominal; @endphp
                       @endif
                   @else
-                      @if ($value->status == 2)
+                      @if ($expense->status == 2)
                         @php $summary = $summary + $expense->nominal; @endphp
                       @endif
                   @endif
