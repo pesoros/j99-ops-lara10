@@ -121,10 +121,6 @@
                   <th>Uang Makan Crew :</th>
                   <td>{{ formatAmount($roadwarrant->crew_meal_allowance) }}</td>
                 </tr>
-                <tr>
-                  <th>Total Pengeluaran :</th>
-                  <td>{{ formatAmount($summary) }}</td>
-                </tr>
               </table>
             </div>
           </div>
