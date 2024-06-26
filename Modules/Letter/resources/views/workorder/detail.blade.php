@@ -71,7 +71,6 @@
         </div>
         <!-- /.row -->
 
-        @if (STRVAL($detailWorkorder->status) !== '2')
         <!-- Table row -->
         <div class="row">
           <div class="col-12 table-responsive">
@@ -84,7 +83,7 @@
                     <th width="3">No</th>
                     <th>Bagian</th>
                     <th>Deskripsi</th>
-                    @if (STRVAL($detailWorkorder->status) === '1')
+                    @if (STRVAL($detailWorkorder->status) !== '0')
                       <th>Penanganan</th>
                       <th>Detail penanganan</th>
                     @endif
@@ -96,19 +95,27 @@
                       <td>{{ $key + 1 }}</td>
                       <td>{{ $damage->areacode }}-{{ $damage->scopecode }} | {{ $damage->scopename }}</td>
                       <td>{{ $damage->description }}</td>
-                      @if (STRVAL($detailWorkorder->status) === '1')
+                      @if (STRVAL($detailWorkorder->status) !== '0')
                         <td>
                           <input type="hidden" id="damage_uuid" name="damage_uuid[]" value={{ $damage->uuid }}>
-                          <select class="form-control select2bs4" name="action_status[]" style="width: 100%;">
-                            @foreach ($actionlist as $actionlistItem)
-                                <option value="{{ $actionlistItem->id }}" @selected($damage->action_status == $actionlistItem->id)>
-                                    {{ $actionlistItem->name }}
-                                </option>
-                            @endForeach
-                          </select>
+                          @if (STRVAL($detailWorkorder->status) !== '1')
+                            {{ $damage->action_name }}
+                          @else
+                            <select class="form-control select2bs4" name="action_status[]" style="width: 100%;">
+                              @foreach ($actionlist as $actionlistItem)
+                                  <option value="{{ $actionlistItem->id }}" @selected($damage->action_status == $actionlistItem->id)>
+                                      {{ $actionlistItem->name }}
+                                  </option>
+                              @endForeach
+                            </select>
+                          @endif
                         </td>
                         <td>
-                          <textarea class="form-control" name="action_description[]" rows="1" placeholder="Masukkan detail penanganan">{{ $damage->action_description }}</textarea>
+                          @if (STRVAL($detailWorkorder->status) !== '1')
+                            {{ $damage->action_description }}
+                          @else
+                            <textarea class="form-control" name="action_description[]" rows="1" placeholder="Masukkan detail penanganan">{{ $damage->action_description }}</textarea>
+                          @endif
                         </td>
                       @endif
                     </tr>
@@ -139,7 +146,6 @@
           </div>
           <!-- /.col -->
         </div>
-        @endif
         <!-- /.row -->
         <div>
           

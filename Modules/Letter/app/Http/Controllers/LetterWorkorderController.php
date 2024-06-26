@@ -24,7 +24,9 @@ class LetterWorkorderController extends Controller
     {
         $data['title'] = 'Detail Keluhan';
         $data['detailWorkorder'] = Workorder::getWorkorder($uuid);
-        $damages = Complaint::getDamages($data['detailWorkorder']->bus_uuid);
+        $damages = STRVAL($data['detailWorkorder']->status) !== '2' 
+            ? Complaint::getDamages($data['detailWorkorder']->bus_uuid) 
+            : Complaint::getDamagesByWorkorder($uuid);
         foreach ($damages as $key => $damage) {
             $damage->parts_request = Workorder::getPartsRequest($uuid, $damage->uuid);
         }
@@ -58,7 +60,7 @@ class LetterWorkorderController extends Controller
 
         $saveComplaint = Bus::updateBus($workorder->bus_uuid,$updateBusData);
 
-        $damagesStatusUpdate = Complaint::updateDamages($workorder->bus_uuid);
+        $damagesStatusUpdate = Complaint::closeDamages($workorder->bus_uuid, $uuid);
         
         if ($updateWorkorder) {
             return back()->with('success', 'Status SPK berhasil diubah menjadi selesai!');

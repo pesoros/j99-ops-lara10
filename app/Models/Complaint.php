@@ -61,6 +61,32 @@ class Complaint extends Model
         return $query;
     }
 
+    public function scopeGetDamagesByWorkorder($query, $workorder_uuid)
+    {
+        $query = DB::table("ops_damages AS damage")
+            ->select(
+                'damage.uuid',
+                'damage.scope_uuid',
+                'damage.description',
+                'damage.action_status',
+                'damage.action_description',
+                'damage.created_at',
+                'scope.name AS scopename',
+                'scope.code AS scopecode',
+                'area.code AS areacode',
+                'damac.name AS action_name'
+            )
+            ->join("ops_parts_scope AS scope", "scope.uuid", "=", "damage.scope_uuid")
+            ->join("ops_parts_area AS area", "area.uuid", "=", "scope.parts_area_uuid")
+            ->join("ops_damages_action AS damac", "damac.id", "=", "damage.action_status")
+            ->where('damage.done_by_workorder_uuid',$workorder_uuid)
+            ->where('damage.is_closed','!=',0)
+            ->orderBy('damage.created_at','ASC')
+            ->get();
+
+        return $query;
+    }
+
     public function scopeRemoveDamages($query, $uuid)
     {
         $query = DB::table("ops_damages")
@@ -112,9 +138,10 @@ class Complaint extends Model
         return $query;
     }
 
-    public function scopeUpdateDamages($query, $bus_uuid)
+    public function scopeCloseDamages($query, $bus_uuid, $workorder_uuid)
     {
         $data['is_closed'] = 1;
+        $data['done_by_workorder_uuid'] = $workorder_uuid;
         $query = DB::table("ops_damages")
             ->where('bus_uuid', $bus_uuid)
             ->where('is_closed', 0)
