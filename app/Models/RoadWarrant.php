@@ -266,7 +266,7 @@ class RoadWarrant extends Model
                 'trip.trip_title',
             )
             ->join("trip", "trip.trip_id", "=", "tras.trip")
-            ->where('tras.status','1')
+            // ->where('tras.status','1')
             ->where('tras.id',$trasid)
             ->first();
 
