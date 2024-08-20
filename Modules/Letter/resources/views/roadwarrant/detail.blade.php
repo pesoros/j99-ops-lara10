@@ -238,7 +238,7 @@
       <!-- /.invoice -->
       <div class="row">
         <div class="col-12">
-          <p><strong>TOTAL PENGELUARAN: Rp. {{$summary}}</strong></p>
+          <p><strong>SISA UANG: Rp. {{$summary}}</strong></p>
         </div>
       </div>
       <div class="row no-print">

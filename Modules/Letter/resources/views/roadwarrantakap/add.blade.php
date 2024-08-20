@@ -102,7 +102,7 @@
               <input type="text" class="form-control moneyform" name="crew_meal_allowance" placeholder="0" required>
             </div>
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="fuel_allowance">Uang solar</label>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
@@ -110,7 +110,7 @@
               </div>
               <input type="text" class="form-control moneyform" name="fuel_allowance" placeholder="0" required>
             </div>
-          </div>
+          </div> -->
           <div class="form-group">
             <label for="trip_allowance">Uang jalan</label>
             <div class="input-group mb-3">
