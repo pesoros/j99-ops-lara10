@@ -216,4 +216,39 @@ class LetterRoadWarrantController extends Controller
 
         return back()->with('success', 'Status berhasil dirubah');
     }
+
+    public function editRoadWarrantExpense(Request $request, $uuid)
+    {
+        $data['title'] = 'Edit Pengeluaran';
+        $data['expense'] = Roadwarrant::getExpense($uuid);
+        return view('letter::roadwarrant.editExpense', $data);
+    }
+
+    public function editRoadWarrantExpenseStore(Request $request, $uuid)
+    {
+            $editRoadWarrantData = [
+                'km_start'                  =>  $request->km_start,
+                'km_end'                    =>  $request->km_end,
+                'driver_1'                  =>  $request->driver_1,
+                'driver_2'                  =>  $request->driver_2,
+                'codriver'                  =>  $request->codriver,
+                'driver_allowance_1'        =>  numberClearence($request->driver_allowance_1),
+                'driver_allowance_2'        =>  numberClearence($request->driver_allowance_2),
+                'codriver_allowance'        =>  numberClearence($request->codriver_allowance),
+                'trip_allowance'            =>  numberClearence($request->trip_allowance),
+                'fuel_allowance'            =>  0,
+                'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance),
+                'updated_by'                =>  auth()->user()->uuid,
+                'updated_at'                =>  Carbon::now(),
+            ];
+                    
+            $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
+
+            if ($editRoadWarrant) {
+                $categoryname = $category === '1' ? 'AKAP' : 'Pariwisata';
+                return back()->with('success', 'Anda berhasil edit data SPJ '.$categoryname);
+            }
+
+            return back()->with('failed', 'SPJ gagal di edit!');
+    }
 }

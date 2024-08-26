@@ -217,6 +217,10 @@
                         href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/0') }}"
                         class="btn btn-xs btn-danger"
                       >Tolak</a>
+                      <a 
+                        href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/0') }}"
+                        class="btn btn-xs btn-danger"
+                      >Edit</a>
                     </td>
                   </tr>
                   @if ($expense->action == 'spend') 
