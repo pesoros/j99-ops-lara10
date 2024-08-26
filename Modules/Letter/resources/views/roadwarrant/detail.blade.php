@@ -219,7 +219,7 @@
                       >Tolak</a>
                       <a 
                         href="{{ url('letter/roadwarrant/expense/edit/'.$expense->id) }}"
-                        class="btn btn-xs btn-danger"
+                        class="btn btn-xs btn-warning"
                       >Edit</a>
                     </td>
                   </tr>
