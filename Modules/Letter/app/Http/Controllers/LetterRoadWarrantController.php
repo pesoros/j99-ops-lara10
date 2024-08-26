@@ -221,6 +221,7 @@ class LetterRoadWarrantController extends Controller
     {
         $data['title'] = 'Edit Pengeluaran';
         $data['expense'] = Roadwarrant::getExpense($uuid);
+        error_log($data['expense']);
         return view('letter::roadwarrant.editExpense', $data);
     }
 
