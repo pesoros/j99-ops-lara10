@@ -218,7 +218,7 @@
                         class="btn btn-xs btn-danger"
                       >Tolak</a>
                       <a 
-                        href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/0') }}"
+                        href="{{ url('letter/roadwarrant/expense/edit/'.$expense->id) }}"
                         class="btn btn-xs btn-danger"
                       >Edit</a>
                     </td>
