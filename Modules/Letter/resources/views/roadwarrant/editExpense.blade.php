@@ -35,72 +35,13 @@
   <!-- /.card-header -->
   <!-- form start -->
   <form action="{{ url()->current() }}" method="post">
-    <div class="card-body row">
-      <div class="col-sm-6 invoice-col">
-        <p class="lead">Detail reservasi</p>
-        <div class="table-responsive">
-          <table class="table">
-            <tr>
-              <th>Kode booking :</th>
-              <td>{{ $expense->description }}</td>
-            </tr>
-            <tr>
-              <th>Nama customer :</th>
-              <td>{{ $expense->nominal }}</td>
-            </tr>
-            <tr>
-              <th>Telephone customer :</th>
-              <td>{{ numberSpacer($book->customer_phone) }}</td>
-            </tr>
-            <tr>
-              <th>Tanggal berangkat :</th>
-              <td>{{ dateTimeFormat($book->start_date) }}</td>
-            </tr>
-            <tr>
-              <th>tanggal kembali :</th>
-              <td>{{ dateTimeFormat($book->finish_date) }}</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <div class="col-sm-6 invoice-col">
-        <p class="lead">&nbsp;</p>
-        <div class="table-responsive">
-          <table class="table">
-            <tr>
-              <th>Tanggal pemesanan :</th>
-              <td>{{ dateTimeFormat($book->created_at) }}</td>
-            </tr>
-            <tr>
-              <th>Alamat penjemputan :</th>
-              <td>{{ $book->pickup_address }}</td>
-            </tr>
-            <tr>
-              <th>Kota penjemputan :</th>
-              <td>{{ $book->city_from }}</td>
-            </tr>
-            <tr>
-              <th>Kota tujuan :</th>
-              <td>{{ $book->city_to }}</td>
-            </tr>
-            <tr>
-              <th>Catatan :</th>
-              <td>{{ $book->notes }}</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <!-- /.col -->
-    </div>
     @csrf
-    <hr>
-    <input type="hidden" id="bus_uuid" name="bus_uuid" value={{ $roadwarrant->bus_uuid }}>
     <div class="card-body row">
       <div class="col-sm-6">
         <div class="form-group">
           <label for="bus_name">Nama bus</label>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" name="bus_name" value="{{ $roadwarrant->busname }}" readonly>
+            <input type="text" class="form-control" name="bus_name" value="{{ $expense->nominal }}" readonly>
           </div>
         </div>
         <div class="form-group">
