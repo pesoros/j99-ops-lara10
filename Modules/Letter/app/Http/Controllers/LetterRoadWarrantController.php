@@ -221,8 +221,7 @@ class LetterRoadWarrantController extends Controller
     {
         $data['title'] = 'Edit Pengeluaran';
         $data['expense'] = Roadwarrant::getExpense($uuid);
-        echo("<script>console.log('PHP: " . $data['expense'] . "');</script>");
-        // return view('letter::roadwarrant.editExpense', $data);
+        return view('letter::roadwarrant.editExpense', $data);
     }
 
     public function editRoadWarrantExpenseStore(Request $request, $uuid)
