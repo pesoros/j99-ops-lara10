@@ -306,7 +306,7 @@ class RoadWarrant extends Model
     {
         $query = DB::table("trip_expenses")
             ->where('id',$id)
-            ->get();
+            ->first();
 
         return $query;
     }
