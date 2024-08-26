@@ -41,7 +41,7 @@
         <div class="form-group">
           <label for="description">Deskripsi</label>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" name="description" value="{{ $expense->description }}" readonly>
+            <input type="text" class="form-control" name="description" value="{{ $expense->description }}" required>
           </div>
         </div>
         <div class="form-group">
@@ -53,19 +53,19 @@
         <div class="form-group">
           <label for="action">Action</label>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" name="action" value="{{ $expense->action }} Kursi" readonly>
+            <input type="text" class="form-control" name="action" value="{{ $expense->action }}" readonly>
           </div>
         </div>
         <div class="form-group">
           <label for="nominal">Nominal</label>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" name="nominal" value="{{ $expense->nominal }} Kursi" readonly>
+            <input type="text" class="form-control" name="nominal" value="{{ $expense->nominal }}" required>
           </div>
         </div>
       </div>
     </div>
     <div class="card-footer">
-      <button type="submit" class="btn btn-primary" onclick="return confirm('Anda yakin data SPJ yg diisi sudah benar?')">Submit</button>
+      <button type="submit" class="btn btn-primary" onclick="return confirm('Anda yakin data Pengeluaran yg diisi sudah benar?')">Submit</button>
       <a href="{{ url('letter/roadwarrant') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
     </div>
   </form>
