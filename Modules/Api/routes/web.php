@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Api\app\Http\Controllers\AccurateApiController;
+use Modules\Api\app\Http\Controllers\RndApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,10 +17,16 @@ use Modules\Api\app\Http\Controllers\AccurateApiController;
 
 Route::group([], function () {
     Route::prefix('api')->group(function () {
-        Route::get('/accurate/newtoken', [AccurateApiController::class, 'newtoken']);
-        Route::get('/accurate/refreshtoken', [AccurateApiController::class, 'refreshtoken']);
-        Route::get('/accurate/receivetoken/newtoken', [AccurateApiController::class, 'newtokenreceive']);
-        Route::get('/accurate/receivetoken/refreshtoken', [AccurateApiController::class, 'refreshtokenreceive']);
-        Route::get('/accurate/dbsession', [AccurateApiController::class, 'dbsession']);
+        Route::prefix('accurate')->group(function () {
+            Route::get('/newtoken', [AccurateApiController::class, 'newtoken']);
+            Route::get('/refreshtoken', [AccurateApiController::class, 'refreshtoken']);
+            Route::get('/receivetoken/newtoken', [AccurateApiController::class, 'newtokenreceive']);
+            Route::get('/receivetoken/refreshtoken', [AccurateApiController::class, 'refreshtokenreceive']);
+            Route::get('/dbsession', [AccurateApiController::class, 'dbsession']);
+        });
+        Route::prefix('rnd')->group(function () {
+            Route::get('csv/export', [RndApiController::class, 'exportCsv']);
+            Route::post('csv/import', [RndApiController::class, 'importCsv']);
+        });
     });
 });
