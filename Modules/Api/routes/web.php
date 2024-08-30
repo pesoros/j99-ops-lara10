@@ -27,6 +27,8 @@ Route::group([], function () {
         Route::prefix('rnd')->group(function () {
             Route::get('csv/export', [RndApiController::class, 'exportCsv']);
             Route::post('csv/import', [RndApiController::class, 'importCsv']);
+            Route::get('xlsx/export', [RndApiController::class, 'exportXlsx']);
+            Route::post('xlsx/import', [RndApiController::class, 'importXlsx']);
         });
     });
 });

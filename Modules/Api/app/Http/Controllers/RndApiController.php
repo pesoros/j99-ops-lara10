@@ -6,24 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Http;
-use Carbon\Carbon;
-use App\Models\Accurate;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
+use Knackline\ExcelTo\ExcelTo;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DataExport;
 
 class RndApiController extends Controller
 {
-    private $client;
-
-    public function __construct()
-    {
-        $this->client = new Client([
-            'base_uri' => env('ACCURATE_BASEURI'),
-            'timeout'  => 2.0,
-        ]);
-    }
-
     public function exportCsv(Request $request)
     {
         $filename = 'rnd-data.csv';
@@ -95,6 +83,22 @@ class RndApiController extends Controller
         fclose($handle);
 
         return $chunkdata;
+    }
+
+    public function exportXlsx(Request $request)
+    {
+        return (new DataExport)->download('data.xlsx');
+    }
+
+    public function importXlsx(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx',
+        ]);
+        $file = $request->file('file');
+        $arrayData = ExcelTo::array($file);
+
+        return $arrayData['Worksheet'];
     }
 }
 
