@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use Knackline\ExcelTo\ExcelTo;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DataExport;
+use App\Exports\DataImport;
 
 class RndApiController extends Controller
 {
@@ -96,9 +97,9 @@ class RndApiController extends Controller
             'file' => 'required|mimes:xlsx',
         ]);
         $file = $request->file('file');
-        $arrayData = ExcelTo::array($file);
+        $arrayData = Excel::toArray(null, $file);
 
-        return $arrayData['Worksheet'];
+        return $arrayData;
     }
 }
 

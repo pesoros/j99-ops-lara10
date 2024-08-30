@@ -7,7 +7,6 @@
     "require": {
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.4",
-        "knackline/excel-to-x": "^2.1",
         "kreait/firebase-php": "^7.9",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
