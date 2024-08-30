@@ -170,6 +170,11 @@
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#datatable-def_wrapper .col-md-6:eq(0)');
 
+    $("#datatable-def-notitle").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false, "header": false,
+      "buttons": ["copy", "csv", { extend: 'excel', title: '' }, "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#datatable-def-notitle_wrapper .col-md-6:eq(0)');
+
     //Timepicker
     $('#timepicker').datetimepicker({
       format: 'LT'

@@ -274,4 +274,14 @@ class MasterData extends Model
 
         return $query;
     }
+
+    public function scopeGetMasterPartsDummy($query)
+    {
+        $query = DB::table("accurate_parts AS accparts")
+            ->select('accparts.*')
+            ->orderBy('accparts.id')
+            ->get();
+
+        return $query;
+    }
 }
