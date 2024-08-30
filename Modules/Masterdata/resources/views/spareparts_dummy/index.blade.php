@@ -26,54 +26,6 @@
               <td>{{ $value->qty }}</td>
             </tr>
           @endforeach
-          @foreach ($list as $key => $value)
-            <tr>
-              <td>{{ $value->name }}</td>
-              <td>{{ $value->code }}</td>
-              <td>{{ $value->unit }}</td>
-              <td>{{ $value->qty }}</td>
-            </tr>
-          @endforeach
-          @foreach ($list as $key => $value)
-            <tr>
-              <td>{{ $value->name }}</td>
-              <td>{{ $value->code }}</td>
-              <td>{{ $value->unit }}</td>
-              <td>{{ $value->qty }}</td>
-            </tr>
-          @endforeach
-          @foreach ($list as $key => $value)
-            <tr>
-              <td>{{ $value->name }}</td>
-              <td>{{ $value->code }}</td>
-              <td>{{ $value->unit }}</td>
-              <td>{{ $value->qty }}</td>
-            </tr>
-          @endforeach
-          @foreach ($list as $key => $value)
-            <tr>
-              <td>{{ $value->name }}</td>
-              <td>{{ $value->code }}</td>
-              <td>{{ $value->unit }}</td>
-              <td>{{ $value->qty }}</td>
-            </tr>
-          @endforeach
-          @foreach ($list as $key => $value)
-            <tr>
-              <td>{{ $value->name }}</td>
-              <td>{{ $value->code }}</td>
-              <td>{{ $value->unit }}</td>
-              <td>{{ $value->qty }}</td>
-            </tr>
-          @endforeach
-          @foreach ($list as $key => $value)
-            <tr>
-              <td>{{ $value->name }}</td>
-              <td>{{ $value->code }}</td>
-              <td>{{ $value->unit }}</td>
-              <td>{{ $value->qty }}</td>
-            </tr>
-          @endforeach
         </tbody>
       </table>
     </div>
