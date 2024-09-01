@@ -157,6 +157,12 @@ class AccurateApiController extends Controller
                 MasterData::saveMasterPartDummy($saveData);
             } else {
                 $updatedCount++;
+                $updateData = [
+                    'code' => '-',
+                    'unit' => $row[2],
+                    'qty' => $row[3],
+                ];
+                MasterData::updateMasterPartDummy($row[0], $updateData);
             }
         }
 

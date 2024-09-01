@@ -301,4 +301,13 @@ class MasterData extends Model
 
         return $query;
     }
+
+    public function scopeUpdateMasterPartDummy($query, $name, $data)
+    {
+        $query = DB::table("accurate_parts")
+            ->where('name',$name)
+            ->update($data);
+
+        return $query;
+    }
 }
