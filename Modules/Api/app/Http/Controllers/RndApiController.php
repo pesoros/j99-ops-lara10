@@ -59,31 +59,15 @@ class RndApiController extends Controller
         $request->validate([
             'file' => 'required|mimes:csv',
         ]);
-        //read csv file and skip data
         $file = $request->file('file');
-        $handle = fopen($file->path(), 'r');
+        $fileContents = file($file->getPathname());
+        $result = [];
 
-        //skip the header row
-        fgetcsv($handle);
-
-        $chunksize = 25;
-        while(!feof($handle))
-        {
-            $chunkdata = [];
-
-            for($i = 0; $i<$chunksize; $i++)
-            {
-                $data = fgetcsv($handle);
-                if($data === false)
-                {
-                    break;
-                }
-                $chunkdata[] = $data; 
-            }
+        foreach ($fileContents as $line) {
+            $result[] = str_getcsv($line);
         }
-        fclose($handle);
 
-        return $chunkdata;
+        return $result;
     }
 
     public function exportXlsx(Request $request)

@@ -13,7 +13,7 @@ class MasterdataSparePartsDummyController extends Controller
     public function listMasterSpareParts()
     {
         $data['title'] = 'Spare parts';
-        $data['list'] = MasterData::getMasterPartsDummy();
+        $data['list'] = MasterData::getMasterPartsListsDummy();
 
         return view('masterdata::spareparts_dummy.index', $data);
     }

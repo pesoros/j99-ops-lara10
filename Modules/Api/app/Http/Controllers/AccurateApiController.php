@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use App\Models\Accurate;
+use App\Models\MasterData;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
@@ -126,6 +127,45 @@ class AccurateApiController extends Controller
         }
 
         return $getAccessToken;
+    }
+
+    public function syncDataCsv(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv',
+        ]);
+        $file = $request->file('file');
+        $fileContents = file($file->getPathname());
+        $savedCount = 0;
+        $updatedCount = 0;
+
+        foreach ($fileContents as $line) {
+            $row = str_getcsv($line);
+            if (strtoupper($row[0]) === strtoupper('nama barang') || trim($row[0]) === '') {
+                continue;
+            }
+            $getPart = MasterData::getMasterPartDummy($row[0]);
+            if (!isset($getPart->name)) {
+                $savedCount++;
+                $saveData = [
+                    'uuid' => generateUuid(),
+                    'name' => $row[0],
+                    'code' => '-',
+                    'unit' => $row[2],
+                    'qty' => $row[3],
+                ];
+                MasterData::saveMasterPartDummy($saveData);
+            } else {
+                $updatedCount++;
+            }
+        }
+
+        $result = [
+            'saved' => $savedCount,
+            'updated' => $updatedCount,
+        ];
+
+        return $result;
     }
     
 }

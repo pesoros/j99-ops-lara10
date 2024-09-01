@@ -275,12 +275,29 @@ class MasterData extends Model
         return $query;
     }
 
-    public function scopeGetMasterPartsDummy($query)
+    public function scopeGetMasterPartsListsDummy($query)
     {
         $query = DB::table("accurate_parts AS accparts")
             ->select('accparts.*')
             ->orderBy('accparts.id')
             ->get();
+
+        return $query;
+    }
+
+    public function scopeGetMasterPartDummy($query, $name)
+    {
+        $query = DB::table("accurate_parts AS accparts")
+            ->select('accparts.*')
+            ->where('name',$name)
+            ->first();
+
+        return $query;
+    }
+
+    public function scopeSaveMasterPartDummy($query, $data)
+    {
+        $query = DB::table("accurate_parts")->insert($data);
 
         return $query;
     }

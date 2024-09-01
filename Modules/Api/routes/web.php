@@ -23,6 +23,7 @@ Route::group([], function () {
             Route::get('/receivetoken/newtoken', [AccurateApiController::class, 'newtokenreceive']);
             Route::get('/receivetoken/refreshtoken', [AccurateApiController::class, 'refreshtokenreceive']);
             Route::get('/dbsession', [AccurateApiController::class, 'dbsession']);
+            Route::post('/syncdata', [AccurateApiController::class, 'syncDataCsv']);
         });
         Route::prefix('rnd')->group(function () {
             Route::get('csv/export', [RndApiController::class, 'exportCsv']);
