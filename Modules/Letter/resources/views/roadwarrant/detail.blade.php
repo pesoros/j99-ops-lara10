@@ -174,6 +174,7 @@
               </tr>
               </thead>
               <tbody>
+                @php $summary = 0; @endphp
                 @foreach ($expensesList as $key => $expense)
                   <tr>
                     <td>{{ $key + 1 }}</td>
@@ -216,8 +217,21 @@
                         href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/0') }}"
                         class="btn btn-xs btn-danger"
                       >Tolak</a>
+                      <a 
+                        href="{{ url('letter/roadwarrant/expense/edit/'.$expense->id) }}"
+                        class="btn btn-xs btn-warning"
+                      >Edit</a>
                     </td>
                   </tr>
+                  @if ($expense->action == 'spend') 
+                      @if ($expense->status == 2)
+                        @php $summary = $summary - $expense->nominal; @endphp
+                      @endif
+                  @else
+                      @if ($expense->status == 2)
+                        @php $summary = $summary + $expense->nominal; @endphp
+                      @endif
+                  @endif
                 @endforeach
               </tbody>
             </table>
@@ -226,6 +240,11 @@
         <!-- /.row -->
       </div>
       <!-- /.invoice -->
+      <div class="row">
+        <div class="col-12">
+          <p><strong>SISA UANG: Rp. {{$summary}}</strong></p>
+        </div>
+      </div>
       <div class="row no-print">
         <div class="col-12">
           <a href="#" rel="noopener" target="_blank" class="btn btn-default printPage"><i class="fas fa-print"></i> Print</a>

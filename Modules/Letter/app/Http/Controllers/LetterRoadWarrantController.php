@@ -54,7 +54,7 @@ class LetterRoadWarrantController extends Controller
                 'driver_allowance_2'        =>  numberClearence($request->driver_allowance_2[$key]),
                 'codriver_allowance'        =>  numberClearence($request->codriver_allowance[$key]),
                 'trip_allowance'            =>  numberClearence($request->trip_allowance[$key]),
-                'fuel_allowance'            =>  numberClearence($request->fuel_allowance[$key]),
+                'fuel_allowance'            =>  0,
                 'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance[$key]),
                 'created_by'                =>  auth()->user()->uuid,
                 'status'                    =>  1,
@@ -116,7 +116,7 @@ class LetterRoadWarrantController extends Controller
             'driver_allowance_2'        =>  numberClearence($request->driver_allowance_2),
             'codriver_allowance'        =>  numberClearence($request->codriver_allowance),
             'trip_allowance'            =>  numberClearence($request->trip_allowance),
-            'fuel_allowance'            =>  numberClearence($request->fuel_allowance),
+            'fuel_allowance'            =>  0,
             'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance),
             'created_by'                =>  auth()->user()->uuid,
             'status'                    =>  1,
@@ -193,7 +193,7 @@ class LetterRoadWarrantController extends Controller
                 'driver_allowance_2'        =>  numberClearence($request->driver_allowance_2),
                 'codriver_allowance'        =>  numberClearence($request->codriver_allowance),
                 'trip_allowance'            =>  numberClearence($request->trip_allowance),
-                'fuel_allowance'            =>  numberClearence($request->fuel_allowance),
+                'fuel_allowance'            =>  0,
                 'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance),
                 'updated_by'                =>  auth()->user()->uuid,
                 'updated_at'                =>  Carbon::now(),
@@ -215,5 +215,27 @@ class LetterRoadWarrantController extends Controller
         $saveComplaint = RoadWarrant::updateExpense($expense_uuid, $updateExpense);
 
         return back()->with('success', 'Status berhasil dirubah');
+    }
+
+    public function editRoadWarrantExpense(Request $request, $uuid)
+    {
+        $data['title'] = 'Edit Pengeluaran';
+        $data['expense'] = Roadwarrant::getExpense($uuid);
+        return view('letter::roadwarrant.editExpense', $data);
+    }
+
+    public function editRoadWarrantExpenseStore(Request $request, $uuid)
+    {
+            $updateExpense = [
+                'description'   =>  $request->description,
+                'nominal'   =>  $request->nominal,
+            ];
+            $saveExpense = RoadWarrant::updateExpense($uuid, $updateExpense);
+
+            if ($saveExpense) {
+                return back()->with('success', 'Anda berhasil edit data Pengeluaran');
+            }
+
+            return back()->with('failed', 'Pengeluaran gagal di edit!');
     }
 }

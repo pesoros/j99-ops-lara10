@@ -190,6 +190,10 @@
                         href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/0') }}"
                         class="btn btn-xs btn-danger"
                       >Tolak</a>
+                      <a 
+                        href="{{ url('letter/roadwarrant/expense/edit/'.$expense->id) }}"
+                        class="btn btn-xs btn-warning"
+                      >Edit</a>
                     </td>
                   </tr>
                   @if ($expense->action == 'spend') 
@@ -211,7 +215,7 @@
       <!-- /.invoice -->
       <div class="row">
         <div class="col-12">
-          <p><strong>TOTAL PENGELUARAN: Rp. {{$summary}}</strong></p>
+          <p><strong>SISA UANG: Rp. {{$summary}}</strong></p>
         </div>
       </div>
       <div class="row no-print">
