@@ -47,6 +47,10 @@ function formatAmount($str, $separator = '.') {
   return 'Rp'.number_format($str,0,".",".");
 }
 
+function formatAmountNoRp($str, $separator = '.') {
+  return number_format($str,0,".",".");
+}
+
 function removeExceptNumber($str) {
   return preg_replace("/[^0-9]/","",$str);
 }
