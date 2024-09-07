@@ -12,7 +12,7 @@
         <label for="email">Nama</label>
         <input type="text" class="form-control" id="email" name="email" placeholder="Masukkan email" value="{{ $email }}">
       </div>
-      <button type="button" onclick="return onSearch()" class="btn btn-warning">Cari</button>
+      <button type="button" onclick="return onSearch()" class="btn btn-primary">Cari</button>
     </div>
     <!-- /.card-body -->
   </div>
