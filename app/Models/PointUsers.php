@@ -32,6 +32,7 @@ class PointUsers extends Model
                 'uph.point',
                 'uph.is_debit',
                 'uph.created_at',
+                'uph.note',
             )
             ->where('user_id',$userid)
             ->orderBy('uph.created_at','DESC')
