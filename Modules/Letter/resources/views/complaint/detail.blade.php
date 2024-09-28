@@ -97,7 +97,7 @@
                       <td>{{ $damage->areacode }}-{{ $damage->scopecode }} | {{ $damage->scopename }}</td>
                       <td>{{ $damage->description }}</td>
                       <td>{{ dateFormat($damage->created_at) }}</td>
-                      <td>{{ $damage->numberid }}</td>
+                      <td>{{ $damage->numberid ?? '-' }}</td>
                     </tr>
                   @endforeach
                 </tbody>
