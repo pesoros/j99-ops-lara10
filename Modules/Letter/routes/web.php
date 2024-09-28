@@ -24,7 +24,7 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('complaint', [LetterComplaintController::class, 'listComplaint']);
         Route::post('complaint/add', [LetterComplaintController::class, 'addComplaintStore']);
         Route::get('complaint/show/detail/{uuid}', [LetterComplaintController::class, 'detailComplaint']);
-        Route::get('complaint/add/createworkorder/{uuid}', [LetterComplaintController::class, 'createWorkorder']);
+        Route::post('complaint/add/createworkorder/{uuid}', [LetterComplaintController::class, 'createWorkorder']);
 
         Route::get('workorder', [LetterWorkorderController::class, 'listWorkorder']);
         Route::get('workorder/show/detail/{uuid}', [LetterWorkorderController::class, 'detailWorkorder']);

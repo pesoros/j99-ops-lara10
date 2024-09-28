@@ -59,14 +59,14 @@ class LetterComplaintController extends Controller
     {
         $data['title'] = 'Detail Keluhan';
         $data['bus'] = Bus::getBus($uuid);
-        $data['workorder'] = Complaint::getWorkorderActive($uuid);
+        $data['workorders'] = Complaint::getWorkorderActive($uuid);
         $data['damages'] = Complaint::getDamages($uuid);
         $data['partsscope'] = Complaint::getPartsScope();
 
         return view('letter::complaint.detail', $data);
     }
 
-    public function createWorkorder($bus_uuid)
+    public function createWorkorder(Request $request, $bus_uuid)
     {
         $workorderUuid = generateUuid();
         $workorderCount = Complaint::getWorkorderCount();
@@ -80,6 +80,15 @@ class LetterComplaintController extends Controller
             'count' => $count,
             'bus_uuid' => $bus_uuid,
         ];
+
+        $saveDamagesData = [];
+        foreach ($request->damages_select as $key => $value) {
+            $saveDamagesData[] = [
+                'uuid' => generateUuid(),
+                'workorder_uuid' => $workorderUuid,
+                'damage_uuid' =>  $value,
+            ];
+        }
 
         $notifTitle = 'Surat Perintah Kerja';
         $notifBody = $workorderNumber;
@@ -101,6 +110,7 @@ class LetterComplaintController extends Controller
         $updateBusData['status'] = 0;
 
         $saveWorkorder = Complaint::saveWorkorder($saveData);
+        $saveWorkorderDamages = Complaint::saveWorkorderDamages($saveDamagesData);
         $sendNotif = Fcm::sendPushNotification($rawPushNotif);
         $updateBusStatus = Bus::updateBus($bus_uuid, $updateBusData);
 
