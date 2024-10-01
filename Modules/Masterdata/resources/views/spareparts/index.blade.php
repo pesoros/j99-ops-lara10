@@ -10,6 +10,9 @@
             <a href="{{ url('api/accurate/refreshtoken') }}" target="_blank" class="btn btn-secondary btn-sm">
               Refresh token accurate 
             </a>
+            <a href="{{ url('api/accurate/newtoken') }}" target="_blank" class="btn btn-warning btn-sm">
+              Generate token accurate (Manually) 
+            </a>
           @endif
         </div>
     </div>
