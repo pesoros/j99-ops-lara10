@@ -7,10 +7,10 @@
         <h3 class="card-title">List {{ $title }}</h3>
         <div class="float-right">
           @if (permissionCheck('add'))
-            <a href="{{ url('api/accurate/refreshtoken') }}" target="_blank" class="btn btn-secondary btn-sm">
+            <a href="{{ env('BE_BASEURL') }}/accurate/token/refresh" target="_blank" class="btn btn-secondary btn-sm">
               Refresh token accurate 
             </a>
-            <a href="{{ url('api/accurate/newtoken') }}" target="_blank" class="btn btn-warning btn-sm">
+            <a href="{{ env('BE_BASEURL') }}/accurate/token/new" target="_blank" class="btn btn-warning btn-sm">
               Generate token accurate (Manually) 
             </a>
           @endif
