@@ -247,7 +247,7 @@ class LetterRoadWarrantController extends Controller
 
         $logData = [];
         foreach ($passengers as $key => $value) {
-            if ($value->pickup_trip_location != 'Bekasi') {continue;}
+            if ($value->pickup_trip_location != 'Pulo Gebang') {continue;}
             $body = [
                 'po_id'             =>  getenv('PULOGEBANG_PO_ID'),
                 'ticket_id'         =>  $value->ticket_number,
