@@ -328,4 +328,11 @@ class RoadWarrant extends Model
 
         return $query;
     }
+
+    public function scopeSaveBoardingPuloGebang($query, $data)
+    {
+        $query = DB::table("boarding_pulogebang")->insert($data);
+
+        return $query;
+    }
 }

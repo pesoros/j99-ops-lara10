@@ -94,7 +94,7 @@
                   @foreach ($damages as $key => $damage)
                     <tr>
                       <td>{{ $key + 1 }}</td>
-                      <td>{{ $damage->areacode }}-{{ $damage->scopecode }} | {{ $damage->scopename }}</td>
+                      <td>{{ $damage->areaname }} | {{ $damage->scopename }} | {{ $damage->areacode }}-{{ $damage->scopecode }}</td>
                       <td>{{ $damage->description }}</td>
                       <td>{{ dateFormat($damage->created_at) }}</td>
                       <td>{{ $damage->numberid ?? '-' }}</td>

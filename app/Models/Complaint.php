@@ -51,6 +51,7 @@ class Complaint extends Model
                 'scope.code AS scopecode',
                 'area.code AS areacode',
                 'wo.numberid',
+                'area.name AS areaname',
             )
             ->join("ops_parts_scope AS scope", "scope.uuid", "=", "damage.scope_uuid")
             ->join("ops_parts_area AS area", "area.uuid", "=", "scope.parts_area_uuid")
@@ -80,6 +81,7 @@ class Complaint extends Model
                 'scope.name AS scopename',
                 'scope.code AS scopecode',
                 'area.code AS areacode',
+                'area.name AS areaname',
                 'damac.name AS action_name'
             )
             ->join("ops_parts_scope AS scope", "scope.uuid", "=", "damage.scope_uuid")

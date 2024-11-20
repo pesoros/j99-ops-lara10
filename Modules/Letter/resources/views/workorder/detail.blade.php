@@ -83,6 +83,7 @@
                     <th width="3">No</th>
                     <th>Bagian</th>
                     <th>Deskripsi</th>
+                    <th>Tanggal lapor</th>
                     @if (STRVAL($detailWorkorder->status) !== '0')
                       <th>Penanganan</th>
                       <th>Detail penanganan</th>
@@ -93,8 +94,9 @@
                   @foreach ($damages as $key => $damage)
                     <tr>
                       <td>{{ $key + 1 }}</td>
-                      <td>{{ $damage->areacode }}-{{ $damage->scopecode }} | {{ $damage->scopename }}</td>
+                      <td>{{ $damage->areaname }} | {{ $damage->scopename }} | {{ $damage->areacode }}-{{ $damage->scopecode }}</td>
                       <td>{{ $damage->description }}</td>
+                      <td>{{ $damage->created_at }}</td>
                       @if (STRVAL($detailWorkorder->status) !== '0')
                         <td>
                           <input type="hidden" id="damage_uuid" name="damage_uuid[]" value={{ $damage->uuid }}>

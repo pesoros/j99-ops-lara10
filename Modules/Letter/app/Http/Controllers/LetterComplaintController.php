@@ -111,7 +111,7 @@ class LetterComplaintController extends Controller
 
         $saveWorkorder = Complaint::saveWorkorder($saveData);
         $saveWorkorderDamages = Complaint::saveWorkorderDamages($saveDamagesData);
-        $sendNotif = Fcm::sendPushNotification($rawPushNotif);
+        // $sendNotif = Fcm::sendPushNotification($rawPushNotif);
         $updateBusStatus = Bus::updateBus($bus_uuid, $updateBusData);
 
         if ($saveWorkorder) {

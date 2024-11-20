@@ -35,6 +35,16 @@
             <div class="table-responsive">
               <table class="table">
                 <tr>
+                  <th width="250">Status SPJ:</th>
+                  <td>
+                    @if (STRVAL($roadwarrant->status) === '1')
+                      <span class="badge badge-warning">Aktif</span>                                        
+                    @elseif (STRVAL($roadwarrant->status) === '2')
+                      <span class="badge badge-success">Selesai</span>                                        
+                    @endif
+                  </td>
+                </tr>
+                <tr>
                   <th width="250">Nomor SPJ :</th>
                   <td>{{ $roadwarrant->numberid }}</td>
                 </tr>
