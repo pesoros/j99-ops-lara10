@@ -88,7 +88,8 @@ class Trip extends Model
                 'tpoint.arr_time',
                 'ftype.type as class',
                 'resto.food_name',
-                'paymentreg.payment_channel_code as channel'
+                'paymentreg.payment_channel_code as channel',
+                'arrival_loc.ttpg_id'
             )
             ->join('tkt_booking as tbook', 'tbook.trip_id_no', 'tras.trip')
             ->join('tkt_booking_head AS tbookhead', 'tbookhead.booking_code', '=', 'tbook.booking_code')
@@ -101,6 +102,7 @@ class Trip extends Model
             })
             ->leftJoin('resto_menu as resto', 'resto.id', '=', 'tps.food')
             ->leftJoin('payment_registration AS paymentreg', 'paymentreg.booking_code', '=', 'tbookhead.booking_code')
+            ->leftJoin('trip_location as arrival_loc', 'arrival_loc.name', '=', 'tbook.drop_trip_location')
             ->where('tbookhead.payment_status', 1)
             ->where('tps.cancel', 0)
             ->where('tras.id',$tripAssign)

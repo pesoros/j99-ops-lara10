@@ -9,6 +9,8 @@ use Illuminate\Http\Response;
 use App\Models\Workorder;
 use App\Models\RoadWarrant;
 use App\Models\Bus;
+use App\Models\Trip;
+use App\Models\Rest;
 use Carbon\Carbon;
 
 class LetterRoadWarrantController extends Controller
@@ -124,6 +126,7 @@ class LetterRoadWarrantController extends Controller
                 
         $saveRoadWarrant = RoadWarrant::saveManifest($saveManifestData);
         $saveRoadWarrant = RoadWarrant::saveRoadWarrant($saveRoadWarrantData);
+        $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestData, $busData->registration_number);
 
         if ($saveRoadWarrant) {
             return back()->with('success', 'Anda berhasil membuat SPJ AKAP');
@@ -237,5 +240,42 @@ class LetterRoadWarrantController extends Controller
             }
 
             return back()->with('failed', 'Pengeluaran gagal di edit!');
+    }
+
+    public function sendBoardingPuloGebang($manifestData, $registrationNumber) {
+        $passengers = Trip::getPassengerList($manifestData['trip_assign'], $manifestData['trip_date']);
+
+        $logData = [];
+        foreach ($passengers as $key => $value) {
+            if ($value->pickup_trip_location != 'Bekasi') {continue;}
+            $body = [
+                'po_id'             =>  getenv('PULOGEBANG_PO_ID'),
+                'ticket_id'         =>  $value->ticket_number,
+                'date_of_departure' =>  $manifestData['trip_date'],
+                'time_of_departure' =>  $value->dep_time,
+                'destination_id'    =>  $value->ttpg_id,
+                'nopol'             =>  $registrationNumber,
+                // 'nik'               =>  $value->,
+                'name'              =>  $value->name,
+                // 'address'           =>  $value->,
+                // 'city'              =>  $value->,
+                // 'province'          =>  $value->,
+                // 'sex'               =>  $value->,
+                'telp'              =>  $value->phone,
+                // 'email'             =>  $value->,
+            ];    
+            $sendBoarding = Rest::postBoardingPuloGebang($body);
+            $logData[] = [
+                'ticket_number' => $value->ticket_number,
+                'response' => STRVAL(json_encode($sendBoarding))
+            ];
+            sleep(1);
+        }
+
+        foreach ($logData as $key => $value) {
+            RoadWarrant::saveBoardingPuloGebang($value);
+        }
+
+        return $logData;
     }
 }

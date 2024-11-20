@@ -164,4 +164,21 @@ class Rest extends Model
 
         return $fetch;
     }
+
+
+    public function scopePostBoardingPuloGebang($query, $raw)
+    {
+        $headers = [
+            'Content-Type' => 'application/json',
+            'X-TTPG-KEY' => getenv('PULOGEBANG_KEY')
+        ];
+
+        $fetch = $this->client->request(
+            'POST', env('PULOGEBANG_URL').'/boarding', [
+            'body' => json_encode($raw),
+            'headers' => $headers,
+        ])->getBody();
+
+        return json_decode($fetch);
+    }
 }
