@@ -24,9 +24,7 @@ class LetterWorkorderController extends Controller
     {
         $data['title'] = 'Detail Keluhan';
         $data['detailWorkorder'] = Workorder::getWorkorder($uuid);
-        $damages = STRVAL($data['detailWorkorder']->status) !== '2' 
-            ? Complaint::getDamages($data['detailWorkorder']->bus_uuid) 
-            : Complaint::getDamagesByWorkorder($uuid);
+        $damages = Workorder::getWorkorderDamages($uuid);
         foreach ($damages as $key => $damage) {
             $damage->parts_request = Workorder::getPartsRequest($uuid, $damage->uuid);
         }

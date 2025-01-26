@@ -61,7 +61,8 @@ class AccurateApiController extends Controller
             return $response->getBody()->getContents();
         }
 
-        return $getAccessToken;
+        // return $getAccessToken;
+        return ['message' => 'refresh token succeed'];
     }
 
     public function dbsession()
@@ -126,7 +127,8 @@ class AccurateApiController extends Controller
             return $response->getBody()->getContents();
         }
 
-        return $getAccessToken;
+        // return $getAccessToken;
+        return ['message' => 'generate token succeed'];
     }
 
     public function syncDataCsv(Request $request)

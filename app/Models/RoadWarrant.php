@@ -20,8 +20,8 @@ class RoadWarrant extends Model
             ->join("v2_bus AS bus", "bus.uuid", "=", "roadwarrant.bus_uuid")
             ->leftJoin("v2_book AS book", "book.uuid", "=", "roadwarrant.manifest_uuid")
             ->leftJoin("manifest", "manifest.uuid", "=", "roadwarrant.manifest_uuid")
-            ->orderBy('roadwarrant.id','DESC')
-            ->take(400)
+            ->orderBy('roadwarrant.id', 'DESC')
+            ->take(300)
             ->get();
 
         return $query;
@@ -57,7 +57,7 @@ class RoadWarrant extends Model
             ->leftJoin("employee_history AS driver_2", "driver_2.id", "=", "roadwarrant.driver_2")
             ->leftJoin("employee_history AS codriver", "codriver.id", "=", "roadwarrant.codriver")
             ->where('roadwarrant.uuid', $uuid)
-            ->orderBy('roadwarrant.created_at','DESC')
+            ->orderBy('roadwarrant.created_at', 'DESC')
             ->first();
 
         return $query;
@@ -81,14 +81,14 @@ class RoadWarrant extends Model
             ->where('roadwarrant.uuid', $uuid)
             ->first();
 
-            return $query;
+        return $query;
     }
 
     public function scopeGetEmployee($query)
     {
         $query = DB::table("employee_history AS employee")
             ->select('employee.*')
-            ->orderBy('employee.first_name','ASC')
+            ->orderBy('employee.first_name', 'ASC')
             ->get();
 
         return $query;
@@ -105,7 +105,7 @@ class RoadWarrant extends Model
                     ->orWhere('roadwarrant.driver_2', '=', $driverid)
                     ->orWhere('roadwarrant.codriver', '=', $driverid);
             })
-            ->orderBy('roadwarrant.created_at','ASC')
+            ->orderBy('roadwarrant.created_at', 'ASC')
             ->get();
 
         return $query;
@@ -123,7 +123,7 @@ class RoadWarrant extends Model
                     ->orWhere('roadwarrant.driver_2', '=', $driverid)
                     ->orWhere('roadwarrant.codriver', '=', $driverid);
             })
-            ->orderBy('roadwarrant.created_at','ASC')
+            ->orderBy('roadwarrant.created_at', 'ASC')
             ->get();
 
         return $query;
@@ -147,7 +147,7 @@ class RoadWarrant extends Model
             ->leftJoin("v2_customer AS customer", "customer.uuid", "=", "book.customer_uuid")
             ->leftJoin("v2_area_city AS city_from", "city_from.uuid", "=", "book.departure_city_uuid")
             ->leftJoin("v2_area_city AS city_to", "city_to.uuid", "=", "book.destination_city_uuid")
-            ->where('book.status',0)
+            ->where('book.status', 0)
             ->whereBetween('book.start_date', [$startDate, $endDate])
             ->orderBy('book.start_date')
             ->get();
@@ -181,7 +181,7 @@ class RoadWarrant extends Model
             ->leftJoin("v2_customer AS customer", "customer.uuid", "=", "book.customer_uuid")
             ->leftJoin("v2_area_city AS city_from", "city_from.uuid", "=", "book.departure_city_uuid")
             ->leftJoin("v2_area_city AS city_to", "city_to.uuid", "=", "book.destination_city_uuid")
-            ->where('book.uuid',$uuid)
+            ->where('book.uuid', $uuid)
             ->orderBy('book.created_at')
             ->first();
 
@@ -191,10 +191,10 @@ class RoadWarrant extends Model
     public function scopeGetBookBus($query, $book_uuid)
     {
         $query = DB::table("v2_book_bus AS bookbus")
-            ->select('bus.name','bookbus.price', 'bookbus.bus_uuid', 'class.name as classname','class.seat')
+            ->select('bus.name', 'bookbus.price', 'bookbus.bus_uuid', 'class.name as classname', 'class.seat')
             ->join('v2_bus AS bus', 'bus.uuid', '=', 'bookbus.bus_uuid')
             ->join("v2_class AS class", "class.uuid", "=", "bus.class_uuid")
-            ->where('bookbus.book_uuid',$book_uuid)
+            ->where('bookbus.book_uuid', $book_uuid)
             ->get();
 
         return $query;
@@ -206,7 +206,7 @@ class RoadWarrant extends Model
             ->select('roadwarrant.count')
             ->whereYear('created_at', Carbon::now()->year)
             ->whereMonth('created_at', Carbon::now()->month)
-            ->orderby('roadwarrant.count','DESC')
+            ->orderby('roadwarrant.count', 'DESC')
             ->first();
 
         return $query;
@@ -229,7 +229,7 @@ class RoadWarrant extends Model
     public function scopeUpdateBook($query, $uuid, $data)
     {
         $query = DB::table("v2_book")
-            ->where('uuid',$uuid)
+            ->where('uuid', $uuid)
             ->update($data);
 
         return $query;
@@ -238,9 +238,9 @@ class RoadWarrant extends Model
     function scopeGetBusAkap($query)
     {
         $query = DB::table("v2_bus AS bus")
-            ->select('bus.uuid as busuuid','bus.name as busname','bus.registration_number')
-            ->where('bus.category','AKAP')
-            ->orderBy('busname','ASC')
+            ->select('bus.uuid as busuuid', 'bus.name as busname', 'bus.registration_number')
+            ->where('bus.category', 'AKAP')
+            ->orderBy('busname', 'ASC')
             ->get();
 
         return $query;
@@ -249,9 +249,9 @@ class RoadWarrant extends Model
     function scopeGetBus($query, $bus_uuid)
     {
         $query = DB::table("v2_bus AS bus")
-            ->select('bus.uuid as busuuid','bus.name as busname','bus.registration_number')
-            ->where('bus.uuid',$bus_uuid)
-            ->orderBy('busname','ASC')
+            ->select('bus.uuid as busuuid', 'bus.name as busname', 'bus.registration_number')
+            ->where('bus.uuid', $bus_uuid)
+            ->orderBy('busname', 'ASC')
             ->first();
 
         return $query;
@@ -260,7 +260,7 @@ class RoadWarrant extends Model
     function scopeGetManifest($query, $manifest_uuid)
     {
         $query = DB::table("manifest")
-            ->where('uuid',$manifest_uuid)
+            ->where('uuid', $manifest_uuid)
             ->first();
 
         return $query;
@@ -275,7 +275,7 @@ class RoadWarrant extends Model
             )
             ->join("trip", "trip.trip_id", "=", "tras.trip")
             // ->where('tras.status','1')
-            ->where('tras.id',$trasid)
+            ->where('tras.id', $trasid)
             ->first();
 
         return $query;
@@ -284,10 +284,10 @@ class RoadWarrant extends Model
     function scopeGetBusClass($query, $bus_uuid)
     {
         $query = DB::table("v2_bus AS bus")
-            ->select('class.name','class.seat','class.layout')
+            ->select('class.name', 'class.seat', 'class.layout')
             ->join("v2_bus_class as busclass", "busclass.bus_uuid", "=", "bus.uuid")
             ->join("v2_class as class", "class.uuid", "=", "busclass.class_uuid")
-            ->where('bus.uuid',$bus_uuid)
+            ->where('bus.uuid', $bus_uuid)
             ->get();
 
         return $query;
@@ -296,7 +296,7 @@ class RoadWarrant extends Model
     public function scopeGetExpensesList($query, $id)
     {
         $query = DB::table('trip_expenses as expense')
-            ->where('expense.roadwarrant_uuid',$id)
+            ->where('expense.roadwarrant_uuid', $id)
             ->orderBy('expense.id', 'ASC')
             ->get();
 
@@ -306,7 +306,7 @@ class RoadWarrant extends Model
     public function scopeGetExpense($query, $id)
     {
         $query = DB::table("trip_expenses")
-            ->where('id',$id)
+            ->where('id', $id)
             ->first();
 
         return $query;
@@ -315,7 +315,7 @@ class RoadWarrant extends Model
     public function scopeUpdateExpense($query, $id, $data)
     {
         $query = DB::table("trip_expenses")
-            ->where('id',$id)
+            ->where('id', $id)
             ->update($data);
 
         return $query;
@@ -324,8 +324,15 @@ class RoadWarrant extends Model
     public function scopeUpdateRoadWarrant($query, $uuid, $data)
     {
         $query = DB::table("ops_roadwarrant")
-            ->where('uuid',$uuid)
+            ->where('uuid', $uuid)
             ->update($data);
+
+        return $query;
+    }
+
+    public function scopeSaveBoardingPuloGebang($query, $data)
+    {
+        $query = DB::table("boarding_pulogebang")->insert($data);
 
         return $query;
     }

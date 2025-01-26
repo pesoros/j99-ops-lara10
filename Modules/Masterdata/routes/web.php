@@ -7,6 +7,8 @@ use Modules\Masterdata\app\Http\Controllers\MasterdataBusController;
 use Modules\Masterdata\app\Http\Controllers\MasterdataClassController;
 use Modules\Masterdata\app\Http\Controllers\MasterdataSparePartsController;
 use Modules\Masterdata\app\Http\Controllers\MasterdataSparePartsDummyController;
+use Modules\Masterdata\app\Http\Controllers\MasterdataPointSettingController;
+use Modules\Masterdata\app\Http\Controllers\MasterdataPointUsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,5 +49,9 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('class/delete/{uuid}', [MasterdataClassController::class, 'deleteMasterClass']);
         Route::get('spareparts', [MasterdataSparePartsController::class, 'listMasterSpareParts']);
         Route::get('spareparts_dummy', [MasterdataSparePartsDummyController::class, 'listMasterSpareParts']);
+        Route::get('pointsetting', [MasterdataPointSettingController::class, 'listPoint']);
+        Route::get('pointsetting/edit/{fleetid}', [MasterdataPointSettingController::class, 'editPoint']);
+        Route::post('pointsetting/edit/{fleetid}', [MasterdataPointSettingController::class, 'editPointUpdate']);
+        Route::get('userpoint', [MasterdataPointUsersController::class, 'searchUsers']);
     });
 });

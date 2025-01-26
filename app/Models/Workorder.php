@@ -40,6 +40,33 @@ class Workorder extends Model
         return $query;
     }
 
+    public function scopeGetWorkorderDamages($query, $uuid)
+    {
+        $query = DB::table("ops_damages AS damage")
+            ->select(
+                'damage.uuid',
+                'damage.scope_uuid',
+                'damage.description',
+                'damage.action_status',
+                'damage.action_description',
+                'damage.created_at',
+                'scope.name AS scopename',
+                'scope.code AS scopecode',
+                'area.code AS areacode',
+                'wodam.uuid AS wodam_uuid',
+                'damac.name AS action_name'
+            )
+            ->join("ops_parts_scope AS scope", "scope.uuid", "=", "damage.scope_uuid")
+            ->join("ops_parts_area AS area", "area.uuid", "=", "scope.parts_area_uuid")
+            ->join("ops_workorder_damages AS wodam", "wodam.damage_uuid", "=", "damage.uuid")
+            ->join("ops_workorder AS wo", "wo.uuid", "=", "wodam.workorder_uuid")
+            ->leftJoin("ops_damages_action AS damac", "damac.id", "=", "damage.action_status")
+            ->where('wo.uuid',$uuid)
+            ->get();
+
+        return $query;
+    }
+
     public function scopeGetActionList($query)
     {
         $query = DB::table("ops_damages_action AS action")

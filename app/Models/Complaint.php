@@ -50,10 +50,16 @@ class Complaint extends Model
                 'scope.name AS scopename',
                 'scope.code AS scopecode',
                 'area.code AS areacode',
+                'wo.numberid',
                 'area.name AS areaname',
             )
             ->join("ops_parts_scope AS scope", "scope.uuid", "=", "damage.scope_uuid")
             ->join("ops_parts_area AS area", "area.uuid", "=", "scope.parts_area_uuid")
+            ->leftJoin("ops_workorder_damages AS wodam", "wodam.damage_uuid", "=", "damage.uuid")
+            ->leftJoin('ops_workorder AS wo', function($leftJoin) {
+                $leftJoin->on('wo.uuid', '=', 'wodam.workorder_uuid')
+                    ->where('wo.status', '!=', 2);
+            })
             ->where('damage.bus_uuid',$bus_uuid)
             ->where('damage.is_closed',0)
             ->orderBy('damage.created_at','ASC')
@@ -105,6 +111,13 @@ class Complaint extends Model
         return $query;
     }
 
+    public function scopeSaveWorkorderDamages($query, $data)
+    {
+        $query = DB::table("ops_workorder_damages")->insert($data);
+
+        return $query;
+    }
+
     public function scopeGetWorkorderCount($query)
     {
         $query = DB::table("ops_workorder AS workorder")
@@ -123,7 +136,7 @@ class Complaint extends Model
             ->select('workorder.uuid','workorder.numberid')
             ->where('workorder.bus_uuid', $bus_uuid)
             ->where('status','!=',2)
-            ->first();
+            ->get();
 
         return $query;
     }
