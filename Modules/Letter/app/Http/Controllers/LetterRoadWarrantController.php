@@ -12,16 +12,56 @@ use App\Models\Bus;
 use App\Models\Trip;
 use App\Models\Rest;
 use Carbon\Carbon;
+use DataTables;
 
 class LetterRoadWarrantController extends Controller
 {
     public function listRoadWarrant()
     {
         $data['title'] = 'Surat perintah jalan';
-        $data['list'] = RoadWarrant::getRoadWarrantList();
         $data['bookavailable'] = RoadWarrant::getBookAvailable();
 
         return view('letter::roadwarrant.index', $data);
+    }
+
+    public function datatableListRoadWarrant()
+    {
+        $data = RoadWarrant::getRoadWarrantList();
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('departuredate', function($row){
+                if ($row->category == '1') {
+                    $result = dateFormat($row->akap_start_date);
+                } else {
+                    $result = dateFormat($row->pariwisata_start_date);
+                }
+                return $result;
+            })
+            ->addColumn('categoryname', function($row){
+                if ($row->category == '1') {
+                    $result = 'AKAP';
+                } else {
+                    $result = 'Pariwisata';
+                }
+                return $result;
+            })
+            ->addColumn('status', function($row){
+                if ($row->status == '1') {
+                    $result = '<span class="badge badge-warning">Aktif</span>';
+                } else {
+                    $result = '<span class="badge badge-success">Selesai</span>';
+                }
+                return $result;
+            })
+            ->addColumn('actionbutton', function($row){
+                $result = '<div class="btn-group btn-block">';
+                $result .= '<a href="'.url('letter/roadwarrant/show/detail/'.$row->category.'/'.$row->uuid).'" class="btn btn-warning btn-sm">Detail</a>';
+                $result .= '<a href="'.url('letter/roadwarrant/edit/'.$row->category.'/'.$row->uuid).'" class="btn btn-success btn-sm">Edit</a>';
+                $result .= '</div>';
+                return $result;
+            })
+            ->rawColumns(['departuredate','categoryname','status','actionbutton'])
+            ->make(true);
     }
     
     public function addRoadWarrant($book_uuid)
