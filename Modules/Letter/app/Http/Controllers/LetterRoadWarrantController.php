@@ -3,6 +3,7 @@
 namespace Modules\Letter\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -18,7 +19,12 @@ class LetterRoadWarrantController extends Controller
     public function listRoadWarrant()
     {
         $data['title'] = 'Surat perintah jalan';
-        $data['list'] = RoadWarrant::getRoadWarrantList();
+
+        $lists = Cache::remember('redis_roadwarrantlists', 3600, function () {
+            return RoadWarrant::getRoadWarrantList();
+        });
+
+        $data['list'] = $lists;
         $data['bookavailable'] = RoadWarrant::getBookAvailable();
 
         return view('letter::roadwarrant.index', $data);
