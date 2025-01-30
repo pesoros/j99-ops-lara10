@@ -26,4 +26,4 @@ Permission is quite similiar as menu rules, when you assign child menu you have 
 php artisan module:make {module_name}
 ```
 
-Pesoros
+Pesoros a
