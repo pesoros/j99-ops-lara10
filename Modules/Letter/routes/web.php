@@ -33,6 +33,7 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::post('workorder/update/damagesaction/{uuid}', [LetterWorkorderController::class, 'updateAction']);
 
         Route::get('roadwarrant', [LetterRoadWarrantController::class, 'listRoadWarrant']);
+        Route::get('roadwarrant/datatable', [LetterRoadWarrantController::class, 'datatableListRoadWarrant']);
         Route::get('roadwarrant/add/{book_uuid}', [LetterRoadWarrantController::class, 'addRoadWarrant']);
         Route::post('roadwarrant/add/{book_uuid}', [LetterRoadWarrantController::class, 'addRoadWarrantStore']);
         Route::get('roadwarrant/add', [LetterRoadWarrantController::class, 'addRoadWarrantAkap']);
