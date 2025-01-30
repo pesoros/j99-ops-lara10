@@ -18,7 +18,7 @@
   </div>
   <!-- /.card-header -->
   <div class="card-body">
-    <table id="datatable-def" class="table table-bordered table-striped">
+    <table id="datatable-serv" class="table table-bordered table-striped">
       <thead>
       <tr>
         <th>No</th>
@@ -31,28 +31,6 @@
       </tr>
       </thead>
       <tbody>
-        @foreach ($list as $key => $value)
-          <tr>
-            <td width="20" class="text-center">{{ intval($key) + 1 }}</td>
-            <td>{{ $value->numberid }}</td>
-            <td>{{ STRVAL($value->category) === '1' ? dateFormat($value->akap_start_date) : dateFormat($value->pariwisata_start_date) }}</td>
-            <td>{{ STRVAL($value->category) === '1' ? 'AKAP' : 'Pariwisata' }}</td>
-            <td>{{ $value->busname }}</td>
-            <td>
-                @if (STRVAL($value->status) === '1')
-                  <span class="badge badge-warning">Aktif</span>                                        
-                @elseif (STRVAL($value->status) === '2')
-                  <span class="badge badge-success">Selesai</span>                                        
-                @endif
-              </td>
-            <td>
-              <div class="btn-group btn-block">
-                @if (permissionCheck('show')) <a href="{{ url('letter/roadwarrant/show/detail/'.$value->category.'/'.$value->uuid) }}" class="btn btn-warning btn-sm">Detail</a> @endif
-                @if (permissionCheck('edit')) <a href="{{ url('letter/roadwarrant/edit/'.$value->category.'/'.$value->uuid) }}" class="btn btn-success btn-sm">Edit</a> @endif
-              </div>
-            </td>
-          </tr>
-        @endforeach
       </tbody>
     </table>
   </div>
@@ -108,3 +86,24 @@
 </div>
  
 @endsection
+
+@push('extra-scripts')
+<script type="text/javascript">
+    $(function () {
+      var table = $('#datatable-serv').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ url('letter/roadwarrant/datatable') }}",
+        columns: [
+            {data: 'DT_RowIndex', 'orderable': false, 'searchable': false},
+            {data: 'numberid', name: 'numberid'},
+            {data: 'departuredate', name: 'departuredate'},
+            {data: 'categoryname', name: 'categoryname'},
+            {data: 'busname', name: 'busname'},
+            {data: 'status', name: 'status'},
+            {data: 'actionbutton', name: 'actionbutton'},
+        ]
+      });
+    });
+</script>
+@endpush
