@@ -252,7 +252,7 @@ class LetterRoadWarrantController extends Controller
                 continue;
             }
             $body = [
-                'po_id'             =>  getenv('PULOGEBANG_PO_ID'),
+                'po_id'             =>  env('PULOGEBANG_PO_ID'),
                 'ticket_id'         =>  $value->ticket_number,
                 'date_of_departure' =>  $manifestData['trip_date'],
                 'time_of_departure' =>  $value->dep_time,

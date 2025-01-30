@@ -129,7 +129,7 @@ class Rest extends Model
         ];
         $formatPhone = formatPhone($phone);
         $formatPhone = str_replace('+', '', $formatPhone);
-        $url = getenv('WA_BASEURL').'/api/sendText?phone='.$formatPhone.'&text='.$text.'&session=default';
+        $url = env('WA_BASEURL').'/api/sendText?phone='.$formatPhone.'&text='.$text.'&session=default';
 
         $fetch = $this->client->request(
             'GET', $url, [
@@ -142,7 +142,7 @@ class Rest extends Model
     public function scopeSendWaPassengerPost($query, $phone, $text)
     {
         try {
-            $url = getenv('WA_BASEURL').'/api/sendImage';
+            $url = env('WA_BASEURL').'/api/sendImage';
             $formatPhone = formatPhone($phone);
             $formatPhone = str_replace('+', '', $formatPhone);
             $fetch = $this->client->request('POST', $url,[
@@ -170,7 +170,7 @@ class Rest extends Model
     {
         $headers = [
             'Content-Type' => 'application/json',
-            'X-TTPG-KEY' => getenv('PULOGEBANG_KEY')
+            'X-TTPG-KEY' => env('PULOGEBANG_KEY')
         ];
 
         $fetch = $this->client->request(
