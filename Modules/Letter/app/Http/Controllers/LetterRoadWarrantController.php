@@ -46,7 +46,7 @@ class LetterRoadWarrantController extends Controller
                 'bus_uuid'                  =>  $value,
                 'manifest_uuid'             =>  $book_uuid,
                 'category'                  =>  2,
-                'numberid'                  =>  genrateLetterNumber('SPJ',$counter),
+                'numberid'                  =>  genrateLetterNumber('SPJ', $counter),
                 'count'                     =>  $counter,
                 'km_start'                  =>  $request->km_start[$key],
                 'driver_1'                  =>  $request->driver_1[$key],
@@ -62,17 +62,17 @@ class LetterRoadWarrantController extends Controller
                 'status'                    =>  1,
             ];
         }
-        
+
         $updateBookData['status'] = 1;
-        
+
         $saveRoadWarrant = RoadWarrant::saveRoadWarrant($saveRoadWarrantData);
-        $saveComplaint = RoadWarrant::updateBook($book_uuid,$updateBookData);
+        $saveComplaint = RoadWarrant::updateBook($book_uuid, $updateBookData);
 
         if ($saveRoadWarrant) {
             return back()->with('success', 'Anda berhasil membuat SPJ pariwisata');
         }
 
-        return back()->with('failed', 'SPJ gagal tersimpan!');   
+        return back()->with('failed', 'SPJ gagal tersimpan!');
     }
 
     public function addRoadWarrantAkap()
@@ -107,7 +107,7 @@ class LetterRoadWarrantController extends Controller
             'bus_uuid'                  =>  $request->bus_uuid,
             'manifest_uuid'             =>  $manifest_uuid,
             'category'                  =>  1,
-            'numberid'                  =>  genrateLetterNumber('SPJ',$count),
+            'numberid'                  =>  genrateLetterNumber('SPJ', $count),
             'count'                     =>  $count,
             'km_start'                  =>  $request->km_start,
             'driver_1'                  =>  $request->driver_1,
@@ -123,16 +123,16 @@ class LetterRoadWarrantController extends Controller
             'created_by'                =>  auth()->user()->uuid,
             'status'                    =>  1,
         ];
-                
+
         $saveRoadWarrant = RoadWarrant::saveManifest($saveManifestData);
         $saveRoadWarrant = RoadWarrant::saveRoadWarrant($saveRoadWarrantData);
-        $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestData, $busData->registration_number);
+        // $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestData, $busData->registration_number);
 
         if ($saveRoadWarrant) {
             return back()->with('success', 'Anda berhasil membuat SPJ AKAP');
         }
 
-        return back()->with('failed', 'SPJ gagal tersimpan!');   
+        return back()->with('failed', 'SPJ gagal tersimpan!');
     }
 
     public function detailRoadWarrant(Request $request, $category, $uuid)
@@ -158,7 +158,7 @@ class LetterRoadWarrantController extends Controller
             $data['title'] = 'Detail SPJ Pariwisata';
             $data['roadwarrant'] = RoadWarrant::getRoadWarrant($uuid);
             $data['expensesList'] = Roadwarrant::getExpensesList($uuid);
-    
+
             return view('letter::roadwarrant.detail', $data);
         }
     }
@@ -186,32 +186,32 @@ class LetterRoadWarrantController extends Controller
 
     public function editRoadWarrantStore(Request $request, $category, $uuid)
     {
-            $editRoadWarrantData = [
-                'km_start'                  =>  $request->km_start,
-                'km_end'                    =>  $request->km_end,
-                'driver_1'                  =>  $request->driver_1,
-                'driver_2'                  =>  $request->driver_2,
-                'codriver'                  =>  $request->codriver,
-                'driver_allowance_1'        =>  numberClearence($request->driver_allowance_1),
-                'driver_allowance_2'        =>  numberClearence($request->driver_allowance_2),
-                'codriver_allowance'        =>  numberClearence($request->codriver_allowance),
-                'trip_allowance'            =>  numberClearence($request->trip_allowance),
-                'fuel_allowance'            =>  0,
-                'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance),
-                'updated_by'                =>  auth()->user()->uuid,
-                'updated_at'                =>  Carbon::now(),
-            ];
-                    
-            $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
+        $editRoadWarrantData = [
+            'km_start'                  =>  $request->km_start,
+            'km_end'                    =>  $request->km_end,
+            'driver_1'                  =>  $request->driver_1,
+            'driver_2'                  =>  $request->driver_2,
+            'codriver'                  =>  $request->codriver,
+            'driver_allowance_1'        =>  numberClearence($request->driver_allowance_1),
+            'driver_allowance_2'        =>  numberClearence($request->driver_allowance_2),
+            'codriver_allowance'        =>  numberClearence($request->codriver_allowance),
+            'trip_allowance'            =>  numberClearence($request->trip_allowance),
+            'fuel_allowance'            =>  0,
+            'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance),
+            'updated_by'                =>  auth()->user()->uuid,
+            'updated_at'                =>  Carbon::now(),
+        ];
 
-            if ($editRoadWarrant) {
-                $categoryname = $category === '1' ? 'AKAP' : 'Pariwisata';
-                return back()->with('success', 'Anda berhasil edit data SPJ '.$categoryname);
-            }
+        $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
 
-            return back()->with('failed', 'SPJ gagal di edit!');
+        if ($editRoadWarrant) {
+            $categoryname = $category === '1' ? 'AKAP' : 'Pariwisata';
+            return back()->with('success', 'Anda berhasil edit data SPJ ' . $categoryname);
+        }
+
+        return back()->with('failed', 'SPJ gagal di edit!');
     }
-    
+
     public function expenseStatusUpdate(Request $request, $category, $uuid, $expense_uuid, $status_id)
     {
         $updateExpense['status'] = $status_id;
@@ -229,25 +229,28 @@ class LetterRoadWarrantController extends Controller
 
     public function editRoadWarrantExpenseStore(Request $request, $uuid)
     {
-            $updateExpense = [
-                'description'   =>  $request->description,
-                'nominal'   =>  $request->nominal,
-            ];
-            $saveExpense = RoadWarrant::updateExpense($uuid, $updateExpense);
+        $updateExpense = [
+            'description'   =>  $request->description,
+            'nominal'   =>  $request->nominal,
+        ];
+        $saveExpense = RoadWarrant::updateExpense($uuid, $updateExpense);
 
-            if ($saveExpense) {
-                return back()->with('success', 'Anda berhasil edit data Pengeluaran');
-            }
+        if ($saveExpense) {
+            return back()->with('success', 'Anda berhasil edit data Pengeluaran');
+        }
 
-            return back()->with('failed', 'Pengeluaran gagal di edit!');
+        return back()->with('failed', 'Pengeluaran gagal di edit!');
     }
 
-    public function sendBoardingPuloGebang($manifestData, $registrationNumber) {
+    public function sendBoardingPuloGebang($manifestData, $registrationNumber)
+    {
         $passengers = Trip::getPassengerList($manifestData['trip_assign'], $manifestData['trip_date']);
 
         $logData = [];
         foreach ($passengers as $key => $value) {
-            if ($value->pickup_trip_location != 'Pulo Gebang') {continue;}
+            if ($value->pickup_trip_location != 'Pulo Gebang') {
+                continue;
+            }
             $body = [
                 'po_id'             =>  getenv('PULOGEBANG_PO_ID'),
                 'ticket_id'         =>  $value->ticket_number,
@@ -263,7 +266,7 @@ class LetterRoadWarrantController extends Controller
                 // 'sex'               =>  $value->,
                 'telp'              =>  $value->phone,
                 // 'email'             =>  $value->,
-            ];    
+            ];
             $sendBoarding = Rest::postBoardingPuloGebang($body);
             $logData[] = [
                 'ticket_number' => $value->ticket_number,
