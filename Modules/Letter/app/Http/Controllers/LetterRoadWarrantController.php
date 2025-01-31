@@ -166,7 +166,7 @@ class LetterRoadWarrantController extends Controller
 
         $saveRoadWarrant = RoadWarrant::saveManifest($saveManifestData);
         $saveRoadWarrant = RoadWarrant::saveRoadWarrant($saveRoadWarrantData);
-        $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestData, $busData->registration_number);
+        // $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestData, $busData->registration_number);
 
         if ($saveRoadWarrant) {
             return back()->with('success', 'Anda berhasil membuat SPJ AKAP');
@@ -292,7 +292,7 @@ class LetterRoadWarrantController extends Controller
                 continue;
             }
             $body = [
-                'po_id'             =>  getenv('PULOGEBANG_PO_ID'),
+                'po_id'             =>  env('PULOGEBANG_PO_ID'),
                 'ticket_id'         =>  $value->ticket_number,
                 'date_of_departure' =>  $manifestData['trip_date'],
                 'time_of_departure' =>  $value->dep_time,
