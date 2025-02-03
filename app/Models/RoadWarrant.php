@@ -21,7 +21,7 @@ class RoadWarrant extends Model
             ->leftJoin("v2_book AS book", "book.uuid", "=", "roadwarrant.manifest_uuid")
             ->leftJoin("manifest", "manifest.uuid", "=", "roadwarrant.manifest_uuid")
             ->orderBy('roadwarrant.id', 'DESC')
-            ->take(250)
+            ->take(500)
             ->get();
 
         return $query;
