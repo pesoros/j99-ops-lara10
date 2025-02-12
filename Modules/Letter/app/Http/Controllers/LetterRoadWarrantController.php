@@ -23,7 +23,7 @@ class LetterRoadWarrantController extends Controller
 
         return view('letter::roadwarrant.index', $data);
     }
-    
+
     public function addRoadWarrant($book_uuid)
     {
         $data['title'] = 'Tambah Surat perintah jalan Pariwisata';
@@ -126,7 +126,7 @@ class LetterRoadWarrantController extends Controller
 
         $saveRoadWarrant = RoadWarrant::saveManifest($saveManifestData);
         $saveRoadWarrant = RoadWarrant::saveRoadWarrant($saveRoadWarrantData);
-        // $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestData, $busData->registration_number);
+        $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestData, $busData->registration_number);
 
         if ($saveRoadWarrant) {
             return back()->with('success', 'Anda berhasil membuat SPJ AKAP');
