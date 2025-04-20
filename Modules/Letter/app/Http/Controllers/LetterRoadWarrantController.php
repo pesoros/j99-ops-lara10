@@ -12,13 +12,13 @@ use App\Models\Bus;
 use App\Models\Trip;
 use App\Models\Rest;
 use Carbon\Carbon;
-use DataTables;
 
 class LetterRoadWarrantController extends Controller
 {
     public function listRoadWarrant()
     {
         $data['title'] = 'Surat perintah jalan';
+        $data['list'] = RoadWarrant::getRoadWarrantList();
         $data['bookavailable'] = RoadWarrant::getBookAvailable();
 
         return view('letter::roadwarrant.index', $data);
@@ -118,7 +118,8 @@ class LetterRoadWarrantController extends Controller
             'driver_allowance_2'        =>  numberClearence($request->driver_allowance_2),
             'codriver_allowance'        =>  numberClearence($request->codriver_allowance),
             'trip_allowance'            =>  numberClearence($request->trip_allowance),
-            'fuel_allowance'            =>  0,
+            'fuel_allowance'            =>  numberClearence($request->fuel_allowance),
+            'etoll_allowance'           =>  numberClearence($request->etoll_allowance),
             'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance),
             'created_by'                =>  auth()->user()->uuid,
             'status'                    =>  1,
@@ -196,7 +197,8 @@ class LetterRoadWarrantController extends Controller
             'driver_allowance_2'        =>  numberClearence($request->driver_allowance_2),
             'codriver_allowance'        =>  numberClearence($request->codriver_allowance),
             'trip_allowance'            =>  numberClearence($request->trip_allowance),
-            'fuel_allowance'            =>  0,
+            'fuel_allowance'            =>  numberClearence($request->fuel_allowance),
+            'etoll_allowance'           =>  numberClearence($request->etoll_allowance),
             'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance),
             'updated_by'                =>  auth()->user()->uuid,
             'updated_at'                =>  Carbon::now(),

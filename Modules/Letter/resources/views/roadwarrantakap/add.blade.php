@@ -102,15 +102,6 @@
               <input type="text" class="form-control moneyform" name="crew_meal_allowance" placeholder="0" required>
             </div>
           </div>
-          <!-- <div class="form-group">
-            <label for="fuel_allowance">Uang solar</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">Rp</span>
-              </div>
-              <input type="text" class="form-control moneyform" name="fuel_allowance" placeholder="0" required>
-            </div>
-          </div> -->
           <div class="form-group">
             <label for="trip_allowance">Uang jalan</label>
             <div class="input-group mb-3">
@@ -145,6 +136,24 @@
                 <span class="input-group-text">Rp</span>
               </div>
               <input type="text" class="form-control moneyform" name="codriver_allowance" placeholder="0" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fuel_allowance">Uang BBM</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Rp</span>
+              </div>
+              <input type="text" class="form-control moneyform" name="fuel_allowance" placeholder="0" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="etoll_allowance">Uang E-Toll</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Rp</span>
+              </div>
+              <input type="text" class="form-control moneyform" name="etoll_allowance" placeholder="0" required>
             </div>
           </div>
         </div>
@@ -213,7 +222,7 @@
     html += '<option value="">Pilih</option>'
     for (let index = 0; index < data.length; index++) {
       if (data[index].assignee.length === 0 && data[index].assignee_akap.length === 0) {
-        html += '<option value="'+ data[index].id +'">'+ data[index].first_name + ' ' + data[index].second_name +'</option>'
+        html += '<option value="'+ data[index].id +'">'+ data[index].first_name + ' ' + data[index].second_name + ' - ' + data[index].position +'</option>'
       }
     }
     $('#driver1').append(html);

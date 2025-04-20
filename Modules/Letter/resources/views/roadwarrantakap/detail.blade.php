@@ -112,10 +112,6 @@
                   <td>{{ formatAmount($roadwarrant->trip_allowance) }}</td>
                 </tr>
                 <tr>
-                  <th>Uang Bensin :</th>
-                  <td>{{ formatAmount($roadwarrant->fuel_allowance) }}</td>
-                </tr>
-                <tr>
                   <th>Uang Premi Driver 1 :</th>
                   <td>{{ formatAmount($roadwarrant->driver_allowance_1) }}</td>
                 </tr>
@@ -130,6 +126,14 @@
                 <tr>
                   <th>Uang Makan Crew :</th>
                   <td>{{ formatAmount($roadwarrant->crew_meal_allowance) }}</td>
+                </tr>
+                <tr>
+                  <th>Uang BBM :</th>
+                  <td>{{ formatAmount($roadwarrant->fuel_allowance) }}</td>
+                </tr>
+                <tr>
+                  <th>Uang E-Toll :</th>
+                  <td>{{ formatAmount($roadwarrant->etoll_allowance) }}</td>
                 </tr>
               </table>
             </div>

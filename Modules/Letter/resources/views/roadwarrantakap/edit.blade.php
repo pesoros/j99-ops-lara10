@@ -61,11 +61,9 @@
           <select class="form-control select2bs4" name="driver_1" style="width: 100%;" required>
             <option {{ $roadwarrant->km_end }}>Pilih</option>
             @foreach ($employee as $employeeItem)
-                @if ($employeeItem->position === 'Driver')
-                  <option value="{{ $employeeItem->id }}" @selected($roadwarrant->driver_1_id == $employeeItem->id)>
-                      {{ $employeeItem->first_name.' '.$employeeItem->second_name }}
-                  </option>
-                @endif
+              <option value="{{ $employeeItem->id }}" @selected($roadwarrant->driver_1_id == $employeeItem->id)>
+                {{ $employeeItem->first_name.' '.$employeeItem->second_name.' - '.$employeeItem->position }}
+              </option>
             @endForeach
           </select>
         </div>
@@ -74,11 +72,9 @@
           <select class="form-control select2bs4" name="driver_2" style="width: 100%;" required>
             <option value="">Pilih</option>
             @foreach ($employee as $employeeItem)
-                @if ($employeeItem->position === 'Driver')
-                  <option value="{{ $employeeItem->id }}" @selected($roadwarrant->driver_2_id == $employeeItem->id)>
-                      {{ $employeeItem->first_name.' '.$employeeItem->second_name }}
-                  </option>
-                @endif
+              <option value="{{ $employeeItem->id }}" @selected($roadwarrant->driver_2_id == $employeeItem->id)>
+                  {{ $employeeItem->first_name.' '.$employeeItem->second_name.' - '.$employeeItem->position }}
+              </option>
             @endForeach
           </select>
         </div>
@@ -87,11 +83,9 @@
           <select class="form-control select2bs4" name="codriver" style="width: 100%;" required>
             <option value="">Pilih</option>
             @foreach ($employee as $employeeItem)
-                @if ($employeeItem->position === 'Assistant')
-                  <option value="{{ $employeeItem->id }}" @selected($roadwarrant->codriver_id == $employeeItem->id)>
-                      {{ $employeeItem->first_name.' '.$employeeItem->second_name }}
-                  </option>
-                @endif
+              <option value="{{ $employeeItem->id }}" @selected($roadwarrant->codriver_id == $employeeItem->id)>
+                  {{ $employeeItem->first_name.' '.$employeeItem->second_name.' - '.$employeeItem->position }}
+              </option>
             @endForeach
           </select>
         </div>
@@ -106,15 +100,6 @@
             <input type="text" class="form-control moneyform" name="crew_meal_allowance" placeholder="0" value="{{ $roadwarrant->crew_meal_allowance }}" required>
           </div>
         </div>
-        <!-- <div class="form-group">
-          <label for="fuel_allowance">Uang solar</label>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Rp</span>
-            </div>
-            <input type="text" class="form-control moneyform" name="fuel_allowance" value="{{ $roadwarrant->fuel_allowance }}" placeholder="0" required>
-          </div>
-        </div> -->
         <div class="form-group">
           <label for="trip_allowance">Uang jalan</label>
           <div class="input-group mb-3">
@@ -149,6 +134,24 @@
               <span class="input-group-text">Rp</span>
             </div>
             <input type="text" class="form-control moneyform" name="codriver_allowance" placeholder="0" value="{{ $roadwarrant->codriver_allowance }}" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="fuel_allowance">Uang BBM</label>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Rp</span>
+            </div>
+            <input type="text" class="form-control moneyform" name="fuel_allowance" value="{{ $roadwarrant->fuel_allowance }}" placeholder="0" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="etoll_allowance">Uang E-Toll</label>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Rp</span>
+            </div>
+            <input type="text" class="form-control moneyform" name="etoll_allowance" value="{{ $roadwarrant->etoll_allowance }}" placeholder="0" required>
           </div>
         </div>
       </div>
