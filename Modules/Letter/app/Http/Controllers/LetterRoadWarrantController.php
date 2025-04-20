@@ -92,6 +92,8 @@ class LetterRoadWarrantController extends Controller
         $busData = Bus::getBus($request->bus_uuid);
         $manifest_uuid = generateUuid();
         $tras = RoadWarrant::getTripAssign($request->trip_assign);
+        $numberOfCrew = isset($request->driver_2) ? 3 : 2;
+        $totalCrewMealAllowance = numberClearence($request->crew_meal_allowance) * $numberOfCrew;
 
         $saveManifestData = [
             'uuid'                      =>  $manifest_uuid,
@@ -111,16 +113,16 @@ class LetterRoadWarrantController extends Controller
             'count'                     =>  $count,
             'km_start'                  =>  $request->km_start,
             'driver_1'                  =>  $request->driver_1,
-            'driver_2'                  =>  $request->driver_2,
+            'driver_2'                  =>  $numberOfCrew > 2 ? $request->driver_2 : null,
             'codriver'                  =>  $request->codriver,
             'resto_id'                  =>  $tras->resto_id,
             'driver_allowance_1'        =>  numberClearence($request->driver_allowance),
-            'driver_allowance_2'        =>  numberClearence($request->driver_allowance),
+            'driver_allowance_2'        =>  $numberOfCrew > 2 ? numberClearence($request->driver_allowance) : null,
             'codriver_allowance'        =>  numberClearence($request->codriver_allowance),
             'trip_allowance'            =>  numberClearence($request->trip_allowance),
             'fuel_allowance'            =>  numberClearence($request->fuel_allowance),
             'etoll_allowance'           =>  numberClearence($request->etoll_allowance),
-            'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance),
+            'crew_meal_allowance'       =>  $totalCrewMealAllowance,
             'created_by'                =>  auth()->user()->uuid,
             'status'                    =>  1,
         ];
@@ -148,6 +150,7 @@ class LetterRoadWarrantController extends Controller
             $busclass = RoadWarrant::getBusClass($bus->busuuid);
 
             $data['roadwarrant'] = $roadWarrant;
+            $data['crewCount'] = isset($roadwarrant->driver_2_name) ? 3 : 2;
             $data['bus'] = $bus;
             $data['manifest'] = $manifest;
             $data['tras'] = $tras;

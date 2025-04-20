@@ -81,8 +81,8 @@
           </div>
           <div class="form-group">
             <label>Driver 2</label>
-            <select class="form-control select2bs4" id="driver2" name="driver_2" style="width: 100%;" required>
-              <option value="">Pilih</option>
+            <select class="form-control select2bs4" id="driver2" name="driver_2" style="width: 100%;">
+              <option value="">Pilih jika menggunakan driver ke 2</option>
             </select>
           </div>
           <div class="form-group">

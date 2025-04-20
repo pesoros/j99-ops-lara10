@@ -99,10 +99,12 @@
                   <th>Driver 1 :</th>
                   <td>{{ $roadwarrant->driver_1_name }}</td>
                 </tr>
-                <tr>
-                  <th>Driver 2 :</th>
-                  <td>{{ $roadwarrant->driver_2_name }}</td>
-                </tr>
+                @if ($crewCount > 2)
+                  <tr>
+                    <th>Driver 2 :</th>
+                    <td>{{ $roadwarrant->driver_2_name }}</td>
+                  </tr>
+                @endif
                 <tr>
                   <th>Co-driver :</th>
                   <td>{{ $roadwarrant->codriver_name }}</td>
@@ -115,17 +117,19 @@
                   <th>Uang Premi Driver 1 :</th>
                   <td>{{ formatAmount($roadwarrant->driver_allowance_1) }}</td>
                 </tr>
-                <tr>
-                  <th>Uang Premi Driver 2 :</th>
-                  <td>{{ formatAmount($roadwarrant->driver_allowance_2) }}</td>
-                </tr>
+                @if ($crewCount > 2)
+                  <tr>
+                    <th>Uang Premi Driver 2 :</th>
+                    <td>{{ formatAmount($roadwarrant->driver_allowance_2) }}</td>
+                  </tr>
+                @endif
                 <tr>
                   <th>Uang Premi Co-driver :</th>
                   <td>{{ formatAmount($roadwarrant->codriver_allowance) }}</td>
                 </tr>
                 <tr>
                   <th>Uang Makan Crew :</th>
-                  <td>{{ formatAmount($roadwarrant->crew_meal_allowance) }}</td>
+                  <td>{{ formatAmount($roadwarrant->crew_meal_allowance / $crewCount) }}</td>
                 </tr>
                 <tr>
                   <th>Uang BBM :</th>

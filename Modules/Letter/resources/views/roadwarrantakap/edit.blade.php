@@ -69,7 +69,7 @@
         </div>
         <div class="form-group">
           <label>Driver 2</label>
-          <select class="form-control select2bs4" name="driver_2" style="width: 100%;" required>
+          <select class="form-control select2bs4" name="driver_2" style="width: 100%;">
             <option value="">Pilih</option>
             @foreach ($employee as $employeeItem)
               <option value="{{ $employeeItem->id }}" @selected($roadwarrant->driver_2_id == $employeeItem->id)>
