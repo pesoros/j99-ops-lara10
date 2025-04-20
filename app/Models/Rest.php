@@ -61,8 +61,17 @@ class Rest extends Model
     function scopeGetTripAssign($query, $trasid)
     {
         $query = DB::table("trip_assign AS tras")
-            ->select('tras.id as trasid','tras.trip as trip','trip.trip_title')
+            ->select(
+                'tras.id as trasid',
+                'tras.trip as trip',
+                'trip.trip_title',
+                'trip_route.crew_meal',
+                'trip_route.premi_driver',
+                'trip_route.premi_codriver',
+                'trip_route.etoll',
+            )
             ->join("trip", "trip.trip_id", "=", "tras.trip")
+            ->join("trip_route", "trip_route.id", "=", "trip.route")
             // ->where('tras.status','1')
             ->where('tras.id',$trasid)
             ->orderBy('trasid','ASC')

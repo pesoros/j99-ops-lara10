@@ -94,39 +94,21 @@
         </div>
         <div class="col-sm-6">
           <div class="form-group">
-            <label for="crew_meal_allowance">Uang makan kru per hari</label>
+            <label for="crew_meal_allowance">Uang makan kru per hari (per orang)</label>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text">Rp</span>
               </div>
-              <input type="text" class="form-control moneyform" name="crew_meal_allowance" placeholder="0" required>
+              <input type="text" class="form-control moneyform" name="crew_meal_allowance" id="crew_meal_allowance" placeholder="0" required>
             </div>
           </div>
           <div class="form-group">
-            <label for="trip_allowance">Uang jalan</label>
+            <label for="driver_allowance_1">Uang premi driver (per orang)</label>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text">Rp</span>
               </div>
-              <input type="text" class="form-control moneyform" name="trip_allowance" placeholder="0" required>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="driver_allowance_1">Uang premi driver 1</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">Rp</span>
-              </div>
-              <input type="text" class="form-control moneyform" name="driver_allowance_1" placeholder="0" required>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="driver_allowance_2">Uang premi driver 2</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">Rp</span>
-              </div>
-              <input type="text" class="form-control moneyform" name="driver_allowance_2" placeholder="0" required>
+              <input type="text" class="form-control moneyform" name="driver_allowance" id="driver_allowance" placeholder="0" required>
             </div>
           </div>
           <div class="form-group">
@@ -135,7 +117,16 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">Rp</span>
               </div>
-              <input type="text" class="form-control moneyform" name="codriver_allowance" placeholder="0" required>
+              <input type="text" class="form-control moneyform" name="codriver_allowance" id="codriver_allowance"  placeholder="0" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="trip_allowance">Uang jalan</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Rp</span>
+              </div>
+              <input type="text" class="form-control moneyform" name="trip_allowance" id="trip_allowance" placeholder="0" required>
             </div>
           </div>
           <div class="form-group">
@@ -144,7 +135,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">Rp</span>
               </div>
-              <input type="text" class="form-control moneyform" name="fuel_allowance" placeholder="0" required>
+              <input type="text" class="form-control moneyform" name="fuel_allowance" id="fuel_allowance" placeholder="0" required>
             </div>
           </div>
           <div class="form-group">
@@ -153,7 +144,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">Rp</span>
               </div>
-              <input type="text" class="form-control moneyform" name="etoll_allowance" placeholder="0" required>
+              <input type="text" class="form-control moneyform" name="etoll_allowance" id="etoll_allowance" placeholder="0" required readonly>
             </div>
           </div>
         </div>
@@ -181,6 +172,19 @@
     fetchItem(e.target.value)
   });
 
+  $("#tras-item").change(function(e){
+    const allowancedata = e.target.options[e.target.selectedIndex].dataset.allowance.split("|");
+    const crewMealDefault = allowancedata[0] ?? 0;
+    const premiDriverDefault = allowancedata[1] ?? 0;
+    const premiCoDriverDefault = allowancedata[2] ?? 0;
+    const etollDefault = allowancedata[3] ?? 0;
+
+    $('#crew_meal_allowance').val(crewMealDefault);
+    $('#driver_allowance').val(premiDriverDefault);
+    $('#codriver_allowance').val(premiCoDriverDefault);
+    $('#etoll_allowance').val(etollDefault);
+  });
+
   function fetchItem(value) {
     $('#tras-item').html('');
     axios.get(`/api/trasbus?busuuid=${value}`)
@@ -195,7 +199,8 @@
     let html = '';
     html += '<option value="">Pilih</option>'
     for (let index = 0; index < data.length; index++) {
-      html += '<option value="'+ data[index].trasid +'">'+ data[index].trasid + ' | ' + data[index].trip_title +'</option>'
+      const defaultAllowance = data[index].crew_meal + '|' + data[index].premi_driver + '|' + data[index].premi_codriver + '|' + data[index].etoll;
+      html += '<option data-allowance="'+ defaultAllowance +'" value="'+ data[index].trasid +'">'+ data[index].trasid + ' | ' + data[index].trip_title +'</option>'
     }
     $('#tras-item').append(html);
   }
