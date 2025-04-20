@@ -32,6 +32,18 @@ class LetterApiController extends Controller
         return $result;
     }
 
+    public function fuelAllowance(Request $request, $busUuid, $route)
+    {
+        $getData = Rest::getFuelAllowance($busUuid, $route);
+        $allowance = 0;
+        if (count($getData) > 0) {
+            $allowance = $getData[0]->allowance;
+        }
+        return [
+            'allowance' => $allowance
+        ];
+    }
+
     public function invoice(Request $request)
     {
         $page = $request->query('page');

@@ -162,6 +162,8 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript">
   let maxDate = dayjs().add(7, 'day').format('YYYY-MM-DD')
+  let pickedBusUuid = "";
+  
   $('#datepicker').datetimepicker({
     format: 'DD/MM/YYYY',
     minDate : 'now',
@@ -169,20 +171,23 @@
   });
 
   $("#bus-select").change(function(e){
-    fetchItem(e.target.value)
+    pickedBusUuid = e.target.value;
+    fetchItem(e.target.value);
   });
 
   $("#tras-item").change(function(e){
     const allowancedata = e.target.options[e.target.selectedIndex].dataset.allowance.split("|");
-    const crewMealDefault = allowancedata[0] ?? 0;
-    const premiDriverDefault = allowancedata[1] ?? 0;
-    const premiCoDriverDefault = allowancedata[2] ?? 0;
-    const etollDefault = allowancedata[3] ?? 0;
+    const routeId = allowancedata[0] ?? "";
+    const crewMealDefault = allowancedata[1] ?? 0;
+    const premiDriverDefault = allowancedata[2] ?? 0;
+    const premiCoDriverDefault = allowancedata[3] ?? 0;
+    const etollDefault = allowancedata[4] ?? 0;
 
     $('#crew_meal_allowance').val(crewMealDefault);
     $('#driver_allowance').val(premiDriverDefault);
     $('#codriver_allowance').val(premiCoDriverDefault);
     $('#etoll_allowance').val(etollDefault);
+    fetchFuelAllowance(pickedBusUuid, routeId);
   });
 
   function fetchItem(value) {
@@ -195,11 +200,20 @@
       });
   }
 
+  function fetchFuelAllowance(busUuid, routeId) {
+    axios.get(`/api/fuelallowance/${busUuid}/${routeId}`)
+      .then((response) => {
+        $('#fuel_allowance').val(response.data.allowance);
+      }, (error) => {
+        console.log(error);
+      });
+  }
+
   function addElementToSelect(data) {
     let html = '';
     html += '<option value="">Pilih</option>'
     for (let index = 0; index < data.length; index++) {
-      const defaultAllowance = data[index].crew_meal + '|' + data[index].premi_driver + '|' + data[index].premi_codriver + '|' + data[index].etoll;
+      const defaultAllowance = data[index].route + '|' + data[index].crew_meal + '|' + data[index].premi_driver + '|' + data[index].premi_codriver + '|' + data[index].etoll;
       html += '<option data-allowance="'+ defaultAllowance +'" value="'+ data[index].trasid +'">'+ data[index].trasid + ' | ' + data[index].trip_title +'</option>'
     }
     $('#tras-item').append(html);
@@ -227,7 +241,7 @@
     html += '<option value="">Pilih</option>'
     for (let index = 0; index < data.length; index++) {
       if (data[index].assignee.length === 0 && data[index].assignee_akap.length === 0) {
-        html += '<option value="'+ data[index].id +'">'+ data[index].first_name + ' ' + data[index].second_name + ' - ' + data[index].position +'</option>'
+        html += '<option value="'+ data[index].id +'">'+ data[index].first_name + ' ' + data[index].second_name + ' | ' + data[index].position +'</option>'
       }
     }
     $('#driver1').append(html);

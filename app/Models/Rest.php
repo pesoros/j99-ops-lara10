@@ -65,6 +65,7 @@ class Rest extends Model
                 'tras.id as trasid',
                 'tras.trip as trip',
                 'trip.trip_title',
+                'trip.route',
                 'trip_route.crew_meal',
                 'trip_route.premi_driver',
                 'trip_route.premi_codriver',
@@ -76,6 +77,18 @@ class Rest extends Model
             ->where('tras.id',$trasid)
             ->orderBy('trasid','ASC')
             ->first();
+
+        return $query;
+    }
+
+    public function scopeGetFuelAllowance($query, $busUuid, $route)
+    {
+        $query = DB::table("fuel_allowance")
+            ->select('fuel_allowance.allowance')
+            ->where('bus_uuid',$busUuid)
+            ->where('route',$route)
+            ->orderBy('id','DESC')
+            ->get();
 
         return $query;
     }

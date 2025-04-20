@@ -62,7 +62,7 @@
             <option {{ $roadwarrant->km_end }}>Pilih</option>
             @foreach ($employee as $employeeItem)
               <option value="{{ $employeeItem->id }}" @selected($roadwarrant->driver_1_id == $employeeItem->id)>
-                {{ $employeeItem->first_name.' '.$employeeItem->second_name.' - '.$employeeItem->position }}
+                {{ $employeeItem->first_name.' '.$employeeItem->second_name.' | '.$employeeItem->position }}
               </option>
             @endForeach
           </select>
@@ -73,7 +73,7 @@
             <option value="">Pilih</option>
             @foreach ($employee as $employeeItem)
               <option value="{{ $employeeItem->id }}" @selected($roadwarrant->driver_2_id == $employeeItem->id)>
-                  {{ $employeeItem->first_name.' '.$employeeItem->second_name.' - '.$employeeItem->position }}
+                  {{ $employeeItem->first_name.' '.$employeeItem->second_name.' | '.$employeeItem->position }}
               </option>
             @endForeach
           </select>
@@ -84,7 +84,7 @@
             <option value="">Pilih</option>
             @foreach ($employee as $employeeItem)
               <option value="{{ $employeeItem->id }}" @selected($roadwarrant->codriver_id == $employeeItem->id)>
-                  {{ $employeeItem->first_name.' '.$employeeItem->second_name.' - '.$employeeItem->position }}
+                  {{ $employeeItem->first_name.' '.$employeeItem->second_name.' | '.$employeeItem->position }}
               </option>
             @endForeach
           </select>
