@@ -92,7 +92,7 @@
       </div>
       <div class="col-sm-6">
         <div class="form-group">
-          <label for="crew_meal_allowance">Uang makan kru per hari</label>
+          <label for="crew_meal_allowance">Uang makan crew</label>
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text">Rp</span>
