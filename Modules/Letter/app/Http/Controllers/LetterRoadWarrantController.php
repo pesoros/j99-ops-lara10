@@ -91,10 +91,10 @@ class LetterRoadWarrantController extends Controller
         $trip_date = Carbon::createFromFormat('d/m/Y', $request->date)->format('Y-m-d');
         $busData = Bus::getBus($request->bus_uuid);
         $manifest_uuid = generateUuid();
-        $tras = RoadWarrant::getTripAssign($request->trip_assign);
         $numberOfCrew = isset($request->driver_2) ? 3 : 2;
         $totalCrewMealAllowance = numberClearence($request->crew_meal_allowance) * $numberOfCrew;
 
+        $tras = RoadWarrant::getTripAssign($request->trip_assign);
         $saveManifestData = [
             'uuid'                      =>  $manifest_uuid,
             'status'                    =>  1,
@@ -125,11 +125,46 @@ class LetterRoadWarrantController extends Controller
             'crew_meal_allowance'       =>  $totalCrewMealAllowance,
             'created_by'                =>  auth()->user()->uuid,
             'status'                    =>  1,
+            'number_of_trip'            =>  $request->numberoftrip,
         ];
-
         $saveRoadWarrant = RoadWarrant::saveManifest($saveManifestData);
+
+        if ($request->numberoftrip == "2") {
+            $trip_date_return = Carbon::createFromFormat('d/m/Y', $request->date_return)->format('Y-m-d');
+            $tras2 = RoadWarrant::getTripAssign($request->trip_assign_return);
+            $totalCrewMealAllowanceReturn = numberClearence($request->crew_meal_allowance_return) * $numberOfCrew;
+
+            $saveManifestDataReturn = [
+                'uuid'                      =>  $manifest_uuid,
+                'status'                    =>  1,
+                'trip_date'                 =>  $trip_date_return,
+                'trip_assign'               =>  $request->trip_assign_return,
+                'email_assign'              =>  $busData->email,
+                'fleet'                     =>  $request->bus_uuid,
+            ];
+
+            $saveRoadWarrantDataAdditional = [
+                'resto_id_return'                  =>  $tras2->resto_id,
+                'driver_allowance_1_return'        =>  numberClearence($request->driver_allowance_return),
+                'driver_allowance_2_return'        =>  $numberOfCrew > 2 ? numberClearence($request->driver_allowance_return) : null,
+                'codriver_allowance_return'        =>  numberClearence($request->codriver_allowance_return),
+                'trip_allowance_return'            =>  numberClearence($request->trip_allowance_return),
+                'fuel_allowance_return'            =>  numberClearence($request->fuel_allowance_return),
+                'etoll_allowance_return'           =>  numberClearence($request->etoll_allowance_return),
+                'crew_meal_allowance_return'       =>  $totalCrewMealAllowanceReturn,
+            ];
+
+            $saveRoadWarrantData = $saveRoadWarrantData + $saveRoadWarrantDataAdditional;
+
+            $saveRoadWarrantReturn = RoadWarrant::saveManifest($saveManifestDataReturn);
+        }
+
         $saveRoadWarrant = RoadWarrant::saveRoadWarrant($saveRoadWarrantData);
+
         $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestData, $busData->registration_number);
+        if ($request->numberoftrip == "2") {
+            $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestDataReturn, $busData->registration_number);
+        }
 
         if ($saveRoadWarrant) {
             return back()->with('success', 'Anda berhasil membuat SPJ AKAP');

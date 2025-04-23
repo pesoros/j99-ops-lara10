@@ -39,7 +39,7 @@
     <div class="card-body row">
         <div class="col-sm-12">
           <div class="form-group">
-            <label>Tanggal :</label>
+            <label>Tanggal</label>
               <div class="input-group date" id="datepicker" data-target-input="nearest">
                 <div class="input-group-prepend" data-target="#datepicker" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -85,12 +85,28 @@
               <option value="">Pilih</option>
             </select>
           </div>
-          <div class="form-group">
-            <label>Jumlah Trip</label>
-            <select class="form-control select2" id="numberoftrip" name="numberoftrip" style="width: 100%;" required>
-              <option value="1">1</option>
-              <option value="2">2</option>
-            </select>
+          <div class="row">
+            <div class="col-sm-5">
+              <div class="form-group">
+                <label>Jumlah Trip</label>
+                <select class="form-control select2" id="numberoftrip" name="numberoftrip" style="width: 100%;" required>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-5" id="date2wrapper">
+              <div class="form-group">
+                <label>Tanggal trip 2</label>
+                  <div class="input-group date" id="datepicker_return" data-target-input="nearest">
+                    <div class="input-group-prepend" data-target="#datepicker_return" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                    <input type="text" name="date_return" id="date_return" class="form-control datetimepicker-input" data-target="#datepicker_return" />
+                  </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -162,62 +178,62 @@
           <div class="col-sm-5" id="trip2wrapper">
             <div class="form-group">
               <label>Trip assign 2</label>
-              <select class="form-control select2bs4" name="trip_assign_2" id="tras-item-2" style="width: 100%;" required>
-                <option value="" @selected(old('trip_assign_2') == '')>Pilih</option>
+              <select class="form-control select2bs4" name="trip_assign_return" id="tras-item-return" style="width: 100%;">
+                <option value="" @selected(old('trip_assign_return') == '')>Pilih</option>
               </select>
             </div>
             <div class="form-group">
-              <label for="crew_meal_allowance_2">Uang makan crew (per orang)</label>
+              <label for="crew_meal_allowance_return">Uang makan crew (per orang)</label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Rp</span>
                 </div>
-                <input type="text" class="form-control moneyform" name="crew_meal_allowance_2" id="crew_meal_allowance_2" placeholder="0" required>
+                <input type="text" class="form-control moneyform" name="crew_meal_allowance_return" id="crew_meal_allowance_return" placeholder="0">
               </div>
             </div>
             <div class="form-group">
-              <label for="driver_allowance_2">Uang premi driver (per orang)</label>
+              <label for="driver_allowance_return">Uang premi driver (per orang)</label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Rp</span>
                 </div>
-                <input type="text" class="form-control moneyform" name="driver_allowance_2" id="driver_allowance_2" placeholder="0" required>
+                <input type="text" class="form-control moneyform" name="driver_allowance_return" id="driver_allowance_return" placeholder="0">
               </div>
             </div>
             <div class="form-group">
-              <label for="codriver_allowance_2">Uang premi co driver</label>
+              <label for="codriver_allowance_return">Uang premi co driver</label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Rp</span>
                 </div>
-                <input type="text" class="form-control moneyform" name="codriver_allowance_2" id="codriver_allowance_2"  placeholder="0" required>
+                <input type="text" class="form-control moneyform" name="codriver_allowance_return" id="codriver_allowance_return"  placeholder="0">
               </div>
             </div>
             <div class="form-group">
-              <label for="trip_allowance_2">Uang jalan</label>
+              <label for="trip_allowance_return">Uang jalan</label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Rp</span>
                 </div>
-                <input type="text" class="form-control moneyform" name="trip_allowance_2" id="trip_allowance_2" placeholder="0" required>
+                <input type="text" class="form-control moneyform" name="trip_allowance_return" id="trip_allowance_return" placeholder="0">
               </div>
             </div>
             <div class="form-group">
-              <label for="fuel_allowance_2">Uang BBM</label>
+              <label for="fuel_allowance_return">Uang BBM</label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Rp</span>
                 </div>
-                <input type="text" class="form-control moneyform" name="fuel_allowance_2" id="fuel_allowance_2" placeholder="0" required>
+                <input type="text" class="form-control moneyform" name="fuel_allowance_return" id="fuel_allowance_return" placeholder="0">
               </div>
             </div>
             <div class="form-group">
-              <label for="etoll_allowance_2">Uang E-Toll</label>
+              <label for="etoll_allowance_return">Uang E-Toll</label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">Rp</span>
                 </div>
-                <input type="text" class="form-control moneyform" name="etoll_allowance_2" id="etoll_allowance_2" placeholder="0" required readonly>
+                <input type="text" class="form-control moneyform" name="etoll_allowance_return" id="etoll_allowance_return" placeholder="0" readonly>
               </div>
             </div>
           </div>
@@ -236,10 +252,17 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript">
   $("#trip2wrapper").hide()
+  $("#date2wrapper").hide()
   let maxDate = dayjs().add(7, 'day').format('YYYY-MM-DD')
   let pickedBusUuid = "";
   
   $('#datepicker').datetimepicker({
+    format: 'DD/MM/YYYY',
+    minDate : 'now',
+    maxDate : maxDate,
+  });
+
+  $('#datepicker_return').datetimepicker({
     format: 'DD/MM/YYYY',
     minDate : 'now',
     maxDate : maxDate,
@@ -265,7 +288,7 @@
     fetchFuelAllowance(pickedBusUuid, routeId, 'fuel_allowance');
   });
 
-  $("#tras-item-2").change(function(e){
+  $("#tras-item-return").change(function(e){
     const allowancedata = e.target.options[e.target.selectedIndex].dataset.allowance.split("|");
     const routeId = allowancedata[0] ?? "";
     const crewMealDefault = allowancedata[1] ?? 0;
@@ -273,24 +296,44 @@
     const premiCoDriverDefault = allowancedata[3] ?? 0;
     const etollDefault = allowancedata[4] ?? 0;
 
-    $('#crew_meal_allowance_2').val(crewMealDefault);
-    $('#driver_allowance_2').val(premiDriverDefault);
-    $('#codriver_allowance_2').val(premiCoDriverDefault);
-    $('#etoll_allowance_2').val(etollDefault);
-    fetchFuelAllowance(pickedBusUuid, routeId, 'fuel_allowance_2');
+    $('#crew_meal_allowance_return').val(crewMealDefault);
+    $('#driver_allowance_return').val(premiDriverDefault);
+    $('#codriver_allowance_return').val(premiCoDriverDefault);
+    $('#etoll_allowance_return').val(etollDefault);
+    fetchFuelAllowance(pickedBusUuid, routeId, 'fuel_allowance_return');
   });
 
   $("#numberoftrip").change(function(e){
     if (e.target.value === '1') {
       $("#trip2wrapper").hide()
+      $("#date2wrapper").hide()
     } else {
       $("#trip2wrapper").show()
+      $("#date2wrapper").show()
     };
+    updateTrip2Required()
   });
+
+  function updateTrip2Required() {
+    let isRequired = false;
+    if ($('#trip2wrapper').is(':visible')) {
+      isRequired = true
+    } else {
+      isRequired = false
+    }
+    $('#date-return').prop('required', isRequired);
+    $('#tras-item-return').prop('required', isRequired);
+    $('#crew_meal_allowance_return').prop('required', isRequired);
+    $('#driver_allowance_return').prop('required', isRequired);
+    $('#codriver_allowance_return').prop('required', isRequired);
+    $('#trip_allowance_return').prop('required', isRequired);
+    $('#fuel_allowance_return').prop('required', isRequired);
+    $('#etoll_allowance_return').prop('required', isRequired);
+  }
 
   function fetchItem(value) {
     $('#tras-item').html('');
-    $('#tras-item-2').html('');
+    $('#tras-item-return').html('');
     axios.get(`/api/trasbus?busuuid=${value}`)
       .then((response) => {
         addElementToSelect(response.data);
@@ -316,7 +359,7 @@
       html += '<option data-allowance="'+ defaultAllowance +'" value="'+ data[index].trasid +'">'+ data[index].trasid + ' | ' + data[index].trip_title +'</option>'
     }
     $('#tras-item').append(html);
-    $('#tras-item-2').append(html);
+    $('#tras-item-return').append(html);
   }
 
   $("#datepicker").on("change.datetimepicker", ({date}) => {
