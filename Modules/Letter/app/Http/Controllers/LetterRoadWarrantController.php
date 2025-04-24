@@ -19,6 +19,7 @@ class LetterRoadWarrantController extends Controller
     public function listRoadWarrant()
     {
         $data['title'] = 'Surat perintah jalan';
+        $data['list'] = RoadWarrant::getRoadWarrantList();
         $data['bookavailable'] = RoadWarrant::getBookAvailable();
 
         return view('letter::roadwarrant.index', $data);
