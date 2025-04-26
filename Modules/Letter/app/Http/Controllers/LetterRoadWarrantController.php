@@ -185,7 +185,7 @@ class LetterRoadWarrantController extends Controller
             $busclass = RoadWarrant::getBusClass($bus->busuuid);
 
             $data['roadwarrant'] = $roadWarrant;
-            $data['crewCount'] = isset($roadwarrant->driver_2_name) ? 3 : 2;
+            $data['crewCount'] = isset($roadWarrant->driver_2_name) ? 3 : 2;
             $data['bus'] = $bus;
             $data['manifest'] = $manifest;
             $data['tras'] = $tras;
