@@ -27,7 +27,7 @@
               @if ($roadwarrant->accurate_transfer == NULL)
                 <a href="{{ url('letter/roadwarrant/accurate/transfer/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-success float-right">Transfer uang perjalanan</a>
               @else
-                @if ($roadwarrant->accurate_lpj == NULL)
+                @if ($roadwarrant->accurate_lpj == NULL && STRVAL($roadwarrant->status) === '2')
                   <a href="{{ url('letter/roadwarrant/accurate/lpj/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-warning float-right">Lapor LPJ perjalanan</a>
                 @endif
               @endif
