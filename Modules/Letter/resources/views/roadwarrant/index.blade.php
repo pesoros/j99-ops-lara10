@@ -23,7 +23,6 @@
       <tr>
         <th>No</th>
         <th>Nomor SPJ</th>
-        <th>Tanggal keberangkatan</th>
         <th>Kategori Bus</th>
         <th>Nama Bus</th>
         <th>Status</th>
@@ -35,7 +34,6 @@
           <tr>
             <td width="20" class="text-center">{{ intval($key) + 1 }}</td>
             <td>{{ $value->numberid }}</td>
-            <td>{{ STRVAL($value->category) === '1' ? dateFormat($value->akap_start_date) : dateFormat($value->pariwisata_start_date) }}</td>
             <td>{{ STRVAL($value->category) === '1' ? 'AKAP' : 'Pariwisata' }}</td>
             <td>{{ $value->busname }}</td>
             <td>
@@ -76,6 +74,7 @@
             <th>Nomor booking</th>
             <th>Nama Bus</th>
             <th>Tujuan</th>
+            <th>Tanggal</th>
             <th>Aksi</th>
           </tr>
           </thead>
@@ -86,6 +85,7 @@
                 <td>{{ $book->booking_code }}</td>
                 <td>{{ $book->customer_name }}</td>
                 <td>{{ $book->city_to }}</td>
+                <td>{{ dateTimeFormat($book->start_date) }} - {{ dateTimeFormat($book->finish_date) }}</td>
                 <td>
                   <div class="btn-group btn-block">
                     @if (permissionCheck('add')) <a href="{{ url('letter/roadwarrant/add/'.$book->uuid) }}" class="btn btn-warning btn-sm">Buat SPJ</a> @endif
