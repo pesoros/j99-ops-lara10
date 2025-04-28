@@ -24,6 +24,13 @@
           <div class="col-12">
             <h4>
               <img src="{{url('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
+              @if ($roadwarrant->accurate_transfer == NULL)
+                <a href="{{ url('letter/roadwarrant/accurate/transfer/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-success float-right">Transfer uang perjalanan</a>
+              @else
+                @if ($roadwarrant->accurate_lpj == NULL)
+                  <a href="{{ url('letter/roadwarrant/accurate/lpj/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-warning float-right">Lapor LPJ perjalanan</a>
+                @endif
+              @endif
             </h4>
           </div>
           <!-- /.col -->

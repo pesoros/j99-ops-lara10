@@ -321,4 +321,46 @@ class LetterRoadWarrantController extends Controller
 
         return $logData;
     }
+
+    public function accurateTransfer(Request $request, $uuid)
+    {
+        $path = "accurate/roadwarrant/moneytransfer";
+        $fetch = $this->httpPost($path, $uuid);
+        return back()->with('success', 'Laporan transfer berhasil!');
+    }
+
+    public function accurateLpj(Request $request, $uuid)
+    {
+        $path = "accurate/roadwarrant/tripexpenses";
+        $fetch = $this->httpPost($path, $uuid);
+        return back()->with('success', 'Laporan LPJ berhasil!');
+    }
+    
+    function httpPost($path, $uuid) {
+        $props = ["uuid" => $uuid];
+        $url = getenv('BACKEND_URL').'/'.$path;
+        $header = array(
+            'Content-Type: application/json'
+        );
+    
+        $curl = curl_init();
+    
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode($props),
+            CURLOPT_HTTPHEADER => $header,
+        ));
+        
+        $response = curl_exec($curl);
+    
+        curl_close($curl);
+        return $response;
+    }
 }
