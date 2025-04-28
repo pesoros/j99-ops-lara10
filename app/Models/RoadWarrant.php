@@ -14,12 +14,10 @@ class RoadWarrant extends Model
             ->select(
                 'roadwarrant.*',
                 'bus.name AS busname',
-                'book.start_date as pariwisata_start_date',
-                'manifest.trip_date as akap_start_date'
+                'book.start_date as pariwisata_start_date'
             )
             ->join("v2_bus AS bus", "bus.uuid", "=", "roadwarrant.bus_uuid")
             ->leftJoin("v2_book AS book", "book.uuid", "=", "roadwarrant.manifest_uuid")
-            ->leftJoin("manifest", "manifest.uuid", "=", "roadwarrant.manifest_uuid")
             ->orderBy('roadwarrant.id', 'DESC')
             ->take(1000)
             ->get();
