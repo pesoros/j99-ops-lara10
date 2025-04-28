@@ -76,7 +76,6 @@
             <th>Nomor booking</th>
             <th>Nama Bus</th>
             <th>Tujuan</th>
-            <th>Tanggal</th>
             <th>Aksi</th>
           </tr>
           </thead>
@@ -87,7 +86,6 @@
                 <td>{{ $book->booking_code }}</td>
                 <td>{{ $book->customer_name }}</td>
                 <td>{{ $book->city_to }}</td>
-                <td>{{ dateTimeFormat($book->start_date) }} - {{ dateTimeFormat($book->finish_date) }}</td>
                 <td>
                   <div class="btn-group btn-block">
                     @if (permissionCheck('add')) <a href="{{ url('letter/roadwarrant/add/'.$book->uuid) }}" class="btn btn-warning btn-sm">Buat SPJ</a> @endif
