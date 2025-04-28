@@ -74,9 +74,9 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Driver 2</label>
+            <label>Driver 2 (Pilih Jika menggunakan drive ke 2 atau abaikan jika tidak)</label>
             <select class="form-control select2bs4" id="driver2" name="driver_2" style="width: 100%;">
-              <option value="">- Pilih jika menggunakan driver ke 2 -</option>
+              <option value="">Pilih</option>
             </select>
           </div>
           <div class="form-group">
