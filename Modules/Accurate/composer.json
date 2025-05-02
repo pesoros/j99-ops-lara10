@@ -1,0 +1,31 @@
+{
+    "name": "nwidart/accurate",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Accurate\\": "",
+            "Modules\\Accurate\\App\\": "app/",
+            "Modules\\Accurate\\Database\\Factories\\": "database/factories/",
+            "Modules\\Accurate\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Accurate\\Tests\\": "tests/"
+        }
+    }
+}

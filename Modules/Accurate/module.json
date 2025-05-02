@@ -1,0 +1,11 @@
+{
+    "name": "Accurate",
+    "alias": "accurate",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Accurate\\app\\Providers\\AccurateServiceProvider"
+    ],
+    "files": []
+}

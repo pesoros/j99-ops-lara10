@@ -13,5 +13,6 @@
     "Api": true,
     "Employee": true,
     "Trip": true,
-    "Sales": true
+    "Sales": true,
+    "Accurate": true
 }

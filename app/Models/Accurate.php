@@ -27,4 +27,20 @@ class Accurate extends Model
 
         return $query;
     }
+
+    public function scopeGetSales($query)
+    {
+        $query = DB::table("tkt_booking_head as thead")
+            ->select(
+                'thead.id',
+                'thead.booking_code',
+                'thead.accurate_status',
+            )
+            ->where('payment_status', 1)
+            ->orderBy('id', 'DESC')
+            ->take(10)
+            ->get();
+
+        return $query;
+    }
 }
