@@ -33,7 +33,7 @@
       <h3 class="card-title">List {{ $title }}</h3>
       <div class="float-right">
         @if (permissionCheck('add'))
-          <a href="{{ url('accurate/sales/syncbulk') }}" class="btn btn-warning btn-sm">
+          <a href="{{ url('accurate/sales/syncbulk') }}" class="btn btn-warning btn-sm loadingscreen">
             Sync Data
           </a>
         @endif
@@ -64,7 +64,7 @@
             </td>
             <td>
               <div class="btn-group btn-block">
-                @if (permissionCheck('show') && $value->accurate_status == NULL) <a href="{{ url('accurate/sales/sync/'.$value->booking_code) }}" class="btn btn-warning btn-sm">Sync</a> @endif
+                @if (permissionCheck('show') && $value->accurate_status == NULL) <a href="{{ url('accurate/sales/sync/'.$value->booking_code) }}" class="btn btn-warning btn-sm loadingscreen">Sync</a> @endif
               </div>
             </td>
           </tr>
@@ -76,3 +76,16 @@
 </div>
  
 @endsection
+
+@push('extra-scripts')
+<script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.loadingscreen').click(function(){
+            $.LoadingOverlay("show", {
+                text    : "Mohon tidak keluar dari halaman"
+            });
+        });
+    });
+</script>
+@endpush
