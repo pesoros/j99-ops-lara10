@@ -17,6 +17,7 @@ use Modules\Accurate\app\Http\Controllers\AccurateSalesController;
 Route::middleware(['auth','has-permission'])->group(function () {
     Route::prefix('accurate')->group(function () {
         Route::get('sales', [AccurateSalesController::class, 'index']);
+        Route::get('sales/syncbulk', [AccurateSalesController::class, 'syncBulk']);
         Route::get('sales/sync/{bookingcode}', [AccurateSalesController::class, 'sync']);
     });
 });

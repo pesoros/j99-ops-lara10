@@ -37,6 +37,7 @@ class Accurate extends Model
                 'thead.accurate_status',
             )
             ->where('payment_status', 1)
+            ->where('accurate_status', '!=', NULL)
             ->orderBy('id', 'DESC')
             ->take(10)
             ->get();

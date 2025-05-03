@@ -33,7 +33,7 @@
       <h3 class="card-title">List {{ $title }}</h3>
       <div class="float-right">
         @if (permissionCheck('add'))
-          <a href="{{ url('') }}" class="btn btn-warning btn-sm">
+          <a href="{{ url('accurate/sales/syncbulk') }}" class="btn btn-warning btn-sm">
             Sync Data
           </a>
         @endif

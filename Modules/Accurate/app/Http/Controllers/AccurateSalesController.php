@@ -46,4 +46,19 @@ class AccurateSalesController extends Controller
             return back()->with('failed', $errorResponse['messages']['error']);   
         }
     }
+
+    public function syncBulk()
+    {
+        try {
+            $response = $this->client->request('POST', '/accurate/sales/bulk');
+            $body = $response->getBody()->getContents();
+
+            return back()->with('success', 'Berhasil Sync Bulk');
+        } catch (ClientException $e) {
+            $responseBody = $e->getResponse()->getBody()->getContents();
+            $errorResponse = json_decode($responseBody, true);
+
+            return back()->with('failed', $errorResponse['messages']['error']);   
+        }
+    }
 }
