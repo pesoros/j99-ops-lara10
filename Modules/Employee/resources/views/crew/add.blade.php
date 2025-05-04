@@ -101,6 +101,21 @@
           <label for="zipcode">Kode pos</label>
           <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="Masukkan kode pos" value="{{ old('zipcode') }}">
         </div>
+        <div class="form-group">
+          <label>Nama Bank</label>
+          <select class="form-control select2bs4" name="bank_name" style="width: 100%;">
+            <option value="">Pilih</option>
+            <option value="MANDIRI">MANDIRI</option>
+            <option value="BCA">BCA</option>
+            <option value="BRI">BRI</option>
+            <option value="BNI">BNI</option>
+            <option value="BTN">BTN</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="bank_number">Nomor rekening</label>
+          <input type="text" class="form-control" id="bank_number" name="bank_number" placeholder="Masukkan kode pos" value="{{ old('bank_number') }}">
+        </div>
       </div>
     </div>
     <div class="card-footer">

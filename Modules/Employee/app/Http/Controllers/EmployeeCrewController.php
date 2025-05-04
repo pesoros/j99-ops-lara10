@@ -32,11 +32,13 @@ class EmployeeCrewController extends Controller
     public function addCrewStore(Request $request)
     {
         $credentials = $request->validate([
-            'first_name' => ['required', 'string'],
-            'last_name'  => ['required', 'string'],
-            'phone'      => ['required', 'string'],
-            'email'      => ['required', 'string'],
-            'position'   => ['required', 'string'],
+            'first_name'    => ['required', 'string'],
+            'last_name'     => ['required', 'string'],
+            'phone'         => ['required', 'string'],
+            'email'         => ['required', 'string'],
+            'position'      => ['required', 'string'],
+            'bank_name'     => ['required', 'string'],
+            'bank_number'   => ['required', 'string'],
         ]);
 
         $imageNameCrew = '-';
@@ -65,6 +67,8 @@ class EmployeeCrewController extends Controller
             'blood_group'    => $request->blood_group,
             'city'           => $request->city,
             'zip'            => $request->zipcode,
+            'bank_name'      => $request->bank_name,
+            'bank_number'    => $request->bank_number,
         ];
 
         $create = Employee::saveCrew($crewData);
@@ -93,6 +97,8 @@ class EmployeeCrewController extends Controller
             'phone'      => ['required', 'string'],
             'email'      => ['required', 'string'],
             'position'   => ['required', 'string'],
+            'bank_name'     => ['required', 'string'],
+            'bank_number'   => ['required', 'string'],
         ]);
 
         $crewData = [
@@ -106,6 +112,8 @@ class EmployeeCrewController extends Controller
             'blood_group'    => $request->blood_group,
             'city'           => $request->city,
             'zip'            => $request->zipcode,
+            'bank_name'      => $request->bank_name,
+            'bank_number'    => $request->bank_number,
         ];
         
         if ($image = $request->file('crew_image')){

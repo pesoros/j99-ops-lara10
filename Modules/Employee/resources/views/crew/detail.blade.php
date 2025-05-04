@@ -56,6 +56,10 @@
               <th>Nomor KTP :</th>
               <td>{{ $current->document_id }}</td>
             </tr>
+            <tr>
+              <th>Bank :</th>
+              <td>{{ $current->bank_name }} - {{ $current->bank_number }}</td>
+            </tr>
           </table>
         </div>
       </div>

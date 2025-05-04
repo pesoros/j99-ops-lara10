@@ -101,6 +101,21 @@
           <label for="zipcode">Kode pos</label>
           <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="Masukkan kode pos" value="{{ $current->zip }}">
         </div>
+        <div class="form-group">
+          <label>Nama Bank</label>
+          <select class="form-control select2bs4" name="bank_name" style="width: 100%;">
+            <option value="" @selected($current->bank_name == "")>Pilih</option>
+            <option value="MANDIRI" @selected($current->bank_name == "MANDIRI")>MANDIRI</option>
+            <option value="BCA" @selected($current->bank_name == "BCA")>BCA</option>
+            <option value="BRI" @selected($current->bank_name == "BRI")>BRI</option>
+            <option value="BNI" @selected($current->bank_name == "BNI")>BNI</option>
+            <option value="BTN" @selected($current->bank_name == "BTN")>BTN</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="bank_number">Nomor rekening</label>
+          <input type="text" class="form-control" id="bank_number" name="bank_number" placeholder="Masukkan kode pos" value="{{ $current->bank_number }}">
+        </div>
       </div>
     </div>
     <div class="card-footer">
