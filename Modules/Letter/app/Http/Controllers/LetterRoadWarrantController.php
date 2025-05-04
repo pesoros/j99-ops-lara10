@@ -90,13 +90,13 @@ class LetterRoadWarrantController extends Controller
         $count = !isset($roadWarrantCount->count) ? 1 : $roadWarrantCount->count + 1;
         $trip_date = Carbon::createFromFormat('d/m/Y', $request->date)->format('Y-m-d');
         $busData = Bus::getBus($request->bus_uuid);
-        $manifest_uuid = generateUuid();
+        $roadwarrant_uuid = generateUuid();
         $numberOfCrew = isset($request->driver_2) ? 3 : 2;
-        $totalCrewMealAllowance = numberClearence($request->crew_meal_allowance) * $numberOfCrew;
 
         $tras = RoadWarrant::getTripAssign($request->trip_assign);
         $saveManifestData = [
-            'uuid'                      =>  $manifest_uuid,
+            'uuid'                      =>  generateUuid(),
+            'roadwarrant_uuid'          =>  $roadwarrant_uuid,
             'status'                    =>  1,
             'trip_date'                 =>  $trip_date,
             'trip_assign'               =>  $request->trip_assign,
@@ -105,13 +105,11 @@ class LetterRoadWarrantController extends Controller
         ];
 
         $saveRoadWarrantData = [
-            'uuid'                      =>  generateUuid(),
+            'uuid'                      =>  $roadwarrant_uuid,
             'bus_uuid'                  =>  $request->bus_uuid,
-            'manifest_uuid'             =>  $manifest_uuid,
             'category'                  =>  1,
             'numberid'                  =>  genrateLetterNumber('SPJ', $count),
             'count'                     =>  $count,
-            'km_start'                  =>  $request->km_start,
             'driver_1'                  =>  $request->driver_1,
             'driver_2'                  =>  $numberOfCrew > 2 ? $request->driver_2 : null,
             'codriver'                  =>  $request->codriver,
@@ -122,20 +120,22 @@ class LetterRoadWarrantController extends Controller
             'trip_allowance'            =>  numberClearence($request->trip_allowance),
             'fuel_allowance'            =>  numberClearence($request->fuel_allowance),
             'etoll_allowance'           =>  numberClearence($request->etoll_allowance),
-            'crew_meal_allowance'       =>  $totalCrewMealAllowance,
+            'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance),
+            'total_allowance'           =>  numberClearence($request->totalsum),
             'created_by'                =>  auth()->user()->uuid,
             'status'                    =>  1,
             'number_of_trip'            =>  $request->numberoftrip,
+            'transferto'                =>  $request->transferto,
         ];
         $saveRoadWarrant = RoadWarrant::saveManifest($saveManifestData);
 
         if ($request->numberoftrip == "2") {
             $trip_date_return = Carbon::createFromFormat('d/m/Y', $request->date_return)->format('Y-m-d');
             $tras2 = RoadWarrant::getTripAssign($request->trip_assign_return);
-            $totalCrewMealAllowanceReturn = numberClearence($request->crew_meal_allowance_return) * $numberOfCrew;
 
             $saveManifestDataReturn = [
-                'uuid'                      =>  $manifest_uuid,
+                'uuid'                      =>  generateUuid(),
+                'roadwarrant_uuid'          =>  $roadwarrant_uuid,
                 'status'                    =>  1,
                 'trip_date'                 =>  $trip_date_return,
                 'trip_assign'               =>  $request->trip_assign_return,
@@ -145,13 +145,6 @@ class LetterRoadWarrantController extends Controller
 
             $saveRoadWarrantDataAdditional = [
                 'resto_id_return'                  =>  $tras2->resto_id,
-                'driver_allowance_1_return'        =>  numberClearence($request->driver_allowance_return),
-                'driver_allowance_2_return'        =>  $numberOfCrew > 2 ? numberClearence($request->driver_allowance_return) : null,
-                'codriver_allowance_return'        =>  numberClearence($request->codriver_allowance_return),
-                'trip_allowance_return'            =>  numberClearence($request->trip_allowance_return),
-                'fuel_allowance_return'            =>  numberClearence($request->fuel_allowance_return),
-                'etoll_allowance_return'           =>  numberClearence($request->etoll_allowance_return),
-                'crew_meal_allowance_return'       =>  $totalCrewMealAllowanceReturn,
             ];
 
             $saveRoadWarrantData = $saveRoadWarrantData + $saveRoadWarrantDataAdditional;
@@ -180,16 +173,15 @@ class LetterRoadWarrantController extends Controller
 
             $roadWarrant = RoadWarrant::getRoadWarrantAkap($uuid);
             $bus = RoadWarrant::getBus($roadWarrant->bus_uuid);
-            $manifest = RoadWarrant::getManifest($roadWarrant->manifest_uuid);
-            $tras = RoadWarrant::getTripAssign($manifest->trip_assign);
+            $manifest = RoadWarrant::getManifestTrip($roadWarrant->uuid);
             $busclass = RoadWarrant::getBusClass($bus->busuuid);
 
             $data['roadwarrant'] = $roadWarrant;
             $data['crewCount'] = isset($roadWarrant->driver_2_name) ? 3 : 2;
             $data['bus'] = $bus;
             $data['manifest'] = $manifest;
-            $data['tras'] = $tras;
             $data['busclass'] = $busclass;
+
             $data['expensesList'] = Roadwarrant::getExpensesList($uuid);
 
             return view('letter::roadwarrantakap.detail', $data);

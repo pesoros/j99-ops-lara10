@@ -42,7 +42,7 @@
             <div class="table-responsive">
               <table class="table">
                 <tr>
-                  <th width="250">Status SPJ:</th>
+                  <th width="250">Status SPJ: </th>
                   <td>
                     @if (STRVAL($roadwarrant->status) === '1')
                       <span class="badge badge-warning">Aktif</span>                                        
@@ -56,12 +56,13 @@
                   <td>{{ $roadwarrant->numberid }}</td>
                 </tr>
                 <tr>
-                  <th>Tanggal keberangkatan :</th>
-                  <td>{{ dateFormat($manifest->trip_date) }}</td>
-                </tr>
-                <tr>
-                  <th>Nama trip :</th>
-                  <td>{{ $tras->trip_title }}</td>
+                  <th>Tanggal perjalanan :</th>
+                  <td>
+                    @foreach ($manifest as $key => $item)
+                      @if ($key > 0) <br> @endif
+                      {{ dateFormat($item->trip_date) }} | {{ $item->trip_title }}
+                    @endforeach
+                  </td>
                 </tr>
               </table>
             </div>
@@ -73,26 +74,6 @@
                 <tr>
                   <th width="250">Nama bus :</th>
                   <td>{{ $bus->busname }}</td>
-                </tr>
-                <tr>
-                  <th>Kelas</th>
-                  <td>
-                    @foreach ($busclass as $item)
-                      <div class="table-responsive">
-                        <p class="lead">{{ $item->name }}</p>
-                        <table class="table">
-                          <tr>
-                            <th>Jumlah kursi :</th>
-                            <td>{{ $item->seat }}</td>
-                          </tr>
-                          <tr>
-                            <th width="250">Layout :</th>
-                            <td>{{ $item->layout }}</td>
-                          </tr>
-                        </table>
-                      </div>
-                    @endforeach
-                  </td>
                 </tr>
                 <tr>
                   <th width="250">Kilometer awal :</th>
@@ -113,40 +94,87 @@
                   </tr>
                 @endif
                 <tr>
-                  <th>Co-driver :</th>
+                  <th>Co Driver :</th>
                   <td>{{ $roadwarrant->codriver_name }}</td>
                 </tr>
                 <tr>
-                  <th>Uang Saku :</th>
-                  <td>{{ formatAmount($roadwarrant->trip_allowance) }}</td>
-                </tr>
-                <tr>
-                  <th>Uang Premi Driver 1 :</th>
-                  <td>{{ formatAmount($roadwarrant->driver_allowance_1) }}</td>
-                </tr>
-                @if ($crewCount > 2)
-                  <tr>
-                    <th>Uang Premi Driver 2 :</th>
-                    <td>{{ formatAmount($roadwarrant->driver_allowance_2) }}</td>
-                  </tr>
-                @endif
-                <tr>
-                  <th>Uang Premi Co-driver :</th>
-                  <td>{{ formatAmount($roadwarrant->codriver_allowance) }}</td>
-                </tr>
-                <tr>
-                  <th>Uang Makan Crew :</th>
-                  <td>{{ formatAmount($roadwarrant->crew_meal_allowance / $crewCount) }}</td>
-                </tr>
-                <tr>
-                  <th>Uang BBM :</th>
-                  <td>{{ formatAmount($roadwarrant->fuel_allowance) }}</td>
-                </tr>
-                <tr>
-                  <th>Uang E-Toll :</th>
-                  <td>{{ formatAmount($roadwarrant->etoll_allowance) }}</td>
+                  <th>Tujuan transfer :</th>
+                  <td>{{ $roadwarrant->bank_account }} | {{ $roadwarrant->bank_name }} - {{ $roadwarrant->bank_number }}</td>
                 </tr>
               </table>
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">Tabel uang jalan SPJ</h3>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-nowrap">
+                      <thead>
+                        <tr>
+                          <th width="100">No</th>
+                          <th>Judul</th>
+                          <th width="190" class="text-right">Nominal</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td>Uang makan crew (<span id="crewcount">{{ $crewCount }}</span> orang)</td>
+                          <td class="text-right crew_meal_allowance">{{ formatAmount($roadwarrant->crew_meal_allowance) }}</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>Uang premi driver (<span id="drivercount">{{ intval($crewCount) > 2 ? 2 : 1 }}</span> orang)</td>
+                          <td class="text-right driver_allowance">{{ formatAmount($roadwarrant->driver_allowance_1) }}</td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td>Uang premi co driver</td>
+                          <td class="text-right codriver_allowance">{{ formatAmount($roadwarrant->codriver_allowance) }}</td>
+                        </tr>
+                        <tr>
+                          <td>4</td>
+                          <td>Uang saku</td>
+                          <td class="text-right trip_allowance">
+                            {{ formatAmount($roadwarrant->trip_allowance) }}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>5</td>
+                          <td>Uang BBM</td>
+                          <td class="text-right fuel_allowance">{{ formatAmount($roadwarrant->fuel_allowance) }}</td>
+                        </tr>
+                        <tr>
+                          <td>6</td>
+                          <td>Uang E-Toll</td>
+                          <td class="text-right etoll_allowance">{{ formatAmount($roadwarrant->etoll_allowance) }}</td>
+                        </tr>
+                      </tbody>
+                      <tfood>
+                        <tr>
+                          <td class="text-right" colspan="2">Total biaya :</td>
+                          <td class="text-right totalsum">{{ formatAmount($roadwarrant->total_allowance) }}</td>
+                        </tr>
+                      </thead>
+                    </table>
+                  </div>
+                  <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="hidden" class="form-control" name="crew_meal_allowance" id="crew_meal_allowance">
+              <input type="hidden" class="form-control" name="driver_allowance" id="driver_allowance">
+              <input type="hidden" class="form-control" name="codriver_allowance" id="codriver_allowance" >
+              <input type="hidden" class="form-control" name="fuel_allowance" id="fuel_allowance">
+              <input type="hidden" class="form-control" name="etoll_allowance" id="etoll_allowance">
+              <input type="hidden" class="form-control" name="totalsum" id="totalsum">
             </div>
           </div>
         </div>

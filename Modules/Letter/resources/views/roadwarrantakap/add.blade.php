@@ -59,15 +59,6 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="km_start">Kilometer awal</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">Km</span>
-              </div>
-              <input type="number" class="form-control" name="km_start" placeholder="0" value="" required>
-            </div>
-          </div>
-          <div class="form-group">
             <label>Driver 1</label>
             <select class="form-control select2bs4" id="driver1" name="driver_1" style="width: 100%;" required>
               <option value="">Pilih</option>
@@ -82,6 +73,12 @@
           <div class="form-group">
             <label>Co driver</label>
             <select class="form-control select2bs4" id="codriver" name="codriver" style="width: 100%;" required>
+              <option value="">Pilih</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Rekening uang jalan</label>
+            <select class="form-control select2bs4" name="transferto" id="transferto" style="width: 100%;" required>
               <option value="">Pilih</option>
             </select>
           </div>
@@ -137,7 +134,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">Tabel biaya SPJ</h3>
+                  <h3 class="card-title">Tabel uang jalan SPJ</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">
@@ -152,22 +149,22 @@
                     <tbody>
                       <tr>
                         <td>1</td>
-                        <td>Uang makan crew (per orang)</td>
+                        <td>Uang makan crew (<span id="crewcount">2</span> orang)</td>
                         <td class="text-right crew_meal_allowance">Rp0</td>
                       </tr>
                       <tr>
                         <td>2</td>
-                        <td>Uang premi driver (per orang)</td>
+                        <td>Uang premi driver (<span id="drivercount">1</span> orang)</td>
                         <td class="text-right driver_allowance">Rp0</td>
                       </tr>
                       <tr>
                         <td>3</td>
-                        <td>Uang premi co driver (per orang)</td>
+                        <td>Uang premi co driver</td>
                         <td class="text-right codriver_allowance">Rp0</td>
                       </tr>
                       <tr>
                         <td>4</td>
-                        <td>Uang jalan</td>
+                        <td>Uang saku</td>
                         <td class="text-right trip_allowance">
                           <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -225,6 +222,10 @@
 <script type="text/javascript">
   let numberOfTrip = 1;
   let tripAllowance = 0;
+  let driverCount = 1;
+  let crewCount = 2;
+  let employee = [];
+  let employeePicked = [];
 
   let tripAmount = {
     crew_meal_allowance: 0,
@@ -262,6 +263,28 @@
   $("#bus-select").change(function(e){
     pickedBusUuid = e.target.value;
     fetchItem(e.target.value);
+  });
+
+  $("#driver1").change(function(e){
+    pickBankList()
+  });
+
+  $("#codriver").change(function(e){
+    pickBankList()
+  });
+
+  $("#driver2").change(function(e){
+    const driveri = e.target.value === '' ? 1 : 2; 
+    const crewi = e.target.value === '' ? 2 : 3;
+
+    driverCount = driveri
+    crewCount  = crewi
+
+    $('#drivercount').html(driveri);
+    $('#crewcount').html(crewi);
+    
+    pickBankList()
+    tripSummary()
   });
 
   $("#tras-item").change(function(e){
@@ -310,6 +333,36 @@
     tripSummary()
   });
 
+  function pickBankList() {
+    $('#transferto').html('');
+    employeePicked = []
+    let driver1Val = $('#driver1').val()
+    let driver2Val = $('#driver2').val()
+    let codriverVal = $('#codriver').val()
+
+    for (let index = 0; index < employee.length; index++) {
+      const element = employee[index];
+      if (parseInt(driver1Val) === element.id) {
+        employeePicked.push(element)
+      }
+
+      if (parseInt(driver2Val) === element.id) {
+        employeePicked.push(element)
+      }
+
+      if (parseInt(codriverVal) === element.id) {
+        employeePicked.push(element)
+      }
+    }
+    
+    let html = '';
+    html += '<option value="">Pilih</option>'
+    for (let index = 0; index < employeePicked.length; index++) {
+      html += '<option value="'+ employeePicked[index].id +'">'+ employeePicked[index].first_name + ' | ' + employeePicked[index].bank_name + ' ' + employeePicked[index].bank_number +'</option>'
+    }
+    $('#transferto').append(html);
+  }
+
   function fetchItem(value) {
     $('#tras-item').html('');
     $('#tras-item-return').html('');
@@ -352,6 +405,7 @@
     $('#codriver').html('');
     axios.get(`/api/employeeready?date=${value}`)
       .then((response) => {
+        employee = response.data;
         addElementToSelectEmployee(response.data);
       }, (error) => {
         console.log(error);
@@ -372,8 +426,8 @@
   }
 
   function tripSummary() {
-    const crewMealDefault = parseInt(tripAmount.crew_meal_allowance) + (parseInt(numberOfTrip) === 2 ? parseInt(tripAmountReturn.crew_meal_allowance) : 0);
-    const premiDriverDefault = parseInt(tripAmount.driver_allowance) + (parseInt(numberOfTrip) === 2 ? parseInt(tripAmountReturn.driver_allowance) : 0);
+    const crewMealDefault = (parseInt(tripAmount.crew_meal_allowance) + (parseInt(numberOfTrip) === 2 ? parseInt(tripAmountReturn.crew_meal_allowance) : 0)) * crewCount;
+    const premiDriverDefault = (parseInt(tripAmount.driver_allowance) + (parseInt(numberOfTrip) === 2 ? parseInt(tripAmountReturn.driver_allowance) : 0)) * driverCount;
     const premiCoDriverDefault = parseInt(tripAmount.codriver_allowance) + (parseInt(numberOfTrip) === 2 ? parseInt(tripAmountReturn.codriver_allowance) : 0);
     const etollDefault = parseInt(tripAmount.etoll_allowance) + (parseInt(numberOfTrip) === 2 ? parseInt(tripAmountReturn.etoll_allowance) : 0);
     const fuelDefault = parseInt(tripAmount.fuel_allowance) + (parseInt(numberOfTrip) === 2 ? parseInt(tripAmountReturn.fuel_allowance) : 0);

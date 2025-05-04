@@ -72,10 +72,14 @@ class RoadWarrant extends Model
                 DB::raw("CONCAT(driver_1.first_name,' ',driver_1.second_name) as driver_1_name"),
                 DB::raw("CONCAT(driver_2.first_name,' ',driver_2.second_name) as driver_2_name"),
                 DB::raw("CONCAT(codriver.first_name,' ',codriver.second_name) as codriver_name"),
+                'transferto.first_name as bank_account',
+                'transferto.bank_name',
+                'transferto.bank_number',
             )
             ->leftJoin("employee_history AS driver_1", "driver_1.id", "=", "roadwarrant.driver_1")
             ->leftJoin("employee_history AS driver_2", "driver_2.id", "=", "roadwarrant.driver_2")
             ->leftJoin("employee_history AS codriver", "codriver.id", "=", "roadwarrant.codriver")
+            ->leftJoin("employee_history AS transferto", "transferto.id", "=", "roadwarrant.transferto")
             ->where('roadwarrant.uuid', $uuid)
             ->first();
 
@@ -260,6 +264,21 @@ class RoadWarrant extends Model
         $query = DB::table("manifest")
             ->where('uuid', $manifest_uuid)
             ->first();
+
+        return $query;
+    }
+
+    function scopeGetManifestTrip($query, $roadwarrant_uuid)
+    {
+        $query = DB::table("manifest")
+            ->select(
+                'manifest.trip_date',
+                'trip.trip_title',
+            )
+            ->leftJoin("trip_assign AS tras", "tras.id", "=", "manifest.trip_assign")
+            ->leftJoin("trip", "trip.trip_id", "=", "tras.trip")
+            ->where('manifest.roadwarrant_uuid', $roadwarrant_uuid)
+            ->get();
 
         return $query;
     }
