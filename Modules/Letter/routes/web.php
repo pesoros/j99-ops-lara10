@@ -40,11 +40,13 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::post('roadwarrant/add', [LetterRoadWarrantController::class, 'addRoadWarrantAkapStore']);
         Route::get('roadwarrant/edit/{category}/{uuid}', [LetterRoadWarrantController::class, 'editRoadWarrant']);
         Route::post('roadwarrant/edit/{category}/{uuid}', [LetterRoadWarrantController::class, 'editRoadWarrantStore']);
+        Route::get('roadwarrant/status/{statusvalue}/{category}/{uuid}', [LetterRoadWarrantController::class, 'roadWarrantStatus']);
+        Route::get('roadwarrant/withdraw/{category}/{uuid}', [LetterRoadWarrantController::class, 'withdrawRoadWarrant']);
+        Route::post('roadwarrant/withdraw/{category}/{uuid}', [LetterRoadWarrantController::class, 'withdrawRoadWarrantStore']);
         Route::get('roadwarrant/show/detail/{category}/{uuid}', [LetterRoadWarrantController::class, 'detailRoadWarrant']);
         Route::get('roadwarrant/expense/statusupdate/{category}/{uuid}/{expense_uuid}/{status_id}', [LetterRoadWarrantController::class, 'expenseStatusUpdate']);
         Route::get('roadwarrant/expense/edit/{uuid}', [LetterRoadWarrantController::class, 'editRoadWarrantExpense']);
         Route::post('roadwarrant/expense/edit/{uuid}', [LetterRoadWarrantController::class, 'editRoadWarrantExpenseStore']);
-        Route::get('roadwarrant/accurate/transfer/{uuid}', [LetterRoadWarrantController::class, 'accurateTransfer']);
         Route::get('roadwarrant/accurate/lpj/{uuid}', [LetterRoadWarrantController::class, 'accurateLpj']);
 
         Route::get('goodsrequest', [LetterGoodsController::class, 'listGoodsRequest']);

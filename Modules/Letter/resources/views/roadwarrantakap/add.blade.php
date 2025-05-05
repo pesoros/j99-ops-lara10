@@ -250,14 +250,14 @@
   
   $('#datepicker').datetimepicker({
     format: 'DD/MM/YYYY',
-    minDate : 'now',
-    maxDate : maxDate,
+    minDate: 'now',
+    maxDate: maxDate,
   });
 
   $('#datepicker_return').datetimepicker({
     format: 'DD/MM/YYYY',
-    minDate : 'now',
-    maxDate : maxDate,
+    minDate: 'now',
+    maxDate: maxDate,
   });
 
   $("#bus-select").change(function(e){
@@ -324,6 +324,16 @@
 
   $("#datepicker").on("change.datetimepicker", ({date}) => {
     const dateConv = dayjs(date._d).format('YYYY-MM-DD')
+    const newMinDate = dayjs(date._d).add(1, 'day').format('YYYY-MM-DD')
+    const newMaxDate = dayjs(newMinDate).add(3, 'day').format('YYYY-MM-DD')
+    
+    $("#datepicker_return").datetimepicker("destroy");
+    $('#datepicker_return').datetimepicker({
+      format: 'DD/MM/YYYY',
+      minDate: newMinDate,
+      maxDate: newMaxDate,
+    });
+
     fetchEmployee(dateConv)
   })
 
@@ -413,16 +423,23 @@
   }
 
   function addElementToSelectEmployee(data) {
-    let html = '';
-    html += '<option value="">Pilih</option>'
+    let htmlDriver = '';
+    let htmlCoDriver = '';
+
+    htmlDriver += '<option value="">Pilih</option>'
+    htmlCoDriver += '<option value="">Pilih</option>'
     for (let index = 0; index < data.length; index++) {
       if (data[index].assignee.length === 0 && data[index].assignee_akap.length === 0) {
-        html += '<option value="'+ data[index].id +'">'+ data[index].first_name + ' ' + data[index].second_name + ' | ' + data[index].position +'</option>'
+        if (data[index].position == 'Driver') {
+          htmlDriver += '<option value="'+ data[index].id +'">'+ data[index].first_name + ' ' + data[index].second_name + ' | ' + data[index].position +'</option>'
+        } else {
+          htmlCoDriver += '<option value="'+ data[index].id +'">'+ data[index].first_name + ' ' + data[index].second_name + ' | ' + data[index].position +'</option>'
+        }
       }
     }
-    $('#driver1').append(html);
-    $('#driver2').append(html);
-    $('#codriver').append(html);
+    $('#driver1').append(htmlDriver);
+    $('#driver2').append(htmlDriver);
+    $('#codriver').append(htmlCoDriver);
   }
 
   function tripSummary() {

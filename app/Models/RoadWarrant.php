@@ -353,4 +353,11 @@ class RoadWarrant extends Model
 
         return $query;
     }
+
+    public function scopeSaveWithdraw($query, $data)
+    {
+        $query = DB::table("withdraw")->insert($data);
+
+        return $query;
+    }
 }

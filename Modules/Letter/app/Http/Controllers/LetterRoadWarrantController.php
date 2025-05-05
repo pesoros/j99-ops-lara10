@@ -86,6 +86,14 @@ class LetterRoadWarrantController extends Controller
 
     public function addRoadWarrantAkapStore(Request $request)
     {
+        if ($request->numberoftrip == "2" && $request->trip_assign == $request->trip_assign_return) {
+            return back()->with('failed', 'Trip assign 1 dan 2 tidak boleh sama');
+        }
+
+        if ($request->driver_1 == $request->driver_2) {
+            return back()->with('failed', 'Driver tidak boleh sama');
+        }
+
         $roadWarrantCount = RoadWarrant::getRoadWarrantCount();
         $count = !isset($roadWarrantCount->count) ? 1 : $roadWarrantCount->count + 1;
         $trip_date = Carbon::createFromFormat('d/m/Y', $request->date)->format('Y-m-d');
@@ -244,6 +252,78 @@ class LetterRoadWarrantController extends Controller
         return back()->with('failed', 'SPJ gagal di edit!');
     }
 
+    public function roadWarrantStatus(Request $request, $status, $category, $uuid)
+    {
+        switch ($status) {
+            case 'marker':
+                $editRoadWarrantData = ['status'    =>  2];
+                break;
+            case 'active':
+                $editRoadWarrantData = ['status'    =>  3];
+                break;
+            case 'readytotransfer':
+                $editRoadWarrantData = ['status'    =>  4];
+                break;
+        }
+        $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
+        return back()->with('success', 'Status berhasil dirubah!');
+    }
+
+    public function withdrawRoadWarrant(Request $request, $category, $uuid)
+    {
+        if ($category === '1') {
+            $data['title'] = 'Withdraw Surat perintah jalan AKAP';
+            $roadWarrant = RoadWarrant::getRoadWarrantAkap($uuid);
+            
+            $data['roadwarrant'] = $roadWarrant;
+            $data['crewCount'] = isset($roadWarrant->driver_2_name) ? 3 : 2;
+
+            return view('letter::roadwarrantakap.withdraw', $data);
+        } 
+        
+        return;
+    }
+
+    public function withdrawRoadWarrantStore(Request $request, $category, $uuid)
+    {
+        $credentials = $request->validate([
+            'amount'            => ['required', 'string'],
+            'transaction_id'    => ['required', 'string'],
+            'image'             => ['required', 'file'],
+        ]);
+
+        $path = 'uploads/images/withdraw';
+        $transfer_file_name = '-';
+        
+        if ($image = $request->file('image')){
+            $transfer_file_name = 'SPJWD'.time().'-'.uniqid().'.'.$image->getClientOriginalExtension();
+            $image->move($path, $transfer_file_name);
+        }
+
+        $filepathname = $path.'/'.$transfer_file_name;
+
+        $withdrawData = [
+            'uuid'              => generateUuid(),
+            'category'          => 'SPJ',
+            'parent_uuid'       => $uuid,
+            'amount'            => $request->amount,
+            'transaction_id'    => $request->transaction_id,
+            'image_file'        => $filepathname,
+        ];
+
+        $create = RoadWarrant::saveWithdraw($withdrawData);
+        $editRoadWarrantData = ['status'    =>  5];
+
+        $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
+        $sendAccurate = $this->accurateTransfer($uuid);
+
+        if ($create) {
+            return redirect('letter/roadwarrant/show/detail/1/'.$uuid)->with('success', 'Withdraw tersimpan!');
+        }
+
+        return back()->with('failed', 'Withdraw gagal tersimpan!');        
+    }
+
     public function expenseStatusUpdate(Request $request, $category, $uuid, $expense_uuid, $status_id)
     {
         $updateExpense['status'] = $status_id;
@@ -314,17 +394,20 @@ class LetterRoadWarrantController extends Controller
         return $logData;
     }
 
-    public function accurateTransfer(Request $request, $uuid)
+    public function accurateTransfer($uuid)
     {
         $path = "accurate/roadwarrant/moneytransfer";
         $fetch = $this->httpPost($path, $uuid);
-        return back()->with('success', 'Laporan transfer berhasil!');
+        return $fetch;
     }
 
     public function accurateLpj(Request $request, $uuid)
     {
+        $editRoadWarrantData = ['status'    =>  7];
+        $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
         $path = "accurate/roadwarrant/tripexpenses";
         $fetch = $this->httpPost($path, $uuid);
+        
         return back()->with('success', 'Laporan LPJ berhasil!');
     }
     

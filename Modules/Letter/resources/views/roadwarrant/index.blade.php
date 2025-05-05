@@ -34,14 +34,32 @@
           <tr>
             <td width="20" class="text-center">{{ intval($key) + 1 }}</td>
             <td>{{ $value->numberid }}</td>
-            <td>{{ STRVAL($value->category) === '1' ? 'AKAP' : 'Pariwisata' }}</td>
+            <td>{{ intval($value->category) === 1 ? 'AKAP' : 'Pariwisata' }}</td>
             <td>{{ $value->busname }}</td>
             <td>
-                @if (STRVAL($value->status) === '1')
+              @if (intval($value->category) === 1 && $value->manifest_uuid == NULL)
+                @if (intval($value->status) === 1)
+                  <span class="badge badge-secondary">Draft</span>                                        
+                @elseif (intval($value->status) === 2)
+                  <span class="badge badge-info">Marker</span>      
+                @elseif (intval($value->status) === 3)
+                  <span class="badge badge-primary">Aktif</span>
+                @elseif (intval($value->status) === 4)
+                  <span class="badge badge-success">Ready To Transfer</span>     
+                @elseif (intval($value->status) === 5)
+                  <span class="badge badge-warning">Transfered</span>
+                @elseif (intval($value->status) === 6)
+                  <span class="badge badge-danger">Perjalanan selesai</span>
+                @elseif (intval($value->status) === 7)
+                  <span class="badge bg-orange">SPJ Selesai</span>
+                @endif
+              @else
+                @if (intval($value->status) === 1)
                   <span class="badge badge-warning">Aktif</span>                                        
-                @elseif (STRVAL($value->status) === '2')
+                @elseif (intval($value->status) === 2)
                   <span class="badge badge-success">Selesai</span>                                        
                 @endif
+              @endif
               </td>
             <td>
               <div class="btn-group btn-block">

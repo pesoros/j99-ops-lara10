@@ -24,10 +24,20 @@
           <div class="col-12">
             <h4>
               <img src="{{url('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
-              @if ($roadwarrant->accurate_transfer == 0)
-                <a href="{{ url('letter/roadwarrant/accurate/transfer/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-success float-right">Transfer uang perjalanan</a>
-              @else
-                @if ($roadwarrant->accurate_lpj == 0 && STRVAL($roadwarrant->status) === '2')
+              @if ($roadwarrant->manifest_uuid == NULL)
+                @if (intval($roadwarrant->status) == 1)
+                  <a href="{{ url('letter/roadwarrant/status/marker/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-info float-right">Set Marker</a>
+                @endif
+                @if (intval($roadwarrant->status) == 2)
+                  <a href="{{ url('letter/roadwarrant/status/active/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-primary float-right">Set Aktif</a>
+                @endif
+                @if (intval($roadwarrant->status) == 3)
+                  <a href="{{ url('letter/roadwarrant/status/readytotransfer/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-success float-right">Set Ready To Transfer</a>
+                @endif
+                @if (intval($roadwarrant->status) == 4)
+                  <a href="{{ url('letter/roadwarrant/withdraw/1/'.$roadwarrant->uuid) }}" class="btn bg-lightblue float-right">Transfer uang perjalanan</a>
+                @endif
+                @if (intval($roadwarrant->status) == 6)
                   <a href="{{ url('letter/roadwarrant/accurate/lpj/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-warning float-right">Lapor LPJ perjalanan</a>
                 @endif
               @endif
@@ -44,10 +54,28 @@
                 <tr>
                   <th width="250">Status SPJ: </th>
                   <td>
-                    @if (STRVAL($roadwarrant->status) === '1')
-                      <span class="badge badge-warning">Aktif</span>                                        
-                    @elseif (STRVAL($roadwarrant->status) === '2')
-                      <span class="badge badge-success">Selesai</span>                                        
+                    @if ($roadwarrant->manifest_uuid == NULL)
+                      @if (intval($roadwarrant->status) === 1)
+                        <span class="badge badge-secondary">Draft</span>                                        
+                      @elseif (intval($roadwarrant->status) === 2)
+                        <span class="badge badge-info">Marker</span>      
+                      @elseif (intval($roadwarrant->status) === 3)
+                        <span class="badge badge-primary">Aktif</span>
+                      @elseif (intval($roadwarrant->status) === 4)
+                        <span class="badge badge-success">Ready To Transfer</span>     
+                      @elseif (intval($roadwarrant->status) === 5)
+                        <span class="badge badge-warning">Transfered</span>
+                      @elseif (intval($roadwarrant->status) === 6)
+                        <span class="badge badge-danger">Perjalanan selesai</span>
+                      @elseif (intval($roadwarrant->status) === 7)
+                        <span class="badge bg-orange">SPJ Selesai</span>
+                      @endif
+                    @else
+                      @if (intval($roadwarrant->status) === 1)
+                        <span class="badge badge-warning">Aktif</span>                                        
+                      @elseif (intval($roadwarrant->status) === 2)
+                        <span class="badge badge-success">Selesai</span>                                        
+                      @endif
                     @endif
                   </td>
                 </tr>
