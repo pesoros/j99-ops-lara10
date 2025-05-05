@@ -123,7 +123,6 @@ class LetterRoadWarrantController extends Controller
             'codriver'                  =>  $request->codriver,
             'resto_id'                  =>  $tras->resto_id,
             'driver_allowance_1'        =>  numberClearence($request->driver_allowance),
-            'driver_allowance_2'        =>  $numberOfCrew > 2 ? numberClearence($request->driver_allowance) : null,
             'codriver_allowance'        =>  numberClearence($request->codriver_allowance),
             'trip_allowance'            =>  numberClearence($request->trip_allowance),
             'fuel_allowance'            =>  numberClearence($request->fuel_allowance),
