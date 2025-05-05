@@ -210,7 +210,7 @@
     </div>
     <div class="card-footer">
       <button type="submit" class="btn btn-primary">Submit</button>
-      <a href="{{ url('letter/complaint') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
+      <a href="{{ url('letter/roadwarrant') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
     </div>
   </form>
 </div>
