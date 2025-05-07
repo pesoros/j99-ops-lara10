@@ -273,6 +273,7 @@ class RoadWarrant extends Model
         $query = DB::table("manifest")
             ->select(
                 'manifest.trip_date',
+                'manifest.trip_assign',
                 'trip.trip_title',
             )
             ->leftJoin("trip_assign AS tras", "tras.id", "=", "manifest.trip_assign")

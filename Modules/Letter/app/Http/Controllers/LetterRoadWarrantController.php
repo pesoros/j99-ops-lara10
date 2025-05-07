@@ -208,6 +208,9 @@ class LetterRoadWarrantController extends Controller
             $data['bus'] = RoadWarrant::getBusAkap();
             $data['employee'] = RoadWarrant::getEmployee();
             $data['roadwarrant'] = RoadWarrant::getRoadWarrantAkap($uuid);
+            $manifest = RoadWarrant::getManifestTrip($uuid);
+            $data['manifest'] = $manifest[0];
+            $data['manifest_return'] = $manifest[1] ?? [];
 
             return view('letter::roadwarrantakap.edit', $data);
         } else if ($category === '2') {

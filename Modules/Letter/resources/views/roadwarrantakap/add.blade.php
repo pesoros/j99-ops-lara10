@@ -261,8 +261,7 @@
   });
 
   $("#bus-select").change(function(e){
-    pickedBusUuid = e.target.value;
-    fetchItem(e.target.value);
+    setBus(e.target.value);
   });
 
   $("#driver1").change(function(e){
@@ -278,7 +277,7 @@
     const crewi = e.target.value === '' ? 2 : 3;
 
     driverCount = driveri
-    crewCount  = crewi
+    crewCount = crewi
 
     $('#drivercount').html(driveri);
     $('#crewcount').html(crewi);
@@ -288,38 +287,15 @@
   });
 
   $("#tras-item").change(function(e){
-    const allowancedata = e.target.options[e.target.selectedIndex].dataset.allowance.split("|");
-
-    tripAmount.crew_meal_allowance = parseInt(allowancedata[1]) ?? 0
-    tripAmount.driver_allowance = parseInt(allowancedata[2]) ?? 0
-    tripAmount.codriver_allowance = parseInt(allowancedata[3]) ?? 0
-    tripAmount.etoll_allowance = parseInt(allowancedata[4]) ?? 0
-
-    fetchFuelAllowance(pickedBusUuid, parseInt(allowancedata[0]) ?? "", 1);
+    setTripAssign(e.target.options[e.target.selectedIndex].dataset.allowance.split("|"), 1)
   });
 
   $("#tras-item-return").change(function(e){
-    const allowancereturndata = e.target.options[e.target.selectedIndex].dataset.allowance.split("|");
-
-    tripAmountReturn.crew_meal_allowance = parseInt(allowancereturndata[1]) ?? 0
-    tripAmountReturn.driver_allowance = parseInt(allowancereturndata[2]) ?? 0
-    tripAmountReturn.codriver_allowance = parseInt(allowancereturndata[3]) ?? 0
-    tripAmountReturn.etoll_allowance = parseInt(allowancereturndata[4]) ?? 0
-
-    fetchFuelAllowance(pickedBusUuid, parseInt(allowancereturndata[0]) ?? "", 2);
+    setTripAssign(e.target.options[e.target.selectedIndex].dataset.allowance.split("|"), 2)
   });
 
   $("#numberoftrip").change(function(e){
-    if (e.target.value === '1') {
-      numberOfTrip = 1
-      $("#trip2wrapper").hide()
-      $("#date2wrapper").hide()
-    } else {
-      numberOfTrip = 2
-      $("#trip2wrapper").show()
-      $("#date2wrapper").show()
-    };
-    tripSummary()
+    setNumbertrip(e.target.value)
   });
 
   $("#datepicker").on("change.datetimepicker", ({date}) => {
@@ -356,8 +332,34 @@
       alert('Trip assign 1 dan 2 tidak boleh sama');
       return false;
     }
-
   })
+
+  function setTripAssign(allowancedata, tripNumberDrop) {
+    tripAmount.crew_meal_allowance = parseInt(allowancedata[1]) ?? 0
+    tripAmount.driver_allowance = parseInt(allowancedata[2]) ?? 0
+    tripAmount.codriver_allowance = parseInt(allowancedata[3]) ?? 0
+    tripAmount.etoll_allowance = parseInt(allowancedata[4]) ?? 0
+
+    fetchFuelAllowance(pickedBusUuid, parseInt(allowancedata[0]) ?? "", tripNumberDrop);
+  }
+
+  function setBus(value) {
+    pickedBusUuid = value;
+    fetchItem(value);
+  }
+
+  function setNumbertrip(value) {
+    if (parseInt(value) === 1) {
+      numberOfTrip = 1
+      $("#trip2wrapper").hide()
+      $("#date2wrapper").hide()
+    } else {
+      numberOfTrip = 2
+      $("#trip2wrapper").show()
+      $("#date2wrapper").show()
+    };
+    tripSummary()
+  }
 
   function pickBankList() {
     $('#transferto').html('');
