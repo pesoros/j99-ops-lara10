@@ -68,13 +68,13 @@
         <div class="form-group">
           <label for="transaction_id">Nomor transaksi</label>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" name="transaction_id" id="transaction_id" placeholder="masukkan nomor transaksi" required>
+            <input type="text" class="form-control" name="transaction_id" id="transaction_id" placeholder="masukkan nomor transaksi">
           </div>
         </div>
         <div class="form-group">
           <label for="image">Bukti transfer</label>
           <div class="input-group">
-            <input type="file" name="image" class="form-control" value="" accept=".png, .jpg, .jpeg" required>
+            <input type="file" name="image" class="form-control" value="" accept=".png, .jpg, .jpeg">
           </div>
         </div>
       </div>

@@ -209,7 +209,7 @@
         </div>
     </div>
     <div class="card-footer">
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary" id="submitbutton">Submit</button>
       <a href="{{ url('letter/roadwarrant') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
     </div>
   </form>
@@ -343,6 +343,22 @@
     tripSummary()
   });
 
+  $("#submitbutton").on("click", function() {
+    let driver1Val = $('#driver1').val()
+    let driver2Val = $('#driver2').val()
+    let trip_assign = $('#tras-item').val()
+    let trip_assign_return = $('#tras-item-return').val()
+
+    if (driver1Val === driver2Val) {
+      alert('Driver 1 dan 2 tidak boleh sama');
+      return false;
+    } else if (numberOfTrip === 2 && parseInt(trip_assign) === parseInt(trip_assign_return)) {
+      alert('Trip assign 1 dan 2 tidak boleh sama');
+      return false;
+    }
+
+  })
+
   function pickBankList() {
     $('#transferto').html('');
     employeePicked = []
@@ -389,7 +405,7 @@
       .then((response) => {
         if (parseInt(tripNumber) == 1) {
           tripAmount.fuel_allowance = response.data.allowance ?? 0
-        } else if (parseInt(tripNumber) == 1) {
+        } else if (parseInt(tripNumber) == 2) {
           tripAmountReturn.fuel_allowance = response.data.allowance ?? 0
         }
         tripSummary()

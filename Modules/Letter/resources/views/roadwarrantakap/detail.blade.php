@@ -24,6 +24,11 @@
           <div class="col-12">
             <h4>
               <img src="{{url('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
+
+              @if (intval($roadwarrant->status) < 3)
+                @if (permissionCheck('edit')) <a href="{{ url('letter/roadwarrant/edit/1/'.$roadwarrant->uuid) }}" class="btn btn-secondary float-right" style="margin-left: 4px;">Edit</a> @endif
+              @endif
+
               @if ($roadwarrant->manifest_uuid == NULL)
                 @if (intval($roadwarrant->status) == 1)
                   <a href="{{ url('letter/roadwarrant/status/marker/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-info float-right">Set Marker</a>
@@ -32,7 +37,7 @@
                   <a href="{{ url('letter/roadwarrant/status/active/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-primary float-right">Set Aktif</a>
                 @endif
                 @if (intval($roadwarrant->status) == 3)
-                  <a href="{{ url('letter/roadwarrant/withdraw/1/'.$roadwarrant->uuid) }}" class="btn bg-lightblue float-right">Transfer uang perjalanan</a>
+                  <a href="{{ url('letter/roadwarrant/withdraw/1/'.$roadwarrant->uuid) }}" class="btn bg-gradient-success float-right">Transfer uang perjalanan</a>
                 @endif
                 @if (intval($roadwarrant->status) == 4)
                   <a href="{{ url('letter/roadwarrant/accurate/lpj/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-warning float-right">Lapor LPJ perjalanan</a>
@@ -49,6 +54,10 @@
             <div class="table-responsive">
               <table class="table">
                 <tr>
+                  <th>Tujuan transfer :</th>
+                  <td>{{ $roadwarrant->bank_account }} | {{ $roadwarrant->bank_name }} - {{ $roadwarrant->bank_number }}</td>
+                </tr>
+                <tr>
                   <th width="250">Status SPJ: </th>
                   <td>
                     @if ($roadwarrant->manifest_uuid == NULL)
@@ -59,7 +68,7 @@
                       @elseif (intval($roadwarrant->status) === 3)
                         <span class="badge badge-primary">Aktif</span>
                       @elseif (intval($roadwarrant->status) === 4)
-                        <span class="badge badge-warning">Transfered</span>
+                        <span class="badge badge-success">Sudah di transfer</span>
                       @elseif (intval($roadwarrant->status) === 5)
                         <span class="badge badge-danger">Perjalanan selesai</span>
                       @elseif (intval($roadwarrant->status) === 6)
@@ -119,10 +128,6 @@
                 <tr>
                   <th>Co Driver :</th>
                   <td>{{ $roadwarrant->codriver_name }}</td>
-                </tr>
-                <tr>
-                  <th>Tujuan transfer :</th>
-                  <td>{{ $roadwarrant->bank_account }} | {{ $roadwarrant->bank_name }} - {{ $roadwarrant->bank_number }}</td>
                 </tr>
               </table>
             </div>

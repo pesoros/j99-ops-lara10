@@ -283,8 +283,6 @@ class LetterRoadWarrantController extends Controller
     {
         $credentials = $request->validate([
             'amount'            => ['required', 'string'],
-            'transaction_id'    => ['required', 'string'],
-            'image'             => ['required', 'file'],
         ]);
 
         $path = 'uploads/images/withdraw';
@@ -302,7 +300,7 @@ class LetterRoadWarrantController extends Controller
             'category'          => 'SPJ',
             'parent_uuid'       => $uuid,
             'amount'            => $request->amount,
-            'transaction_id'    => $request->transaction_id,
+            'transaction_id'    => $request->transaction_id ?? "",
             'image_file'        => $filepathname,
         ];
 

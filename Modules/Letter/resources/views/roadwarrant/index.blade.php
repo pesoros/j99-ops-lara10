@@ -45,7 +45,7 @@
                 @elseif (intval($value->status) === 3)
                   <span class="badge badge-primary">Aktif</span>
                 @elseif (intval($value->status) === 4)
-                  <span class="badge badge-warning">Transfered</span>
+                  <span class="badge badge-success">Sudah di transfer</span>
                 @elseif (intval($value->status) === 5)
                   <span class="badge badge-danger">Perjalanan selesai</span>
                 @elseif (intval($value->status) === 6)
@@ -62,7 +62,9 @@
             <td>
               <div class="btn-group btn-block">
                 @if (permissionCheck('show')) <a href="{{ url('letter/roadwarrant/show/detail/'.$value->category.'/'.$value->uuid) }}" class="btn btn-warning btn-sm">Detail</a> @endif
-                @if (permissionCheck('edit')) <a href="{{ url('letter/roadwarrant/edit/'.$value->category.'/'.$value->uuid) }}" class="btn btn-success btn-sm">Edit</a> @endif
+                @if (intval($value->status) < 3)
+                  @if (permissionCheck('edit')) <a href="{{ url('letter/roadwarrant/edit/'.$value->category.'/'.$value->uuid) }}" class="btn btn-success btn-sm">Edit</a> @endif
+                @endif
               </div>
             </td>
           </tr>
