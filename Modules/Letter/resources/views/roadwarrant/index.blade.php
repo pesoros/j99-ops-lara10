@@ -45,12 +45,10 @@
                 @elseif (intval($value->status) === 3)
                   <span class="badge badge-primary">Aktif</span>
                 @elseif (intval($value->status) === 4)
-                  <span class="badge badge-success">Ready To Transfer</span>     
-                @elseif (intval($value->status) === 5)
                   <span class="badge badge-warning">Transfered</span>
-                @elseif (intval($value->status) === 6)
+                @elseif (intval($value->status) === 5)
                   <span class="badge badge-danger">Perjalanan selesai</span>
-                @elseif (intval($value->status) === 7)
+                @elseif (intval($value->status) === 6)
                   <span class="badge bg-orange">SPJ Selesai</span>
                 @endif
               @else

@@ -259,10 +259,6 @@ class LetterRoadWarrantController extends Controller
                 break;
             case 'active':
                 $editRoadWarrantData = ['status'    =>  3];
-                break;
-            case 'readytotransfer':
-                $editRoadWarrantData = ['status'    =>  4];
-                break;
         }
         $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
         return back()->with('success', 'Status berhasil dirubah!');
@@ -311,7 +307,7 @@ class LetterRoadWarrantController extends Controller
         ];
 
         $create = RoadWarrant::saveWithdraw($withdrawData);
-        $editRoadWarrantData = ['status'    =>  5];
+        $editRoadWarrantData = ['status'    =>  4];
 
         $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
         $sendAccurate = $this->accurateTransfer($uuid);
@@ -402,7 +398,7 @@ class LetterRoadWarrantController extends Controller
 
     public function accurateLpj(Request $request, $uuid)
     {
-        $editRoadWarrantData = ['status'    =>  7];
+        $editRoadWarrantData = ['status'    =>  6];
         $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
         $path = "accurate/roadwarrant/tripexpenses";
         $fetch = $this->httpPost($path, $uuid);
