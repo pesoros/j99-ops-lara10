@@ -55,16 +55,21 @@
               <table class="table">
                 <tr>
                   <th>Tujuan transfer :</th>
-                  <td>{{ $roadwarrant->bank_account }} | {{ $roadwarrant->bank_name }} - {{ $roadwarrant->bank_number }}</td>
+                  <td>
+                    {{ $roadwarrant->bank_account }} | {{ $roadwarrant->bank_name }} - {{ $roadwarrant->bank_number }}
+                    @if (intval($roadwarrant->transferto_changed) === 1 && intval($roadwarrant->status) <= 3)
+                      <span class="badge badge-warning">Terdapat perubahan</span>                                  
+                    @endif
+                  </td>
                 </tr>
                 <tr>
                   <th width="250">Status SPJ: </th>
                   <td>
                     @if ($roadwarrant->manifest_uuid == NULL)
                       @if (intval($roadwarrant->status) === 1)
-                        <span class="badge badge-secondary">Draft</span>                                        
+                        <span class="badge badge-secondary">Draft</span>                                  
                       @elseif (intval($roadwarrant->status) === 2)
-                        <span class="badge badge-info">Marker</span>      
+                        <span class="badge badge-info">Marker</span>
                       @elseif (intval($roadwarrant->status) === 3)
                         <span class="badge badge-primary">Aktif</span>
                       @elseif (intval($roadwarrant->status) === 4)
@@ -76,9 +81,9 @@
                       @endif
                     @else
                       @if (intval($roadwarrant->status) === 1)
-                        <span class="badge badge-warning">Aktif</span>                                        
+                        <span class="badge badge-warning">Aktif</span>
                       @elseif (intval($roadwarrant->status) === 2)
-                        <span class="badge badge-success">Selesai</span>                                        
+                        <span class="badge badge-success">Selesai</span>
                       @endif
                     @endif
                   </td>

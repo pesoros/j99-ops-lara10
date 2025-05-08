@@ -314,13 +314,12 @@ class LetterRoadWarrantController extends Controller
                 'fleet'                     =>  $request->bus_uuid,
             ];
 
-            $editRoadWarrantDataAdditional = [
-                'resto_id_return'                  =>  $tras2->resto_id,
-            ];
-
-            $editRoadWarrantData = $editRoadWarrantData + $editRoadWarrantDataAdditional;
-
+            $editRoadWarrantData['resto_id_return'] = $tras2->resto_id;
             $saveRoadWarrantReturn = RoadWarrant::saveManifest($saveManifestDataReturn);
+        }
+
+        if (strval($request->transferto) === strval($request->old_transferto)) {
+            $editRoadWarrantData['transferto_changed'] = 1;
         }
 
         $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
