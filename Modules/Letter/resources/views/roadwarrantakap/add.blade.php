@@ -299,18 +299,7 @@
   });
 
   $("#datepicker").on("change.datetimepicker", ({date}) => {
-    const dateConv = dayjs(date._d).format('YYYY-MM-DD')
-    const newMinDate = dayjs(date._d).add(1, 'day').format('YYYY-MM-DD')
-    const newMaxDate = dayjs(newMinDate).add(3, 'day').format('YYYY-MM-DD')
-    
-    $("#datepicker_return").datetimepicker("destroy");
-    $('#datepicker_return').datetimepicker({
-      format: 'DD/MM/YYYY',
-      minDate: newMinDate,
-      maxDate: newMaxDate,
-    });
-
-    fetchEmployee(dateConv)
+    datepicker1Change(date._d)
   })
 
   $("#trip_allowance").on("input", function() {
@@ -481,6 +470,21 @@
     $('#etoll_allowance').val(etollDefault);
     $('#fuel_allowance').val(fuelDefault);
     $('#totalsum').val(totalAmount);
+  }
+  
+  function datepicker1Change(value) {
+    const dateConv = dayjs(value).format('YYYY-MM-DD')
+    const newMinDate = dayjs(value).add(1, 'day').format('YYYY-MM-DD')
+    const newMaxDate = dayjs(newMinDate).add(3, 'day').format('YYYY-MM-DD')
+    
+    $("#datepicker_return").datetimepicker("destroy");
+    $('#datepicker_return').datetimepicker({
+      format: 'DD/MM/YYYY',
+      minDate: newMinDate,
+      maxDate: newMaxDate,
+    });
+
+    fetchEmployee(dateConv)
   }
 </script>
 @endpush

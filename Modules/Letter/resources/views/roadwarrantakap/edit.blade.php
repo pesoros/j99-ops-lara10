@@ -255,6 +255,10 @@
     setBus(roadwarrant.bus_uuid, 1)
     fetchEmployee(manifestDate, 1)
     setNumbertrip(roadwarrant.number_of_trip)
+    if (roadwarrant.number_of_trip > 1) {
+      const tripdate2 = new Date(manifestReturn.trip_date);
+      datepicker1Change(roadwarrant.trip_date, tripdate2)
+    }
     setTimeout(function () {
       setTripAssign(dalow1, 1)
       if (roadwarrant.number_of_trip > 1) {
@@ -268,11 +272,14 @@
   $("#date2wrapper").hide()
   let maxDate = dayjs().add(7, 'day').format('YYYY-MM-DD')
   let pickedBusUuid = "";
+
+  const tripdate1 = new Date(manifest.trip_date);
   
   $('#datepicker').datetimepicker({
     format: 'DD/MM/YYYY',
     minDate: 'now',
     maxDate: maxDate,
+    date: tripdate1,
   });
 
   $('#datepicker_return').datetimepicker({
@@ -312,18 +319,7 @@
   });
 
   $("#datepicker").on("change.datetimepicker", ({date}) => {
-    const dateConv = dayjs(date._d).format('YYYY-MM-DD')
-    const newMinDate = dayjs(date._d).add(1, 'day').format('YYYY-MM-DD')
-    const newMaxDate = dayjs(newMinDate).add(3, 'day').format('YYYY-MM-DD')
-    
-    $("#datepicker_return").datetimepicker("destroy");
-    $('#datepicker_return').datetimepicker({
-      format: 'DD/MM/YYYY',
-      minDate: newMinDate,
-      maxDate: newMaxDate,
-    });
-
-    fetchEmployee(dateConv)
+    datepicker1Change(date._d)
   })
 
   $("#trip_allowance").on("input", function() {
@@ -559,6 +555,32 @@
     $('#etoll_allowance').val(etollDefault);
     $('#fuel_allowance').val(fuelDefault);
     $('#totalsum').val(totalAmount);
+  }
+
+  function datepicker1Change(value, dateSet = '') {
+    console.log(dateSet);
+    
+    const dateConv = dayjs(value).format('YYYY-MM-DD')
+    const newMinDate = dayjs(value).add(1, 'day').format('YYYY-MM-DD')
+    const newMaxDate = dayjs(newMinDate).add(3, 'day').format('YYYY-MM-DD')
+    
+    $("#datepicker_return").datetimepicker("destroy");
+    if (dateSet === '') {
+      $('#datepicker_return').datetimepicker({
+        format: 'DD/MM/YYYY',
+        minDate: newMinDate,
+        maxDate: newMaxDate,
+      }); 
+    } else {
+      $('#datepicker_return').datetimepicker({
+        format: 'DD/MM/YYYY',
+        minDate: newMinDate,
+        maxDate: newMaxDate,
+        date: dateSet
+      });
+    }
+
+    fetchEmployee(dateConv)
   }
 </script>
 @endpush
