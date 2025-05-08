@@ -254,6 +254,84 @@ class LetterRoadWarrantController extends Controller
         return back()->with('failed', 'SPJ gagal di edit!');
     }
 
+    function editRoadWarrantAkapStore(Request $request, $uuid) {
+        if ($request->numberoftrip == "2" && $request->trip_assign == $request->trip_assign_return) {
+            return back()->with('failed', 'Trip assign 1 dan 2 tidak boleh sama');
+        }
+
+        if ($request->driver_1 == $request->driver_2) {
+            return back()->with('failed', 'Driver tidak boleh sama');
+        }
+
+        $trip_date = Carbon::createFromFormat('d/m/Y', $request->date)->format('Y-m-d');
+        $busData = Bus::getBus($request->bus_uuid);
+        $numberOfCrew = isset($request->driver_2) ? 3 : 2;
+
+        $removeManifest = RoadWarrant::removeManifest($uuid);
+
+        $tras = RoadWarrant::getTripAssign($request->trip_assign);
+        $saveManifestData = [
+            'uuid'                      =>  generateUuid(),
+            'roadwarrant_uuid'          =>  $uuid,
+            'status'                    =>  1,
+            'trip_date'                 =>  $trip_date,
+            'trip_assign'               =>  $request->trip_assign,
+            'email_assign'              =>  $busData->email,
+            'fleet'                     =>  $request->bus_uuid,
+        ];
+
+        $editRoadWarrantData = [
+            'bus_uuid'                  =>  $request->bus_uuid,
+            'category'                  =>  1,
+            'driver_1'                  =>  $request->driver_1,
+            'driver_2'                  =>  $numberOfCrew > 2 ? $request->driver_2 : null,
+            'codriver'                  =>  $request->codriver,
+            'resto_id'                  =>  $tras->resto_id,
+            'driver_allowance_1'        =>  numberClearence($request->driver_allowance),
+            'codriver_allowance'        =>  numberClearence($request->codriver_allowance),
+            'trip_allowance'            =>  numberClearence($request->trip_allowance),
+            'fuel_allowance'            =>  numberClearence($request->fuel_allowance),
+            'etoll_allowance'           =>  numberClearence($request->etoll_allowance),
+            'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance),
+            'total_allowance'           =>  numberClearence($request->totalsum),
+            'created_by'                =>  auth()->user()->uuid,
+            'number_of_trip'            =>  $request->numberoftrip,
+            'transferto'                =>  $request->transferto,
+        ];
+        $saveRoadWarrant = RoadWarrant::saveManifest($saveManifestData);
+        
+        if ($request->numberoftrip == "2") {
+            $trip_date_return = Carbon::createFromFormat('d/m/Y', $request->date_return)->format('Y-m-d');
+            $tras2 = RoadWarrant::getTripAssign($request->trip_assign_return);
+
+            $saveManifestDataReturn = [
+                'uuid'                      =>  generateUuid(),
+                'roadwarrant_uuid'          =>  $uuid,
+                'status'                    =>  1,
+                'trip_date'                 =>  $trip_date_return,
+                'trip_assign'               =>  $request->trip_assign_return,
+                'email_assign'              =>  $busData->email,
+                'fleet'                     =>  $request->bus_uuid,
+            ];
+
+            $editRoadWarrantDataAdditional = [
+                'resto_id_return'                  =>  $tras2->resto_id,
+            ];
+
+            $editRoadWarrantData = $editRoadWarrantData + $editRoadWarrantDataAdditional;
+
+            $saveRoadWarrantReturn = RoadWarrant::saveManifest($saveManifestDataReturn);
+        }
+
+        $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
+
+        if ($editRoadWarrant) {
+            return back()->with('success', 'Anda berhasil edit data SPJ AKAP');
+        }
+
+        return back()->with('failed', 'SPJ gagal di edit!');
+    }
+
     public function roadWarrantStatus(Request $request, $status, $category, $uuid)
     {
         switch ($status) {

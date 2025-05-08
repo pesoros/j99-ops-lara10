@@ -361,4 +361,13 @@ class RoadWarrant extends Model
 
         return $query;
     }
+
+    public function scopeRemoveManifest($query, $uuid)
+    {
+        $query = DB::table("manifest")
+            ->where('roadwarrant_uuid',$uuid)
+            ->delete();
+
+        return $query;
+    }
 }

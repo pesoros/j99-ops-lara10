@@ -40,6 +40,7 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::post('roadwarrant/add', [LetterRoadWarrantController::class, 'addRoadWarrantAkapStore']);
         Route::get('roadwarrant/edit/{category}/{uuid}', [LetterRoadWarrantController::class, 'editRoadWarrant']);
         Route::post('roadwarrant/edit/{category}/{uuid}', [LetterRoadWarrantController::class, 'editRoadWarrantStore']);
+        Route::post('roadwarrant/edit_akap/{uuid}', [LetterRoadWarrantController::class, 'editRoadWarrantAkapStore']);
         Route::get('roadwarrant/status/{statusvalue}/{category}/{uuid}', [LetterRoadWarrantController::class, 'roadWarrantStatus']);
         Route::get('roadwarrant/withdraw/{category}/{uuid}', [LetterRoadWarrantController::class, 'withdrawRoadWarrant']);
         Route::post('roadwarrant/withdraw/{category}/{uuid}', [LetterRoadWarrantController::class, 'withdrawRoadWarrantStore']);

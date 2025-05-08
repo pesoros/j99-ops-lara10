@@ -34,10 +34,14 @@
   </div>
   <!-- /.card-header -->
   <!-- form start -->
-  <form action="{{ url()->current() }}" method="post" autocomplete="off">
+  <form action="{{ url('letter/roadwarrant/edit_akap/'.$roadwarrant->uuid) }}" method="post" autocomplete="off">
     @csrf
     <div class="card-body row">
         <div class="col-sm-12">
+          <div class="form-group">
+            <label>Nomor SPJ</label>
+            {{ $roadwarrant->numberid }}
+          </div>
           <div class="form-group">
             <label>Tanggal</label>
               <div class="input-group date" id="datepicker" data-target-input="nearest">
@@ -419,7 +423,7 @@
           selectedTrt = 'selected'
         }
       }
-      html += '<option value="'+ employeePicked[index].id +'"'+ selectedTrt +'>'+ employeePicked[index].first_name + ' | ' + employeePicked[index].bank_name + ' ' + employeePicked[index].bank_number +'</option>'
+      html += '<option value="'+ employeePicked[index].id +'" '+ selectedTrt +'>'+ employeePicked[index].first_name + ' | ' + employeePicked[index].bank_name + ' ' + employeePicked[index].bank_number +'</option>'
     }
     $('#transferto').append(html);
   }
