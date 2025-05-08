@@ -203,6 +203,7 @@
             </div>
           </div>
           <div class="form-group">
+            <input type="hidden" class="form-control" name="old_transferto" id="old_transferto" value="{{ $roadwarrant->transferto }}">
             <input type="hidden" class="form-control" name="crew_meal_allowance" id="crew_meal_allowance">
             <input type="hidden" class="form-control" name="driver_allowance" id="driver_allowance">
             <input type="hidden" class="form-control" name="codriver_allowance" id="codriver_allowance" >
@@ -392,7 +393,7 @@
     tripSummary()
   }
 
-  function pickBankList(isFirst = 0) {
+  function pickBankList() {
     $('#transferto').html('');
     employeePicked = []
     let driver1Val = $('#driver1').val()
@@ -414,18 +415,16 @@
       }
     }
     
-    let html = '';
-    html += '<option value="">Pilih</option>'
+    let transfertoElement = '';
+    transfertoElement += '<option value="">Pilih</option>'
     for (let index = 0; index < employeePicked.length; index++) {
       let selectedTrt = ""
-      if (isFirst === 1) {
-        if (parseInt(roadwarrant.transferto) === parseInt(employeePicked[index].id)) {
-          selectedTrt = 'selected'
-        }
+      if (parseInt(roadwarrant.transferto) === parseInt(employeePicked[index].id)) {
+        selectedTrt = 'selected'
       }
-      html += '<option value="'+ employeePicked[index].id +'" '+ selectedTrt +'>'+ employeePicked[index].first_name + ' | ' + employeePicked[index].bank_name + ' ' + employeePicked[index].bank_number +'</option>'
+      transfertoElement += '<option value="'+ employeePicked[index].id +'" '+ selectedTrt +'>'+ employeePicked[index].first_name + ' | ' + employeePicked[index].bank_name + ' ' + employeePicked[index].bank_number +'</option>'
     }
-    $('#transferto').append(html);
+    $('#transferto').append(transfertoElement);
   }
 
   function fetchItem(value, isFirst) {
@@ -535,7 +534,7 @@
     $('#driver1').append(htmlDriver);
     $('#driver2').append(htmlDriver2);
     $('#codriver').append(htmlCoDriver);
-    pickBankList(isFirst)
+    pickBankList()
   }
 
   function tripSummary() {
@@ -562,8 +561,6 @@
   }
 
   function datepicker1Change(value, dateSet = '') {
-    console.log(dateSet);
-    
     const dateConv = dayjs(value).format('YYYY-MM-DD')
     const newMinDate = dayjs(value).add(1, 'day').format('YYYY-MM-DD')
     const newMaxDate = dayjs(newMinDate).add(3, 'day').format('YYYY-MM-DD')
