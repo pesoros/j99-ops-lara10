@@ -188,12 +188,12 @@
                           <td class="text-right etoll_allowance">{{ formatAmount($roadwarrant->etoll_allowance) }}</td>
                         </tr>
                       </tbody>
-                      <tfood>
+                      <tfoot>
                         <tr>
                           <td class="text-right" colspan="2">Total biaya :</td>
                           <td class="text-right totalsum">{{ formatAmount($roadwarrant->total_allowance) }}</td>
                         </tr>
-                      </thead>
+                      </tfoot>
                     </table>
                   </div>
                   <!-- /.card-body -->
@@ -222,14 +222,15 @@
               <thead>
               <tr>
                 <th width="3">No</th>
+                <th class="no-print">Aksi</th>
                 <th>Deskripsi</th>
                 <th>Tanggal</th>
-                <th>Kategori</th>
-                <th>Nominal</th>
+                <th>Trip</th>
                 <th>Koordinat (lat, long)</th>
                 <th>Status</th>
                 <th>File</th>
-                <th class="no-print">Aksi</th>
+                <th>Kategori</th>
+                <th>Nominal</th>
               </tr>
               </thead>
               <tbody>
@@ -237,10 +238,23 @@
                 @foreach ($expensesList as $key => $expense)
                   <tr>
                     <td>{{ $key + 1 }}</td>
+                    <td class="no-print">
+                      <a 
+                        href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/2') }}"
+                        class="btn btn-xs btn-success"
+                      >Terima</a>
+                      <a 
+                        href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/0') }}"
+                        class="btn btn-xs btn-danger"
+                      >Tolak</a>
+                      <a 
+                        href="{{ url('letter/roadwarrant/expense/edit/'.$expense->id) }}"
+                        class="btn btn-xs btn-warning"
+                      >Edit</a>
+                    </td>
                     <td>{{ $expense->description }}</td>
                     <td>{{ $expense->created_at }}</td>
-                    <td>{{ $expense->action }}</td>
-                    <td>{{ formatAmount($expense->nominal) }}</td>
+                    <td>{{ $expense->trip_title }}</td>
                     <td> 
                       @if ($expense->location_lat)
                       <a href="https://www.google.com/maps/search/{{ $expense->location_lat }},{{ $expense->location_long }}?sa=X&ved=1t:242&ictx=111" target="_blank">{{ $expense->location_lat }}, {{ $expense->location_long }}</a>
@@ -267,20 +281,15 @@
                         >
                       @endif
                     </td>
-                    <td class="no-print">
-                      <a 
-                        href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/2') }}"
-                        class="btn btn-xs btn-success"
-                      >Terima</a>
-                      <a 
-                        href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/0') }}"
-                        class="btn btn-xs btn-danger"
-                      >Tolak</a>
-                      <a 
-                        href="{{ url('letter/roadwarrant/expense/edit/'.$expense->id) }}"
-                        class="btn btn-xs btn-warning"
-                      >Edit</a>
+                    <td>
+                      @if ($expense->action == 'income')
+                          Pemasukan
+                      @endif
+                      @if ($expense->action == 'spend')
+                          Pengeluaran
+                      @endif
                     </td>
+                    <td>{{ formatAmount($expense->nominal) }}</td>
                   </tr>
                   @if ($expense->action == 'spend') 
                       @if ($expense->status == 2)
@@ -293,6 +302,28 @@
                   @endif
                 @endforeach
               </tbody>
+              <tfoot>
+                <tr>
+                  <td class="text-right" colspan="9">Total Pemasukan :</td>
+                  <td class="text-right totalsum">{{ formatAmount($incomeSum) }}</td>
+                </tr>
+                <tr>
+                  <td class="text-right" colspan="9">Total Pengeluaran :</td>
+                  <td class="text-right totalsum">{{ formatAmount($spendSum) }}</td>
+                </tr>
+                <tr>
+                  <td class="text-right" colspan="9">Total Pemakaian :</td>
+                  <td class="text-right totalsum">{{ formatAmount($totalSum) }}</td>
+                </tr>
+                <tr>
+                  <td class="text-right" colspan="9">Uang Jalan :</td>
+                  <td class="text-right totalsum">{{ formatAmount($roadwarrant->total_allowance) }}</td>
+                </tr>
+                <tr>
+                  <td class="text-right" colspan="9"><b>Total Pelaporan SPJ :</b></td>
+                  <td class="text-right totalsum"><b>{{ formatAmount($finalSum) }}</b></td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>

@@ -191,6 +191,23 @@ class LetterRoadWarrantController extends Controller
 
             $data['expensesList'] = Roadwarrant::getExpensesList($uuid);
 
+            $incomeSum = 0;
+            $spendSum = 0;
+            foreach ($data['expensesList'] as $key => $value) {
+                if ($value->action == 'income') {
+                    $incomeSum =+ $value->nominal;
+                }
+
+                if ($value->action == 'spend') {
+                    $spendSum =+ $value->nominal;
+                }
+            }
+
+            $data['incomeSum'] = $incomeSum;
+            $data['spendSum'] = $spendSum;
+            $data['totalSum'] = $spendSum - $incomeSum;
+            $data['finalSum'] = $roadWarrant->total_allowance - $data['totalSum'] ;
+
             return view('letter::roadwarrantakap.detail', $data);
         } else if ($category === '2') {
             $data['title'] = 'Detail SPJ Pariwisata';
