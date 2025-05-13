@@ -41,6 +41,8 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('bus/edit/{uuid}', [MasterdataBusController::class, 'editMasterBus']);
         Route::post('bus/edit/{uuid}', [MasterdataBusController::class, 'editMasterBusUpdate']);
         Route::get('bus/delete/{uuid}', [MasterdataBusController::class, 'deleteMasterBus']);
+        Route::get('bus/coa/{uuid}', [MasterdataBusController::class, 'coaMasterBus']);
+        Route::post('bus/coa/{uuid}', [MasterdataBusController::class, 'coaMasterBusUpdate']);
         Route::get('class', [MasterdataClassController::class, 'listMasterClass']);
         Route::get('class/add', [MasterdataClassController::class, 'addMasterClass']);
         Route::post('class/add', [MasterdataClassController::class, 'addMasterClassStore']);

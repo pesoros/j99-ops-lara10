@@ -34,6 +34,7 @@
               <td>{{ $value->model }}</td>
               <td>
                 <div class="btn-group btn-block">
+                  @if (permissionCheck('edit')) <a href="{{ url('masterdata/bus/coa/'.$value->uuid) }}" class="btn btn-warning btn-sm">COA</a> @endif
                   @if (permissionCheck('edit')) <a href="{{ url('masterdata/bus/edit/'.$value->uuid) }}" class="btn btn-success btn-sm">Edit</a> @endif
                   @if (permissionCheck('delete')) <a href="{{ url('masterdata/bus/delete/'.$value->uuid) }}" onclick="return confirm('Anda yakin menghapus data ini?')" class="btn btn-danger btn-sm">Hapus</a> @endif
                 </div>
