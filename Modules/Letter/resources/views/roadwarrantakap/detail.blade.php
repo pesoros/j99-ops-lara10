@@ -330,11 +330,11 @@
         <!-- /.row -->
       </div>
       <!-- /.invoice -->
-      <div class="row">
+      {{-- <div class="row">
         <div class="col-12">
           <p><strong>SISA UANG: Rp. {{$summary}}</strong></p>
         </div>
-      </div>
+      </div> --}}
       <div class="row no-print">
         <div class="col-12">
           <a href="#" rel="noopener" target="_blank" class="btn btn-default printPage"><i class="fas fa-print"></i> Print</a>
