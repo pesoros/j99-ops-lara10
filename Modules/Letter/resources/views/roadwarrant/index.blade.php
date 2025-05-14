@@ -35,7 +35,7 @@
             <td width="20" class="text-center">{{ intval($key) + 1 }}</td>
             <td>{{ $value->numberid }}</td>
             <td>{{ intval($value->category) === 1 ? 'AKAP' : 'Pariwisata' }}</td>
-            <td>{{ $value->busname }}</td>
+            <td>{{ $value->busname }} {{ $value->is_replacement_bus ? '(Bus Pengganti)' : '' }}</td>
             <td>
               @if (intval($value->category) === 1 && $value->manifest_uuid == NULL)
                 @if (intval($value->status) === 1)

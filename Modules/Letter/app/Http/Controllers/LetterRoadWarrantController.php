@@ -133,6 +133,7 @@ class LetterRoadWarrantController extends Controller
             'status'                    =>  1,
             'number_of_trip'            =>  $request->numberoftrip,
             'transferto'                =>  $request->transferto,
+            'is_replacement_bus'        =>  $request->is_replacement_bus ?? 0,
         ];
         $saveRoadWarrant = RoadWarrant::saveManifest($saveManifestData);
 
@@ -314,6 +315,7 @@ class LetterRoadWarrantController extends Controller
             'created_by'                =>  auth()->user()->uuid,
             'number_of_trip'            =>  $request->numberoftrip,
             'transferto'                =>  $request->transferto,
+            'is_replacement_bus'        =>  $request->is_replacement_bus ?? 0,
         ];
         $saveRoadWarrant = RoadWarrant::saveManifest($saveManifestData);
         

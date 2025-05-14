@@ -110,7 +110,7 @@
               <table class="table">
                 <tr>
                   <th width="250">Nama bus :</th>
-                  <td>{{ $bus->busname }}</td>
+                  <td>{{ $bus->busname }} {{ $roadwarrant->is_replacement_bus ? '(Bus Pengganti)' : '' }}</td>
                 </tr>
                 <tr>
                   <th width="250">Kilometer awal :</th>

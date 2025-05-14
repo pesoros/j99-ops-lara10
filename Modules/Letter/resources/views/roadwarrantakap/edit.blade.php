@@ -61,6 +61,19 @@
                 </option>
               @endForeach
             </select>
+            <div class="m-2" ></div>
+            <div class="icheck-success d-inline m-2">
+              <input 
+                type="checkbox" 
+                id="is_replacement_bus" 
+                name="is_replacement_bus" 
+                value="1"
+                @checked(strval($roadwarrant->is_replacement_bus) == '1')
+              >
+              <label for="is_replacement_bus">
+                Bus Pengganti
+              </label>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
           </div>
           <div class="form-group">
             <label>Driver 1</label>
