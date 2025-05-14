@@ -57,7 +57,7 @@
                 </option>
               @endForeach
             </select>
-            <div class="m-2" ></div>
+            {{-- <div class="m-2" ></div>
             <div class="icheck-success d-inline m-2">
               <input 
                 type="checkbox" 
@@ -68,7 +68,7 @@
               <label for="is_replacement_bus">
                 Bus Pengganti
               </label>&nbsp;&nbsp;&nbsp;&nbsp;
-            </div>
+            </div> --}}
           </div>
           <div class="form-group">
             <label>Driver 1</label>
