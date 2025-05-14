@@ -9,7 +9,7 @@ use Modules\Masterdata\app\Http\Controllers\MasterdataSparePartsController;
 use Modules\Masterdata\app\Http\Controllers\MasterdataSparePartsDummyController;
 use Modules\Masterdata\app\Http\Controllers\MasterdataPointSettingController;
 use Modules\Masterdata\app\Http\Controllers\MasterdataPointUsersController;
-use Modules\Masterdata\app\Http\Controllers\MasterdataCoaController;
+use Modules\Masterdata\app\Http\Controllers\MasterdataExpenseCatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,7 +54,13 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('pointsetting/edit/{fleetid}', [MasterdataPointSettingController::class, 'editPoint']);
         Route::post('pointsetting/edit/{fleetid}', [MasterdataPointSettingController::class, 'editPointUpdate']);
         Route::get('userpoint', [MasterdataPointUsersController::class, 'searchUsers']);
-        Route::get('coa', [MasterdataCoaController::class, 'coaMaster']);
-        Route::post('coa', [MasterdataCoaController::class, 'coaMasterUpdate']);
+        Route::get('expensecat', [MasterdataExpenseCatController::class, 'index']);
+        Route::get('expensecat/add', [MasterdataExpenseCatController::class, 'addMasterExpenseCat']);
+        Route::post('expensecat/add', [MasterdataExpenseCatController::class, 'addMasterExpenseCatStore']);
+        Route::get('expensecat/edit/{uuid}', [MasterdataExpenseCatController::class, 'editMasterExpenseCat']);
+        Route::post('expensecat/edit/{uuid}', [MasterdataExpenseCatController::class, 'editMasterExpenseCatUpdate']);
+        Route::get('expensecat/delete/{uuid}', [MasterdataExpenseCatController::class, 'deleteMasterExpenseCat']);
+        Route::get('expensecat/coa', [MasterdataExpenseCatController::class, 'expensecatCoaMaster']);
+        Route::post('expensecat/coa', [MasterdataExpenseCatController::class, 'expensecatMasterUpdate']);
     });
 });

@@ -312,7 +312,7 @@ class MasterData extends Model
     }
 
     // coa bus
-    public function scopeGetMasterExpenseCategory($query)
+    public function scopeGetMasterExpenseCat($query)
     {
         $query = DB::table("expense_category AS ecat")
             ->select('ecat.*')
@@ -322,11 +322,36 @@ class MasterData extends Model
         return $query;
     }
 
-    public function scopeUpdateMasterBusCoa($query, $data)
+    function scopeGetExpenseCat($query, $uuid) {
+        $query = DB::table("expense_category AS ecat")
+            ->select('ecat.*')
+            ->where('ecat.uuid', $uuid)
+            ->orderBy('ecat.id')
+            ->first();
+
+        return $query;
+    }
+
+    function scopeSaveMasterExpenseCat($query, $data) {
+        $query = DB::table("expense_category")->insert($data);
+
+        return $query;
+    }
+
+    public function scopeUpdateMasterExpenseCat($query, $whereId, $data)
     {
         $query = DB::table("expense_category")
-            ->where('id',$data['id'])
+            ->where($whereId, $data[$whereId])
             ->update($data);
+
+        return $query;
+    }
+
+    public function scopeRemoveMasterExpenseCat($query, $uuid)
+    {
+        $query = DB::table("expense_category")
+            ->where('uuid',$uuid)
+            ->delete();
 
         return $query;
     }
