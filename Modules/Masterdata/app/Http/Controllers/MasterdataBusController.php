@@ -124,36 +124,4 @@ class MasterdataBusController extends Controller
 
         return back()->with('success', 'Master bus terhapus!');
     }
-
-    public function coaMasterBus($uuid)
-    {
-        $data['title'] = 'Bus (COA) ';
-        $data['current'] = MasterData::getMasterBus($uuid);
-        $data['expensecategory'] = MasterData::getMasterExpenseCategory($uuid);
-
-        return view('masterdata::bus.coa', $data);
-    }
-
-    public function coaMasterBusUpdate(Request $request, $busuuid)
-    {
-        $input = $request->all();
-        $expensecategory = json_decode($request->expensecategory, 1);
-
-        foreach ($expensecategory as $key => $value) {
-            if ($input['new_'.$value['id']] != $input['old_'.$value['id']]) {
-                if ($value['bcoaid'] == NULL) {
-                    $saveData['bus_uuid'] = $busuuid;
-                    $saveData['expense_category_uuid'] = $value['uuid'];
-                    $saveData['coa_number'] = $input['new_'.$value['id']];
-                    $updateCoa = MasterData::saveMasterBusCoa($saveData);
-                } else {
-                    $updateData['id'] = $value['bcoaid'];
-                    $updateData['coa_number'] = $input['new_'.$value['id']];
-                    $updateCoa = MasterData::updateMasterBusCoa($updateData);
-                }
-            }
-        }
-
-        return back()->with('success', 'Master COA Bus berhasil diubah!');
-    }
 }

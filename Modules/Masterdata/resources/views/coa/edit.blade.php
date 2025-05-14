@@ -38,15 +38,12 @@
     @csrf
     <div class="card-body row">
       <div class="col-sm-12">
-        <div class="form-group">
-          <h3><b>{{ $current->name }}</b></h3>
-        </div>
         <input type="hidden" class="form-control" id="expensecategory" name="expensecategory"value="{{ $expensecategory }}">
         @foreach ($expensecategory as $item)
             <div class="form-group">
               <label for="{{ $item->id }}">{{ $item->name }}</label>
-              <input type="text" class="form-control" id="new_{{ $item->id }}" name="new_{{ $item->id }}" placeholder="Masukkan nomor COA" value="{{ $item->coa_number }}">
-              <input type="hidden" class="form-control" id="old_{{ $item->id }}" name="old_{{ $item->id }}"value="{{ $item->coa_number }}">
+              <input type="text" class="form-control" id="new_{{ $item->id }}" name="new_{{ $item->id }}" placeholder="Masukkan nomor COA" value="{{ $item->coa }}">
+              <input type="hidden" class="form-control" id="old_{{ $item->id }}" name="old_{{ $item->id }}"value="{{ $item->coa }}">
             </div>
         @endforeach
       </div>

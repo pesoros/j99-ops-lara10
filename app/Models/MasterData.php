@@ -312,34 +312,19 @@ class MasterData extends Model
     }
 
     // coa bus
-    public function scopeGetMasterExpenseCategory($query, $uuid)
+    public function scopeGetMasterExpenseCategory($query)
     {
         $query = DB::table("expense_category AS ecat")
-            ->select(
-                'ecat.*',
-                'bcoa.id as bcoaid',
-                'bcoa.coa_number',
-            )
-            ->leftJoin('bus_expense_coa AS bcoa', function($leftJoin) use ($uuid) {
-                $leftJoin->on('bcoa.expense_category_uuid', '=', 'ecat.uuid')
-                    ->on('bcoa.bus_uuid', '=', DB::raw("'$uuid'")); // gunakan DB::raw untuk literal string
-            })
+            ->select('ecat.*')
             ->orderBy('ecat.id')
             ->get();
 
         return $query;
     }
 
-    public function scopeSaveMasterBusCoa($query, $data)
-    {
-        $query = DB::table("bus_expense_coa")->insert($data);
-
-        return $query;
-    }
-
     public function scopeUpdateMasterBusCoa($query, $data)
     {
-        $query = DB::table("bus_expense_coa")
+        $query = DB::table("expense_category")
             ->where('id',$data['id'])
             ->update($data);
 
