@@ -34,10 +34,10 @@ class Accurate extends Model
             ->select(
                 'thead.id',
                 'thead.booking_code',
-                'thead.accurate_status',
+                'thead.accurate_soid',
             )
-            ->where('payment_status', 1)
-            ->where('accurate_status', '!=', NULL)
+            ->whereIn('payment_status', [1, 2])
+            ->where('accurate_soid', '!=', NULL)
             ->orderBy('id', 'DESC')
             ->take(10)
             ->get();

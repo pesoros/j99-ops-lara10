@@ -56,15 +56,15 @@
             <td width="20" class="text-center">{{ intval($key) + 1 }}</td>
             <td>{{ $value->booking_code }}</td>
             <td>
-                @if ($value->accurate_status != 0)
-                    {{ $value->accurate_status }}
+                @if ($value->accurate_soid != 0)
+                    {{ $value->accurate_soid }}
                 @else 
                     Belum sinkron
                 @endif
             </td>
             <td>
               <div class="btn-group btn-block">
-                @if (permissionCheck('show') && $value->accurate_status == 0) <a href="{{ url('accurate/sales/sync/'.$value->booking_code) }}" class="btn btn-warning btn-sm loadingscreen">Sync</a> @endif
+                @if (permissionCheck('show') && $value->accurate_soid == 0) <a href="{{ url('accurate/sales/sync/'.$value->booking_code) }}" class="btn btn-warning btn-sm loadingscreen">Sync</a> @endif
               </div>
             </td>
           </tr>
