@@ -196,11 +196,11 @@ class LetterRoadWarrantController extends Controller
             $spendSum = 0;
             foreach ($data['expensesList'] as $key => $value) {
                 if ($value->action == 'income') {
-                    $incomeSum =+ $value->nominal;
+                    $incomeSum += $value->nominal;
                 }
 
                 if ($value->action == 'spend') {
-                    $spendSum =+ $value->nominal;
+                    $spendSum += $value->nominal;
                 }
             }
 
