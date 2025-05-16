@@ -320,8 +320,8 @@
                   <td class="text-right totalsum">{{ formatAmount($roadwarrant->total_allowance) }}</td>
                 </tr>
                 <tr>
-                  <td class="text-right" colspan="9"><b>Total Pelaporan SPJ :</b></td>
-                  <td class="text-right totalsum"><b>{{ formatAmount($finalSum) }}</b></td>
+                  <td class="text-right" colspan="9">Sisah uang :</td>
+                  <td class="text-right totalsum"><b>{{ formatAmount($restMoney) }}</b></td>
                 </tr>
               </tfoot>
             </table>
