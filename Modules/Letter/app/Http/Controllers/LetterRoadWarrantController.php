@@ -407,9 +407,10 @@ class LetterRoadWarrantController extends Controller
 
         $roadWarrant = RoadWarrant::getRoadWarrantAkap($uuid);
         $remainAllowance = $roadWarrant->remaining_trip_allowance != null ? $roadWarrant->remaining_trip_allowance : 0;
+        $remainAllowance = intval($remainAllowance) + intval($roadWarrant->total_allowance);
         $editRoadWarrantData = [
             'status'                        =>  4,
-            'remaining_trip_allowance'      =>  intval($remainAllowance) + intval($roadWarrant->total_allowance),
+            'remaining_trip_allowance'      =>  $remainAllowance,
         ];
 
         $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
