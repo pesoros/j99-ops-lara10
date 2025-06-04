@@ -404,7 +404,13 @@ class LetterRoadWarrantController extends Controller
         ];
 
         $create = RoadWarrant::saveWithdraw($withdrawData);
-        $editRoadWarrantData = ['status'    =>  4];
+
+        $roadWarrant = RoadWarrant::getRoadWarrantAkap($uuid);
+        $remainAllowance = $roadWarrant->remaining_trip_allowance != null ? $roadWarrant->remaining_trip_allowance : 0;
+        $editRoadWarrantData = [
+            'status'                        =>  4,
+            'remaining_trip_allowance'      =>  intval($remainAllowance) + intval($request->amount),
+        ];
 
         $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
         $sendAccurate = $this->accurateTransfer($uuid);
