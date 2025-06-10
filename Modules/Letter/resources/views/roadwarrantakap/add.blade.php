@@ -161,17 +161,17 @@
                     <tbody>
                       <tr>
                         <td>1</td>
-                        <td>Uang makan crew (<span id="crewcount">2</span> orang)</td>
+                        <td>UANG MAKAN CREW (<span id="crewcount">2</span> orang)</td>
                         <td class="text-right crew_meal_allowance">Rp0</td>
                       </tr>
                       <tr>
                         <td>2</td>
-                        <td>Uang premi driver (<span id="drivercount">1</span> orang)</td>
+                        <td>PREMI DRIVER <span id="drivercount">1</span></td>
                         <td class="text-right driver_allowance">Rp0</td>
                       </tr>
                       <tr>
                         <td>3</td>
-                        <td>Uang premi co driver</td>
+                        <td>PREMI CO-DRIVER</td>
                         <td class="text-right codriver_allowance">Rp0</td>
                       </tr>
                       <tr>
@@ -188,12 +188,12 @@
                       </tr>
                       <tr>
                         <td>5</td>
-                        <td>Uang BBM</td>
+                        <td>BBM</td>
                         <td class="text-right fuel_allowance">Rp0</td>
                       </tr>
                       <tr>
                         <td>6</td>
-                        <td>Uang E-Toll</td>
+                        <td>ETOLL</td>
                         <td class="text-right etoll_allowance">Rp0</td>
                       </tr>
                     </tbody>
@@ -291,7 +291,7 @@
     driverCount = driveri
     crewCount = crewi
 
-    $('#drivercount').html(driveri);
+    $('#drivercount').html(driveri === 1 ? '1' : '1 dan 2');
     $('#crewcount').html(crewi);
     
     pickBankList()

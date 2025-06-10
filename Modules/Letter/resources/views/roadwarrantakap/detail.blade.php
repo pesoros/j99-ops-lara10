@@ -162,7 +162,7 @@
                         </tr>
                         <tr>
                           <td>2</td>
-                          <td>Uang premi driver (<span id="drivercount">{{ intval($crewCount) > 2 ? 2 : 1 }}</span> orang)</td>
+                          <td>Uang premi driver <span id="drivercount">{{ intval($crewCount) > 2 ? '1 dan 2' : '1' }}</span></td>
                           <td class="text-right driver_allowance">{{ formatAmount($roadwarrant->driver_allowance_1) }}</td>
                         </tr>
                         <tr>
