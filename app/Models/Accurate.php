@@ -35,10 +35,14 @@ class Accurate extends Model
                 'thead.id',
                 'thead.booking_code',
                 'thead.accurate_soid',
+                'refund.tkt_booking_id_no',
+                'thead_ref.accurate_soid as ref_soid',
             )
-            ->whereIn('payment_status', [1, 2])
-            ->where('accurate_soid', '!=', NULL)
-            ->orderBy('id', 'DESC')
+            ->leftJoin("tkt_refund AS refund", "refund.code_related", "=", "thead.booking_code")
+            ->leftJoin("tkt_booking_head AS thead_ref", "thead_ref.booking_code", "=", "refund.tkt_booking_id_no")
+            ->whereIn('thead.payment_status', [1, 2])
+            ->where('thead.accurate_soid', '!=', NULL)
+            ->orderBy('thead.id', 'DESC')
             ->take(10)
             ->get();
 

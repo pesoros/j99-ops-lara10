@@ -64,7 +64,15 @@
             </td>
             <td>
               <div class="btn-group btn-block">
-                @if (permissionCheck('show') && $value->accurate_soid == 0) <a href="{{ url('accurate/sales/sync/'.$value->booking_code) }}" class="btn btn-warning btn-sm loadingscreen">Sync</a> @endif
+                @if (permissionCheck('show') && intval($value->accurate_soid) == 0)
+                  @if ($value->tkt_booking_id_no != null)
+                    @if (intval($value->ref_soid) != 0)
+                      <a href="{{ url('accurate/sales/sync/'.$value->booking_code) }}" class="btn btn-warning btn-sm loadingscreen">Sync</a> 
+                    @endif
+                  @else 
+                      <a href="{{ url('accurate/sales/sync/'.$value->booking_code) }}" class="btn btn-warning btn-sm loadingscreen">Sync</a> 
+                  @endif
+                @endif
               </div>
             </td>
           </tr>
