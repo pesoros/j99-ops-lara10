@@ -369,6 +369,15 @@ class RoadWarrant extends Model
         return $query;
     }
 
+    public function scopeGetWithdraw($query, $uuid)
+    {
+        $query = DB::table("withdraw")
+            ->where('parent_uuid', $uuid)
+            ->first();
+
+        return $query;
+    }
+
     public function scopeRemoveManifest($query, $uuid)
     {
         $query = DB::table("manifest")

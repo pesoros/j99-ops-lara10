@@ -368,8 +368,10 @@ class LetterRoadWarrantController extends Controller
         if ($category === '1') {
             $data['title'] = 'Withdraw Surat perintah jalan AKAP';
             $roadWarrant = RoadWarrant::getRoadWarrantAkap($uuid);
+            $withdraw = RoadWarrant::getWithdraw($uuid);
             
             $data['roadwarrant'] = $roadWarrant;
+            $data['withdraw'] = $withdraw;
             $data['crewCount'] = isset($roadWarrant->driver_2_name) ? 3 : 2;
 
             return view('letter::roadwarrantakap.withdraw', $data);

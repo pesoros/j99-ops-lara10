@@ -88,6 +88,14 @@
                     @endif
                   </td>
                 </tr>
+                @if (intval($roadwarrant->status) >= 4)
+                    <tr>
+                      <th width="250">Bukti transfer uang jalan :</th>
+                      <td>
+                        <a href="{{ url('letter/roadwarrant/withdraw/1/'.$roadwarrant->uuid) }}" class="btn btn-sm btn-secondary" style="margin-left: 4px;">Check</a>
+                      </td>
+                    </tr>
+                @endif
                 <tr>
                   <th width="250">Nomor SPJ :</th>
                   <td>{{ $roadwarrant->numberid }}</td>

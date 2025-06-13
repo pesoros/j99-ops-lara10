@@ -62,27 +62,37 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Rp</span>
             </div>
-            <input type="text" class="form-control moneyform" name="amount" id="amount" placeholder="0" required>
+            <input type="text" class="form-control moneyform" name="amount" id="amount" placeholder="0" value="{{ isset($withdraw->amount) ? $withdraw->amount : 0 }}" @readonly(isset($withdraw->amount)) required >
           </div>
         </div>
         <div class="form-group">
           <label for="transaction_id">Nomor transaksi</label>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" name="transaction_id" id="transaction_id" placeholder="masukkan nomor transaksi">
+            <input type="text" class="form-control" name="transaction_id" id="transaction_id" placeholder="masukkan nomor transaksi" value="{{ isset($withdraw->transaction_id) ? $withdraw->transaction_id : '' }}" @readonly(isset($withdraw->transaction_id)) >
           </div>
         </div>
         <div class="form-group">
           <label for="image">Bukti transfer</label>
           <div class="input-group">
-            <input type="file" name="image" class="form-control" value="" accept=".png, .jpg, .jpeg">
+          @if (!isset($withdraw->uuid))
+              <input type="file" name="image" class="form-control" value="" accept=".png, .jpg, .jpeg">
+            @else
+              <img 
+              src="{{ url($withdraw->image_file) }}"
+              class="img" 
+              height="600"
+              >
+            @endif
           </div>
         </div>
       </div>
     </div>
-    <div class="card-footer">
-      <button type="submit" class="btn btn-primary" onclick="return confirm('Anda yakin data Transfer yg diisi sudah benar?')">Submit</button>
-      <a href="{{ url('letter/roadwarrant/show/detail/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
-    </div>
+    @if (!isset($withdraw->uuid))
+      <div class="card-footer">
+        <button type="submit" class="btn btn-primary" onclick="return confirm('Anda yakin data Transfer yg diisi sudah benar?')">Submit</button>
+        <a href="{{ url('letter/roadwarrant/show/detail/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success">Kembali</a>
+      </div>
+    @endif
   </form>
 </div>
  
