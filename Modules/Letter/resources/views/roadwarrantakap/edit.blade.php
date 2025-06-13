@@ -187,7 +187,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text">Rp</span>
                             </div>
-                            <input type="text" class="form-control moneyform text-right" name="trip_allowance" id="trip_allowance" placeholder="0" required>
+                            <input type="text" class="form-control moneyform text-right" name="trip_allowance" id="trip_allowance" placeholder="0" value="{{ $roadwarrant->trip_allowance }}" required>
                           </div>
                         </td>
                       </tr>

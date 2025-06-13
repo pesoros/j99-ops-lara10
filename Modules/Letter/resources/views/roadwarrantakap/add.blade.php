@@ -336,10 +336,17 @@
   })
 
   function setTripAssign(allowancedata, tripNumberDrop) {
-    tripAmount.crew_meal_allowance = parseInt(allowancedata[1]) ?? 0
-    tripAmount.driver_allowance = parseInt(allowancedata[2]) ?? 0
-    tripAmount.codriver_allowance = parseInt(allowancedata[3]) ?? 0
-    tripAmount.etoll_allowance = parseInt(allowancedata[4]) ?? 0
+    if (tripNumberDrop === 1) {
+      tripAmount.crew_meal_allowance = parseInt(allowancedata[1]) ?? 0
+      tripAmount.driver_allowance = parseInt(allowancedata[2]) ?? 0
+      tripAmount.codriver_allowance = parseInt(allowancedata[3]) ?? 0
+      tripAmount.etoll_allowance = parseInt(allowancedata[4]) ?? 0
+    } else {
+      tripAmountReturn.crew_meal_allowance = parseInt(allowancedata[1]) ?? 0
+      tripAmountReturn.driver_allowance = parseInt(allowancedata[2]) ?? 0
+      tripAmountReturn.codriver_allowance = parseInt(allowancedata[3]) ?? 0
+      tripAmountReturn.etoll_allowance = parseInt(allowancedata[4]) ?? 0
+    }
 
     fetchFuelAllowance(pickedBusUuid, parseInt(allowancedata[0]) ?? "", tripNumberDrop);
   }
