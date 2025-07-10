@@ -26,8 +26,8 @@ class LetterApiController extends Controller
         }
 
         $getBus = Rest::getBus($busuuid);
-        $result[] = Rest::getTripAssign($getBus->assign_id_a);
-        $result[] = Rest::getTripAssign($getBus->assign_id_b);
+        $result = Rest::getTripAssign($getBus->assign_id_a);
+        // $result[] = Rest::getTripAssign($getBus->assign_id_b);
 
         return $result;
     }

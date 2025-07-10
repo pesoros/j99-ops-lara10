@@ -64,9 +64,9 @@ class Rest extends Model
             ->select('tras.id as trasid','tras.trip as trip','trip.trip_title')
             ->join("trip", "trip.trip_id", "=", "tras.trip")
             // ->where('tras.status','1')
-            ->where('tras.id',$trasid)
+            // ->where('tras.id',$trasid)
             ->orderBy('trasid','ASC')
-            ->first();
+            ->get();
 
         return $query;
     }
