@@ -68,6 +68,13 @@
             </div>
           </div>
           <div class="form-group">
+            <label>Kategori Route</label>
+            <select class="form-control select2bs4" name="route_category" id="route_category" style="width: 100%;" required>
+              <option value="true" @selected(old('route_category') == 'true')>In Route</option>
+              <option value="false" @selected(old('route_category') == 'false')>Out Route</option>
+            </select>
+          </div>
+          <div class="form-group">
             <label>Trip assign</label>
             <select class="form-control select2bs4" name="trip_assign" id="tras-item" style="width: 100%;" required>
               <option value="" @selected(old('trip_assign') == '')>Pilih</option>
@@ -161,7 +168,10 @@
 @push('extra-scripts')
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript">
+  let tripAssignData = []; 
+  let tripAssignIsFiltered = true; 
   let maxDate = dayjs().add(7, 'day').format('YYYY-MM-DD')
+
   $('#datepicker').datetimepicker({
     format: 'DD/MM/YYYY',
     minDate : 'now',
@@ -172,14 +182,29 @@
     fetchItem(e.target.value)
   });
 
+  $("#route_category").change(function(e){
+    value = e.target.value === 'true' ? true : false;
+    tripAssignIsFiltered = value;
+    tripAssignDataGenerate();
+  });
+
   function fetchItem(value) {
-    $('#tras-item').html('');
     axios.get(`/api/trasbus?busuuid=${value}`)
       .then((response) => {
-        addElementToSelect(response.data);
+        tripAssignData = response.data;
+        tripAssignDataGenerate();
       }, (error) => {
         console.log(error);
       });
+  }
+
+  function tripAssignDataGenerate() {
+    $('#tras-item').html('');
+    if (tripAssignData && tripAssignIsFiltered == true) {
+      addElementToSelect(tripAssignData.filtered);
+    } else {
+      addElementToSelect(tripAssignData.unfiltered);
+    }
   }
 
   function addElementToSelect(data) {
