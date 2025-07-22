@@ -134,23 +134,23 @@ class RoadWarrant extends Model
         $startDate = Carbon::today();
         $endDate = Carbon::today()->addDays(90);
 
-        $query = DB::table("v2_book AS book")
-            ->select(
-                'book.uuid',
-                'book.booking_code',
-                'book.start_date',
-                'book.finish_date',
-                'customer.name as customer_name',
-                'city_from.name as city_from',
-                'city_to.name as city_to'
-            )
-            ->leftJoin("v2_customer AS customer", "customer.uuid", "=", "book.customer_uuid")
-            ->leftJoin("v2_area_city AS city_from", "city_from.uuid", "=", "book.departure_city_uuid")
-            ->leftJoin("v2_area_city AS city_to", "city_to.uuid", "=", "book.destination_city_uuid")
-            ->where('book.status', 0)
-            ->whereBetween('book.start_date', [strval($startDate), strval($endDate)])
-            ->orderBy('book.start_date')
-            ->get();
+        $query = DB::select("
+            SELECT
+                book.uuid,
+                book.booking_code,
+                book.start_date,
+                book.finish_date,
+                customer.name AS customer_name,
+                city_from.name AS city_from,
+                city_to.name AS city_to
+            FROM v2_book AS book
+            LEFT JOIN v2_customer AS customer ON customer.uuid = book.customer_uuid
+            LEFT JOIN v2_area_city AS city_from ON city_from.uuid = book.departure_city_uuid
+            LEFT JOIN v2_area_city AS city_to ON city_to.uuid = book.destination_city_uuid
+            WHERE book.status = 0
+            AND book.start_date BETWEEN ? AND ?
+            ORDER BY book.start_date ASC
+        ", [strval($startDate), strval($endDate)]);
 
         return $query;
     }
