@@ -139,7 +139,7 @@ class RoadWarrant extends Model
                 book.uuid,
                 book.booking_code,
                 book.start_date,
-                book.finish_date,
+                book.finish_date
             FROM v2_book AS book
             WHERE book.status = 0
             AND book.start_date BETWEEN ? AND ?
