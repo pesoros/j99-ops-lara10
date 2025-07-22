@@ -148,7 +148,7 @@ class RoadWarrant extends Model
             ->leftJoin("v2_area_city AS city_from", "city_from.uuid", "=", "book.departure_city_uuid")
             ->leftJoin("v2_area_city AS city_to", "city_to.uuid", "=", "book.destination_city_uuid")
             ->where('book.status', 0)
-            ->whereBetween('book.start_date', [$startDate, $endDate])
+            ->whereBetween('book.start_date', [strval($startDate), strval($endDate)])
             ->orderBy('book.start_date')
             ->get();
 
