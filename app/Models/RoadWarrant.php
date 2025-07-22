@@ -140,13 +140,7 @@ class RoadWarrant extends Model
                 book.booking_code,
                 book.start_date,
                 book.finish_date,
-                customer.name AS customer_name,
-                city_from.name AS city_from,
-                city_to.name AS city_to
             FROM v2_book AS book
-            LEFT JOIN v2_customer AS customer ON customer.uuid = book.customer_uuid
-            LEFT JOIN v2_area_city AS city_from ON city_from.uuid = book.departure_city_uuid
-            LEFT JOIN v2_area_city AS city_to ON city_to.uuid = book.destination_city_uuid
             WHERE book.status = 0
             AND book.start_date BETWEEN ? AND ?
             ORDER BY book.start_date ASC
