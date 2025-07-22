@@ -140,7 +140,7 @@ class RoadWarrant extends Model
                 book.booking_code,
                 book.start_date,
                 book.finish_date,
-                customer.name AS customer_name,
+                customer.name AS customer_name
             FROM v2_book AS book
             LEFT JOIN v2_customer AS customer ON customer.uuid = book.customer_uuid
             WHERE book.status = 0
