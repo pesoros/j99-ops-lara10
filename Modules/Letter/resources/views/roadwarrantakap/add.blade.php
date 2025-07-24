@@ -388,15 +388,15 @@
 
     for (let index = 0; index < employee.length; index++) {
       const element = employee[index];
-      if (parseInt(driver1Val) === element.id) {
+      if (parseInt(driver1Val) === parseInt(element.id)) {
         employeePicked.push(element)
       }
 
-      if (parseInt(driver2Val) === element.id) {
+      if (parseInt(driver2Val) === parseInt(element.id)) {
         employeePicked.push(element)
       }
 
-      if (parseInt(codriverVal) === element.id) {
+      if (parseInt(codriverVal) === parseInt(element.id)) {
         employeePicked.push(element)
       }
     }
