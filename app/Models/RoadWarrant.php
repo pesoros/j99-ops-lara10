@@ -134,25 +134,21 @@ class RoadWarrant extends Model
     public function scopeGetBookAvailable($query)
     {
         $startDate = Carbon::today();
-        $endDate = Carbon::today()->addDays(90);
+        $endDate = Carbon::today()->addDays(30);
 
-        $query = DB::table("v2_book AS book")
-            ->select(
-                'book.uuid',
-                'book.booking_code',
-                'book.start_date',
-                'book.finish_date',
-                'customer.name as customer_name',
-                'city_from.name as city_from',
-                'city_to.name as city_to'
-            )
-            ->leftJoin("v2_customer AS customer", "customer.uuid", "=", "book.customer_uuid")
-            ->leftJoin("v2_area_city AS city_from", "city_from.uuid", "=", "book.departure_city_uuid")
-            ->leftJoin("v2_area_city AS city_to", "city_to.uuid", "=", "book.destination_city_uuid")
-            ->where('book.status', 0)
-            ->whereBetween('book.start_date', [$startDate, $endDate])
-            ->orderBy('book.start_date')
-            ->get();
+        $query = DB::select("
+            SELECT
+                book.uuid,
+                book.booking_code,
+                book.start_date,
+                book.finish_date,
+                customer.name AS customer_name
+            FROM v2_book AS book
+            LEFT JOIN v2_customer AS customer ON customer.uuid = book.customer_uuid
+            WHERE book.status = 0
+            AND book.start_date BETWEEN ? AND ?
+            ORDER BY book.start_date ASC
+        ", [strval($startDate), strval($endDate)]);
 
         return $query;
     }

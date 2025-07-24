@@ -94,6 +94,13 @@
               <option value="">Pilih</option>
             </select>
           </div>
+          <div class="form-group">
+            <label>Kategori Route</label>
+            <select class="form-control select2bs4" name="route_category" id="route_category" style="width: 100%;" required>
+              <option value="true" @selected(old('route_category') == 'true')>In Route</option>
+              <option value="false" @selected(old('route_category') == 'false')>Out Route</option>
+            </select>
+          </div>
           <div class="row">
             <div class="col-sm-5">
               <div class="form-group">
@@ -260,6 +267,9 @@
   let maxDate = dayjs().add(7, 'day').format('YYYY-MM-DD')
   let pickedBusUuid = "";
   
+  let tripAssignData = []; 
+  let tripAssignIsFiltered = true; 
+
   $('#datepicker').datetimepicker({
     format: 'DD/MM/YYYY',
     minDate: 'now',
@@ -399,12 +409,21 @@
     $('#transferto').append(html);
   }
 
+  $("#route_category").change(function(e){
+    value = e.target.value === 'true' ? true : false;
+    tripAssignIsFiltered = value;
+    tripAssignDataGenerate();
+  });
+
   function fetchItem(value) {
     $('#tras-item').html('');
     $('#tras-item-return').html('');
+
+
     axios.get(`/api/trasbus?busuuid=${value}`)
       .then((response) => {
-        addElementToSelect(response.data);
+        tripAssignData = response.data;
+        tripAssignDataGenerate();
       }, (error) => {
         console.log(error);
       });
@@ -422,6 +441,16 @@
       }, (error) => {
         console.log(error);
       });
+  }
+  
+  function tripAssignDataGenerate() {
+    $('#tras-item').html('');
+    $('#tras-item-return').html('');
+    if (tripAssignData && tripAssignIsFiltered == true) {
+      addElementToSelect(tripAssignData.filtered);
+    } else {
+      addElementToSelect(tripAssignData.unfiltered);
+    }
   }
 
   function addElementToSelect(data) {
