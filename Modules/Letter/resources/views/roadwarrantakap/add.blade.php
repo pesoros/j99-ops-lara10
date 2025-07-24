@@ -406,11 +406,8 @@
     for (let index = 0; index < employeePicked.length; index++) {
       html += '<option value="'+ employeePicked[index].id +'">'+ employeePicked[index].first_name + ' | ' + employeePicked[index].bank_name + ' ' + employeePicked[index].bank_number +'</option>'
     }
+    
     $('#transferto').append(html);
-    console.log(html);
-    console.log(employeePicked);
-    
-    
   }
 
   $("#route_category").change(function(e){
