@@ -21,6 +21,8 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('account', [AccountController::class, 'listAccount']);
         Route::get('account/add', [AccountController::class, 'addAccount']);
         Route::post('account/add', [AccountController::class, 'addAccountStore']);
+        Route::get('account/edit/{uuid}', [AccountController::class, 'editAccount']);
+        Route::post('account/edit/{uuid}', [AccountController::class, 'editAccountStore']);
         Route::get('role', [RoleController::class, 'listRole']);
         Route::get('role/add', [RoleController::class, 'addRole']);
         Route::post('role/add', [RoleController::class, 'addRoleStore']);

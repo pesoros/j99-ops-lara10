@@ -50,4 +50,37 @@ class AccountController extends Controller
 
         return back()->with('failed', 'Akun gagal tersimpan!');        
     }
+
+    public function editAccount(Request $request, $uuid)
+    {
+        $data['title'] = 'Edit Akun';
+        $data['user'] = User::where('uuid', $uuid)->firstOrFail();
+        $data['roles'] = Role::getRole();
+        return view('usermanagement::account.edit', $data);
+    }
+
+    public function editAccountStore(Request $request, $uuid)
+    {
+        $user = User::where('uuid', $uuid)->firstOrFail();
+
+        $credentials = $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:v2_users,email,' . $user->id,
+            'password' => 'nullable|string|min:8',
+            'role'     => 'required|exists:v2_role,uuid',
+        ]);
+
+        $user->name  = $request->name;
+        $user->email = $request->email;
+
+        // Only update password if it's provided
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->role_uuid = $request->role;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Data pengguna berhasil diperbarui.');
+    }
 }
