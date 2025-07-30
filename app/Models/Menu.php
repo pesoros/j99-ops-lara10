@@ -24,7 +24,12 @@ class Menu extends Model
         $email = isset($datas['email']) ? $datas['email'] : '';
 
         $query = DB::table("v2_users AS users")
-            ->select('users.role_uuid','role.title','role.id as role_id')
+            ->select(
+                'users.role_uuid',
+                'role.title',
+                'role.id as role_id',
+                'role.slug as role_slug'
+            )
             ->join("ops_role AS role", "role.uuid", "=", "users.role_uuid")
             ->where('users.email', $email)
             ->first();

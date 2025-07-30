@@ -208,6 +208,7 @@ class LetterRoadWarrantController extends Controller
             $data['spendSum'] = $spendSum;
             $data['totalSum'] = $spendSum - $incomeSum;
             $data['restMoney'] = $roadWarrant->total_allowance - $data['totalSum'] ;
+            $data['roleInfo'] = Session('role_info_session');
 
             return view('letter::roadwarrantakap.detail', $data);
         } else if ($category === '2') {

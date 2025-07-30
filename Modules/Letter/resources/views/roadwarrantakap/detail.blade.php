@@ -30,16 +30,16 @@
               @endif
 
               @if ($roadwarrant->manifest_uuid == NULL)
-                @if (intval($roadwarrant->status) == 1)
+                @if (intval($roadwarrant->status) == 1 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'accounting'))
                   <a href="{{ url('letter/roadwarrant/status/marker/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-info float-right">Set Marker</a>
                 @endif
-                @if (intval($roadwarrant->status) == 2)
+                @if (intval($roadwarrant->status) == 2 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'operational'))
                   <a href="{{ url('letter/roadwarrant/status/active/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-primary float-right">Set Aktif</a>
                 @endif
-                @if (intval($roadwarrant->status) == 3)
+                @if (intval($roadwarrant->status) == 3 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'accounting'))
                   <a href="{{ url('letter/roadwarrant/withdraw/1/'.$roadwarrant->uuid) }}" class="btn bg-gradient-success float-right">Transfer uang perjalanan</a>
                 @endif
-                @if (intval($roadwarrant->status) == 5)
+                @if (intval($roadwarrant->status) == 5 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'operational'))
                   <a href="{{ url('letter/roadwarrant/accurate/lpj/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-warning float-right">Lapor LPJ perjalanan</a>
                 @endif
               @endif
