@@ -34,10 +34,87 @@
   </div>
   <!-- /.card-header -->
   <!-- form start -->
-  <form action="{{ url()->current() }}" method="post" autocomplete="off">
-    @csrf
+  <form action="{{ url()->current() }}" method="post">
     <div class="card-body row">
-      <div class="col-sm-12">
+      <div class="col-sm-6 invoice-col">
+        <p class="lead">Detail reservasi</p>
+        <div class="table-responsive">
+          <table class="table">
+            <tr>
+              <th>Kode booking :</th>
+              <td>{{ $book->booking_code }}</td>
+            </tr>
+            <tr>
+              <th>Nama customer :</th>
+              <td>{{ $book->customer_name }}</td>
+            </tr>
+            <tr>
+              <th>Telephone customer :</th>
+              <td>{{ numberSpacer($book->customer_phone) }}</td>
+            </tr>
+            <tr>
+              <th>Tanggal berangkat :</th>
+              <td>{{ dateTimeFormat($book->start_date) }}</td>
+            </tr>
+            <tr>
+              <th>tanggal kembali :</th>
+              <td>{{ dateTimeFormat($book->finish_date) }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="col-sm-6 invoice-col">
+        <p class="lead">&nbsp;</p>
+        <div class="table-responsive">
+          <table class="table">
+            <tr>
+              <th>Tanggal pemesanan :</th>
+              <td>{{ dateTimeFormat($book->created_at) }}</td>
+            </tr>
+            <tr>
+              <th>Alamat penjemputan :</th>
+              <td>{{ $book->pickup_address }}</td>
+            </tr>
+            <tr>
+              <th>Kota penjemputan :</th>
+              <td>{{ $book->city_from }}</td>
+            </tr>
+            <tr>
+              <th>Kota tujuan :</th>
+              <td>{{ $book->city_to }}</td>
+            </tr>
+            <tr>
+              <th>Catatan :</th>
+              <td>{{ $book->notes }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <!-- /.col -->
+    </div>
+    @csrf
+    <hr>
+    <input type="hidden" id="bus_uuid" name="bus_uuid" value={{ $roadwarrant->bus_uuid }}>
+    <div class="card-body row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="bus_name">Nama bus</label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" name="bus_name" value="{{ $roadwarrant->busname }}" readonly>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="class_name">Kelas bus</label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" name="class_name" value="{{ $roadwarrant->classname }}" readonly>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="seat_count">Jumlah kursi bus</label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" name="seat_count" value="{{ $roadwarrant->seat }} Kursi" readonly>
+          </div>
+        </div>
         <div class="form-group">
           <label for="km_start">Kilometer awal</label>
           <div class="input-group mb-3">
@@ -59,7 +136,7 @@
         <div class="form-group">
           <label>Driver 1</label>
           <select class="form-control select2bs4" name="driver_1" style="width: 100%;" required>
-            <option {{ $roadwarrant->km_end }}>Pilih</option>
+            <option value="">Pilih</option>
             @foreach ($employee as $employeeItem)
                 @if ($employeeItem->position === 'Driver')
                   <option value="{{ $employeeItem->id }}" @selected($roadwarrant->driver_1_id == $employeeItem->id)>
@@ -88,7 +165,7 @@
             <option value="">Pilih</option>
             @foreach ($employee as $employeeItem)
                 @if ($employeeItem->position === 'Assistant')
-                  <option value="{{ $employeeItem->id }}" @selected($roadwarrant->codriver_id == $employeeItem->id)>
+                  <option value="{{ $employeeItem->id }}" @selected($roadwarrant->codriver == $employeeItem->id)>
                       {{ $employeeItem->first_name.' '.$employeeItem->second_name }}
                   </option>
                 @endif
@@ -103,7 +180,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Rp</span>
             </div>
-            <input type="text" class="form-control moneyform" name="crew_meal_allowance" placeholder="0" value="{{ $roadwarrant->crew_meal_allowance }}" required>
+            <input type="text" class="form-control moneyform" name="crew_meal_allowance" value="{{ $roadwarrant->crew_meal_allowance }}" placeholder="0" required>
           </div>
         </div>
         <!-- <div class="form-group">
@@ -121,7 +198,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Rp</span>
             </div>
-            <input type="text" class="form-control moneyform" name="trip_allowance" placeholder="0" value="{{ $roadwarrant->trip_allowance }}" required>
+            <input type="text" class="form-control moneyform" name="trip_allowance" value="{{ $roadwarrant->trip_allowance }}" placeholder="0" required>
           </div>
         </div>
         <div class="form-group">
@@ -130,7 +207,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Rp</span>
             </div>
-            <input type="text" class="form-control moneyform" name="driver_allowance_1" placeholder="0" value="{{ $roadwarrant->driver_allowance_1 }}" required>
+            <input type="text" class="form-control moneyform" name="driver_allowance_1" value="{{ $roadwarrant->driver_allowance_1 }}" placeholder="0" required>
           </div>
         </div>
         <div class="form-group">
@@ -139,7 +216,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Rp</span>
             </div>
-            <input type="text" class="form-control moneyform" name="driver_allowance_2" placeholder="0" value="{{ $roadwarrant->driver_allowance_2 }}" required>
+            <input type="text" class="form-control moneyform" name="driver_allowance_2" value="{{ $roadwarrant->driver_allowance_2 }}" placeholder="0" required>
           </div>
         </div>
         <div class="form-group">
@@ -148,7 +225,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Rp</span>
             </div>
-            <input type="text" class="form-control moneyform" name="codriver_allowance" placeholder="0" value="{{ $roadwarrant->codriver_allowance }}" required>
+            <input type="text" class="form-control moneyform" name="codriver_allowance" value="{{ $roadwarrant->codriver_allowance }}" placeholder="0" required>
           </div>
         </div>
       </div>
@@ -161,39 +238,3 @@
 </div>
  
 @endsection
-
-@push('extra-scripts')
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script type="text/javascript">
-  let maxDate = dayjs().add(7, 'day').format('YYYY-MM-DD')
-  $('#datepicker').datetimepicker({
-      format: 'DD/MM/YYYY',
-      minDate : 'now',
-      maxDate : maxDate,
-  });
-
-  $("#bus-select").change(function(e){
-    fetchItem(e.target.value)
-  });
-
-  function fetchItem(value) {
-    $('#tras-item').html('');
-    axios.get(`/api/trasbus?busuuid=${value}`)
-      .then((response) => {
-        console.log(response.data)
-        addElementToSelect(response.data);
-      }, (error) => {
-        console.log(error);
-      });
-  }
-
-  function addElementToSelect(data) {
-    let html = '';
-    html += '<option value="">Pilih</option>'
-    for (let index = 0; index < data.length; index++) {
-      html += '<option value="'+ data[index].trasid +'">'+ data[index].trasid + ' | ' + data[index].trip_title +'</option>'
-    }
-    $('#tras-item').append(html);
-  }
-</script>
-@endpush
