@@ -7,6 +7,7 @@ use Modules\Letter\app\Http\Controllers\LetterRoadWarrantController;
 use Modules\Letter\app\Http\Controllers\LetterPurchaseRequestController;
 use Modules\Letter\app\Http\Controllers\LetterGoodsController;
 use Modules\Letter\app\Http\Controllers\LetterGoodsReleaseController;
+use Modules\Letter\app\Http\Controllers\LetterRoadWarrantControllerOld;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,5 +73,28 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('goodsrelease/update/progress/{uuid}', [LetterGoodsReleaseController::class, 'progressGoodsRelease']);
         Route::get('goodsrelease/update/close/{uuid}', [LetterGoodsReleaseController::class, 'closeGoodsRelease']);
         Route::post('goodsrelease/update/partsaction/{uuid}', [LetterGoodsReleaseController::class, 'updateAction']);
+
+
+
+
+
+
+        Route::get('roadwarrantold', [LetterRoadWarrantControllerOld::class, 'listRoadWarrant']);
+        Route::get('roadwarrantold/datatable', [LetterRoadWarrantControllerOld::class, 'datatableListRoadWarrant']);
+        Route::get('roadwarrantold/add/{book_uuid}', [LetterRoadWarrantControllerOld::class, 'addRoadWarrant']);
+        Route::post('roadwarrantold/add/{book_uuid}', [LetterRoadWarrantControllerOld::class, 'addRoadWarrantStore']);
+        Route::get('roadwarrantold/add', [LetterRoadWarrantControllerOld::class, 'addRoadWarrantAkap']);
+        Route::post('roadwarrantold/add', [LetterRoadWarrantControllerOld::class, 'addRoadWarrantAkapStore']);
+        Route::get('roadwarrantold/edit/{category}/{uuid}', [LetterRoadWarrantControllerOld::class, 'editRoadWarrant']);
+        Route::post('roadwarrantold/edit/{category}/{uuid}', [LetterRoadWarrantControllerOld::class, 'editRoadWarrantStore']);
+        Route::post('roadwarrantold/edit_akap/{uuid}', [LetterRoadWarrantControllerOld::class, 'editRoadWarrantAkapStore']);
+        Route::get('roadwarrantold/status/{statusvalue}/{category}/{uuid}', [LetterRoadWarrantControllerOld::class, 'roadWarrantoldStatus']);
+        Route::get('roadwarrantold/withdraw/{category}/{uuid}', [LetterRoadWarrantControllerOld::class, 'withdrawRoadWarrant']);
+        Route::post('roadwarrantold/withdraw/{category}/{uuid}', [LetterRoadWarrantControllerOld::class, 'withdrawRoadWarrantStore']);
+        Route::get('roadwarrantold/show/detail/{category}/{uuid}', [LetterRoadWarrantControllerOld::class, 'detailRoadWarrant']);
+        Route::get('roadwarrantold/expense/statusupdate/{category}/{uuid}/{expense_uuid}/{status_id}', [LetterRoadWarrantControllerOld::class, 'expenseStatusUpdate']);
+        Route::get('roadwarrantold/expense/edit/{uuid}', [LetterRoadWarrantControllerOld::class, 'editRoadWarrantExpense']);
+        Route::post('roadwarrantold/expense/edit/{uuid}', [LetterRoadWarrantControllerOld::class, 'editRoadWarrantExpenseStore']);
+        Route::get('roadwarrantold/accurate/lpj/{uuid}', [LetterRoadWarrantControllerOld::class, 'accurateLpj']);
     });
 });
