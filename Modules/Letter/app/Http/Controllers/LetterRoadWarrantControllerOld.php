@@ -21,7 +21,7 @@ class LetterRoadWarrantControllerOld extends Controller
         $data['list'] = RoadWarrantOld::getRoadWarrantList();
         $data['bookavailable'] = RoadWarrantOld::getBookAvailable();
 
-        return view('letter::roadwarrant.index', $data);
+        return view('letter::roadwarrantold.index', $data);
     }
 
     public function addRoadWarrant($book_uuid)
@@ -31,7 +31,7 @@ class LetterRoadWarrantControllerOld extends Controller
         $data['bookbus'] = RoadWarrantOld::getBookBus($book_uuid);
         $data['employee'] = RoadWarrantOld::getEmployee();
 
-        return view('letter::roadwarrant.add', $data);
+        return view('letter::roadwarrantold.add', $data);
     }
 
     public function addRoadWarrantStore(Request $request, $book_uuid)
@@ -159,7 +159,7 @@ class LetterRoadWarrantControllerOld extends Controller
             $data['roadwarrant'] = RoadWarrantOld::getRoadWarrant($uuid);
             $data['expensesList'] = RoadWarrantOld::getExpensesList($uuid);
 
-            return view('letter::roadwarrant.detail', $data);
+            return view('letter::roadwarrantold.detail', $data);
         }
     }
 
@@ -180,7 +180,7 @@ class LetterRoadWarrantControllerOld extends Controller
             $data['book'] = RoadWarrantOld::getBook($roadwarrant->manifest_uuid);
             $data['employee'] = RoadWarrantOld::getEmployee();
 
-            return view('letter::roadwarrant.edit', $data);
+            return view('letter::roadwarrantold.edit', $data);
         }
     }
 
@@ -224,7 +224,7 @@ class LetterRoadWarrantControllerOld extends Controller
     {
         $data['title'] = 'Edit Pengeluaran';
         $data['expense'] = RoadWarrantOld::getExpense($uuid);
-        return view('letter::roadwarrant.editExpense', $data);
+        return view('letter::roadwarrantold.editExpense', $data);
     }
 
     public function editRoadWarrantExpenseStore(Request $request, $uuid)
