@@ -23,6 +23,7 @@
       <tr>
         <th>No</th>
         <th>Nomor SPJ</th>
+        <th>Tanggal Pergi</th>
         <th>Kategori Bus</th>
         <th>Nama Bus</th>
         <th>Status</th>
@@ -34,6 +35,7 @@
           <tr>
             <td width="20" class="text-center">{{ intval($key) + 1 }}</td>
             <td>{{ $value->numberid }}</td>
+            <td>{{ dateFormat($ivaluetem->trip_date) }}</td>
             <td>{{ intval($value->category) === 1 ? 'AKAP' : 'Pariwisata' }}</td>
             <td>{{ $value->busname }} {{ $value->is_replacement_bus ? '(Bus Pengganti)' : '' }}</td>
             <td>
