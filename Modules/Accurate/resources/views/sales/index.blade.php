@@ -41,7 +41,7 @@
   </div>
   <!-- /.card-header -->
   <div class="card-body">
-    <table id="datatable-def" class="table table-bordered table-striped">
+    <table id="datatable-accurate" class="table table-bordered table-striped">
       <thead>
       <tr>
         <th>No</th>
@@ -94,6 +94,11 @@
                 text    : "Mohon tidak keluar dari halaman"
             });
         });
+
+        $("#datatable-accurate").DataTable({
+          "responsive": true, "lengthChange": true, "autoWidth": false,
+          "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#datatable-accurate_wrapper .col-md-6:eq(0)');
     });
 </script>
 @endpush
