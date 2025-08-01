@@ -43,7 +43,7 @@ class Accurate extends Model
             ->whereIn('thead.payment_status', [1, 2])
             ->where('thead.accurate_soid', '!=', NULL)
             ->orderBy('thead.id', 'DESC')
-            ->take(1000)
+            ->take(200)
             ->get();
 
         return $query;
