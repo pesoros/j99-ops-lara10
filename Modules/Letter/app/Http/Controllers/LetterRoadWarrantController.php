@@ -153,9 +153,10 @@ class LetterRoadWarrantController extends Controller
             ];
 
             $saveRoadWarrantDataAdditional = [
-                'resto_id_return'           =>  $tras2->resto_id,
-                'departure_date'            =>  $trip_date.' - '.$trip_date_return
+                'resto_id_return'           =>  $tras2->resto_id
             ];
+
+            $saveRoadWarrantData['departure_date'] = $trip_date.' - '.$trip_date_return;
 
             $saveRoadWarrantData = $saveRoadWarrantData + $saveRoadWarrantDataAdditional;
 
@@ -319,6 +320,7 @@ class LetterRoadWarrantController extends Controller
             'number_of_trip'            =>  $request->numberoftrip,
             'transferto'                =>  $request->transferto,
             'is_replacement_bus'        =>  $request->is_replacement_bus ?? 0,
+            'departure_date'            =>  $trip_date
         ];
         $saveRoadWarrant = RoadWarrant::saveManifest($saveManifestData);
         
@@ -337,6 +339,8 @@ class LetterRoadWarrantController extends Controller
             ];
 
             $editRoadWarrantData['resto_id_return'] = $tras2->resto_id;
+            $editRoadWarrantData['departure_date'] = $trip_date.' - '.$trip_date_return;
+
             $saveRoadWarrantReturn = RoadWarrant::saveManifest($saveManifestDataReturn);
         }
 
