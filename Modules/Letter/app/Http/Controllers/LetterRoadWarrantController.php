@@ -153,7 +153,8 @@ class LetterRoadWarrantController extends Controller
             ];
 
             $saveRoadWarrantDataAdditional = [
-                'resto_id_return'                  =>  $tras2->resto_id,
+                'resto_id_return'           =>  $tras2->resto_id,
+                'departure_date'            =>  $trip_date.' - '.$trip_date_return
             ];
 
             $saveRoadWarrantData = $saveRoadWarrantData + $saveRoadWarrantDataAdditional;
