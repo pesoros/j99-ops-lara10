@@ -96,7 +96,10 @@
         });
 
         $("#datatable-accurate").DataTable({
-          "responsive": true, "lengthChange": true, "autoWidth": false,
+          "responsive": true,
+          "lengthChange": true,
+          "autoWidth": false,
+          "pageLength": 100, // 👈 show 100 rows per page
           "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
         }).buttons().container().appendTo('#datatable-accurate_wrapper .col-md-6:eq(0)');
     });
