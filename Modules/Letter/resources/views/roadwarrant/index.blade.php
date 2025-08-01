@@ -35,7 +35,7 @@
           <tr>
             <td width="20" class="text-center">{{ intval($key) + 1 }}</td>
             <td>{{ $value->numberid }}</td>
-            <td>{{ dateFormat($value->start_date) }}</td>
+            <td>{{ $value->departure_date ? dateFormat($value->departure_date) : '-' }}</td>
             <td>{{ intval($value->category) === 1 ? 'AKAP' : 'Pariwisata' }}</td>
             <td>{{ $value->busname }} {{ $value->is_replacement_bus ? '(Bus Pengganti)' : '' }}</td>
             <td>
