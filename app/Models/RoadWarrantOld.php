@@ -336,4 +336,24 @@ class RoadWarrantOld extends Model
 
         return $query;
     }
+
+    public function scopeGetRoadWarrantListYear($query, $year)
+    {
+        $sql = "
+            SELECT 
+                roadwarrant.*,
+                bus.name AS busname,
+                book.start_date AS pariwisata_start_date,
+                manifest.trip_date AS akap_start_date
+            FROM ops_roadwarrant AS roadwarrant
+            JOIN v2_bus AS bus ON bus.uuid = roadwarrant.bus_uuid
+            LEFT JOIN v2_book AS book ON book.uuid = roadwarrant.manifest_uuid
+            LEFT JOIN manifest ON manifest.uuid = roadwarrant.manifest_uuid
+            WHERE YEAR(manifest.trip_date) = ?
+            ORDER BY roadwarrant.id DESC
+            LIMIT 7000
+        ";
+
+        return DB::select($sql, [$year]);
+    }
 }

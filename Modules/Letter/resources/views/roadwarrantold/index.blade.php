@@ -16,6 +16,26 @@
         @endif
       </div>
   </div>
+  <div class="card-header">
+    <div class="col-3">
+      <label>Pilih Tahun</label>
+      <div class="select2-purple">
+        @php
+            $currentYear = date('Y');
+            $selectedYear = request('year');
+        @endphp
+        <select name="year" id="year" class="select2" data-placeholder="Tahun" style="width: 100%;">
+          @if (!$selectedYear)
+            <option value="" selected disabled>Pilih Tahun</option>
+          @endif
+
+          @for ($year = $currentYear; $year >= 2022; $year--)
+            <option value="{{ $year }}" {{ $selectedYear == $year ? 'selected' : '' }}>{{ $year }}</option>
+          @endfor
+        </select>
+      </div>
+    </div>
+  </div>
   <!-- /.card-header -->
   <div class="card-body">
     <table id="datatable-def" class="table table-bordered table-striped">
@@ -108,3 +128,21 @@
 </div>
  
 @endsection
+
+@push('extra-scripts')
+<script type="text/javascript">
+$(document).ready(function () {
+  $('#year').on('change', function () {
+    var year = $(this).val();
+    console.log(year);
+    
+    if (year) {
+      let currentUrl = window.location.origin + window.location.pathname;
+      // Remove existing year at the end if needed
+      let newUrl = currentUrl.replace(/\/\d{4}$/, '');
+      window.location.href = newUrl + '/' + year;
+    }
+  });
+});
+</script>
+@endpush

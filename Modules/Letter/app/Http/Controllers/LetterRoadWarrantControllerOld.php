@@ -24,6 +24,16 @@ class LetterRoadWarrantControllerOld extends Controller
         return view('letter::roadwarrantold.index', $data);
     }
 
+    public function listRoadWarrantYear($year)
+    {
+        $data['title'] = 'Surat perintah jalan tahun ' . $year;
+        $data['list'] = RoadWarrantOld::getRoadWarrantListYear($year);
+        $data['bookavailable'] = [];
+
+        return view('letter::roadwarrantold.index', $data);
+    }
+
+
     public function addRoadWarrant($book_uuid)
     {
         $data['title'] = 'Tambah Surat perintah jalan Pariwisata';

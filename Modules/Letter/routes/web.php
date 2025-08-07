@@ -80,6 +80,7 @@ Route::middleware(['auth','has-permission'])->group(function () {
 
 
         Route::get('roadwarrantold', [LetterRoadWarrantControllerOld::class, 'listRoadWarrant']);
+        Route::get('roadwarrantold/{year}', [LetterRoadWarrantControllerOld::class, 'listRoadWarrantYear']);
         Route::get('roadwarrantold/datatable', [LetterRoadWarrantControllerOld::class, 'datatableListRoadWarrant']);
         Route::get('roadwarrantold/add/{book_uuid}', [LetterRoadWarrantControllerOld::class, 'addRoadWarrant']);
         Route::post('roadwarrantold/add/{book_uuid}', [LetterRoadWarrantControllerOld::class, 'addRoadWarrantStore']);
