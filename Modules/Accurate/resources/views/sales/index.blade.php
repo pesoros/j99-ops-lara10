@@ -98,7 +98,8 @@
         var bookLists = @json($lists);
         const maxData = 5;
         const bookToSend = bookLists.filter(item => item.accurate_soid === '0').slice(0, maxData);
-        console.log(bookToSend);
+        const backendUrl = "{{ $beUrl }}";
+        console.log('Backend URL:', backendUrl);
 
         $('.syncBulkClientSide').click(async function () {
             $.LoadingOverlay("show", {
@@ -106,15 +107,17 @@
             });
 
             const headers = {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             };
 
             try {
                 for (const val of bookToSend) {
                     const payload = { booking_code: val.booking_code };
-                    const response = await axios.post('/accurate/sales', Qs.stringify(payload), { headers });
+                    const response = await axios.post(backendUrl + '/accurate/sales', payload, { headers });
                     console.log('Success:', val.booking_code, response.data);
                 }
+
                 location.reload();
 
             } catch (error) {
@@ -139,4 +142,5 @@
         }).buttons().container().appendTo('#datatable-accurate_wrapper .col-md-6:eq(0)');
     });
 </script>
+
 @endpush

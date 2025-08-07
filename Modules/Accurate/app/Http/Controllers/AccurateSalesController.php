@@ -24,6 +24,7 @@ class AccurateSalesController extends Controller
     {
         $data['title'] = 'Accurate Sales';
         $data['lists'] = Accurate::getSales();
+        $data['beUrl'] = getenv('BACKEND_URL');
 
         return view('accurate::sales.index', $data);
     }
