@@ -33,7 +33,10 @@
       <h3 class="card-title">List {{ $title }}</h3>
       <div class="float-right">
         @if (permissionCheck('add'))
-          <a href="{{ url('accurate/sales/syncbulk') }}" class="btn btn-warning btn-sm loadingscreen">
+          {{-- <a href="{{ url('accurate/sales/syncbulk') }}" class="btn btn-warning btn-sm loadingscreen">
+            Sync Data
+          </a> --}}
+          <a href="#" class="btn btn-warning btn-sm syncBulkClientSide">
             Sync Data
           </a>
         @endif
@@ -86,21 +89,53 @@
 @endsection
 
 @push('extra-scripts')
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qs/dist/qs.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+
 <script type="text/javascript">
     $(function () {
-        $('.loadingscreen').click(function(){
+        var bookLists = @json($lists);
+        const maxData = 5;
+        const bookToSend = bookLists.filter(item => item.accurate_soid === '0').slice(0, maxData);
+        console.log(bookToSend);
+
+        $('.syncBulkClientSide').click(async function () {
             $.LoadingOverlay("show", {
-                text    : "Mohon tidak keluar dari halaman"
+                text: "Mengirim data ke Accurate. Mohon tunggu..."
+            });
+
+            const headers = {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            };
+
+            try {
+                for (const val of bookToSend) {
+                    const payload = { booking_code: val.booking_code };
+                    const response = await axios.post('/accurate/sales', Qs.stringify(payload), { headers });
+                    console.log('Success:', val.booking_code, response.data);
+                }
+                location.reload();
+
+            } catch (error) {
+                console.error('Failed:', error);
+                alert('Pengiriman gagal pada salah satu data. Proses dihentikan.');
+                $.LoadingOverlay("hide");
+            }
+        });
+
+        $('.loadingscreen').click(function () {
+            $.LoadingOverlay("show", {
+                text: "Mohon tidak keluar dari halaman"
             });
         });
 
         $("#datatable-accurate").DataTable({
-          "responsive": true,
-          "lengthChange": true,
-          "autoWidth": false,
-          "pageLength": 100, // 👈 show 100 rows per page
-          "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            "responsive": true,
+            "lengthChange": true,
+            "autoWidth": false,
+            "pageLength": 100,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
         }).buttons().container().appendTo('#datatable-accurate_wrapper .col-md-6:eq(0)');
     });
 </script>
