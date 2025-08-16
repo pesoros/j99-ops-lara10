@@ -28,6 +28,7 @@
         <th>Tanggal Pergi</th>
         <th>Kategori Bus</th>
         <th>Nama Bus</th>
+        <th>Rekening SPJ</th>
         <th>Status</th>
         <th>Aksi</th>
       </tr>
@@ -40,6 +41,11 @@
             <td>{{ $value->departure_date ? $value->departure_date : '-' }}</td>
             <td>{{ intval($value->category) === 1 ? 'AKAP' : 'Pariwisata' }}</td>
             <td>{{ $value->busname }} {{ $value->is_replacement_bus ? '(Bus Pengganti)' : '' }}</td>
+            <td>
+              {{ $value->tfName }} {{ $value->tfSecondName }}
+              <br>
+              {{ $value->tfBank }} - {{ $value->tfNumber }}
+            </td>
             <td>
               @if (intval($value->category) === 1 && $value->manifest_uuid == NULL)
                 @if (intval($value->status) === 1)
