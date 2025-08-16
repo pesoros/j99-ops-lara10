@@ -129,6 +129,7 @@ class LetterRoadWarrantController extends Controller
             'fuel_allowance'            =>  numberClearence($request->fuel_allowance),
             'etoll_allowance'           =>  numberClearence($request->etoll_allowance),
             'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance),
+            'description'               =>  $request->description,
             'total_allowance'           =>  numberClearence($request->totalsum),
             'created_by'                =>  auth()->user()->uuid,
             'status'                    =>  1,
@@ -263,6 +264,7 @@ class LetterRoadWarrantController extends Controller
             'fuel_allowance'            =>  numberClearence($request->fuel_allowance),
             'etoll_allowance'           =>  numberClearence($request->etoll_allowance),
             'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance),
+            'description'               =>  $request->description,
             'updated_by'                =>  auth()->user()->uuid,
             'updated_at'                =>  Carbon::now(),
         ];

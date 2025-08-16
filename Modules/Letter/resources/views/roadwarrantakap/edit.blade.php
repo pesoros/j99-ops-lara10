@@ -52,6 +52,10 @@
               </div>
           </div>
           <div class="form-group">
+            <label>Keterangan</label>
+            <textarea class="form-control" name="description" rows="3" placeholder="Masukkan Keterangan">{{ $roadwarrant->description }}</textarea>
+          </div>
+          <div class="form-group">
             <label>Pilih bus</label>
             <select class="form-control select2bs4" name="bus_uuid" id="bus-select" style="width: 100%;" required>
               <option value="">Pilih</option>

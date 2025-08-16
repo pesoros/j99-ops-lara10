@@ -109,6 +109,10 @@
                     @endforeach
                   </td>
                 </tr>
+                <tr>
+                  <th width="250">Keterangan :</th>
+                  <td>{{ $roadwarrant->description ?? '-' }}</td>
+                </tr>
               </table>
             </div>
           </div>
