@@ -300,6 +300,26 @@ class RoadWarrant extends Model
         return $query;
     }
 
+    public function scopeGetManifestByTrasBefore($query, $tras, $date)
+    {
+        $query = DB::table("manifest")
+            ->select(
+                'manifest.id',
+                'manifest.roadwarrant_uuid',
+                'road.numberid',
+                'manifest.trip_date',
+            )
+            ->leftJoin("ops_roadwarrant AS road", "road.uuid", "=", "manifest.roadwarrant_uuid")
+            ->where('manifest.status', 1)
+            ->where('manifest.roadwarrant_uuid', '!=', null)
+            ->where('manifest.trip_assign', $tras)
+            ->where('manifest.trip_date', '<', $date)
+            ->orderBy('manifest.trip_date', 'ASC')
+            ->get();
+
+        return $query;
+    }
+
     function scopeGetTripAssign($query, $trasid)
     {
         $query = DB::table("trip_assign AS tras")

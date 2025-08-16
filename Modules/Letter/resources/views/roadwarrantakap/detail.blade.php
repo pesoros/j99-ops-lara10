@@ -34,7 +34,18 @@
                   <a href="{{ url('letter/roadwarrant/status/waitingmarker/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-secondary float-right">Set Waiting to Marker</a>
                 @endif
                 @if (intval($roadwarrant->status) == 1 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'accounting'))
-                  <a href="{{ url('letter/roadwarrant/status/marker/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-info float-right">Set Marker</a>
+                  @if ($isMarkerReady == false)
+                  <button 
+                    type="button" 
+                    class="btn bg-gradient-danger float-right" 
+                    data-toggle="modal" 
+                    data-target="#numberidModal"
+                  >
+                    Marker Block
+                  </button>
+                  @else
+                    <a href="{{ url('letter/roadwarrant/status/marker/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-info float-right">Set Marker</a>
+                  @endif
                 @endif
                 @if (intval($roadwarrant->status) == 2 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'operational'))
                   <a href="{{ url('letter/roadwarrant/status/active/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-primary float-right">Set Aktif</a>
@@ -361,15 +372,60 @@
     </div><!-- /.col -->
   </div><!-- /.row -->
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="numberidModal" tabindex="-1" aria-labelledby="numberidModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="numberidModalLabel">List SPJ yang belum closed</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul id="numberidList" class="list-group">
+          <!-- JS will inject list here -->
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
  
 @endsection
 @push('extra-scripts')
 <script type="text/javascript">
     $(function () {
+      const manifestData = @json($manifest);
+      generateRoadwarrantBlocker();
+
       $('a.printPage').click(function(){
            window.print();
            return false;
       });
+
+      function generateRoadwarrantBlocker() {
+        let blocker = [];
+        manifestData.map(((val, index) => {
+          blocker = [...blocker, ...val.manifestBefore]
+        }))
+
+        // inject ke modal list
+        const listEl = document.getElementById("numberidList");
+        blocker.forEach(data => {
+          const li = document.createElement("li");
+          li.classList.add("list-group-item");
+
+          const a = document.createElement("a");
+          a.href = `/letter/roadwarrant/show/detail/1/${encodeURIComponent(data.roadwarrant_uuid)}`; // ganti sesuai route kamu
+          a.textContent = data.numberid;
+          a.classList.add("text-decoration-none", "d-block"); // biar full klik & tanpa underline
+
+          li.appendChild(a);
+          listEl.appendChild(li);
+        });
+      }
     });
 </script>
 @endpush

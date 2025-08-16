@@ -201,11 +201,20 @@ class LetterRoadWarrantController extends Controller
             $manifest = RoadWarrant::getManifestTrip($roadWarrant->uuid);
             $busclass = RoadWarrant::getBusClass($bus->busuuid);
 
+            $isMarkerReady = true;
+            foreach ($manifest as $key => $value) {
+                $value->manifestBefore = Roadwarrant::getManifestByTrasBefore($value->trip_assign, $value->trip_date);
+                if (count($value->manifestBefore) > 0) {
+                    $isMarkerReady = false;
+                }
+            }
+
             $data['roadwarrant'] = $roadWarrant;
             $data['crewCount'] = isset($roadWarrant->driver_2_name) ? 3 : 2;
             $data['bus'] = $bus;
             $data['manifest'] = $manifest;
             $data['busclass'] = $busclass;
+            $data['isMarkerReady'] = $isMarkerReady;
 
             $data['expensesList'] = Roadwarrant::getExpensesList($uuid);
 
