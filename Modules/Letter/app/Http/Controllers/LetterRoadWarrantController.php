@@ -17,10 +17,16 @@ class LetterRoadWarrantController extends Controller
 {
     public function listRoadWarrant()
     {
+        $roleInfo = Session('role_info_session');
+        $isNeedDraft = false;
+        if ($roleInfo->role_slug === 'super-user' || $roleInfo->role_slug === 'operational') {
+            $isNeedDraft = true;
+        }
+
         $data['title'] = 'Surat perintah jalan';
-        $data['list'] = RoadWarrant::getRoadWarrantList();
+        $data['list'] = RoadWarrant::getRoadWarrantList($isNeedDraft);
         $data['bookavailable'] = RoadWarrant::getBookAvailable();
-        $data['roleInfo'] = Session('role_info_session');
+        $data['roleInfo'] = $roleInfo;
 
         return view('letter::roadwarrant.index', $data);
     }
@@ -132,7 +138,7 @@ class LetterRoadWarrantController extends Controller
             'description'               =>  $request->description,
             'total_allowance'           =>  numberClearence($request->totalsum),
             'created_by'                =>  auth()->user()->uuid,
-            'status'                    =>  1,
+            'status'                    =>  0,
             'number_of_trip'            =>  $request->numberoftrip,
             'transferto'                =>  $request->transferto,
             'is_replacement_bus'        =>  $request->is_replacement_bus ?? 0,
@@ -363,6 +369,9 @@ class LetterRoadWarrantController extends Controller
     public function roadWarrantStatus(Request $request, $status, $category, $uuid)
     {
         switch ($status) {
+            case 'waitingmarker':
+                $editRoadWarrantData = ['status'    =>  1];
+                break;
             case 'marker':
                 $editRoadWarrantData = ['status'    =>  2];
                 break;

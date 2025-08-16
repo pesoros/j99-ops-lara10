@@ -8,14 +8,13 @@ use Carbon\Carbon;
 
 class RoadWarrant extends Model
 {
-    public function scopeGetRoadWarrantList($query)
+    public function scopeGetRoadWarrantList($query, $isNeedDraft = true)
     {
         $query = DB::table("ops_roadwarrant AS roadwarrant")
             ->select(
                 'roadwarrant.*',
                 'bus.name AS busname',
                 'book.start_date as pariwisata_start_date',
-                'tfto.first_name as tfName',
                 'tfto.first_name as tfName',
                 'tfto.second_name as tfSecondName',
                 'tfto.bank_name as tfBank',
@@ -25,10 +24,13 @@ class RoadWarrant extends Model
             ->leftJoin("v2_book AS book", "book.uuid", "=", "roadwarrant.manifest_uuid")
             ->leftJoin("employee_history AS tfto", "tfto.id", "=", "roadwarrant.transferto")
             ->orderBy('roadwarrant.id', 'DESC')
-            ->take(1000)
-            ->get();
+            ->take(1000);
 
-        return $query;
+        if ($isNeedDraft === false) {
+            $query->where('roadwarrant.status', '!=', 0);
+        }
+
+        return $query->get();
     }
 
     public function scopeGetRoadWarrant($query, $uuid)

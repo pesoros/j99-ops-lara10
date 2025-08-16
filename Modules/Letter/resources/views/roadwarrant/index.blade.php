@@ -48,8 +48,10 @@
             </td>
             <td>
               @if (intval($value->category) === 1 && $value->manifest_uuid == NULL)
-                @if (intval($value->status) === 1)
-                  <span class="badge badge-secondary">Draft</span>                                        
+                @if (intval($value->status) === 0)
+                  <span class="badge badge-light">Draft</span>   
+                @elseif (intval($value->status) === 1)
+                  <span class="badge badge-secondary">Waiting to Marker</span>                                        
                 @elseif (intval($value->status) === 2)
                   <span class="badge badge-info">Marker</span>      
                 @elseif (intval($value->status) === 3)

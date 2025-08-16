@@ -30,6 +30,9 @@
               @endif
 
               @if ($roadwarrant->manifest_uuid == NULL)
+                @if (intval($roadwarrant->status) == 0 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'operational'))
+                  <a href="{{ url('letter/roadwarrant/status/waitingmarker/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-secondary float-right">Set Waiting to Marker</a>
+                @endif
                 @if (intval($roadwarrant->status) == 1 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'accounting'))
                   <a href="{{ url('letter/roadwarrant/status/marker/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-info float-right">Set Marker</a>
                 @endif
@@ -66,8 +69,10 @@
                   <th width="250">Status SPJ: </th>
                   <td>
                     @if ($roadwarrant->manifest_uuid == NULL)
-                      @if (intval($roadwarrant->status) === 1)
-                        <span class="badge badge-secondary">Draft</span>                                  
+                      @if (intval($roadwarrant->status) === 0)
+                        <span class="badge badge-light">Draft</span>   
+                      @elseif (intval($roadwarrant->status) === 1)
+                        <span class="badge badge-secondary">Waiting to Marker</span>                                  
                       @elseif (intval($roadwarrant->status) === 2)
                         <span class="badge badge-info">Marker</span>
                       @elseif (intval($roadwarrant->status) === 3)
