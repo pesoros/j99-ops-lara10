@@ -108,6 +108,12 @@ class LetterRoadWarrantController extends Controller
         $roadwarrant_uuid = generateUuid();
         $numberOfCrew = isset($request->driver_2) ? 3 : 2;
 
+        $checkTripIsSet = $this->checkTripIsSet($request);
+
+        if ($checkTripIsSet == true) {
+            return back()->with('failed', 'Terdapat trip yg sudah di buat');
+        }
+
         $tras = RoadWarrant::getTripAssign($request->trip_assign);
         $saveManifestData = [
             'uuid'                      =>  generateUuid(),
@@ -557,5 +563,22 @@ class LetterRoadWarrantController extends Controller
     
         curl_close($curl);
         return $response;
+    }
+
+    function checkTripIsSet($request) {
+        $trip_date = Carbon::createFromFormat('d/m/Y', $request->date)->format('Y-m-d');
+        $getManifest = RoadWarrant::getManifestByTras($request->trip_assign, $trip_date);
+        if (count($getManifest) > 0) {
+            return true;
+        }
+
+        if ($request->numberoftrip == "2") {
+            $getManifestReturn = RoadWarrant::getManifestByTras($request->trip_assign_return, $trip_date);
+            if (count($getManifestReturn) > 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
