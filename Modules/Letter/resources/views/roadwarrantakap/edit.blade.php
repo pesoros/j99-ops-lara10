@@ -296,7 +296,6 @@
   let pickedBusUuid = "";
 
   const tripdate1 = new Date(manifest.trip_date);
-  pickBankList() 
   
   $('#datepicker').datetimepicker({
     format: 'DD/MM/YYYY',
@@ -552,7 +551,9 @@
     $('#driver1').append(htmlDriver);
     $('#driver2').append(htmlDriver2);
     $('#codriver').append(htmlCoDriver);
-    pickBankList()
+    setTimeout(() => {
+      pickBankList();
+    }, 2000); // 200
   }
 
   function tripSummary() {
