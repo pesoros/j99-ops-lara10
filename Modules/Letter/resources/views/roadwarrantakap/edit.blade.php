@@ -553,7 +553,7 @@
     $('#codriver').append(htmlCoDriver);
     setTimeout(() => {
       pickBankList();
-    }, 2000); // 200
+    }, 5000);
   }
 
   function tripSummary() {
