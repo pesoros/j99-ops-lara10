@@ -452,7 +452,7 @@
     $('#tras-item-return').html('');
     axios.get(`/api/trasbus?busuuid=${value}`)
       .then((response) => {
-        addElementToSelect(response.data, isFirst);
+        addElementToSelect(response.data.filtered, isFirst);
       }, (error) => {
         console.log(error);
       });
