@@ -431,6 +431,9 @@
         employeePicked.push(element)
       }
     }
+
+    console.log(employeePicked);
+    
     
     let transfertoElement = '';
     transfertoElement += '<option value="">Pilih</option>'
@@ -551,9 +554,7 @@
     $('#driver1').append(htmlDriver);
     $('#driver2').append(htmlDriver2);
     $('#codriver').append(htmlCoDriver);
-    setTimeout(() => {
-      pickBankList();
-    }, 5000);
+    pickBankList()
   }
 
   function tripSummary() {
