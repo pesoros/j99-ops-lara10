@@ -310,7 +310,7 @@ class RoadWarrant extends Model
                 'manifest.trip_date',
             )
             ->leftJoin("ops_roadwarrant AS road", "road.uuid", "=", "manifest.roadwarrant_uuid")
-            ->where('manifest.status', 5)
+            ->where('manifest.status', 1)
             ->where('manifest.roadwarrant_uuid', '!=', null)
             ->where('manifest.trip_assign', $tras)
             ->where('manifest.trip_date', '<', $date)
