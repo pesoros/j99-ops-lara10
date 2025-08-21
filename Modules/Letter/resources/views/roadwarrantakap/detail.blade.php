@@ -398,7 +398,7 @@
 <script type="text/javascript">
     $(function () {
       const manifestData = @json($manifest);
-      console.log(manifest);
+      console.log(manifestData);
       
       generateRoadwarrantBlocker();
 
