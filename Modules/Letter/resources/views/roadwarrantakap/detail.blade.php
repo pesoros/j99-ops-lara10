@@ -398,6 +398,8 @@
 <script type="text/javascript">
     $(function () {
       const manifestData = @json($manifest);
+      console.log(manifest);
+      
       generateRoadwarrantBlocker();
 
       $('a.printPage').click(function(){
