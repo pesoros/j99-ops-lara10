@@ -121,7 +121,12 @@
                   <td>
                     @foreach ($manifest as $key => $item)
                       @if ($key > 0) <br> @endif
-                      {{ dateFormat($item->trip_date) }} | {{ $item->trip_title }}
+                      <div class="col-sm-12">
+                        {{ dateFormat($item->trip_date) }} | {{ $item->trip_title }}
+                        @if (intval($item->status) == 1 && intval($roadwarrant->status) == 4 && ($roleInfo->role_slug == 'super-user'))
+                          <a href="{{ url('letter/roadwarrant/close/'.$roadwarrant->uuid.'/'.$item->uuid) }}" class="badge badge-warning float-right">Selesaikan Perjalanan</a>
+                        @endif
+                      </div>
                     @endforeach
                   </td>
                 </tr>

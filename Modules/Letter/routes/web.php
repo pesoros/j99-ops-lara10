@@ -50,6 +50,8 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('roadwarrant/expense/edit/{uuid}', [LetterRoadWarrantController::class, 'editRoadWarrantExpense']);
         Route::post('roadwarrant/expense/edit/{uuid}', [LetterRoadWarrantController::class, 'editRoadWarrantExpenseStore']);
         Route::get('roadwarrant/accurate/lpj/{uuid}', [LetterRoadWarrantController::class, 'accurateLpj']);
+        Route::get('roadwarrant/close/{roadwarrantuuid}/{manifestuuid}', [LetterRoadWarrantController::class, 'closeRoadwarrant']);
+
 
         Route::get('goodsrequest', [LetterGoodsController::class, 'listGoodsRequest']);
         Route::get('goodsrequest/add', [LetterGoodsController::class, 'addGoodsRequest']);

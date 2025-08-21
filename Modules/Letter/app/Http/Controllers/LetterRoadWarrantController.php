@@ -12,9 +12,17 @@ use App\Models\Bus;
 use App\Models\Trip;
 use App\Models\Rest;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 
 class LetterRoadWarrantController extends Controller
 {
+    private $client;
+
+    public function __construct()
+    {
+        $this->client = new Client(['timeout'  => 2.0]);
+    }
+
     public function listRoadWarrant()
     {
         $roleInfo = Session('role_info_session');
@@ -593,5 +601,35 @@ class LetterRoadWarrantController extends Controller
         }
 
         return false;
+    }
+
+    public function closeRoadwarrant(Request $request, $roadwarrantuuid, $manifestuuid)
+    {
+        $data = [
+            'roadwarrant_uuid' => $roadwarrantuuid,
+            'manifest_uuid'    => $manifestuuid,
+        ];
+
+        $setClose = $this->setCloseSpj($data);
+
+        // ✅ Check API response
+        if ($setClose && $setClose['status'] === 200) {
+            return back()->with('success', 'Close SPJ Berhasil');
+        }
+
+        return back()->with('failed', 'Close SPJ Gagal!');
+    }
+
+    public function setCloseSpj($raw)
+    {
+        $response = $this->client->request(
+            'POST',
+            env('BE_BASEURL') . '/manifest/v3/close',
+            [
+                'form_params' => $raw,
+            ]
+        );
+
+        return json_decode($response->getBody(), true); // return assoc array
     }
 }
