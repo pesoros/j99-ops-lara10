@@ -300,7 +300,7 @@ class RoadWarrant extends Model
         return $query;
     }
 
-    public function scopeGetManifestByTrasBefore($query, $tras, $date)
+    public function scopeGetManifestByTrasBefore($query, $tras, $date, $busUuid)
     {
         $query = DB::table("manifest")
             ->select(
@@ -315,6 +315,7 @@ class RoadWarrant extends Model
             ->where('manifest.roadwarrant_uuid', '!=', '')
             ->where('manifest.trip_assign', $tras)
             ->where('manifest.trip_date', '<', $date)
+            ->where('road.bus_uuid', $busUuid)
             ->orderBy('manifest.trip_date', 'ASC')
             ->get();
 

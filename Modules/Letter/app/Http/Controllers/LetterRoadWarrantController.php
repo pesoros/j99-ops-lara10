@@ -203,7 +203,11 @@ class LetterRoadWarrantController extends Controller
 
             $isMarkerReady = true;
             foreach ($manifest as $key => $value) {
-                $value->manifestBefore = Roadwarrant::getManifestByTrasBefore($value->trip_assign, $value->trip_date);
+                $value->manifestBefore = Roadwarrant::getManifestByTrasBefore(
+                    $value->trip_assign, 
+                    $value->trip_date, 
+                    $roadWarrant->bus_uuid
+                );
                 if (count($value->manifestBefore) > 0) {
                     $isMarkerReady = false;
                 }
