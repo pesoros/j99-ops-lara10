@@ -594,7 +594,8 @@ class LetterRoadWarrantController extends Controller
         }
 
         if ($request->numberoftrip == "2") {
-            $getManifestReturn = RoadWarrant::getManifestByTras($request->trip_assign_return, $trip_date);
+            $trip_date_return = Carbon::createFromFormat('d/m/Y', $request->date_return)->format('Y-m-d');
+            $getManifestReturn = RoadWarrant::getManifestByTras($request->trip_assign_return, $trip_date_return);
             if (count($getManifestReturn) > 0) {
                 return true;
             }
