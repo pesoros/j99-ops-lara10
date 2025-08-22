@@ -30,22 +30,27 @@ class Accurate extends Model
 
     public function scopeGetSales($query)
     {
-        $query = DB::table("tkt_booking_head as thead")
-            ->select(
-                'thead.id',
-                'thead.booking_code',
-                'thead.accurate_soid',
-                'refund.tkt_booking_id_no',
-                'thead_ref.accurate_soid as ref_soid',
-            )
-            ->leftJoin("tkt_refund AS refund", "refund.code_related", "=", "thead.booking_code")
-            ->leftJoin("tkt_booking_head AS thead_ref", "thead_ref.booking_code", "=", "refund.tkt_booking_id_no")
-            ->whereIn('thead.payment_status', [1, 2])
-            ->where('thead.accurate_soid', '!=', NULL)
-            ->orderBy('thead.id', 'DESC')
-            ->take(300)
-            ->get();
+        $sql = "
+            SELECT 
+                thead.id,
+                thead.booking_code,
+                thead.accurate_soid,
+                refund.tkt_booking_id_no,
+                thead_ref.accurate_soid AS ref_soid
+            FROM tkt_booking_head AS thead
+            LEFT JOIN tkt_refund AS refund 
+                ON refund.code_related = thead.booking_code
+            LEFT JOIN tkt_booking_head AS thead_ref 
+                ON thead_ref.booking_code = refund.tkt_booking_id_no
+            WHERE thead.payment_status IN (1, 2)
+            AND thead.accurate_soid = 0
+            AND thead.created_at >= '2024-07-01 00:00:00'
+            AND thead.created_at <= NOW()
+            ORDER BY thead.id DESC
+            LIMIT 300
+        ";
 
-        return $query;
+        return DB::select($sql);
     }
+
 }
