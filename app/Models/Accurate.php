@@ -53,4 +53,29 @@ class Accurate extends Model
         return DB::select($sql);
     }
 
+    public function scopeGetInvoice($query)
+    {
+        $sql = "
+            SELECT 
+                thead.id,
+                thead.booking_code,
+                thead.accurate_soid,
+                refund.tkt_booking_id_no,
+                thead_ref.accurate_soid AS ref_soid
+            FROM tkt_booking_head AS thead
+            LEFT JOIN tkt_refund AS refund 
+                ON refund.code_related = thead.booking_code
+            LEFT JOIN tkt_booking_head AS thead_ref 
+                ON thead_ref.booking_code = refund.tkt_booking_id_no
+            WHERE thead.payment_status IN (1, 2)
+            AND thead.accurate_soid = 0
+            AND thead.created_at >= '2024-07-01 00:00:00'
+            AND thead.created_at <= NOW()
+            ORDER BY thead.id DESC
+            LIMIT 300
+        ";
+
+        return DB::select($sql);
+    }
+
 }
