@@ -35,63 +35,78 @@ class RoadWarrant extends Model
 
     public function scopeGetRoadWarrant($query, $uuid)
     {
-        $query = DB::table("ops_roadwarrant AS roadwarrant")
-            ->select(
-                'book.*',
-                'roadwarrant.*',
-                'bus.name AS busname',
-                'class.name as classname',
-                'class.seat',
-                'customer.name AS customer_name',
-                'customer.phone AS customer_phone',
-                'city_from.name as city_from',
-                'city_to.name as city_to',
-                'driver_1.id as driver_1_id',
-                'driver_2.id as driver_2_id',
-                'codriver.id as codriver_id',
-                DB::raw("CONCAT(driver_1.first_name,' ',driver_1.second_name) as driver_1_name"),
-                DB::raw("CONCAT(driver_2.first_name,' ',driver_2.second_name) as driver_2_name"),
-                DB::raw("CONCAT(codriver.first_name,' ',codriver.second_name) as codriver_name"),
-            )
-            ->join("v2_bus AS bus", "bus.uuid", "=", "roadwarrant.bus_uuid")
-            ->join("v2_book AS book", "book.uuid", "=", "roadwarrant.manifest_uuid")
-            ->join("v2_customer AS customer", "customer.uuid", "=", "book.customer_uuid")
-            ->join("v2_class AS class", "class.uuid", "=", "bus.class_uuid")
-            ->leftJoin("v2_area_city AS city_from", "city_from.uuid", "=", "book.departure_city_uuid")
-            ->leftJoin("v2_area_city AS city_to", "city_to.uuid", "=", "book.destination_city_uuid")
-            ->leftJoin("employee_history AS driver_1", "driver_1.id", "=", "roadwarrant.driver_1")
-            ->leftJoin("employee_history AS driver_2", "driver_2.id", "=", "roadwarrant.driver_2")
-            ->leftJoin("employee_history AS codriver", "codriver.id", "=", "roadwarrant.codriver")
-            ->where('roadwarrant.uuid', $uuid)
-            ->orderBy('roadwarrant.created_at', 'DESC')
-            ->first();
+        $sql = "
+            SELECT 
+                book.*,
+                roadwarrant.*,
+                bus.name AS busname,
+                class.name AS classname,
+                class.seat,
+                customer.name AS customer_name,
+                customer.phone AS customer_phone,
+                city_from.name AS city_from,
+                city_to.name AS city_to,
+                driver_1.id AS driver_1_id,
+                driver_2.id AS driver_2_id,
+                codriver.id AS codriver_id,
+                CONCAT(driver_1.first_name, ' ', driver_1.second_name) AS driver_1_name,
+                CONCAT(driver_2.first_name, ' ', driver_2.second_name) AS driver_2_name,
+                CONCAT(codriver.first_name, ' ', codriver.second_name) AS codriver_name
+            FROM ops_roadwarrant AS roadwarrant
+            INNER JOIN v2_bus AS bus 
+                ON bus.uuid = roadwarrant.bus_uuid
+            INNER JOIN v2_book AS book 
+                ON book.uuid = roadwarrant.manifest_uuid
+            INNER JOIN v2_customer AS customer 
+                ON customer.uuid = book.customer_uuid
+            INNER JOIN v2_class AS class 
+                ON class.uuid = bus.class_uuid
+            LEFT JOIN v2_area_city AS city_from 
+                ON city_from.uuid = book.departure_city_uuid
+            LEFT JOIN v2_area_city AS city_to 
+                ON city_to.uuid = book.destination_city_uuid
+            LEFT JOIN employee_history AS driver_1 
+                ON driver_1.id = roadwarrant.driver_1
+            LEFT JOIN employee_history AS driver_2 
+                ON driver_2.id = roadwarrant.driver_2
+            LEFT JOIN employee_history AS codriver 
+                ON codriver.id = roadwarrant.codriver
+            WHERE roadwarrant.uuid = ?
+            ORDER BY roadwarrant.created_at DESC
+            LIMIT 1
+        ";
 
-        return $query;
+        return DB::selectOne($sql, [$uuid]);
     }
 
     public function scopeGetRoadWarrantAkap($query, $uuid)
     {
-        $query = DB::table("ops_roadwarrant AS roadwarrant")
-            ->select(
-                'roadwarrant.*',
-                'driver_1.id as driver_1_id',
-                'driver_2.id as driver_2_id',
-                'codriver.id as codriver_id',
-                DB::raw("CONCAT(driver_1.first_name,' ',driver_1.second_name) as driver_1_name"),
-                DB::raw("CONCAT(driver_2.first_name,' ',driver_2.second_name) as driver_2_name"),
-                DB::raw("CONCAT(codriver.first_name,' ',codriver.second_name) as codriver_name"),
-                'transferto.first_name as bank_account',
-                'transferto.bank_name',
-                'transferto.bank_number',
-            )
-            ->leftJoin("employee_history AS driver_1", "driver_1.id", "=", "roadwarrant.driver_1")
-            ->leftJoin("employee_history AS driver_2", "driver_2.id", "=", "roadwarrant.driver_2")
-            ->leftJoin("employee_history AS codriver", "codriver.id", "=", "roadwarrant.codriver")
-            ->leftJoin("employee_history AS transferto", "transferto.id", "=", "roadwarrant.transferto")
-            ->where('roadwarrant.uuid', $uuid)
-            ->first();
+        $sql = "
+            SELECT 
+                roadwarrant.*,
+                driver_1.id AS driver_1_id,
+                driver_2.id AS driver_2_id,
+                codriver.id AS codriver_id,
+                CONCAT(driver_1.first_name, ' ', driver_1.second_name) AS driver_1_name,
+                CONCAT(driver_2.first_name, ' ', driver_2.second_name) AS driver_2_name,
+                CONCAT(codriver.first_name, ' ', codriver.second_name) AS codriver_name,
+                transferto.first_name AS bank_account,
+                transferto.bank_name,
+                transferto.bank_number
+            FROM ops_roadwarrant AS roadwarrant
+            LEFT JOIN employee_history AS driver_1 
+                ON driver_1.id = roadwarrant.driver_1
+            LEFT JOIN employee_history AS driver_2 
+                ON driver_2.id = roadwarrant.driver_2
+            LEFT JOIN employee_history AS codriver 
+                ON codriver.id = roadwarrant.codriver
+            LEFT JOIN employee_history AS transferto 
+                ON transferto.id = roadwarrant.transferto
+            WHERE roadwarrant.uuid = ?
+            LIMIT 1
+        ";
 
-        return $query;
+        return DB::selectOne($sql, [$uuid]);
     }
 
     public function scopeGetEmployee($query)
@@ -292,36 +307,39 @@ class RoadWarrant extends Model
 
     public function scopeGetManifestByTras($query, $tras, $date)
     {
-        $query = DB::table("manifest")
-            ->select('manifest.id')
-            ->where('manifest.trip_assign', $tras)
-            ->where('manifest.trip_date', $date)
-            ->orderBy('manifest.id', 'DESC')
-            ->get();
+        $sql = "
+            SELECT manifest.id
+            FROM manifest
+            WHERE manifest.trip_assign = ?
+            AND manifest.trip_date = ?
+            AND manifest.roadwarrant_uuid IS NOT NULL
+            ORDER BY manifest.id DESC
+        ";
 
-        return $query;
+        return DB::select($sql, [$tras, $date]);
     }
 
     public function scopeGetManifestByTrasBefore($query, $tras, $date, $busUuid)
     {
-        $query = DB::table("manifest")
-            ->select(
-                'manifest.id',
-                'manifest.roadwarrant_uuid',
-                'road.numberid',
-                'manifest.trip_date',
-            )
-            ->join("ops_roadwarrant AS road", "road.uuid", "=", "manifest.roadwarrant_uuid")
-            ->where('manifest.status', 1)
-            ->where('manifest.roadwarrant_uuid', '!=', null)
-            ->where('manifest.roadwarrant_uuid', '!=', '')
-            ->where('manifest.trip_assign', $tras)
-            ->where('manifest.trip_date', '<', $date)
-            ->where('road.bus_uuid', $busUuid)
-            ->orderBy('manifest.trip_date', 'ASC')
-            ->get();
+        $sql = "
+            SELECT 
+                manifest.id,
+                manifest.roadwarrant_uuid,
+                road.numberid,
+                manifest.trip_date
+            FROM manifest
+            INNER JOIN ops_roadwarrant AS road 
+                ON road.uuid = manifest.roadwarrant_uuid
+            WHERE manifest.status = 1
+            AND manifest.roadwarrant_uuid IS NOT NULL
+            AND manifest.roadwarrant_uuid <> ''
+            AND manifest.trip_assign = ?
+            AND manifest.trip_date < ?
+            AND road.bus_uuid = ?
+            ORDER BY manifest.trip_date ASC
+        ";
 
-        return $query;
+        return DB::select($sql, [$tras, $date, $busUuid]);
     }
 
     function scopeGetTripAssign($query, $trasid)
