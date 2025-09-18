@@ -330,7 +330,7 @@ class RoadWarrant extends Model
             FROM manifest
             INNER JOIN ops_roadwarrant AS road 
                 ON road.uuid = manifest.roadwarrant_uuid
-            WHERE manifest.status = 1
+            WHERE road.status IN (1,2,3,4)
             AND manifest.roadwarrant_uuid IS NOT NULL
             AND manifest.roadwarrant_uuid <> ''
             AND manifest.trip_assign = ?
