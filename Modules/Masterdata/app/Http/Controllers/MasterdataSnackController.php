@@ -68,9 +68,12 @@ class MasterdataSnackController extends Controller
             'stock'      => ['required', 'string'],
         ]);
         
+        $datetimeNow = now()->format('Y-m-d H:i:s');
+
         $updateData = [
             'name' => $request->snackname,
             'stock' => $request->stock,
+            'updated_at' => $datetimeNow,
         ];
         
         $updateArea = MasterData::updateMasterSnack($uuid, $updateData);
