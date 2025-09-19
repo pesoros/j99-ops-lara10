@@ -53,4 +53,36 @@ class Accurate extends Model
         return DB::select($sql);
     }
 
+    public function scopeGetManifest($query)
+    {
+        $sql = "
+            SELECT 
+                mn.id AS manifestId,
+                mn.uuid AS manifestUuid,
+                rw.numberid,
+                mn.trip_date,
+                mn.accurate_id,
+                tr.trip_title,
+                fr.reg_no,
+                bus.name as busname
+            FROM manifest AS mn
+            LEFT JOIN ops_roadwarrant AS rw 
+                ON rw.uuid = mn.roadwarrant_uuid
+            LEFT JOIN trip_assign AS tras 
+                ON tras.id = mn.trip_assign
+            LEFT JOIN trip AS tr 
+                ON tr.trip_id = tras.trip
+            LEFT JOIN fleet_registration AS fr
+                ON fr.id = tras.fleet_registration_id
+            LEFT JOIN v2_bus AS bus
+                ON bus.uuid = mn.fleet
+            WHERE mn.status = '2'
+            AND rw.created_at >= '2025-07-01 00:00:00'
+            AND rw.created_at <= NOW()
+            ORDER BY rw.created_at DESC
+            LIMIT 300
+        ";
+
+        return DB::select($sql);
+    }
 }
