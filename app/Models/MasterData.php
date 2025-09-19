@@ -360,7 +360,7 @@ class MasterData extends Model
     {
         $query = DB::table("ops_snack AS snack")
             ->select('snack.*')
-            ->orderBy('snack.id')
+            ->orderBy('snack.number', 'ASC')
             ->get();
 
         return $query;

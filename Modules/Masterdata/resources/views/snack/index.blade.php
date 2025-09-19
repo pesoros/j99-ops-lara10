@@ -17,6 +17,7 @@
         <thead>
         <tr>
           <th>No</th>
+          <th>Kode</th>
           <th>Nama Snack</th>
           <th>Stock</th>
           <th>Aksi</th>
@@ -26,6 +27,7 @@
           @foreach ($list as $key => $value)
             <tr>
               <td width="20" class="text-center">{{ intval($key) + 1 }}</td>
+              <td>{{ $value->code }}</td>
               <td>{{ $value->name }}</td>
               <td>{{ $value->stock }}</td>
               <td>

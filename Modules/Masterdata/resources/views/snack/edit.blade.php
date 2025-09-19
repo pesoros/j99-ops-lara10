@@ -39,6 +39,10 @@
     <div class="card-body row">
       <div class="col-sm-12">
         <div class="form-group">
+          <label for="name">Kode</label>
+          <p>{{ $current->code }}</p>
+        </div>
+        <div class="form-group">
           <label for="name">Nama</label>
           <input type="text" class="form-control" id="snackname" name="snackname" placeholder="Masukkan nama snack" value="{{ $current->name }}">
         </div>
