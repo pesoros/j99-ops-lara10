@@ -355,4 +355,58 @@ class MasterData extends Model
 
         return $query;
     }
+
+    public function scopeGetMasterSnackList($query)
+    {
+        $query = DB::table("ops_snack AS snack")
+            ->select('snack.*')
+            ->orderBy('snack.id')
+            ->get();
+
+        return $query;
+    }
+
+    public function scopeSaveMasterSnack($query, $data)
+    {
+        $query = DB::table("ops_snack")->insert($data);
+
+        return $query;
+    }
+
+    public function scopeGetMasterSnack($query, $uuid)
+    {
+        $query = DB::table("ops_snack")
+            ->where('uuid', $uuid)
+            ->first();
+
+        return $query;
+    }
+
+    public function scopeUpdateMasterSnack($query, $uuid, $data)
+    {
+        $query = DB::table("ops_snack")
+            ->where('uuid',$uuid)
+            ->update($data);
+
+        return $query;
+    }
+
+    public function scopeRemoveMasterSnack($query, $uuid)
+    {
+        $query = DB::table("ops_snack")
+            ->where('uuid',$uuid)
+            ->delete();
+
+        return $query;
+    }
+
+    public function scopeGetLastSnackNumber($query)
+    {
+        $query = DB::table("ops_snack AS snack")
+            ->select('snack.number')
+            ->orderBy('snack.number', 'DESC')
+            ->first();
+
+        return $query;
+    }
 }
