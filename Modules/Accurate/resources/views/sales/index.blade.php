@@ -132,12 +132,13 @@
             }
         });
 
-        function salesFetch(bookingCode) {
+        async function salesFetch(bookingCode) {
           const payload = { booking_code: bookingCode };
           const response = await axios.post(backendUrl + '/accurate/sales', payload, { headers });
           console.log('Success:', bookingCode, response.data);
           return response.data; // biar hasilnya bisa dipakai setelah await
         }
+
 
         $('.loadingscreen').click(function () {
             $.LoadingOverlay("show", {
