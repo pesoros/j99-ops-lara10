@@ -93,7 +93,7 @@
 
 <script type="text/javascript">
     $(function () {
-        var bookLists = @json($lists).reverse();
+        var bookLists = @json($lists);
         const maxData = 100;
         const bookToSend = bookLists.slice(0, maxData);
         const backendUrl = "{{ $beUrl }}";
