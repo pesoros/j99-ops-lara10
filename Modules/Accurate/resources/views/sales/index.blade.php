@@ -96,7 +96,7 @@
 <script type="text/javascript">
     $(function () {
         var bookLists = @json($lists).reverse();
-        const maxData = 100;
+        const maxData = 2;
         const bookToSend = bookLists.filter(item => item.accurate_soid === '0').slice(0, maxData);
         const backendUrl = "{{ $beUrl }}";
 
@@ -112,9 +112,15 @@
 
             try {
                 for (const val of bookToSend) {
-                    const payload = { booking_code: val.booking_code };
-                    const response = await axios.post(backendUrl + '/accurate/sales', payload, { headers });
-                    console.log('Success:', val.booking_code, response.data);
+                  if (val.tkt_booking_id_no !== null) {
+                    if (val.ref_soid !== 0) {
+                      salesFetch(val.booking_code);
+                    } else {
+                      console.log('Resc Skipped:', val.booking_code);
+                    }
+                  } else {
+                    salesFetch(val.booking_code);
+                  }
                 }
 
                 location.reload();
@@ -125,6 +131,12 @@
                 $.LoadingOverlay("hide");
             }
         });
+
+        function salesFetch(bookingCode) {
+          const payload = { booking_code: bookingCode };
+          const response = await axios.post(backendUrl + '/accurate/sales', payload, { headers });
+          console.log('Success:', bookingCode, response.data);
+        }
 
         $('.loadingscreen').click(function () {
             $.LoadingOverlay("show", {
