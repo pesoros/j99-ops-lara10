@@ -53,7 +53,6 @@
         <th>Judul Trip</th>
         <th>Bus</th>
         <th>Keberangkatan</th>
-        <th>Accurate ID</th>
         <th>Aksi</th>
       </tr>
       </thead>
@@ -61,24 +60,19 @@
         @foreach ($lists as $key => $value)
           <tr>
             <td width="20" class="text-center">{{ intval($key) + 1 }}</td>
-            <td>{{ $value->manifestUuid }}</td>
+            <td>{{ $value->manifestId }}</td>
             <td>{{ $value->numberid }}</td>
             <td>{{ $value->trip_title }}</td>
             <td>{{ $value->busname }}</td>
             <td>{{ $value->trip_date }}</td>
             <td>
-                @if ($value->accurate_id != NULL)
-                    {{ $value->accurate_id }}
-                @else 
-                    Belum sinkron
-                @endif
-            </td>
-            <td>
               <div class="btn-group btn-block">
-                @if (permissionCheck('show') && intval($value->accurate_id) == NULL)
-                    <a href="{{ url('accurate/sales/sync/'.$value->manifestUuid) }}" class="btn btn-warning btn-sm loadingscreen">Sync</a> 
+                @if (permissionCheck('show') && intval($value->isSynced) == 0)
+                    <a href="{{ url('accurate/manifest/sync/'.$value->manifestUuid) }}" class="btn btn-warning btn-sm loadingscreen">Sync</a> 
                 @else 
-                    <a href="{{ url('accurate/sales/sync/'.$value->manifestUuid) }}" class="btn btn-warning btn-sm loadingscreen">Sync</a> 
+                  <p>
+                    Synced
+                  </p>
                 @endif
               </div>
             </td>
@@ -100,8 +94,8 @@
 <script type="text/javascript">
     $(function () {
         var bookLists = @json($lists).reverse();
-        const maxData = 25;
-        const bookToSend = bookLists.filter(item => item.accurate_id === '0').slice(0, maxData);
+        const maxData = 100;
+        const bookToSend = bookLists.slice(0, maxData);
         const backendUrl = "{{ $beUrl }}";
 
         $('.syncBulkClientSide').click(async function () {
@@ -117,7 +111,7 @@
             try {
                 for (const val of bookToSend) {
                     const payload = { manifestUuid: val.manifestUuid };
-                    const response = await axios.post(backendUrl + '/accurate/sales', payload, { headers });
+                    const response = await axios.post(backendUrl + '/accurate/manifest', payload, { headers });
                     console.log('Success:', val.manifestUuid, response.data);
                 }
 

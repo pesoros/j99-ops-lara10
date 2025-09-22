@@ -29,17 +29,17 @@ class AccurateManifestController extends Controller
         return view('accurate::manifest.index', $data);
     }
 
-    public function sync($bokingcode)
+    public function sync($manifestUuid)
     {
         try {
-            $response = $this->client->request('POST', '/accurate/sales', [
+            $response = $this->client->request('POST', '/accurate/manifest', [
                 'json' => [
-                    'booking_code' => $bokingcode,
+                    'manifestUuid' => $manifestUuid,
                 ]
             ]);
             $body = $response->getBody()->getContents();
 
-            return back()->with('success', 'Berhasil Sync '.$bokingcode);
+            return back()->with('success', 'Berhasil Sync '.$manifestUuid);
         } catch (ClientException $e) {
             $responseBody = $e->getResponse()->getBody()->getContents();
             $errorResponse = json_decode($responseBody, true);
@@ -51,7 +51,7 @@ class AccurateManifestController extends Controller
     public function syncBulk()
     {
         try {
-            $response = $this->client->request('POST', '/accurate/sales/bulk');
+            $response = $this->client->request('POST', '/accurate/manifest/bulk');
             $body = $response->getBody()->getContents();
 
             return back()->with('success', 'Berhasil Sync Bulk');

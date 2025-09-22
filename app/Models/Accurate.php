@@ -61,7 +61,7 @@ class Accurate extends Model
                 mn.uuid AS manifestUuid,
                 rw.numberid,
                 mn.trip_date,
-                mn.accurate_id,
+                mn.isSynced,
                 tr.trip_title,
                 fr.reg_no,
                 bus.name as busname
@@ -77,9 +77,11 @@ class Accurate extends Model
             LEFT JOIN v2_bus AS bus
                 ON bus.uuid = mn.fleet
             WHERE mn.status = '2'
-            AND rw.created_at >= '2025-07-01 00:00:00'
-            AND rw.created_at <= NOW()
-            ORDER BY rw.created_at DESC
+            AND mn.uuid IS NOT NULL
+            AND mn.isSynced = 0
+            AND mn.trip_date >= '2025-09-01 00:00:00'
+            AND mn.trip_date <= NOW()
+            ORDER BY mn.id ASC
             LIMIT 300
         ";
 
