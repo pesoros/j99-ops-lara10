@@ -96,7 +96,7 @@
 <script type="text/javascript">
     $(function () {
         var bookLists = @json($lists).reverse();
-        const maxData = 2;
+        const maxData = 100;
         const bookToSend = bookLists.filter(item => item.accurate_soid === '0').slice(0, maxData);
         const backendUrl = "{{ $beUrl }}";
 
