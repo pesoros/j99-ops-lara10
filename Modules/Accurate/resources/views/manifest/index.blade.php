@@ -68,7 +68,7 @@
             <td>
               <div class="btn-group btn-block">
                 @if (permissionCheck('show') && intval($value->isSynced) == 0)
-                    <a href="{{ url('accurate/manifest/sync/'.$value->manifestUuid) }}" class="btn btn-warning btn-sm loadingscreen">Sync</a> 
+                    <a href="{{ url('accurate/accmanifest/sync/'.$value->manifestUuid) }}" class="btn btn-warning btn-sm loadingscreen">Sync</a> 
                 @else 
                   <p>
                     Synced
@@ -94,7 +94,7 @@
 <script type="text/javascript">
     $(function () {
         var bookLists = @json($lists).reverse();
-        const maxData = 100;
+        const maxData = 2;
         const bookToSend = bookLists.slice(0, maxData);
         const backendUrl = "{{ $beUrl }}";
 

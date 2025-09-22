@@ -21,8 +21,8 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('sales/syncbulk', [AccurateSalesController::class, 'syncBulk']);
         Route::get('sales/sync/{bookingcode}', [AccurateSalesController::class, 'sync']);
 
-        Route::get('manifest', [AccurateManifestController::class, 'index']);
-        Route::get('manifest/syncbulk', [AccurateManifestController::class, 'syncBulk']);
-        Route::get('manifest/sync/{bookingcode}', [AccurateManifestController::class, 'sync']);
+        Route::get('accmanifest', [AccurateManifestController::class, 'index']);
+        Route::get('accmanifest/syncbulk', [AccurateManifestController::class, 'syncBulk']);
+        Route::get('accmanifest/sync/{manifestuuid}', [AccurateManifestController::class, 'sync']);
     });
 });
