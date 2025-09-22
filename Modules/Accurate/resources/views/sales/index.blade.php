@@ -99,6 +99,7 @@
         const maxData = 100;
         const bookToSend = bookLists.filter(item => item.accurate_soid === '0').slice(0, maxData);
         const backendUrl = "{{ $beUrl }}";
+        let successCount = 0;
 
         $('.syncBulkClientSide').click(async function () {
             $.LoadingOverlay("show", {
@@ -135,7 +136,8 @@
 
           const payload = { booking_code: bookingCode };
           const response = await axios.post(backendUrl + '/accurate/sales', payload, { headers });
-          console.log('Success:', bookingCode, response.data);
+          successCount = successCount + 1;
+          console.log('Success '+successCount+' :', bookingCode, response.data);
           return response.data; // biar hasilnya bisa dipakai setelah await
         }
 
