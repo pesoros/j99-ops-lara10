@@ -44,7 +44,7 @@ class Accurate extends Model
                 ON thead_ref.booking_code = refund.tkt_booking_id_no
             WHERE thead.payment_status IN (1, 2)
             AND thead.accurate_soid = 0
-            AND thead.created_at >= '2025-08-01 00:00:00'
+            AND thead.created_at >= '2025-07-01 00:00:00'
             AND thead.created_at <= NOW()
             ORDER BY thead.id DESC
             LIMIT 300
