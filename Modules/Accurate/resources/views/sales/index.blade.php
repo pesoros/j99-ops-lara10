@@ -105,11 +105,6 @@
                 text: "Mengirim data ke Accurate. Mohon tunggu..."
             });
 
-            const headers = {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            };
-
             try {
                 for (const val of bookToSend) {
                   if (val.tkt_booking_id_no !== null) {
@@ -133,6 +128,11 @@
         });
 
         async function salesFetch(bookingCode) {
+          const headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          };
+
           const payload = { booking_code: bookingCode };
           const response = await axios.post(backendUrl + '/accurate/sales', payload, { headers });
           console.log('Success:', bookingCode, response.data);
