@@ -114,12 +114,12 @@
                 for (const val of bookToSend) {
                   if (val.tkt_booking_id_no !== null) {
                     if (val.ref_soid !== 0) {
-                      salesFetch(val.booking_code);
+                      await salesFetch(val.booking_code);
                     } else {
                       console.log('Resc Skipped:', val.booking_code);
                     }
                   } else {
-                    salesFetch(val.booking_code);
+                    await salesFetch(val.booking_code);
                   }
                 }
 
@@ -132,10 +132,11 @@
             }
         });
 
-        function salesFetch(bookingCode) {
+        async function salesFetch(bookingCode) {
           const payload = { booking_code: bookingCode };
           const response = await axios.post(backendUrl + '/accurate/sales', payload, { headers });
           console.log('Success:', bookingCode, response.data);
+          return response.data; // biar hasilnya bisa dipakai setelah await
         }
 
         $('.loadingscreen').click(function () {
