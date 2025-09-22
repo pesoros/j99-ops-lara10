@@ -46,7 +46,7 @@ class Accurate extends Model
             AND thead.accurate_soid = 0
             AND thead.created_at >= '2025-07-01 00:00:00'
             AND thead.created_at <= NOW()
-            ORDER BY thead.id DESC
+            ORDER BY thead.id ASC
             LIMIT 300
         ";
 
