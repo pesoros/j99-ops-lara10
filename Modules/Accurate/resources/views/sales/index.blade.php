@@ -132,7 +132,7 @@
             }
         });
 
-        async function salesFetch(bookingCode) {
+        function salesFetch(bookingCode) {
           const payload = { booking_code: bookingCode };
           const response = await axios.post(backendUrl + '/accurate/sales', payload, { headers });
           console.log('Success:', bookingCode, response.data);
