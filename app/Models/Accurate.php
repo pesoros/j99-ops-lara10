@@ -66,7 +66,7 @@ class Accurate extends Model
                 fr.reg_no,
                 bus.name as busname
             FROM manifest AS mn
-            LEFT JOIN ops_roadwarrant AS rw 
+            JOIN ops_roadwarrant AS rw 
                 ON rw.uuid = mn.roadwarrant_uuid
             LEFT JOIN trip_assign AS tras 
                 ON tras.id = mn.trip_assign
