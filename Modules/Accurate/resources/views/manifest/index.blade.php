@@ -97,6 +97,7 @@
         const maxData = 100;
         const bookToSend = bookLists.slice(0, maxData);
         const backendUrl = "{{ $beUrl }}";
+        let successCount = 0;
 
         $('.syncBulkClientSide').click(async function () {
             $.LoadingOverlay("show", {
@@ -112,7 +113,8 @@
                 for (const val of bookToSend) {
                     const payload = { manifestUuid: val.manifestUuid };
                     const response = await axios.post(backendUrl + '/accurate/manifest', payload, { headers });
-                    console.log('Success:', val.manifestUuid, response.data);
+                    successCount = successCount + 1;
+                    console.log('Success '+successCount+' :', val.manifestId, response.data);
                 }
 
                 location.reload();
