@@ -166,9 +166,13 @@
       theme: 'bootstrap4'
     })
     $("#datatable-def").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "responsive": true,
+      "lengthChange": false,
+      "autoWidth": false,
+      "pageLength": 100, // default 100 data per page
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#datatable-def_wrapper .col-md-6:eq(0)');
+
 
     $("#datatable-def-notitle").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false, "header": false,

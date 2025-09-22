@@ -10,6 +10,7 @@ use Modules\Masterdata\app\Http\Controllers\MasterdataSparePartsDummyController;
 use Modules\Masterdata\app\Http\Controllers\MasterdataPointSettingController;
 use Modules\Masterdata\app\Http\Controllers\MasterdataPointUsersController;
 use Modules\Masterdata\app\Http\Controllers\MasterdataExpenseCatController;
+use Modules\Masterdata\app\Http\Controllers\MasterdataSnackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,5 +63,11 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('expensecat/delete/{uuid}', [MasterdataExpenseCatController::class, 'deleteMasterExpenseCat']);
         Route::get('expensecat/coa', [MasterdataExpenseCatController::class, 'expensecatCoaMaster']);
         Route::post('expensecat/coa', [MasterdataExpenseCatController::class, 'expensecatMasterUpdate']);
+        Route::get('snack', [MasterdataSnackController::class, 'listMasterSnack']);
+        Route::get('snack/add', [MasterdataSnackController::class, 'addMasterSnack']);
+        Route::post('snack/add', [MasterdataSnackController::class, 'addMasterSnackStore']);
+        Route::get('snack/edit/{uuid}', [MasterdataSnackController::class, 'editMasterSnack']);
+        Route::post('snack/edit/{uuid}', [MasterdataSnackController::class, 'editMasterSnackUpdate']);
+        Route::get('snack/delete/{uuid}', [MasterdataSnackController::class, 'deleteMasterSnack']);
     });
 });
