@@ -79,11 +79,10 @@ class Accurate extends Model
                 ON bus.uuid = mn.fleet
             WHERE mn.status = '2'
             AND mn.uuid IS NOT NULL
-            AND mn.isSynced = 0
             AND mn.trip_date >= '2025-09-01 00:00:00'
             AND mn.trip_date <= NOW()
             ORDER BY mn.id ASC
-            LIMIT 300
+            LIMIT 1000
         ";
 
         return DB::select($sql);
