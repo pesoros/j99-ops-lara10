@@ -95,13 +95,13 @@
 
 <script type="text/javascript">
     $(function () {
-        var bookLists = @json($lists);
-        console.log(bookLists);
-        
+        var bookLists = @json($lists);        
         const maxData = 100;
         const bookToSend = bookLists.filter(item => item.accurate_soid === '0').slice(0, maxData);
         const backendUrl = "{{ $beUrl }}";
         let successCount = 0;
+
+        console.log(bookToSend);
 
         $('.syncBulkClientSide').click(async function () {
             $.LoadingOverlay("show", {
