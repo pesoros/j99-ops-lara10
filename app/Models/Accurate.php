@@ -48,7 +48,7 @@ class Accurate extends Model
             AND tb.booking_date  >= '2025-09-01 00:00:00'
             AND tb.booking_date  <= NOW()
             ORDER BY thead.id ASC
-            LIMIT 300
+            LIMIT 1000
         ";
 
         return DB::select($sql);
