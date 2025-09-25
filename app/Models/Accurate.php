@@ -44,7 +44,7 @@ class Accurate extends Model
             ->whereRaw('COALESCE(thead.accurate_soid, 0) = 0')
             ->whereBetween('thead.created_at', ['2025-07-01 00:00:00', now()])
             ->orderBy('thead.id', 'asc')
-            ->limit(300)
+            ->limit(100)
             ->get();
     }
 
