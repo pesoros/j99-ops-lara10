@@ -131,7 +131,7 @@
         });
 
         async function salesFetch(bookingCode) {
-          console.log('fetch '.bookingCode);
+          console.log('fetch '+ bookingCode);
           const headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
