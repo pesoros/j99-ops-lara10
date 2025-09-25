@@ -43,7 +43,7 @@ class Accurate extends Model
             LEFT JOIN tkt_booking_head AS thead_ref 
                 ON thead_ref.booking_code = refund.tkt_booking_id_no
             WHERE thead.payment_status IN (1, 2)
-            AND (thead.accurate_soid = 0 OR thead.accurate_soid IS NULL)
+            AND thead.accurate_soid = 0
             AND thead.created_at >= '2025-07-01 00:00:00'
             AND thead.created_at <= NOW()
             ORDER BY thead.id ASC
