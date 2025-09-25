@@ -30,27 +30,22 @@ class Accurate extends Model
 
     public function scopeGetSales($query)
     {
-        $sql = "
-            SELECT 
-                thead.id,
-                thead.booking_code,
-                thead.accurate_soid,
-                refund.tkt_booking_id_no,
-                thead_ref.accurate_soid AS ref_soid
-            FROM tkt_booking_head AS thead
-            LEFT JOIN tkt_refund AS refund 
-                ON refund.code_related = thead.booking_code
-            LEFT JOIN tkt_booking_head AS thead_ref 
-                ON thead_ref.booking_code = refund.tkt_booking_id_no
-            WHERE thead.payment_status IN (1, 2)
-            AND (thead.accurate_soid = 0 OR thead.accurate_soid IS NULL)
-            AND thead.created_at >= '2025-07-01 00:00:00'
-            AND thead.created_at <= NOW()
-            ORDER BY thead.id ASC
-            LIMIT 300
-        ";
-
-        return DB::select($sql);
+        return DB::table('tkt_booking_head as thead')
+            ->select(
+                'thead.id',
+                'thead.booking_code',
+                'thead.accurate_soid',
+                'refund.tkt_booking_id_no',
+                'thead_ref.accurate_soid as ref_soid'
+            )
+            ->leftJoin('tkt_refund as refund', 'refund.code_related', '=', 'thead.booking_code')
+            ->leftJoin('tkt_booking_head as thead_ref', 'thead_ref.booking_code', '=', 'refund.tkt_booking_id_no')
+            ->whereIn('thead.payment_status', [1, 2])
+            ->whereRaw('COALESCE(thead.accurate_soid, 0) = 0')
+            ->whereBetween('thead.created_at', ['2025-07-01 00:00:00', now()])
+            ->orderBy('thead.id', 'asc')
+            ->limit(300)
+            ->get();
     }
 
     public function scopeGetManifest($query)
