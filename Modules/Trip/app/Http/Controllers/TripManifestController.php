@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Trip;
 use App\Models\Rest;
+use App\Models\Watzapp;
 
 class TripManifestController extends Controller
 {
@@ -102,6 +103,9 @@ class TripManifestController extends Controller
         $passengers = Trip::getPassengerList($manifest->trip_assign, $manifest->trip_date);
 
         foreach ($passengers as $key => $value) {
+            if ($key > 0) {
+                continue;
+            }
             $text = $this->generateEncodingTextWa(
                 $value->name, 
                 $manifest->trip_date, 
@@ -112,7 +116,8 @@ class TripManifestController extends Controller
                 $value->seat_number,
                 $manifest->busname,
             );
-            $sendWa = Rest::sendWaPassenger($value->phone, $text);
+            // $sendWa = Watzapp::sendWaPassenger($value->phone, $text);
+            $sendWa = Watzapp::sendWaPassenger('6281288855773', $text);
             sleep(3);
         }
 
@@ -140,6 +145,6 @@ Demikian konfirmasi dari kami, mohon maaf mengganggu waktunya 😊🙏
         
 Sekian&Terimakasih';
 
-        return rawurlencode($text);
+        return $text;
     }
 }
