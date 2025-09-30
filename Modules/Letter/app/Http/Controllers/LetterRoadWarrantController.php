@@ -236,6 +236,7 @@ class LetterRoadWarrantController extends Controller
                 if ($value->status == 0) {
                     continue;
                 }
+                
                 if ($value->action == 'income') {
                     $incomeSum += $value->nominal;
                 }
