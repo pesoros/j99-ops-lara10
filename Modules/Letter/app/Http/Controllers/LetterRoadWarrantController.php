@@ -233,6 +233,9 @@ class LetterRoadWarrantController extends Controller
             $incomeSum = 0;
             $spendSum = 0;
             foreach ($data['expensesList'] as $key => $value) {
+                if ($value->status == 0) {
+                    continue;
+                }
                 if ($value->action == 'income') {
                     $incomeSum += $value->nominal;
                 }
