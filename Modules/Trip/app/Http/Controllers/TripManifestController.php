@@ -117,7 +117,7 @@ class TripManifestController extends Controller
                 $manifest->busname,
             );
             // $sendWa = Watzapp::sendWaPassenger($value->phone, $text);
-            $sendWa = Watzapp::sendWaPassenger('6278759943393', $text);
+            $sendWa = Watzapp::sendWaPassenger('6281288855773', $text);
             sleep(3);
         }
 
