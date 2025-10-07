@@ -1,6 +1,49 @@
 @extends('layouts.main', ['title' => $title ])
 
 @section('content')
+<style>
+#loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 1051;
+}
+
+.loading-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+
+<div id="loading-overlay">
+    <div class="loading-box">
+        <div class="loader"></div>
+        <p style="margin-top: 20px; font-size: 18px; color: #333;">Mengirim reminder, Mohon tunggu...</p>
+    </div>
+</div>
+
 @if (session('success'))
   <div class="alert alert-success alert-dismissible">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -118,6 +161,7 @@
                 <th>Makanan</th>
                 <th>Titik jemput</th>
                 <th>Titik turun</th>
+                <th>Aksi</th>
               </tr>
               </thead>
               <tbody>
@@ -131,6 +175,11 @@
                     <td>{{ $passenger->food_name }}</td>
                     <td>{{ $passenger->pickup_trip_location }} {{ substr($passenger->dep_time, 0, 5) }}</td>
                     <td>{{ $passenger->drop_trip_location }} {{ substr($passenger->arr_time, 0, 5) }}</td>
+                    <td>
+                        @if(is_null($passenger->reminderSucceed) || $passenger->reminderSucceed == 0)
+                            <button class="btn btn-sm btn-info single-reminder-btn" data-ticket-number="{{ $passenger->ticket_number }}">Reminder</button>
+                        @endif
+                    </td>
                   </tr>
                 @endforeach
               </tbody>
@@ -161,11 +210,28 @@
     const reminderUrl = @json($reminderUrl);
     const manifestId = @json($manifestId);
 
+    function showLoading() {
+        $('#loading-overlay').css('display', 'flex');
+    }
+
+    function hideLoading() {
+        $('#loading-overlay').css('display', 'none');
+    }
+
+    function postReminder(ticketNumber) {
+        return axios.post(reminderUrl, {
+            manifestId: manifestId,
+            ticketNumber: ticketNumber
+        });
+    }
+
     function sendReminder(index) {
         if (index >= passengerList.length) {
+            hideLoading();
             console.log('All reminders sent.');
             alert('All reminders have been sent.');
             $('#broadcastButton').prop('disabled', false).text('Broadcast Reminder');
+            location.reload();
             return;
         }
 
@@ -174,30 +240,54 @@
 
         console.log(`Sending reminder for ticket: ${ticketNumber}`);
 
-        axios.post(reminderUrl, {
-            manifestId: manifestId,
-            ticketNumber: ticketNumber
-        })
-        .then(response => {
-            console.log(`Successfully sent reminder for ticket: ${ticketNumber}`, response.data);
-        })
-        .catch(error => {
-            console.error(`Failed to send reminder for ticket: ${ticketNumber}`, error);
-        })
-        .finally(() => {
-            setTimeout(() => {
-                sendReminder(index + 1);
-            }, 3000);
-        });
+        postReminder(ticketNumber)
+            .then(response => {
+                console.log(`Successfully sent reminder for ticket: ${ticketNumber}`, response.data);
+            })
+            .catch(error => {
+                console.error(`Failed to send reminder for ticket: ${ticketNumber}`, error);
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    sendReminder(index + 1);
+                }, 3000);
+            });
+    }
+
+    function sendSingleReminder(ticketNumber) {
+        showLoading();
+        console.log(`Sending single reminder for ticket: ${ticketNumber}`);
+
+        postReminder(ticketNumber)
+            .then(response => {
+                console.log(`Successfully sent reminder for ticket: ${ticketNumber}`, response.data);
+                alert(`Reminder sent for ticket: ${ticketNumber}`);
+            })
+            .catch(error => {
+                console.error(`Failed to send reminder for ticket: ${ticketNumber}`, error);
+                alert(`Failed to send reminder for ticket: ${ticketNumber}`);
+            })
+            .finally(() => {
+                hideLoading();
+                location.reload();
+            });
     }
 
     $(function () {
       $('#broadcastButton').click(function(){
            if (confirm('Are you sure you want to broadcast reminders to all passengers?')) {
+               showLoading();
                console.log('Starting to send reminders...');
                $(this).prop('disabled', true).text('Sending...');
-               sendReminder(10);
+               sendReminder(0);
            }
+      });
+
+      $('.single-reminder-btn').click(function(){
+          const ticketNumber = $(this).data('ticket-number');
+          if (confirm(`Are you sure you want to send a reminder for ticket ${ticketNumber}?`)) {
+              sendSingleReminder(ticketNumber);
+          }
       });
 
       $('a.printPage').click(function(){
