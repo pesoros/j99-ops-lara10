@@ -30,7 +30,7 @@
             @else
             <a href="{{ url('trip/manifest/open/'.$detailManifest->id) }}" onclick="return confirm('Anda yakin mermbuks Manifest ini?')" class="btn bg-gradient-danger float-right no-print">Aktifkan kembali manifest ini</a>
             @endif
-            <a href="{{ url('trip/manifest/broadcast/'.$detailManifest->id) }}" onclick="return confirm('Anda yakin broadcast WA penumpang pada manifest ini?')" class="btn bg-gradient-warning float-right mr-1 no-print">Kirim Reminder WA</a>
+            <button id="broadcastButton" class="btn bg-gradient-warning float-right mr-1 no-print">Broadcast Reminder</button>
             <a href="{{ url('trip/manifest') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success float-right mr-1 no-print">Kembali</a>
             </h4>
           </div>
@@ -155,8 +155,51 @@
  
 @endsection
 @push('extra-scripts')
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script type="text/javascript">
+    const passengerList = @json($passengerList);
+    const reminderUrl = @json($reminderUrl);
+    const manifestId = @json($manifestId);
+
+    function sendReminder(index) {
+        if (index >= passengerList.length) {
+            console.log('All reminders sent.');
+            alert('All reminders have been sent.');
+            $('#broadcastButton').prop('disabled', false).text('Broadcast Reminder');
+            return;
+        }
+
+        const passenger = passengerList[index];
+        const ticketNumber = passenger.ticket_number;
+
+        console.log(`Sending reminder for ticket: ${ticketNumber}`);
+
+        axios.post(reminderUrl, {
+            manifestId: manifestId,
+            ticketNumber: ticketNumber
+        })
+        .then(response => {
+            console.log(`Successfully sent reminder for ticket: ${ticketNumber}`, response.data);
+        })
+        .catch(error => {
+            console.error(`Failed to send reminder for ticket: ${ticketNumber}`, error);
+        })
+        .finally(() => {
+            setTimeout(() => {
+                sendReminder(index + 1);
+            }, 3000);
+        });
+    }
+
     $(function () {
+      $('#broadcastButton').click(function(){
+           if (confirm('Are you sure you want to broadcast reminders to all passengers?')) {
+               console.log('Starting to send reminders...');
+               $(this).prop('disabled', true).text('Sending...');
+               sendReminder(10);
+           }
+      });
+
       $('a.printPage').click(function(){
            window.print();
            return false;

@@ -23,9 +23,11 @@ class TripManifestController extends Controller
     public function detailManifest(Request $request, $id)
     {
         $data['title'] = 'Detail Manifest';
+        $data['reminderUrl'] = env('BE_BASEURL').'/v2/crm/reminder';
+        $data['manifestId'] = $id;
         $data['detailManifest'] = Trip::getManifest($id);
         $data['passengerList'] = Trip::getPassengerList($data['detailManifest']->trip_assign, $data['detailManifest']->trip_date);
-
+        
         return view('trip::manifest.detail', $data);
     }
 
