@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Trip;
 use App\Models\Rest;
-use App\Models\Watzapp;
 
 class TripManifestController extends Controller
 {
@@ -97,53 +96,5 @@ class TripManifestController extends Controller
         $updateExpense = Trip::updateExpense($expenseid, $updateData);
 
         return redirect('trip/manifest/expenses/'.$id);
-    }
-
-    public function sendWaToPassengers(Request $request, $id)
-    {
-        $manifest = Trip::getManifest($id);
-        $passengers = Trip::getPassengerList($manifest->trip_assign, $manifest->trip_date);
-
-        foreach ($passengers as $key => $value) {
-            $text = $this->generateEncodingTextWa(
-                $value->name, 
-                $manifest->trip_date, 
-                $value->pickup_trip_location, 
-                $value->dep_time, 
-                $value->ticket_number,
-                $value->class,
-                $value->seat_number,
-                $manifest->busname,
-            );
-            // $sendWa = Watzapp::sendWaPassenger($value->phone, $text);
-            $sendWa = Watzapp::sendWaPassenger('6287859943393', $text);
-            sleep(3);
-        }
-
-        return back()->with('success', 'Broadcast berhasil');
-    }
-
-    function generateEncodingTextWa($name, $departureDate, $pickup, $dep_time, $ticket, $class, $seat, $busname) {
-        $text = 'Selamat Sore Bapak/ibu '.strtoupper($name).', 
-Sekedar konfirmasi untuk mengingatkan jam pemberangkatan Bapak/Ibu '.strtoupper($name).' bersama Bus Juragan 99 Trans Unit '.$busname.' besok '.dateFormat($departureDate).'
-
-Keberangkatan: '.$pickup.' '.substr($dep_time,0,5).'
-Nomor tiket: '.$ticket.'
-Kelas / Kursi: '.$class.' / '.$seat.'
-
-Atas perhatian dan pengertiannya kami sampaikan terima kasih
-        
-Apabila ada perubahan titik naik mohon segera di Konfirmasikan
-        
-Mohon sudah berada di titik keberangkatan maksimal 30 menit sebelum jam keberangkatan yang sudah kami informasikan
-        
-Dan setelah menggunakan armada kami Juragan99Trans, adapun kesan pesan yang ingin disampaikan mengenai pelayanan armada kami silahkan mengisi link : 
-form.jotform.com/230520755913453
-        
-Demikian konfirmasi dari kami, mohon maaf mengganggu waktunya 😊🙏
-        
-Sekian&Terimakasih';
-
-        return $text;
     }
 }
