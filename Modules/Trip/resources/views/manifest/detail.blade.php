@@ -166,7 +166,7 @@
                 <th>Makanan</th>
                 <th>Titik jemput</th>
                 <th>Titik turun</th>
-                <th>Aksi</th>
+                <th>Reminder</th>
               </tr>
               </thead>
               <tbody>
@@ -183,6 +183,8 @@
                     <td>
                         @if(is_null($passenger->reminderSucceed) || $passenger->reminderSucceed == 0)
                             <button class="btn btn-sm btn-info single-reminder-btn" data-ticket-number="{{ $passenger->ticket_number }}">Reminder</button>
+                        @else
+                            <button class="btn btn-sm btn-outline-info" disabled>Terkirim</button>
                         @endif
                     </td>
                   </tr>
