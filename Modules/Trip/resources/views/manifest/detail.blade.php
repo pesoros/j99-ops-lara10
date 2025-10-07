@@ -73,7 +73,12 @@
             @else
             <a href="{{ url('trip/manifest/open/'.$detailManifest->id) }}" onclick="return confirm('Anda yakin mermbuks Manifest ini?')" class="btn bg-gradient-danger float-right no-print">Aktifkan kembali manifest ini</a>
             @endif
-            <button id="broadcastButton" class="btn bg-gradient-warning float-right mr-1 no-print">Broadcast Reminder</button>
+            @php
+                $passengersToRemind = $passengerList->filter(function($passenger) {
+                    return is_null($passenger->reminderSucceed) || $passenger->reminderSucceed == 0;
+                });
+            @endphp
+            <button id="broadcastButton" class="btn bg-gradient-warning float-right mr-1 no-print" @if($passengersToRemind->isEmpty()) disabled @endif>Broadcast Reminder</button>
             <a href="{{ url('trip/manifest') }}" onclick="return confirm('Anda yakin mau kembali?')" class="btn btn-success float-right mr-1 no-print">Kembali</a>
             </h4>
           </div>
@@ -207,6 +212,7 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script type="text/javascript">
     const passengerList = @json($passengerList);
+    const passengersToRemind = passengerList.filter(passenger => passenger.reminderSucceed === null || passenger.reminderSucceed == 0);
     const reminderUrl = @json($reminderUrl);
     const manifestId = @json($manifestId);
 
@@ -226,7 +232,7 @@
     }
 
     function sendReminder(index) {
-        if (index >= passengerList.length) {
+        if (index >= passengersToRemind.length) {
             hideLoading();
             console.log('All reminders sent.');
             alert('All reminders have been sent.');
@@ -235,7 +241,7 @@
             return;
         }
 
-        const passenger = passengerList[index];
+        const passenger = passengersToRemind[index];
         const ticketNumber = passenger.ticket_number;
 
         console.log(`Sending reminder for ticket: ${ticketNumber}`);
@@ -275,7 +281,11 @@
 
     $(function () {
       $('#broadcastButton').click(function(){
-           if (confirm('Are you sure you want to broadcast reminders to all passengers?')) {
+            if (passengersToRemind.length === 0) {
+                alert('All passengers have already received a reminder.');
+                return;
+            }
+           if (confirm('Are you sure you want to broadcast reminders to all passengers who have not received one?')) {
                showLoading();
                console.log('Starting to send reminders...');
                $(this).prop('disabled', true).text('Sending...');
