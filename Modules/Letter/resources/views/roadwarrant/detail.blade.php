@@ -52,9 +52,6 @@
                 @if (intval($roadwarrant->status) == 3 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'accounting'))
                   <a href="{{ url('letter/roadwarrant/withdraw/2/'.$roadwarrant->uuid) }}" class="btn bg-gradient-success float-right">Transfer uang perjalanan</a>
                 @endif
-                @if (intval($roadwarrant->status) == 5 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'operational' || $roleInfo->role_slug == 'accounting'))
-                  <a href="{{ url('letter/roadwarrant/accurate/lpj/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-warning float-right">Lapor LPJ perjalanan</a>
-                @endif
             </h4>
           </div>
           <!-- /.col -->
