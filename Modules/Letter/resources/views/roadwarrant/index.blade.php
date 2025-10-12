@@ -47,30 +47,22 @@
               {{ $value->tfBank }} - {{ $value->tfNumber }}
             </td>
             <td>
-              @if (intval($value->category) === 1 && $value->manifest_uuid == NULL)
-                @if (intval($value->status) === 0)
-                  <span class="badge badge-light">Draft</span>   
-                @elseif (intval($value->status) === 1)
-                  <span class="badge badge-secondary">Waiting to Marker</span>                                        
-                @elseif (intval($value->status) === 2)
-                  <span class="badge badge-info">Marker</span>      
-                @elseif (intval($value->status) === 3)
-                  <span class="badge badge-primary">Aktif</span>
-                @elseif (intval($value->status) === 4)
-                  <span class="badge badge-success">Sudah di transfer</span>
-                @elseif (intval($value->status) === 5)
-                  <span class="badge badge-danger">Perjalanan selesai</span>
-                @elseif (intval($value->status) === 6)
-                  <span class="badge bg-orange">SPJ Selesai</span>
-                @endif
-              @else
-                @if (intval($value->status) === 1)
-                  <span class="badge badge-warning">Aktif</span>                                        
-                @elseif (intval($value->status) === 2)
-                  <span class="badge badge-success">Selesai</span>                                        
-                @endif
+              @if (intval($value->status) === 0)
+                <span class="badge badge-light">Draft</span>   
+              @elseif (intval($value->status) === 1)
+                <span class="badge badge-secondary">Waiting to Marker</span>                                        
+              @elseif (intval($value->status) === 2)
+                <span class="badge badge-info">Marker</span>      
+              @elseif (intval($value->status) === 3)
+                <span class="badge badge-primary">Aktif</span>
+              @elseif (intval($value->status) === 4)
+                <span class="badge badge-success">Sudah di transfer</span>
+              @elseif (intval($value->status) === 5)
+                <span class="badge badge-danger">Perjalanan selesai</span>
+              @elseif (intval($value->status) === 6)
+                <span class="badge bg-orange">SPJ Selesai</span>
               @endif
-              </td>
+            </td>
             <td>
               <div class="btn-group btn-block">
                 @if (permissionCheck('show')) <a href="{{ url('letter/roadwarrant/show/detail/'.$value->category.'/'.$value->uuid) }}" class="btn btn-warning btn-sm">Detail</a> @endif

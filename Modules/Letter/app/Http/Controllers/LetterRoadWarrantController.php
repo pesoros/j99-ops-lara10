@@ -53,6 +53,7 @@ class LetterRoadWarrantController extends Controller
     {
         $roadWarrantCount = RoadWarrant::getRoadWarrantCount();
         $count = !isset($roadWarrantCount->count) ? 1 : $roadWarrantCount->count + 1;
+        $departureDate = $request->start_date.' - '.$request->finish_date;
 
         foreach ($request->bus_uuid as $key => $value) {
             $counter = $count + $key;
@@ -74,7 +75,9 @@ class LetterRoadWarrantController extends Controller
                 'fuel_allowance'            =>  0,
                 'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance[$key]),
                 'created_by'                =>  auth()->user()->uuid,
-                'status'                    =>  1,
+                'status'                    =>  0,
+                'transferto'                =>  $request->transferto[$key],
+                'departure_date'            =>  $departureDate
             ];
         }
 
@@ -253,6 +256,9 @@ class LetterRoadWarrantController extends Controller
             $data['title'] = 'Detail SPJ Pariwisata';
             $data['roadwarrant'] = RoadWarrant::getRoadWarrant($uuid);
             $data['expensesList'] = Roadwarrant::getExpensesList($uuid);
+            
+            $data['isMarkerReady'] = true;
+            $data['roleInfo'] = Session('role_info_session');
 
             return view('letter::roadwarrant.detail', $data);
         }
@@ -422,6 +428,25 @@ class LetterRoadWarrantController extends Controller
 
             return view('letter::roadwarrantakap.withdraw', $data);
         } 
+
+        if ($category === '2') {
+            $data['title'] = 'Withdraw Surat perintah jalan Pariwisata';
+            $roadWarrant = RoadWarrant::getRoadWarrantAkap($uuid);
+            $withdraw = RoadWarrant::getWithdraw($uuid);
+            
+            $diffDays = $this->getDiffDay($roadWarrant->departure_date);
+            $totalCrewMeal = $roadWarrant->crew_meal_allowance * $diffDays;
+            $totalAllowance = intval($totalCrewMeal) + intval($roadWarrant->driver_allowance_1) + intval($roadWarrant->driver_allowance_2) + intval($roadWarrant->codriver_allowance);
+
+            $data['roadwarrant'] = $roadWarrant;
+            $data['diffDays'] = $diffDays;
+            $data['totalCrewMeal'] = $totalCrewMeal;
+            $data['totalAllowance'] = $totalAllowance;
+            $data['withdraw'] = $withdraw;
+            $data['crewCount'] = isset($roadWarrant->driver_2_name) ? 3 : 2;
+
+            return view('letter::roadwarrant.withdraw', $data);
+        } 
         
         return;
     }
@@ -462,10 +487,13 @@ class LetterRoadWarrantController extends Controller
         ];
 
         $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
-        $sendAccurate = $this->accurateTransfer($uuid);
+
+        if ($request->category == '1') {
+            $sendAccurate = $this->accurateTransfer($uuid);
+        }
 
         if ($create) {
-            return redirect('letter/roadwarrant/show/detail/1/'.$uuid)->with('success', 'Withdraw tersimpan!');
+            return redirect('letter/roadwarrant/show/detail/'.$request->category.'/'.$uuid)->with('success', 'Withdraw tersimpan!');
         }
 
         return back()->with('failed', 'Withdraw gagal tersimpan!');        
@@ -632,5 +660,17 @@ class LetterRoadWarrantController extends Controller
         );
 
         return json_decode($response->getBody(), true); // return assoc array
+    }
+
+    function getDiffDay($range) {
+        [$startStr, $endStr] = explode(' - ', $range);
+
+        $start = Carbon::parse($startStr);
+        $end = Carbon::parse($endStr);
+
+        $diffDaysInclusive = $start->diffInDays($end) + 1;
+
+        return $diffDaysInclusive;
+
     }
 }

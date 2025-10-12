@@ -24,6 +24,37 @@
           <div class="col-12">
             <h4>
               <img src="{{url('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
+
+              @if (intval($roadwarrant->status) < 3)
+                @if (permissionCheck('edit')) <a href="{{ url('letter/roadwarrant/edit/1/'.$roadwarrant->uuid) }}" class="btn btn-secondary float-right" style="margin-left: 4px;">Edit</a> @endif
+              @endif
+
+              @if (intval($roadwarrant->status) == 0 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'operational'))
+                  <a href="{{ url('letter/roadwarrant/status/waitingmarker/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-secondary float-right">Set Waiting to Marker</a>
+                @endif
+                @if (intval($roadwarrant->status) == 1 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'accounting'))
+                  @if ($isMarkerReady == false)
+                  <button 
+                    type="button" 
+                    class="btn bg-gradient-danger float-right" 
+                    data-toggle="modal" 
+                    data-target="#numberidModal"
+                  >
+                    Marker Block
+                  </button>
+                  @else
+                    <a href="{{ url('letter/roadwarrant/status/marker/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-info float-right">Set Marker</a>
+                  @endif
+                @endif
+                @if (intval($roadwarrant->status) == 2 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'operational'))
+                  <a href="{{ url('letter/roadwarrant/status/active/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-primary float-right">Set Aktif</a>
+                @endif
+                @if (intval($roadwarrant->status) == 3 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'accounting'))
+                  <a href="{{ url('letter/roadwarrant/withdraw/2/'.$roadwarrant->uuid) }}" class="btn bg-gradient-success float-right">Transfer uang perjalanan</a>
+                @endif
+                @if (intval($roadwarrant->status) == 5 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'operational' || $roleInfo->role_slug == 'accounting'))
+                  <a href="{{ url('letter/roadwarrant/accurate/lpj/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-warning float-right">Lapor LPJ perjalanan</a>
+                @endif
             </h4>
           </div>
           <!-- /.col -->
@@ -37,13 +68,32 @@
                 <tr>
                   <th width="250">Status SPJ:</th>
                   <td>
-                    @if (STRVAL($roadwarrant->status) === '1')
-                      <span class="badge badge-warning">Aktif</span>                                        
-                    @elseif (STRVAL($roadwarrant->status) === '2')
-                      <span class="badge badge-success">Selesai</span>                                        
-                    @endif
+                      @if (intval($roadwarrant->status) === 0)
+                        <span class="badge badge-light">Draft</span>   
+                      @elseif (intval($roadwarrant->status) === 1)
+                        <span class="badge badge-secondary">Waiting to Marker</span>                                  
+                      @elseif (intval($roadwarrant->status) === 2)
+                        <span class="badge badge-info">Marker</span>
+                      @elseif (intval($roadwarrant->status) === 3)
+                        <span class="badge badge-primary">Aktif</span>
+                      @elseif (intval($roadwarrant->status) === 4)
+                        <span class="badge badge-success">Sudah di transfer</span>
+                      @elseif (intval($roadwarrant->status) === 5)
+                        <span class="badge badge-danger">Perjalanan selesai</span>
+                      @elseif (intval($roadwarrant->status) === 6)
+                        <span class="badge bg-orange">SPJ Selesai</span>
+                      @endif
                   </td>
                 </tr>
+
+                @if (intval($roadwarrant->status) >= 4)
+                    <tr>
+                      <th width="250">Bukti transfer uang jalan :</th>
+                      <td>
+                        <a href="{{ url('letter/roadwarrant/withdraw/2/'.$roadwarrant->uuid) }}" class="btn btn-sm btn-secondary" style="margin-left: 4px;">Check</a>
+                      </td>
+                    </tr>
+                @endif
 
                 <tr>
                   <th width="250">Nomor SPJ :</th>

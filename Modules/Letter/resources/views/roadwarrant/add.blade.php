@@ -93,6 +93,8 @@
       <!-- /.col -->
     </div>
     @csrf
+    <input type="hidden" id="start_date" name="start_date" value={{ $book->start_date }}>
+    <input type="hidden" id="finish_date" name="finish_date" value={{ $book->finish_date }}>
     @foreach ($bookbus as $keybus => $bus)
       <hr>
       <input type="hidden" id="bus_uuid" name="bus_uuid[]" value={{ $bus->bus_uuid }}>
@@ -164,6 +166,19 @@
                         {{ $employeeItem->first_name.' '.$employeeItem->second_name }}
                     </option>
                   @endif
+              @endForeach
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Rekening uang jalan</label>
+            <select class="form-control select2bs4" name="transferto[]" style="width: 100%;" required>
+              <option value="">Pilih</option>
+              @foreach ($employee as $employeeItem)
+                <option value="{{ $employeeItem->id }}" @selected(old('transferto[]') == $employeeItem->id)>
+                    {{ $employeeItem->first_name.' '.$employeeItem->second_name }}
+                    | 
+                    {{ $employeeItem->bank_name.' '.$employeeItem->bank_number }}
+                </option>
               @endForeach
             </select>
           </div>

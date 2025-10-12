@@ -36,7 +36,7 @@
   <!-- form start -->
   <form action="{{ url()->current() }}" method="post" enctype="multipart/form-data">
     @csrf
-    <input type="hidden" id="category" name="category" value='1'>
+    <input type="hidden" id="category" name="category" value='2'>
     <div class="card-body row">
       <div class="col-sm-12 invoice-col">
         <div class="table-responsive">
@@ -50,8 +50,28 @@
               <td>{{ $roadwarrant->bank_account }} | {{ $roadwarrant->bank_name }} - {{ $roadwarrant->bank_number }}</td>
             </tr>
             <tr>
+              <th>Jumlah hari :</th>
+              <td>{{ $diffDays }} Hari</td>
+            </tr>
+            <tr>
+              <th>Uang Makan Kru :</th>
+              <td>{{ formatAmount($roadwarrant->crew_meal_allowance) }} x {{ $diffDays }} = {{ formatAmount($totalCrewMeal) }}</td>
+            </tr>
+            <tr>
+              <th>Premi Driver 1 :</th>
+              <td>{{ formatAmount($roadwarrant->driver_allowance_1) }}</td>
+            </tr>
+            <tr>
+              <th>Premi Driver 2 :</th>
+              <td>{{ formatAmount($roadwarrant->driver_allowance_2) }}</td>
+            </tr>
+            <tr>
+              <th>Premi Co Driver :</th>
+              <td>{{ formatAmount($roadwarrant->codriver_allowance) }}</td>
+            </tr>
+            <tr>
               <th>Total biaya SPJ :</th>
-              <td>{{ formatAmount($roadwarrant->total_allowance) }}</td>
+              <td><b>{{ formatAmount($totalAllowance) }}</b></td>
             </tr>
           </table>
         </div>
