@@ -254,9 +254,15 @@ class LetterRoadWarrantController extends Controller
             return view('letter::roadwarrantakap.detail', $data);
         } else if ($category === '2') {
             $data['title'] = 'Detail SPJ Pariwisata';
-            $data['roadwarrant'] = RoadWarrant::getRoadWarrant($uuid);
+            $roadwarrant = RoadWarrant::getRoadWarrant($uuid);
+            $data['roadwarrant'] = $roadwarrant;
             $data['expensesList'] = Roadwarrant::getExpensesList($uuid);
             
+            $data['bookPayments'] = [];
+            if (intval($roadwarrant->status) > 1) {
+                $data['bookPayments'] = RoadWarrant::getBookPayments($roadwarrant->manifest_uuid);
+            }
+
             $data['isMarkerReady'] = true;
             $data['roleInfo'] = Session('role_info_session');
 
@@ -413,6 +419,38 @@ class LetterRoadWarrantController extends Controller
         }
         $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
         return back()->with('success', 'Status berhasil dirubah!');
+    }
+
+    public function setMarkerWithPayment(Request $request, $category, $uuid)
+    {
+        $request->validate([
+            'amount' => 'required|numeric',
+            'description' => 'required|string|max:255',
+        ]);
+
+        $roadWarrant = RoadWarrant::getRoadWarrant($uuid);
+        if (!$roadWarrant) {
+            return back()->with('failed', 'SPJ tidak ditemukan!');
+        }
+
+        $paymentData = [
+            'uuid' => generateUuid(),
+            'book_uuid' => $roadWarrant->manifest_uuid,
+            'amount' => $request->amount,
+            'description' => $request->description,
+            'created_by' => auth()->user()->uuid,
+        ];
+
+        RoadWarrant::saveBookPayment($paymentData);
+
+        $editRoadWarrantData = ['status' => 2];
+        $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
+
+        if ($editRoadWarrant) {
+            return back()->with('success', 'Status berhasil dirubah menjadi Marker dan pembayaran telah dicatat.');
+        }
+
+        return back()->with('failed', 'Gagal merubah status.');
     }
 
     public function withdrawRoadWarrant(Request $request, $category, $uuid)

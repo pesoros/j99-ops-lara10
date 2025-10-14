@@ -43,7 +43,7 @@
                     Marker Block
                   </button>
                   @else
-                    <a href="{{ url('letter/roadwarrant/status/marker/1/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-info float-right">Set Marker</a>
+                    <button type="button" class="btn bg-gradient-info float-right" data-toggle="modal" data-target="#markerPaymentModal">Set Marker</button>
                   @endif
                 @endif
                 @if (intval($roadwarrant->status) == 2 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'operational'))
@@ -143,6 +143,20 @@
                   <th>Catatan :</th>
                   <td>{{ $roadwarrant->notes }}</td>
                 </tr>
+
+                @if (isset($bookPayments) && count($bookPayments) > 0)
+                  @foreach ($bookPayments as $payment)
+                    <tr>
+                      <th width="250">Pembayaran :</th>
+                      <td>{{ formatAmount($payment->amount) }}</td>
+                    </tr>
+                    <tr>
+                      <th width="250">Referensi Pembayaran :</th>
+                      <td>{{ $payment->description }}</td>
+                    </tr>
+                  @endforeach
+                @endif
+                
               </table>
             </div>
           </div>
@@ -316,6 +330,37 @@
       </div> --}}
     </div><!-- /.col -->
   </div><!-- /.row -->
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="markerPaymentModal" tabindex="-1" role="dialog" aria-labelledby="markerPaymentModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="markerPaymentModalLabel">Input Book Payment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="{{ url('letter/roadwarrant/marker-payment/'.$roadwarrant->category.'/'.$roadwarrant->uuid) }}" method="POST">
+        @csrf
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" class="form-control" name="amount" placeholder="Enter amount" required>
+          </div>
+          <div class="form-group">
+            <label for="description">Referensi</label>
+            <input type="text" class="form-control" name="description" placeholder="Enter reference" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit & Set Marker</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
  
 @endsection
