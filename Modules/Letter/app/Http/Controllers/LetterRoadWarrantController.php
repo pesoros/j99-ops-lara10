@@ -585,6 +585,39 @@ class LetterRoadWarrantController extends Controller
         
         return back()->with('success', 'Laporan LPJ berhasil!');
     }
+
+    public function deleteRoadWarrant($category, $uuid)
+    {
+        $delete = false;
+        if ($category === '1') { // AKAP: Delete single road warrant
+            RoadWarrant::removeManifest($uuid);
+            $delete = RoadWarrant::deleteRoadWarrant($uuid);
+        } else if ($category === '2') { // Pariwisata: Delete all road warrants for the booking
+            $roadWarrant = RoadWarrant::getRoadWarrant($uuid);
+            if (!$roadWarrant) {
+                return back()->with('failed', 'SPJ tidak ditemukan!');
+            }
+            
+            $manifest_uuid = $roadWarrant->manifest_uuid;
+            
+            // Deletes all road warrants associated with the manifest_uuid
+            $delete = RoadWarrant::deleteRoadWarrantsByManifest($manifest_uuid); 
+            
+            if ($delete) {
+                // Revert book status
+                $updateBookData['status'] = 0;
+                RoadWarrant::updateBook($manifest_uuid, $updateBookData);
+            }
+        } else {
+            return back()->with('failed', 'Kategori SPJ tidak valid!');
+        }
+
+        if ($delete) {
+            return back()->with('success', 'Anda berhasil menghapus SPJ');
+        }
+
+        return back()->with('failed', 'SPJ gagal dihapus!');
+    }
     
     function httpPost($path, $uuid) {
         $props = ["uuid" => $uuid];

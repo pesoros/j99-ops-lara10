@@ -68,6 +68,7 @@
                 @if (permissionCheck('show')) <a href="{{ url('letter/roadwarrant/show/detail/'.$value->category.'/'.$value->uuid) }}" class="btn btn-warning btn-sm">Detail</a> @endif
                 @if (intval($value->status) < 3)
                   @if (permissionCheck('edit')) <a href="{{ url('letter/roadwarrant/edit/'.$value->category.'/'.$value->uuid) }}" class="btn btn-success btn-sm">Edit</a> @endif
+                  @if (permissionCheck('delete')) <a href="{{ url('letter/roadwarrant/delete/'.$value->category.'/'.$value->uuid) }}" onclick="return confirm('Apakah anda yakin akan menghapus SPJ ini?');" class="btn btn-danger btn-sm">Hapus</a> @endif
                 @endif
               </div>
             </td>
