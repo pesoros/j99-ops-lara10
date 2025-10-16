@@ -459,6 +459,11 @@ class RoadWarrant extends Model
             ->delete();
     }
 
+    public function scopeSaveBookPayment($query, $data)
+    {
+        return DB::table('v2_book_payment')->insert($data);
+    }
+
     public function scopeGetBookPayments($query, $book_uuid)
     {
         return DB::table('v2_book_payment')
