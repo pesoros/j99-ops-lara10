@@ -445,6 +445,20 @@ class RoadWarrant extends Model
         return $query;
     }
 
+    public function scopeDeleteRoadWarrant($query, $uuid)
+    {
+        return DB::table("ops_roadwarrant")
+            ->where('uuid', $uuid)
+            ->delete();
+    }
+
+    public function scopeDeleteRoadWarrantsByManifest($query, $manifest_uuid)
+    {
+        return DB::table("ops_roadwarrant")
+            ->where('manifest_uuid', $manifest_uuid)
+            ->delete();
+    }
+
     public function scopeGetBookPayments($query, $book_uuid)
     {
         return DB::table('v2_book_payment')
