@@ -231,7 +231,7 @@ class LetterRoadWarrantController extends Controller
             $data['busclass'] = $busclass;
             $data['isMarkerReady'] = $isMarkerReady;
 
-            $data['expensesList'] = Roadwarrant::getExpensesList($uuid);
+            $data['expensesList'] = Roadwarrant::getExpensesListAkap($uuid);
 
             $incomeSum = 0;
             $spendSum = 0;
