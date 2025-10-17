@@ -474,9 +474,10 @@ class LetterRoadWarrantController extends Controller
         if ($category === '2') {
             $data['title'] = 'Withdraw Surat perintah jalan Pariwisata';
             $roadWarrant = RoadWarrant::getRoadWarrantAkap($uuid);
+            $book = RoadWarrant::getBook($roadWarrant->manifest_uuid);
             $withdraw = RoadWarrant::getWithdraw($uuid);
             
-            $diffDays = $this->getDiffDay($roadWarrant->departure_date);
+            $diffDays = $this->getDiffDay($book->start_date, $book->finish_date);
             $totalCrewMeal = $roadWarrant->crew_meal_allowance * $diffDays;
             $totalAllowance = intval($totalCrewMeal) + intval($roadWarrant->driver_allowance_1) + intval($roadWarrant->driver_allowance_2) + intval($roadWarrant->codriver_allowance);
 
@@ -737,15 +738,12 @@ class LetterRoadWarrantController extends Controller
         return json_decode($response->getBody(), true); // return assoc array
     }
 
-    function getDiffDay($range) {
-        [$startStr, $endStr] = explode(' - ', $range);
-
-        $start = Carbon::parse($startStr);
-        $end = Carbon::parse($endStr);
+    function getDiffDay($startStr, $endStr) {
+        $start = Carbon::parse($startStr)->startOfDay();
+        $end = Carbon::parse($endStr)->startOfDay();
 
         $diffDaysInclusive = $start->diffInDays($end) + 1;
 
         return $diffDaysInclusive;
-
     }
 }
