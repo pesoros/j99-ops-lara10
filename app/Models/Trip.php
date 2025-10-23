@@ -26,7 +26,7 @@ class Trip extends Model
             ->leftJoin("fleet_registration as freg", "freg.id", "=", "manif.fleet")
             ->leftJoin("v2_bus as bus", "bus.uuid", "=", "manif.fleet")
             ->orderBy('manif.id', 'desc')
-            ->take(100)
+            ->take(300)
             ->get();
 
         return $query;
