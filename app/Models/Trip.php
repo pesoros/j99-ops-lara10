@@ -67,43 +67,74 @@ class Trip extends Model
         return $query;
     }
 
-    public function scopeGetPassengerList($query, $tripAssign, $booking_date)
+    public static function getPassengerList($tripAssign, $booking_date)
     {
-        return DB::table('trip_assign as tras')
-            ->select(
-                'tps.name', 'tps.ticket_number', 'tbook.booking_date', 'tbook.price',
-                'tbook.adult', 'tps.seat_number', 'tps.phone', 'tps.food_served',
-                'tbook.pickup_trip_location', 'tbook.drop_trip_location',
-                'tbookhead.booking_code', 'tbookhead.created_at', 'tbookhead.note as note',
-                'tpoint.dep_time', 'tpoint.arr_time', 'ftype.type as class',
-                'resto.food_name',
-                'paymentreg.payment_channel_code as channel',
-                'arrival_loc.ttpg_id',
-                'rem.is_succeed as reminderSucceed'
-            )
-            ->join('tkt_booking as tbook', 'tbook.trip_id_no', '=', 'tras.trip')
-            ->join('tkt_booking_head AS tbookhead', 'tbookhead.booking_code', '=', 'tbook.booking_code')
-            ->join('tkt_passenger_pcs as tps', 'tps.booking_id', '=', 'tbook.id_no')
-            ->join('fleet_type as ftype', 'ftype.id', '=', 'tps.fleet_type')
+        $query = "
+            SELECT 
+                tps.name,
+                tps.ticket_number,
+                tbook.booking_date,
+                tbook.price,
+                tbook.adult,
+                tps.seat_number,
+                tps.phone,
+                tps.food_served,
+                tbook.pickup_trip_location,
+                tbook.drop_trip_location,
+                tbookhead.booking_code,
+                tbookhead.created_at,
+                tbookhead.note AS note,
+                tpoint.dep_time,
+                tpoint.arr_time,
+                ftype.type AS class,
+                resto.food_name,
+                paymentreg.payment_channel_code AS channel,
+                arrival_loc.ttpg_id,
+                rem.is_succeed AS reminderSucceed,
+                rem.created_at AS reminder_created_at
+            FROM trip_assign AS tras
+            JOIN tkt_booking AS tbook
+                ON tbook.trip_id_no = tras.trip
+            JOIN tkt_booking_head AS tbookhead
+                ON tbookhead.booking_code = tbook.booking_code
+            JOIN tkt_passenger_pcs AS tps
+                ON tps.booking_id = tbook.id_no
+            JOIN fleet_type AS ftype
+                ON ftype.id = tps.fleet_type
+            LEFT JOIN trip_point AS tpoint
+                ON tpoint.trip_assign_id = tras.id
+                AND tpoint.dep_point = tbook.pickup_trip_location
+                AND tpoint.arr_point = tbook.drop_trip_location
+            LEFT JOIN resto_menu AS resto
+                ON resto.id = tps.food
+            LEFT JOIN payment_registration AS paymentreg
+                ON paymentreg.booking_code = tbookhead.booking_code
+            LEFT JOIN trip_location AS arrival_loc
+                ON arrival_loc.name = tbook.drop_trip_location
 
-            // LEFT JOINs
-            ->leftJoin('trip_point AS tpoint', function($join) {
-                $join->on('tpoint.trip_assign_id', '=', 'tras.id')
-                    ->on('tpoint.dep_point', '=', 'tbook.pickup_trip_location')
-                    ->on('tpoint.arr_point', '=', 'tbook.drop_trip_location');
-            })
-            ->leftJoin('resto_menu as resto', 'resto.id', '=', 'tps.food')
-            ->leftJoin('payment_registration AS paymentreg', 'paymentreg.booking_code', '=', 'tbookhead.booking_code')
-            ->leftJoin('trip_location as arrival_loc', 'arrival_loc.name', '=', 'tbook.drop_trip_location')
-            ->leftJoin('tkt_reminder as rem', 'rem.ticket_number', '=', 'tps.ticket_number')
+            LEFT JOIN (
+                SELECT r1.*
+                FROM tkt_reminder r1
+                INNER JOIN (
+                    SELECT ticket_number, MAX(created_at) AS max_created_at
+                    FROM tkt_reminder
+                    GROUP BY ticket_number
+                ) r2 ON r1.ticket_number = r2.ticket_number
+                    AND r1.created_at = r2.max_created_at
+            ) AS rem
+                ON rem.ticket_number = tps.ticket_number
 
-            // WHERE Clauses (Filtering)
-            // Place the most selective WHERE clauses first (e.g., primary keys)
-            ->where('tras.id', $tripAssign) // Highly selective
-            ->whereDate('tbook.booking_date', $booking_date) // Selective by date
-            ->where('tbookhead.payment_status', 1) // Standard filter
-            ->where('tps.cancel', 0) // Standard filter
-            ->orderBy('tps.seat_number', 'ASC');
+            WHERE tbookhead.payment_status = 1
+            AND tps.cancel = 0
+            AND tras.id = :tripAssign
+            AND DATE(tbook.booking_date) = :booking_date
+            ORDER BY tps.seat_number ASC
+        ";
+
+        return collect(DB::select($query, [
+            'tripAssign' => $tripAssign,
+            'booking_date' => $booking_date,
+        ]));
     }
 
     public function scopeGetExpensesList($query, $id)
