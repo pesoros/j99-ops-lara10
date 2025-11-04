@@ -93,7 +93,10 @@
                       @elseif (intval($roadwarrant->status) === 5)
                         <span class="badge badge-danger">Perjalanan selesai</span>
                       @elseif (intval($roadwarrant->status) === 6)
-                        <span class="badge bg-orange">SPJ Selesai</span>
+                      <span class="badge bg-orange">SPJ Selesai</span>
+                      @if ($roadwarrant->closed_at)
+                          | Selesai pada Tanggal {{ dateFormat($roadwarrant->closed_at) }}
+                        @endif
                       @endif
                     @else
                       @if (intval($roadwarrant->status) === 1)

@@ -621,7 +621,10 @@ class LetterRoadWarrantController extends Controller
 
     public function accurateLpj(Request $request, $uuid)
     {
-        $editRoadWarrantData = ['status'    =>  6];
+        $editRoadWarrantData = [
+            'status'        =>  6,
+            'closed_at'     =>  Carbon::now()
+        ];
         $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
         $path = "accurate/roadwarrant/tripexpenses";
         $fetch = $this->httpPost($path, $uuid);
