@@ -155,7 +155,7 @@
         <div class="row">
           <div class="col-12 table-responsive">
             <p class="lead">List penumpang</p>
-            <table class="table table-striped">
+            <table id="datatable-def" class="table table-striped">
               <thead>
               <tr>
                 <th width="3">No</th>
