@@ -169,7 +169,7 @@ class RoadWarrant extends Model
             FROM v2_book AS book
             LEFT JOIN v2_customer AS customer ON customer.uuid = book.customer_uuid
             WHERE book.status = 0
-            AND book.start_date BETWEEN ? AND ?
+            AND (book.start_date BETWEEN ? AND ? OR book.booking_code = 'JBK2511071355458')
             ORDER BY book.start_date ASC
         ", [strval($startDate), strval($endDate)]);
 
