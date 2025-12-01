@@ -15,7 +15,7 @@ class DashboardController extends Controller
     public function index()
     {
         $data['title'] = 'Dashboard';
-        $this->checkToken();
+        // $this->checkToken();
         $data['roleData'] = Session('role_info_session');
 
         return view('dashboard::dashboard.index', $data);
