@@ -103,6 +103,13 @@
               <option value="">Pilih</option>
             </select>
           </div>
+          <div class="form-group">
+            <label>Kategori Route</label>
+            <select class="form-control select2bs4" name="route_category" id="route_category" style="width: 100%;" required>
+              <option value="true" @selected(isset($roadwarrant->route_category) && $roadwarrant->route_category == 'true')>In Route</option>
+              <option value="false" @selected(!isset($roadwarrant->route_category) || $roadwarrant->route_category == 'false')>Out Route</option>
+            </select>
+          </div>
           <div class="row">
             <div class="col-sm-5">
               <div class="form-group">
@@ -267,13 +274,22 @@
     fuel_allowance: 0,
   };
 
+  let tripAssignData = [];
+  let tripAssignIsFiltered = true;
+
   const manifest = {!! json_encode($manifest) !!};
   const manifestReturn = {!! json_encode($manifest_return) !!};
   const roadwarrant = {!! json_encode($roadwarrant) !!};
 
   $(document).ready( function () {
     tripAllowance = roadwarrant.trip_allowance
-    const manifestDate = dayjs(manifest.trip_date).format('DD/MM/YYYY')
+    tripAssignIsFiltered = roadwarrant.route_category && roadwarrant.route_category === 'true' ? true : false
+    const manifestDate = dayjs(manifest.trip_date).format('YYYY-MM-DD')
+
+    // Set route_category value (without triggering change since data will load via setBus)
+    const routeCategory = roadwarrant.route_category || 'false';
+    $('#route_category').val(routeCategory);
+
     setBus(roadwarrant.bus_uuid, 1)
     fetchEmployee(manifestDate, 1)
     setNumbertrip(roadwarrant.number_of_trip)
@@ -299,15 +315,11 @@
   
   $('#datepicker').datetimepicker({
     format: 'DD/MM/YYYY',
-    minDate: 'now',
-    maxDate: maxDate,
     date: tripdate1,
   });
 
   $('#datepicker_return').datetimepicker({
     format: 'DD/MM/YYYY',
-    minDate: 'now',
-    maxDate: maxDate,
   });
 
   $("#bus-select").change(function(e){
@@ -338,6 +350,12 @@
 
   $("#numberoftrip").change(function(e){
     setNumbertrip(e.target.value)
+  });
+
+  $("#route_category").change(function(e){
+    value = e.target.value === 'true' ? true : false;
+    tripAssignIsFiltered = value;
+    tripAssignDataGenerate();
   });
 
   $("#datepicker").on("change.datetimepicker", ({date}) => {
@@ -452,7 +470,8 @@
     $('#tras-item-return').html('');
     axios.get(`/api/trasbus?busuuid=${value}`)
       .then((response) => {
-        addElementToSelect(response.data.filtered, isFirst);
+        tripAssignData = response.data;
+        tripAssignDataGenerate(isFirst);
       }, (error) => {
         console.log(error);
       });
@@ -470,6 +489,16 @@
       }, (error) => {
         console.log(error);
       });
+  }
+
+  function tripAssignDataGenerate(isFirst) {
+    $('#tras-item').html('');
+    $('#tras-item-return').html('');
+    if (tripAssignData && tripAssignIsFiltered == true) {
+      addElementToSelect(tripAssignData.filtered, isFirst);
+    } else {
+      addElementToSelect(tripAssignData.unfiltered, isFirst);
+    }
   }
 
   function addElementToSelect(data, isFirst) {
@@ -508,7 +537,9 @@
     $('#driver1').html('');
     $('#driver2').html('');
     $('#codriver').html('');
-    axios.get(`/api/employeeready?date=${value}`)
+    // For edit form, include roadwarrant UUID to get currently assigned employees
+    const roadwarrantParam = roadwarrant.uuid ? `&roadwarrant_uuid=${roadwarrant.uuid}` : '';
+    axios.get(`/api/employeeready?date=${value}${roadwarrantParam}`)
       .then((response) => {
         employee = response.data;
         addElementToSelectEmployee(response.data, isFirst);
@@ -526,7 +557,13 @@
     htmlDriver2 += '<option value="">Pilih</option>'
     htmlCoDriver += '<option value="">Pilih</option>'
     for (let index = 0; index < data.length; index++) {
-      if (data[index].assignee.length === 0 && data[index].assignee_akap.length === 0) {
+      // Check if employee is available OR if they're currently assigned to this road warrant
+      const isCurrentlyAssigned = (parseInt(roadwarrant.driver_1) === parseInt(data[index].id) ||
+                                     parseInt(roadwarrant.driver_2) === parseInt(data[index].id) ||
+                                     parseInt(roadwarrant.codriver) === parseInt(data[index].id));
+      const isAvailable = data[index].assignee.length === 0 && data[index].assignee_akap.length === 0;
+
+      if (isAvailable || isCurrentlyAssigned) {
         if (data[index].position == 'Driver') {
           let selected = ""
           let selected2 = ""
