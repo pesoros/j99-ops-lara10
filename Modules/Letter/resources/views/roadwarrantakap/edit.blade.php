@@ -2,6 +2,16 @@
 
 @section('content')
 
+<!-- Loading Screen -->
+<div id="loading-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; display: flex; justify-content: center; align-items: center;">
+  <div style="text-align: center; color: white;">
+    <div class="spinner-border" role="status" style="width: 3rem; height: 3rem;">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <p style="margin-top: 10px; font-size: 16px;">Memuat data...</p>
+  </div>
+</div>
+
 @if ($errors->any())
 <div class="alert alert-danger alert-dismissible">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -293,6 +303,11 @@
     setBus(roadwarrant.bus_uuid, 1)
     fetchEmployee(manifestDate, 1)
     setNumbertrip(roadwarrant.number_of_trip)
+
+    // Hide loading screen after 3 seconds
+    setTimeout(function() {
+      $('#loading-screen').fadeOut(500);
+    }, 2000);
     if (roadwarrant.number_of_trip > 1) {
       const tripdate2 = new Date(manifestReturn.trip_date);
       datepicker1Change(roadwarrant.trip_date, tripdate2)
