@@ -307,7 +307,7 @@
     // Hide loading screen after 3 seconds
     setTimeout(function() {
       $('#loading-screen').fadeOut(500);
-    }, 2000);
+    }, 3000);
     if (roadwarrant.number_of_trip > 1) {
       const tripdate2 = new Date(manifestReturn.trip_date);
       datepicker1Change(roadwarrant.trip_date, tripdate2)
