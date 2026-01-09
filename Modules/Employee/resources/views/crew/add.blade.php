@@ -110,6 +110,8 @@
             <option value="BRI">BRI</option>
             <option value="BNI">BNI</option>
             <option value="BTN">BTN</option>
+            <option value="BSI">BSI</option>
+            <option value="SEA">SEA</option>
           </select>
         </div>
         <div class="form-group">

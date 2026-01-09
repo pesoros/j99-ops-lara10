@@ -110,6 +110,8 @@
             <option value="BRI" @selected($current->bank_name == "BRI")>BRI</option>
             <option value="BNI" @selected($current->bank_name == "BNI")>BNI</option>
             <option value="BTN" @selected($current->bank_name == "BTN")>BTN</option>
+            <option value="BSI" @selected($current->bank_name == "BSI")>BSI</option>
+            <option value="SEA" @selected($current->bank_name == "SEA")>SEA</option>
           </select>
         </div>
         <div class="form-group">
