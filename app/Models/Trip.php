@@ -126,15 +126,13 @@ class Trip extends Model
 
             WHERE tbookhead.payment_status = 1
             AND tps.cancel = 0
-            AND tras.id = :tripAssign
-            AND tbook.tras_id = :tripAssignBook
+            AND tpoint.trip_assign_id = :tripAssign
             AND DATE(tbook.booking_date) = :booking_date
             ORDER BY tps.seat_number ASC
         ";
 
         return collect(DB::select($query, [
             'tripAssign' => $tripAssign,
-            'tripAssignBook' => $tripAssign,
             'booking_date' => $booking_date,
         ]));
     }
