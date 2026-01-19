@@ -61,7 +61,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="/" class="brand-link">
-        <img src="{{asset('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" height="38" style="opacity: .8">
+        <img src="{{asset('assets/images/logo/j99-logo-wide.png')}}" alt="J99 Logo" width="100%" style="opacity: .8;padding-left: 16px;padding-right: 16px">
         <span class="brand-text font-weight-light"></span>
     </a>
 
