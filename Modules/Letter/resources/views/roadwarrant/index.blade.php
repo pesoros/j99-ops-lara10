@@ -30,6 +30,9 @@
         <th>Nama Bus</th>
         <th>Rekening SPJ</th>
         <th>Status</th>
+        <th>Km Awal</th>
+        <th>Km Akhir</th>
+        <th>BBM</th>
         <th>Aksi</th>
       </tr>
       </thead>
@@ -61,6 +64,30 @@
                 <span class="badge badge-danger">Perjalanan selesai</span>
               @elseif (intval($value->status) === 6)
                 <span class="badge bg-orange">SPJ Selesai</span>
+              @endif
+            </td>
+            <td>
+              @if ($value->km_start)
+                {{ $value->km_start }}
+              @else
+                -
+              @endif
+            </td>
+            <td>
+              @if ($value->km_end)
+                {{ $value->km_end }}
+              @else
+                -
+              @endif
+            </td>
+            <td>
+              @php
+                  $totaFuellNominal = collect($value->fuels)->sum('nominal');
+              @endphp
+              @if ($totaFuellNominal)
+                {{ $totaFuellNominal }}
+              @else
+                -
               @endif
             </td>
             <td>

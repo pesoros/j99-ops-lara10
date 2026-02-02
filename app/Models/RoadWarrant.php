@@ -483,4 +483,16 @@ class RoadWarrant extends Model
             ->where('book_uuid', $book_uuid)
             ->get();
     }
+
+    public function scopeGetExpensesByRoadwarrantAndDescription($query, $roadwarrant_uuid, $description)
+    {
+        return DB::table('trip_expenses as expense')
+            ->select('expense.*')
+            ->where('expense.roadwarrant_uuid', $roadwarrant_uuid)
+            ->whereRaw('TRIM(expense.description) = ?', [trim($description)])
+            ->whereNotNull('expense.manifest_uuid')
+            ->where('expense.manifest_uuid', '!=', '')
+            ->orderBy('expense.id', 'ASC')
+            ->get();
+    }
 }

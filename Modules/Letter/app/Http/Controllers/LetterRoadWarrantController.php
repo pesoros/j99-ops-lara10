@@ -32,7 +32,13 @@ class LetterRoadWarrantController extends Controller
         }
 
         $data['title'] = 'Surat perintah jalan';
-        $data['list'] = RoadWarrant::getRoadWarrantList($isNeedDraft);
+        $list = RoadWarrant::getRoadWarrantList($isNeedDraft);
+
+        foreach ($list as $item) {
+            $item->fuels = RoadWarrant::getExpensesByRoadwarrantAndDescription($item->uuid, 'BBM');
+        }
+
+        $data['list'] = $list;
         $data['bookavailable'] = RoadWarrant::getBookAvailable();
         $data['roleInfo'] = $roleInfo;
 
