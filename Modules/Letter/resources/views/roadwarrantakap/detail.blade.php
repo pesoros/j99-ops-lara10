@@ -267,7 +267,7 @@
                 <th>Status</th>
                 <th>File</th>
                 <th>Jenis</th>
-                <th>Nominal</th>
+                <th width="150">Nominal</th>
               </tr>
               </thead>
               <tbody>
