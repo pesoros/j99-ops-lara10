@@ -235,15 +235,15 @@
               <thead>
               <tr>
                 <th width="3">No</th>
+                <th class="no-print">Aksi</th>
                 <th>Kategori</th>
                 <th>Deskripsi</th>
                 <th>Tanggal</th>
-                <th>Koordinat (lat, long)</th>
+                <th class="no-print">Koordinat (lat, long)</th>
                 <th>Status</th>
                 <th>File</th>
                 <th>Jenis</th>
                 <th width="150">Nominal</th>
-                <th class="no-print">Aksi</th>
               </tr>
               </thead>
               <tbody>
@@ -251,10 +251,31 @@
                 @foreach ($expensesList as $key => $expense)
                   <tr>
                     <td>{{ $key + 1 }}</td>
+                    <td class="no-print">
+                      <div class="btn-group" role="group">
+                        <a
+                          href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/2') }}"
+                          class="btn btn-xs btn-success"
+                          onclick="return confirm('Terima transaksi ini?')"
+                          title="Terima"
+                        ><i class="fas fa-check"></i></a>
+                        <a
+                          href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/0') }}"
+                          class="btn btn-xs btn-danger"
+                          onclick="return confirm('Tolak transaksi ini?')"
+                          title="Tolak"
+                        ><i class="fas fa-times"></i></a>
+                        <a
+                          href="{{ url('letter/roadwarrant/expense/edit/'.$expense->id) }}"
+                          class="btn btn-xs btn-warning"
+                          title="Edit"
+                        ><i class="fas fa-pencil-alt"></i></a>
+                      </div>
+                    </td>
                     <td>{{ $expense->category_name ?? '-' }}</td>
                     <td>{{ $expense->description }}</td>
                     <td>{{ $expense->created_at }}</td>
-                    <td>
+                    <td class="no-print">
                       @if ($expense->location_lat)
                       <a href="https://www.google.com/maps/search/{{ $expense->location_lat }},{{ $expense->location_long }}?sa=X&ved=1t:242&ictx=111" target="_blank">{{ $expense->location_lat }}, {{ $expense->location_long }}</a>
                       @else
@@ -288,28 +309,7 @@
                           Pengeluaran
                       @endif
                     </td>
-                    <td>{{ formatAmount($expense->nominal) }}</td>
-                    <td class="no-print">
-                      <div class="btn-group" role="group">
-                        <a
-                          href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/2') }}"
-                          class="btn btn-xs btn-success"
-                          onclick="return confirm('Terima transaksi ini?')"
-                          title="Terima"
-                        ><i class="fas fa-check"></i></a>
-                        <a
-                          href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/0') }}"
-                          class="btn btn-xs btn-danger"
-                          onclick="return confirm('Tolak transaksi ini?')"
-                          title="Tolak"
-                        ><i class="fas fa-times"></i></a>
-                        <a
-                          href="{{ url('letter/roadwarrant/expense/edit/'.$expense->id) }}"
-                          class="btn btn-xs btn-warning"
-                          title="Edit"
-                        ><i class="fas fa-pencil-alt"></i></a>
-                      </div>
-                    </td>
+                    <td class="text-right">{{ formatAmount($expense->nominal) }}</td>
                   </tr>
                   @if ($expense->action == 'spend')
                       @if ($expense->status == 2)
@@ -328,15 +328,19 @@
               <tfoot>
                 <tr>
                   <td colspan="1"></td>
-                  <td class="text-right" colspan="7">Belum terkonfirmasi :</td>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="3"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td class="text-right" colspan="3">Belum terkonfirmasi :</td>
                   <td class="text-right text-warning"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
-                  <td class="no-print"></td>
                 </tr>
                 <tr>
                   <td colspan="1"></td>
-                  <td class="text-right" colspan="7">Sisa uang :</td>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="3"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td class="text-right" colspan="3">Sisa uang :</td>
                   <td class="text-right"><b>{{ formatAmount($summary) }}</b></td>
-                  <td class="no-print"></td>
                 </tr>
               </tfoot>
             </table>
