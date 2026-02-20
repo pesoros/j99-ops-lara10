@@ -430,6 +430,34 @@
 </div>
  
 @endsection
+@push('extra-styles')
+<style>
+@media print {
+  @page {
+    size: landscape;
+    margin: 8mm;
+  }
+  body, .content-wrapper {
+    font-size: 9px !important;
+  }
+  .invoice {
+    padding: 4px !important;
+    margin-bottom: 4px !important;
+  }
+  .table td, .table th {
+    padding: 2px 4px !important;
+    font-size: 9px !important;
+  }
+  .table img {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  .btn-group, .btn {
+    display: none !important;
+  }
+}
+</style>
+@endpush
 @push('extra-scripts')
 <script type="text/javascript">
     $(function () {
