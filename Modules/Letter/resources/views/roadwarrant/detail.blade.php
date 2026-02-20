@@ -235,13 +235,14 @@
               <thead>
               <tr>
                 <th width="3">No</th>
+                <th>Kategori</th>
                 <th>Deskripsi</th>
                 <th>Tanggal</th>
-                <th>Kategori</th>
-                <th>Nominal</th>
                 <th>Koordinat (lat, long)</th>
                 <th>Status</th>
                 <th>File</th>
+                <th>Jenis</th>
+                <th>Nominal</th>
                 <th class="no-print">Aksi</th>
               </tr>
               </thead>
@@ -250,49 +251,64 @@
                 @foreach ($expensesList as $key => $expense)
                   <tr>
                     <td>{{ $key + 1 }}</td>
+                    <td>{{ $expense->category_name ?? '-' }}</td>
                     <td>{{ $expense->description }}</td>
                     <td>{{ $expense->created_at }}</td>
-                    <td>{{ $expense->action }}</td>
-                    <td>{{ formatAmount($expense->nominal) }}</td>
-                    <td> 
+                    <td>
                       @if ($expense->location_lat)
                       <a href="https://www.google.com/maps/search/{{ $expense->location_lat }},{{ $expense->location_long }}?sa=X&ved=1t:242&ictx=111" target="_blank">{{ $expense->location_lat }}, {{ $expense->location_long }}</a>
                       @else
                       -
-                      @endif 
+                      @endif
                     </td>
                     <td>{{ $expense->status == 1 ? "-" : (($expense->status == 0) ? "Ditolak" : "Diterima") }}</td>
                     <td>
                       @if (!empty($expense->file))
-                        <img 
+                        <img
                           src="{{ env('BACKEND_URL').'uploads/manifest/expense/'.$expense->file }}"
-                          class="img" 
-                          width="150" 
+                          class="img"
+                          width="150"
                           height="150"
                         >
                       @else
-                        <img 
+                        <img
                           src="{{ env('ADMINV1_URL').'assets/img/icons/empty.jpg' }}"
                           class="img"
-                          width="150" 
-                          height="150" 
+                          width="150"
+                          height="150"
                           style="object-fit: cover;"
                         >
                       @endif
                     </td>
+                    <td>
+                      @if ($expense->action == 'income')
+                          Pemasukan
+                      @endif
+                      @if ($expense->action == 'spend')
+                          Pengeluaran
+                      @endif
+                    </td>
+                    <td>{{ formatAmount($expense->nominal) }}</td>
                     <td class="no-print">
-                      <a 
-                        href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/2') }}"
-                        class="btn btn-xs btn-success"
-                      >Terima</a>
-                      <a 
-                        href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/0') }}"
-                        class="btn btn-xs btn-danger"
-                      >Tolak</a>
-                      <a 
-                        href="{{ url('letter/roadwarrant/expense/edit/'.$expense->id) }}"
-                        class="btn btn-xs btn-warning"
-                      >Edit</a>
+                      <div class="btn-group" role="group">
+                        <a
+                          href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/2') }}"
+                          class="btn btn-xs btn-success"
+                          onclick="return confirm('Terima transaksi ini?')"
+                          title="Terima"
+                        ><i class="fas fa-check"></i></a>
+                        <a
+                          href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/0') }}"
+                          class="btn btn-xs btn-danger"
+                          onclick="return confirm('Tolak transaksi ini?')"
+                          title="Tolak"
+                        ><i class="fas fa-times"></i></a>
+                        <a
+                          href="{{ url('letter/roadwarrant/expense/edit/'.$expense->id) }}"
+                          class="btn btn-xs btn-warning"
+                          title="Edit"
+                        ><i class="fas fa-pencil-alt"></i></a>
+                      </div>
                     </td>
                   </tr>
                   @if ($expense->action == 'spend') 

@@ -374,7 +374,9 @@ class RoadWarrant extends Model
         $query = DB::table('trip_expenses as expense')
             ->select(
                 'expense.*',
+                'tec.name as category_name',
             )
+            ->leftJoin('trip_expenses_category as tec', 'tec.id', '=', 'expense.category')
             ->where('expense.roadwarrant_uuid', $id)
             ->orderBy('expense.id', 'ASC')
             ->get();
@@ -388,11 +390,13 @@ class RoadWarrant extends Model
             ->select(
                 'expense.*',
                 'trip.trip_title',
+                'tec.name as category_name',
             )
             ->where('expense.roadwarrant_uuid', $id)
             ->join("manifest", "manifest.uuid", "=", "expense.manifest_uuid")
             ->join("trip_assign as tras", "tras.id", "=", "manifest.trip_assign")
             ->join("trip", "trip.trip_id", "=", "tras.trip")
+            ->leftJoin('trip_expenses_category as tec', 'tec.id', '=', 'expense.category')
             ->orderBy('expense.id', 'ASC')
             ->get();
 
