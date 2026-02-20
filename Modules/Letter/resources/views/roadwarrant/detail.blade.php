@@ -235,7 +235,6 @@
               <thead>
               <tr>
                 <th width="3">No</th>
-                <th class="no-print">Aksi</th>
                 <th>Kategori</th>
                 <th>Deskripsi</th>
                 <th>Tanggal</th>
@@ -244,6 +243,7 @@
                 <th>File</th>
                 <th>Jenis</th>
                 <th width="150">Nominal</th>
+                <th class="no-print">Aksi</th>
               </tr>
               </thead>
               <tbody>
@@ -251,27 +251,6 @@
                 @foreach ($expensesList as $key => $expense)
                   <tr>
                     <td>{{ $key + 1 }}</td>
-                    <td class="no-print">
-                      <div class="btn-group" role="group">
-                        <a
-                          href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/2') }}"
-                          class="btn btn-xs btn-success"
-                          onclick="return confirm('Terima transaksi ini?')"
-                          title="Terima"
-                        ><i class="fas fa-check"></i></a>
-                        <a
-                          href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/0') }}"
-                          class="btn btn-xs btn-danger"
-                          onclick="return confirm('Tolak transaksi ini?')"
-                          title="Tolak"
-                        ><i class="fas fa-times"></i></a>
-                        <a
-                          href="{{ url('letter/roadwarrant/expense/edit/'.$expense->id) }}"
-                          class="btn btn-xs btn-warning"
-                          title="Edit"
-                        ><i class="fas fa-pencil-alt"></i></a>
-                      </div>
-                    </td>
                     <td>{{ $expense->category_name ?? '-' }}</td>
                     <td>{{ $expense->description }}</td>
                     <td>{{ $expense->created_at }}</td>
@@ -310,6 +289,27 @@
                       @endif
                     </td>
                     <td>{{ formatAmount($expense->nominal) }}</td>
+                    <td class="no-print">
+                      <div class="btn-group" role="group">
+                        <a
+                          href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/2') }}"
+                          class="btn btn-xs btn-success"
+                          onclick="return confirm('Terima transaksi ini?')"
+                          title="Terima"
+                        ><i class="fas fa-check"></i></a>
+                        <a
+                          href="{{ url('letter/roadwarrant/expense/statusupdate/2/'.$roadwarrant->uuid.'/'.$expense->id.'/0') }}"
+                          class="btn btn-xs btn-danger"
+                          onclick="return confirm('Tolak transaksi ini?')"
+                          title="Tolak"
+                        ><i class="fas fa-times"></i></a>
+                        <a
+                          href="{{ url('letter/roadwarrant/expense/edit/'.$expense->id) }}"
+                          class="btn btn-xs btn-warning"
+                          title="Edit"
+                        ><i class="fas fa-pencil-alt"></i></a>
+                      </div>
+                    </td>
                   </tr>
                   @if ($expense->action == 'spend')
                       @if ($expense->status == 2)
@@ -328,15 +328,15 @@
               <tfoot>
                 <tr>
                   <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
                   <td class="text-right" colspan="7">Belum terkonfirmasi :</td>
                   <td class="text-right text-warning"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
+                  <td class="no-print"></td>
                 </tr>
                 <tr>
                   <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
                   <td class="text-right" colspan="7">Sisa uang :</td>
                   <td class="text-right"><b>{{ formatAmount($summary) }}</b></td>
+                  <td class="no-print"></td>
                 </tr>
               </tfoot>
             </table>
@@ -392,34 +392,6 @@
 </div>
  
 @endsection
-@push('extra-styles')
-<style>
-@media print {
-  @page {
-    size: landscape;
-    margin: 8mm;
-  }
-  body, .content-wrapper {
-    font-size: 9px !important;
-  }
-  .invoice {
-    padding: 4px !important;
-    margin-bottom: 4px !important;
-  }
-  .table td, .table th {
-    padding: 2px 4px !important;
-    font-size: 9px !important;
-  }
-  .table img {
-    width: 50px !important;
-    height: 50px !important;
-  }
-  .btn-group, .btn {
-    display: none !important;
-  }
-}
-</style>
-@endpush
 @push('extra-scripts')
 <script type="text/javascript">
     $(function () {
