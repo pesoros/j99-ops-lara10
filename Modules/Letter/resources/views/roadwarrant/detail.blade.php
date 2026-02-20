@@ -247,7 +247,7 @@
               </tr>
               </thead>
               <tbody>
-                @php $summary = 0; @endphp
+                @php $summary = 0; $unconfirmedSum = 0; @endphp
                 @foreach ($expensesList as $key => $expense)
                   <tr>
                     <td>{{ $key + 1 }}</td>
@@ -311,7 +311,7 @@
                       </div>
                     </td>
                   </tr>
-                  @if ($expense->action == 'spend') 
+                  @if ($expense->action == 'spend')
                       @if ($expense->status == 2)
                         @php $summary = $summary - $expense->nominal; @endphp
                       @endif
@@ -319,6 +319,9 @@
                       @if ($expense->status == 2)
                         @php $summary = $summary + $expense->nominal; @endphp
                       @endif
+                  @endif
+                  @if ($expense->status == 1 || $expense->status == 0)
+                      @php $unconfirmedSum = $unconfirmedSum + $expense->nominal; @endphp
                   @endif
                 @endforeach
               </tbody>
@@ -330,6 +333,7 @@
       <!-- /.invoice -->
       <div class="row">
         <div class="col-12">
+          <p><strong class="text-warning">Belum terkonfirmasi: {{ formatAmount($unconfirmedSum) }}</strong></p>
           <p><strong>SISA UANG: Rp. {{$summary}}</strong></p>
         </div>
       </div>

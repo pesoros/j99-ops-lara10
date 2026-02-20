@@ -271,7 +271,7 @@
               </tr>
               </thead>
               <tbody>
-                @php $summary = 0; @endphp
+                @php $summary = 0; $unconfirmedSum = 0; @endphp
                 @foreach ($expensesList as $key => $expense)
                   <tr>
                     <td>{{ $key + 1 }}</td>
@@ -336,7 +336,7 @@
                       </div>
                     </td>
                   </tr>
-                  @if ($expense->action == 'spend') 
+                  @if ($expense->action == 'spend')
                       @if ($expense->status == 2)
                         @php $summary = $summary - $expense->nominal; @endphp
                       @endif
@@ -344,6 +344,9 @@
                       @if ($expense->status == 2)
                         @php $summary = $summary + $expense->nominal; @endphp
                       @endif
+                  @endif
+                  @if ($expense->status == 1 || $expense->status == 0)
+                      @php $unconfirmedSum = $unconfirmedSum + $expense->nominal; @endphp
                   @endif
                 @endforeach
               </tbody>
@@ -363,6 +366,10 @@
                 <tr>
                   <td class="text-right" colspan="10">Uang Jalan :</td>
                   <td class="text-right totalsum">{{ formatAmount($roadwarrant->total_allowance) }}</td>
+                </tr>
+                <tr>
+                  <td class="text-right" colspan="10">Belum terkonfirmasi :</td>
+                  <td class="text-right totalsum text-warning"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
                 </tr>
                 <tr>
                   <td class="text-right" colspan="10">Sisah uang :</td>
