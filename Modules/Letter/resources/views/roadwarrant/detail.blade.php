@@ -327,11 +327,15 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <td class="text-right" colspan="9">Belum terkonfirmasi :</td>
+                  <td colspan="1"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td class="text-right" colspan="7">Belum terkonfirmasi :</td>
                   <td class="text-right text-warning"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
                 </tr>
                 <tr>
-                  <td class="text-right" colspan="9">Sisa uang :</td>
+                  <td colspan="1"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td class="text-right" colspan="7">Sisa uang :</td>
                   <td class="text-right"><b>{{ formatAmount($summary) }}</b></td>
                 </tr>
               </tfoot>
