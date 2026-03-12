@@ -7,6 +7,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Employee;
+use Maatwebsite\Excel\Facades\Excel;
+use Modules\Employee\app\Imports\CrewImport;
+use Modules\Employee\app\Exports\CrewTemplateExport;
 
 class EmployeeCrewController extends Controller
 {
@@ -135,6 +138,22 @@ class EmployeeCrewController extends Controller
         }
 
         return back()->with('failed', 'Crew gagal diubah!');        
+    }
+
+    public function downloadTemplate()
+    {
+        return Excel::download(new CrewTemplateExport(), 'template_crew.xlsx');
+    }
+
+    public function importCrew(Request $request)
+    {
+        $request->validate([
+            'file' => ['required', 'file', 'mimes:xlsx,xls'],
+        ]);
+
+        Excel::import(new CrewImport(), $request->file('file'));
+
+        return back()->with('success', 'Data crew berhasil diimport!');
     }
 
     public function detailCrew($uuid)

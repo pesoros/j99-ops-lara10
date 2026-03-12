@@ -33,6 +33,12 @@
         <h3 class="card-title">List {{ $title }}</h3>
         <div class="float-right">
           @if (permissionCheck('add'))
+            <a href="{{ url('employee/crew/import/template') }}" class="btn btn-secondary btn-sm mr-1">
+              <i class="fas fa-download"></i> Download Template
+            </a>
+            <button type="button" class="btn btn-success btn-sm mr-1" data-toggle="modal" data-target="#importModal">
+              <i class="fas fa-file-upload"></i> Import XLSX
+            </button>
             <a href="{{ url('employee/crew/add') }}" class="btn btn-primary btn-sm">
               Tambah data crew
             </a>
@@ -70,4 +76,33 @@
     <!-- /.card-body -->
   </div>
  
+<!-- Import Modal -->
+<div class="modal fade" id="importModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Import Data Crew</h5>
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+      </div>
+      <form action="{{ url('employee/crew/import') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="modal-body">
+          <div class="form-group">
+            <label>File XLSX <span class="text-danger">*</span></label>
+            <input type="file" name="file" class="form-control" accept=".xlsx,.xls" required>
+            <small class="text-muted">
+              Gunakan <a href="{{ url('employee/crew/import/template') }}">template</a> yang tersedia.
+              Kolom wajib: first_name, last_name, phone, email, position, bank_name, bank_number.
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Import</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 @endsection
