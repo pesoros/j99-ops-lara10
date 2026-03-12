@@ -24,5 +24,6 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('crew/detail/{uuid}', [EmployeeCrewController::class, 'detailCrew']);
         Route::get('crew/import/template', [EmployeeCrewController::class, 'downloadTemplate']);
         Route::post('crew/import', [EmployeeCrewController::class, 'importCrew']);
+        Route::get('crew/delete/{id}', [EmployeeCrewController::class, 'deleteCrew']);
     });
 });

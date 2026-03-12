@@ -66,6 +66,9 @@
                 <div class="btn-group btn-block">
                   <a href="{{ url('employee/crew/detail/'.$value->id) }}" class="btn btn-success btn-sm">Detail</a>
                   @if (permissionCheck('edit')) <a href="{{ url('employee/crew/edit/'.$value->id) }}" class="btn btn-warning btn-sm">Edit</a> @endif
+                  @if (permissionCheck('delete'))
+                  <a href="{{ url('employee/crew/delete/'.$value->id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Hapus crew ini?')">Hapus</a>
+                  @endif
                 </div>
               </td>
             </tr>

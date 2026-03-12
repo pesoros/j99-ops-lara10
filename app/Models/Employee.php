@@ -60,4 +60,20 @@ class Employee extends Model
 
         return $query;
     }
+
+    public function scopeDeleteCrew($query, $uuid)
+    {
+        $query = DB::table("employee_history")
+            ->where('id', $uuid)
+            ->delete();
+
+        return $query;
+    }
+
+    public function scopeLogDeleteCrew($query, $data)
+    {
+        $query = DB::table("employee_delete_log")->insert($data);
+
+        return $query;
+    }
 }

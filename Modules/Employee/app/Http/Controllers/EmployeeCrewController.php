@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Employee;
 use Maatwebsite\Excel\Facades\Excel;
 use Modules\Employee\app\Imports\CrewImport;
@@ -154,6 +155,25 @@ class EmployeeCrewController extends Controller
         Excel::import(new CrewImport(), $request->file('file'));
 
         return back()->with('success', 'Data crew berhasil diimport!');
+    }
+
+    public function deleteCrew($id)
+    {
+        $crew = Employee::getCrew($id);
+
+        if ($crew) {
+            Employee::logDeleteCrew([
+                'employee_id'   => $crew->id,
+                'employee_name' => trim($crew->first_name . ' ' . $crew->second_name),
+                'deleted_data'  => json_encode($crew),
+                'deleted_by'    => Auth::id(),
+                'deleted_at'    => now(),
+            ]);
+        }
+
+        Employee::deleteCrew($id);
+
+        return back()->with('success', 'Data crew berhasil dihapus!');
     }
 
     public function detailCrew($uuid)
