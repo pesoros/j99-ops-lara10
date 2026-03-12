@@ -37,7 +37,7 @@
               <i class="fas fa-download"></i> Download Template
             </a>
             <button type="button" class="btn btn-success btn-sm mr-1" data-toggle="modal" data-target="#importModal">
-              <i class="fas fa-file-upload"></i> Import XLSX
+              <i class="fas fa-file-upload"></i> Import CSV
             </button>
             <a href="{{ url('employee/crew/add') }}" class="btn btn-primary btn-sm">
               Tambah data crew
@@ -91,10 +91,10 @@
         @csrf
         <div class="modal-body">
           <div class="form-group">
-            <label>File XLSX <span class="text-danger">*</span></label>
-            <input type="file" name="file" class="form-control" accept=".xlsx,.xls" required>
+            <label>File Template <span class="text-danger">*</span></label>
+            <input type="file" name="file" class="form-control" accept=".xlsx,.xls,.csv" required>
             <small class="text-muted">
-              Gunakan <a href="{{ url('employee/crew/import/template') }}">template</a> yang tersedia.
+              Gunakan <a href="{{ url('employee/crew/import/template') }}">template CSV</a> yang tersedia.
               Kolom wajib: first_name, last_name, phone, email, position, bank_name, bank_number.
             </small>
           </div>

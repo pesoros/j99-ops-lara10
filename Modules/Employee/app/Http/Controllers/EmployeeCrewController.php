@@ -143,13 +143,13 @@ class EmployeeCrewController extends Controller
 
     public function downloadTemplate()
     {
-        return Excel::download(new CrewTemplateExport(), 'template_crew.xlsx');
+        return Excel::download(new CrewTemplateExport(), 'template_crew.csv', \Maatwebsite\Excel\Excel::CSV);
     }
 
     public function importCrew(Request $request)
     {
         $request->validate([
-            'file' => ['required', 'file', 'mimes:xlsx,xls'],
+            'file' => ['required', 'file', 'mimes:xlsx,xls,csv,txt'],
         ]);
 
         Excel::import(new CrewImport(), $request->file('file'));
