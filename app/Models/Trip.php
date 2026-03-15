@@ -126,7 +126,7 @@ class Trip extends Model
 
             WHERE tbookhead.payment_status = 1
             AND tps.cancel = 0
-            AND tpoint.trip_assign_id = :tripAssign
+            AND tbook.tras_id = :tripAssign
             AND DATE(tbook.booking_date) = :booking_date
             ORDER BY tps.seat_number ASC
         ";
