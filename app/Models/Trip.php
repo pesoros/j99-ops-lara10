@@ -109,11 +109,8 @@ class Trip extends Model
                 ON resto.id = tps.food
             LEFT JOIN payment_registration AS paymentreg
                 ON paymentreg.booking_code = tbookhead.booking_code
-            LEFT JOIN (
-                SELECT name, MAX(ttpg_id) as ttpg_id 
-                FROM trip_location 
-                GROUP BY name
-            ) AS arrival_loc ON arrival_loc.name = tbook.drop_trip_location
+            LEFT JOIN trip_location AS arrival_loc
+                ON arrival_loc.name = tbook.drop_trip_location
 
             LEFT JOIN (
                 SELECT r1.*
@@ -131,6 +128,7 @@ class Trip extends Model
             AND tps.cancel = 0
             AND tbook.tras_id = :tripAssign
             AND DATE(tbook.booking_date) = :booking_date
+            GROUP BY tps.ticket_number 
             ORDER BY tps.seat_number ASC
         ";
 
