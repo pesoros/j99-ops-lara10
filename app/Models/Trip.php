@@ -109,8 +109,11 @@ class Trip extends Model
                 ON resto.id = tps.food
             LEFT JOIN payment_registration AS paymentreg
                 ON paymentreg.booking_code = tbookhead.booking_code
-            LEFT JOIN trip_location AS arrival_loc
-                ON arrival_loc.name = tbook.drop_trip_location
+            LEFT JOIN (
+                SELECT name, MAX(ttpg_id) as ttpg_id 
+                FROM trip_location 
+                GROUP BY name
+            ) AS arrival_loc ON arrival_loc.name = tbook.drop_trip_location
 
             LEFT JOIN (
                 SELECT r1.*
