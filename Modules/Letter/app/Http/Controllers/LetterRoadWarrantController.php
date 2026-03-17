@@ -374,6 +374,7 @@ class LetterRoadWarrantController extends Controller
             'etoll_allowance'           =>  numberClearence($request->etoll_allowance),
             'crew_meal_allowance'       =>  numberClearence($request->crew_meal_allowance),
             'total_allowance'           =>  numberClearence($request->totalsum),
+            'description'               =>  $request->description,
             'created_by'                =>  auth()->user()->uuid,
             'number_of_trip'            =>  $request->numberoftrip,
             'transferto'                =>  $request->transferto,
