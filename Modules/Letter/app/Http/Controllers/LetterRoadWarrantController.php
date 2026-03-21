@@ -127,9 +127,9 @@ class LetterRoadWarrantController extends Controller
 
         $checkTripIsSet = $this->checkTripIsSet($request);
 
-        if ($checkTripIsSet == true) {
-            return back()->with('failed', 'Terdapat trip yg sudah di buat');
-        }
+        // if ($checkTripIsSet == true) {
+        //     return back()->with('failed', 'Terdapat trip yg sudah di buat');
+        // }
 
         $tras = RoadWarrant::getTripAssign($request->trip_assign);
         $saveManifestData = [
