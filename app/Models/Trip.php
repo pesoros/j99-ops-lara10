@@ -172,6 +172,7 @@ class Trip extends Model
             AND (tb.tras_id = :tras_id_1 OR tb.tras_id = :tras_id_2)
             AND tbh.payment_status = 1
             AND tpp.cancel = 0
+            GROUP BY tpp.ticket_number
             ORDER BY tpp.seat_number ASC
         ";
 
