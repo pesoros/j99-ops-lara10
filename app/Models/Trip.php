@@ -144,7 +144,9 @@ class Trip extends Model
             SELECT tpp.name, tb.booking_code, tb.booking_date, tpp.ticket_number, tpp.seat_number, tpp.phone, rmen.food_name,
             IF(tpp.baggage = 1, 'Bawa', 'Tidak Bawa') as baggage,
             IF(cst.status_name IS NULL, 'Menunggu', cst.status_name) as checkin_status,
-            ftp.type as class, tb.pickup_trip_location, tpoint.dep_time, tb.drop_trip_location, tpoint.arr_time
+            ftp.type as class, tb.pickup_trip_location, tpoint.dep_time, tb.drop_trip_location, tpoint.arr_time,
+            rem.is_succeed AS reminderSucceed,
+            rem.created_at AS reminder_created_at
             FROM tkt_booking AS tb
             JOIN tkt_passenger_pcs tpp ON tpp.booking_id = tb.id_no
             JOIN tkt_booking_head tbh ON tb.booking_code = tbh.booking_code
@@ -155,6 +157,16 @@ class Trip extends Model
             LEFT JOIN resto_menu rmen ON tpp.food = rmen.id
             LEFT JOIN checkin cn ON tpp.ticket_number = cn.ticket_number
             LEFT JOIN checkin_status cst ON cn.status = cst.id
+            LEFT JOIN (
+                SELECT r1.*
+                FROM tkt_reminder r1
+                INNER JOIN (
+                    SELECT ticket_number, MAX(created_at) AS max_created_at
+                    FROM tkt_reminder
+                    GROUP BY ticket_number
+                ) r2 ON r1.ticket_number = r2.ticket_number
+                    AND r1.created_at = r2.max_created_at
+            ) AS rem ON rem.ticket_number = tpp.ticket_number
             WHERE DATE(tb.booking_date) = :date
             AND tb.trip_id_no = :trip_id_no
             AND (tb.tras_id = :tras_id_1 OR tb.tras_id = :tras_id_2)
