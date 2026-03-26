@@ -217,6 +217,7 @@
     const passengersToRemind = passengerList.filter(passenger => passenger.reminderSucceed === null || passenger.reminderSucceed == 0);
     const reminderUrl = @json($reminderUrl);
     const manifestId = @json($manifestId);
+    const tripDate = @json($detailManifest->trip_date);
 
     function showLoading() {
         $('#loading-overlay').css('display', 'flex');
@@ -226,10 +227,41 @@
         $('#loading-overlay').css('display', 'none');
     }
 
-    function postReminder(ticketNumber) {
+    function getGreeting(depTime) {
+        if (!depTime) return 'Halo';
+        const hour = parseInt(depTime.substring(0, 2));
+        if (hour < 11) return 'Pagi';
+        if (hour < 15) return 'Siang';
+        if (hour < 18) return 'Sore';
+        return 'Malam';
+    }
+
+    function formatIndonesianDate(dateStr) {
+        const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        const date = new Date(dateStr);
+        return `${days[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+    }
+
+    function postReminder(passenger) {
+        const greeting = getGreeting(passenger.dep_time);
+        const formattedDate = formatIndonesianDate(tripDate);
+        const depTime = passenger.dep_time ? passenger.dep_time.substring(0, 5) : '';
+        const seatClass = `${passenger.class} | ${passenger.seat_number}`;
+
         return axios.post(reminderUrl, {
-            manifestId: manifestId,
-            ticketNumber: ticketNumber
+            ticketNumber: passenger.ticket_number,
+            phone: passenger.phone,
+            messageParams: [
+                greeting,
+                passenger.name,
+                passenger.name,
+                formattedDate,
+                passenger.pickup_trip_location,
+                depTime,
+                passenger.ticket_number,
+                seatClass
+            ]
         });
     }
 
@@ -238,13 +270,12 @@
         $('#broadcastButton').prop('disabled', true).text('Sending...');
 
         for (const passenger of passengersToRemind) {
-            const ticketNumber = passenger.ticket_number;
-            console.log(`Sending reminder for ticket: ${ticketNumber}`);
+            console.log(`Sending reminder for ticket: ${passenger.ticket_number}`);
             try {
-                const response = await postReminder(ticketNumber);
-                console.log(`Successfully sent reminder for ticket: ${ticketNumber}`, response.data);
+                const response = await postReminder(passenger);
+                console.log(`Successfully sent reminder for ticket: ${passenger.ticket_number}`, response.data);
             } catch (error) {
-                console.error(`Failed to send reminder for ticket: ${ticketNumber}`, error);
+                console.error(`Failed to send reminder for ticket: ${passenger.ticket_number}`, error);
             }
             await new Promise(resolve => setTimeout(resolve, 3000));
         }
@@ -256,10 +287,11 @@
     }
 
     function sendSingleReminder(ticketNumber) {
+        const passenger = passengerList.find(p => p.ticket_number === ticketNumber);
         showLoading();
         console.log(`Sending single reminder for ticket: ${ticketNumber}`);
 
-        postReminder(ticketNumber)
+        postReminder(passenger)
             .then(response => {
                 console.log(`Successfully sent reminder for ticket: ${ticketNumber}`, response.data);
                 alert(`Reminder sent for ticket: ${ticketNumber}`);
