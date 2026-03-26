@@ -138,6 +138,39 @@ class Trip extends Model
         ]));
     }
 
+    public static function getPassengerListCad($date, $trip_id_no, $tras_id_1, $tras_id_2)
+    {
+        $query = "
+            SELECT tpp.name, tb.booking_code, tb.booking_date, tpp.ticket_number, tpp.seat_number, tpp.phone, rmen.food_name,
+            IF(tpp.baggage = 1, 'Bawa', 'Tidak Bawa') as baggage,
+            IF(cst.status_name IS NULL, 'Menunggu', cst.status_name) as checkin_status,
+            ftp.type as class, tb.pickup_trip_location, tpoint.dep_time, tb.drop_trip_location, tpoint.arr_time
+            FROM tkt_booking AS tb
+            JOIN tkt_passenger_pcs tpp ON tpp.booking_id = tb.id_no
+            JOIN tkt_booking_head tbh ON tb.booking_code = tbh.booking_code
+            JOIN trip_assign tras ON tb.trip_id_no = tras.trip
+            JOIN fleet_type ftp ON ftp.id = tpp.fleet_type
+            LEFT JOIN manifest mn ON mn.id = tb.tras_id
+            LEFT JOIN trip_point tpoint ON tpoint.trip_assign_id = tras.id AND tpoint.dep_point = tb.pickup_trip_location AND tpoint.arr_point = tb.drop_trip_location
+            LEFT JOIN resto_menu rmen ON tpp.food = rmen.id
+            LEFT JOIN checkin cn ON tpp.ticket_number = cn.ticket_number
+            LEFT JOIN checkin_status cst ON cn.status = cst.id
+            WHERE DATE(tb.booking_date) = :date
+            AND tb.trip_id_no = :trip_id_no
+            AND (tb.tras_id = :tras_id_1 OR tb.tras_id = :tras_id_2)
+            AND tbh.payment_status = 1
+            AND tpp.cancel = 0
+            ORDER BY tpp.seat_number ASC
+        ";
+
+        return collect(DB::select($query, [
+            'date'       => $date,
+            'trip_id_no' => $trip_id_no,
+            'tras_id_1'  => $tras_id_1,
+            'tras_id_2'  => $tras_id_2,
+        ]));
+    }
+
     public function scopeGetExpensesList($query, $id)
     {
         $query = DB::table('manifest as manif')

@@ -28,5 +28,8 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::post('manifest/expense/edit/{id}/{expenseid}', [TripManifestController::class, 'expenseUpdate']);
         Route::get('manifest/broadcast/{id}', [TripManifestController::class, 'sendWaToPassengers']);
         Route::get('busstatus', [TripBusStatusController::class, 'busStatuskanban']);
+
+        // cadangan 
+        Route::get('manifest/detailcad/{id}', [TripManifestController::class, 'detailManifestCad']);
     });
 });

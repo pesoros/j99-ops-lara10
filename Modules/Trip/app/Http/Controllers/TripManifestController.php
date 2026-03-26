@@ -97,4 +97,23 @@ class TripManifestController extends Controller
 
         return redirect('trip/manifest/expenses/'.$id);
     }
+
+
+    // cadangan
+
+    public function detailManifestCad(Request $request, $id)
+    {
+        $data['title'] = 'Detail Manifest';
+        $data['reminderUrl'] = env('BE_BASEURL').'/v2/crm/reminder';
+        $data['manifestId'] = $id;
+        $data['detailManifest'] = Trip::getManifest($id);
+        $data['passengerList'] = Trip::getPassengerListCad(
+            $request->query('date'),
+            $request->query('trip_id_no'),
+            $request->query('tras_id_1'),
+            $request->query('tras_id_2'),
+        );
+
+        return view('trip::manifest.detailcad', $data);
+    }
 }
