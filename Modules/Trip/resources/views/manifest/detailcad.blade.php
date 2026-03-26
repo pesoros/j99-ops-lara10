@@ -99,7 +99,7 @@
                 <tr>
                   <th>Tanggal keberangkatan :</th>
                   <td>
-                    {{ dateFormat($detailManifest->trip_date) }}
+                    {{ dateFormat(request()->query('date')) }}
                   </td>
                 </tr>
                 <tr>
@@ -217,7 +217,7 @@
     const passengersToRemind = passengerList.filter(passenger => passenger.reminderSucceed === null || passenger.reminderSucceed == 0);
     const reminderUrl = @json($reminderUrl);
     const manifestId = @json($manifestId);
-    const tripDate = @json($detailManifest->trip_date);
+    const tripDate = new URLSearchParams(window.location.search).get('date');
 
     function showLoading() {
         $('#loading-overlay').css('display', 'flex');
