@@ -493,7 +493,10 @@ class RoadWarrant extends Model
         return DB::table('trip_expenses as expense')
             ->select('expense.*')
             ->where('expense.roadwarrant_uuid', $roadwarrant_uuid)
-            ->whereRaw('TRIM(expense.description) = ?', [trim($description)])
+            ->where(function ($query) use ($description) {
+                $query->whereRaw('TRIM(expense.description) = ?', [trim($description)])
+                      ->orWhere('expense.category', 51);
+            })
             ->whereNotNull('expense.manifest_uuid')
             ->where('expense.manifest_uuid', '!=', '')
             ->orderBy('expense.id', 'ASC')
