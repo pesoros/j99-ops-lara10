@@ -358,6 +358,7 @@
               </tbody>
               <tfoot>
                 <tr>
+                  <td class="no-print" colspan="1"></td>
                   <td colspan="1"></td>
                   <td class="no-print" colspan="1"></td>
                   <td colspan="4"></td>
@@ -366,6 +367,7 @@
                   <td class="text-right totalsum">{{ formatAmount($incomeSum) }}</td>
                 </tr>
                 <tr>
+                  <td class="no-print" colspan="1"></td>
                   <td colspan="1"></td>
                   <td class="no-print" colspan="1"></td>
                   <td colspan="4"></td>
@@ -374,6 +376,7 @@
                   <td class="text-right totalsum">{{ formatAmount($spendSum) }}</td>
                 </tr>
                 <tr>
+                  <td class="no-print" colspan="1"></td>
                   <td colspan="1"></td>
                   <td class="no-print" colspan="1"></td>
                   <td colspan="4"></td>
@@ -382,6 +385,7 @@
                   <td class="text-right totalsum">{{ formatAmount($totalSum) }}</td>
                 </tr>
                 <tr>
+                  <td class="no-print" colspan="1"></td>
                   <td colspan="1"></td>
                   <td class="no-print" colspan="1"></td>
                   <td colspan="4"></td>
@@ -390,6 +394,7 @@
                   <td class="text-right totalsum">{{ formatAmount($roadwarrant->total_allowance) }}</td>
                 </tr>
                 <tr>
+                  <td class="no-print" colspan="1"></td>
                   <td colspan="1"></td>
                   <td class="no-print" colspan="1"></td>
                   <td colspan="4"></td>
@@ -398,6 +403,7 @@
                   <td class="text-right totalsum text-warning"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
                 </tr>
                 <tr>
+                  <td class="no-print" colspan="1"></td>
                   <td colspan="1"></td>
                   <td class="no-print" colspan="1"></td>
                   <td colspan="4"></td>
