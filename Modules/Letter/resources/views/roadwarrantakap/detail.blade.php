@@ -254,9 +254,14 @@
         <div class="row invoice-info">
           <div class="col-12 table-responsive">
             <p class="lead">Laporan transaksi</p>
+            <div class="mb-2 no-print">
+              <button id="bulkTerimaBtn" class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i> Terima Tercentang</button>
+              <button id="bulkTolakBtn" class="btn btn-sm btn-danger" disabled><i class="fas fa-times"></i> Tolak Tercentang</button>
+            </div>
             <table class="table table-striped">
               <thead>
               <tr>
+                <th width="3" class="no-print"><input type="checkbox" id="checkAll"></th>
                 <th width="3">No</th>
                 <th class="no-print">Aksi</th>
                 <th>Kategori</th>
@@ -274,6 +279,7 @@
                 @php $summary = 0; $unconfirmedSum = 0; @endphp
                 @foreach ($expensesList as $key => $expense)
                   <tr>
+                    <td class="no-print"><input type="checkbox" class="expense-check" value="{{ $expense->id }}" data-uuid="{{ $roadwarrant->uuid }}"></td>
                     <td>{{ $key + 1 }}</td>
                     <td class="no-print">
                       <div class="btn-group" role="group">
@@ -454,6 +460,42 @@
            window.print();
            return false;
       });
+
+      // Checkbox bulk select
+      $('#checkAll').on('change', function () {
+        $('.expense-check').prop('checked', this.checked);
+        toggleBulkButtons();
+      });
+
+      $(document).on('change', '.expense-check', function () {
+        if (!this.checked) $('#checkAll').prop('checked', false);
+        toggleBulkButtons();
+      });
+
+      function toggleBulkButtons() {
+        const hasChecked = $('.expense-check:checked').length > 0;
+        $('#bulkTerimaBtn, #bulkTolakBtn').prop('disabled', !hasChecked);
+      }
+
+      async function bulkStatusUpdate(status) {
+        const checked = $('.expense-check:checked');
+        const label = status == 2 ? 'terima' : 'tolak';
+        if (!confirm(`${label.charAt(0).toUpperCase() + label.slice(1)} ${checked.length} transaksi tercentang?`)) return;
+
+        for (const el of checked.toArray()) {
+          const id = $(el).val();
+          const uuid = $(el).data('uuid');
+          try {
+            await $.get(`/letter/roadwarrant/expense/statusupdate/2/${uuid}/${id}/${status}`);
+          } catch (e) {
+            console.error(`Failed to update expense ${id}`, e);
+          }
+        }
+        location.reload();
+      }
+
+      $('#bulkTerimaBtn').click(() => bulkStatusUpdate(2));
+      $('#bulkTolakBtn').click(() => bulkStatusUpdate(0));
 
       function generateRoadwarrantBlocker() {
         let blocker = [];
