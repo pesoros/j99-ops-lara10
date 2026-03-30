@@ -166,6 +166,7 @@
                 <th>Makanan</th>
                 <th>Titik jemput</th>
                 <th>Titik turun</th>
+                <th>Harga</th>
                 <th>Reminder</th>
               </tr>
               </thead>
@@ -180,6 +181,7 @@
                     <td>{{ $passenger->food_name }}</td>
                     <td>{{ $passenger->pickup_trip_location }} {{ substr($passenger->dep_time, 0, 5) }}</td>
                     <td>{{ $passenger->drop_trip_location }} {{ substr($passenger->arr_time, 0, 5) }}</td>
+                    <td>{{ formatAmount($passenger->price) }}</td>
                     <td>
                         @if(is_null($passenger->reminderSucceed) || $passenger->reminderSucceed == 0)
                             <button class="btn btn-sm btn-info single-reminder-btn" data-ticket-number="{{ $passenger->ticket_number }}">Reminder</button>

@@ -142,6 +142,7 @@ class Trip extends Model
     {
         $query = "
             SELECT tpp.name, tb.booking_code, tb.booking_date, tpp.ticket_number, tpp.seat_number, tpp.phone, rmen.food_name,
+            IF(tpp.price > 0, tpp.price, (tb.price / tb.adult)) as price,
             IF(tpp.baggage = 1, 'Bawa', 'Tidak Bawa') as baggage,
             IF(cst.status_name IS NULL, 'Menunggu', cst.status_name) as checkin_status,
             ftp.type as class, tb.pickup_trip_location, tpoint.dep_time, tb.drop_trip_location, tpoint.arr_time,
