@@ -409,4 +409,15 @@ class MasterData extends Model
 
         return $query;
     }
+
+    public function scopeGetTripRouteList($query)
+    {
+        $query = DB::table("trip_route")
+            ->select('id', 'name')
+            ->where('status', 1)
+            ->orderBy('name')
+            ->get();
+
+        return $query;
+    }
 }

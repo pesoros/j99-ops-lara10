@@ -14,5 +14,6 @@
     "Employee": true,
     "Trip": true,
     "Sales": true,
-    "Accurate": true
+    "Accurate": true,
+    "Inspection": true
 }
