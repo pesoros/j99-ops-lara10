@@ -11,10 +11,13 @@ class FitCheck extends Model
 
     public function scopeGetList($query, $filters = [])
     {
-        $q = DB::table('ops_fit_check')->orderBy('id', 'desc');
+        $q = DB::table('ops_fit_check')
+            ->leftJoin('v2_users', 'v2_users.id', '=', 'ops_fit_check.created_by')
+            ->select('ops_fit_check.*', 'v2_users.name AS created_by_name')
+            ->orderBy('ops_fit_check.id', 'desc');
 
         if (!empty($filters['date'])) {
-            $q->whereDate('date', $filters['date']);
+            $q->whereDate('ops_fit_check.date', $filters['date']);
         }
 
         return $q->get();
@@ -22,7 +25,11 @@ class FitCheck extends Model
 
     public function scopeGetById($query, $id)
     {
-        return DB::table('ops_fit_check')->where('id', $id)->first();
+        return DB::table('ops_fit_check')
+            ->leftJoin('v2_users', 'v2_users.id', '=', 'ops_fit_check.created_by')
+            ->select('ops_fit_check.*', 'v2_users.name AS created_by_name')
+            ->where('ops_fit_check.id', $id)
+            ->first();
     }
 
     public function scopeSaveFitCheck($query, $data)

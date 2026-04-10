@@ -290,6 +290,7 @@
       <div class="id-label">No. Dokumen</div>
       <div class="id-value">FC-{{ str_pad($record->id, 6, '0', STR_PAD_LEFT) }}</div>
       <div class="timestamp">Diterbitkan: {{ \Carbon\Carbon::parse($record->created_at)->format('d/m/Y H:i') }}</div>
+      <div class="timestamp">Oleh: {{ $record->created_by_name ?? '-' }}</div>
     </div>
 
   </div>

@@ -51,6 +51,7 @@
           <th>TD</th>
           <th>Suhu</th>
           <th>Status</th>
+          <th>Dibuat Oleh</th>
           <th>Aksi</th>
         </tr>
       </thead>
@@ -71,6 +72,7 @@
                 <span class="badge badge-danger">Tidak Fit</span>
               @endif
             </td>
+            <td>{{ $value->created_by_name ?? '-' }}</td>
             <td>
               <div class="btn-group">
                 <a href="{{ url('inspection/fit-check/print/'.$value->id) }}" class="btn btn-info btn-sm" target="_blank">
