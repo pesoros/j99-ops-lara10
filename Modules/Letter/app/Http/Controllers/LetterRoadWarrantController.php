@@ -70,7 +70,7 @@ class LetterRoadWarrantController extends Controller
                 'category'                  =>  2,
                 'numberid'                  =>  genrateLetterNumber('SPJ', $counter),
                 'count'                     =>  $counter,
-                'km_start'                  =>  $request->km_start[$key],
+                // 'km_start'                  =>  $request->km_start[$key],
                 'driver_1'                  =>  $request->driver_1[$key],
                 'driver_2'                  =>  $request->driver_2[$key],
                 'codriver'                  =>  $request->codriver[$key],

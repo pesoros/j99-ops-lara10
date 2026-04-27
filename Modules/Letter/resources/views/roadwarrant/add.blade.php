@@ -121,7 +121,7 @@
               <input type="text" class="form-control" name="seat_count[]" value="{{ $bus->seat }} Kursi" readonly>
             </div>
           </div>
-          <div class="form-group">
+          {{-- <div class="form-group">
             <label for="km_start[]">Kilometer awal</label>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
@@ -129,7 +129,7 @@
               </div>
               <input type="number" class="form-control" name="km_start[]" placeholder="0" value="" required>
             </div>
-          </div>
+          </div> --}}
           <div class="form-group">
             <label>Driver 1</label>
             <select class="form-control select2bs4" name="driver_1[]" style="width: 100%;" required>
