@@ -121,7 +121,7 @@
               <input type="text" class="form-control" name="seat_count[]" value="{{ $bus->seat }} Kursi" readonly>
             </div>
           </div>
-          <div class="form-group">
+          {{-- <div class="form-group">
             <label for="km_start[]">Kilometer awal</label>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
@@ -129,7 +129,7 @@
               </div>
               <input type="number" class="form-control" name="km_start[]" placeholder="0" value="" required>
             </div>
-          </div>
+          </div> --}}
           <div class="form-group">
             <label>Driver 1</label>
             <select class="form-control select2bs4" name="driver_1[]" style="width: 100%;" required>
@@ -144,8 +144,8 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Driver 2</label>
-            <select class="form-control select2bs4" name="driver_2[]" style="width: 100%;" required>
+            <label>Driver 2 <small class="text-muted">(opsional)</small></label>
+            <select class="form-control select2bs4" name="driver_2[]" style="width: 100%;">
               <option value="">Pilih</option>
               @foreach ($employee as $employeeItem)
                   @if ($employeeItem->position === 'Driver')
@@ -221,12 +221,12 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="driver_allowance_2[]">Uang premi driver 2</label>
+            <label for="driver_allowance_2[]">Uang premi driver 2 <small class="text-muted">(opsional)</small></label>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text">Rp</span>
               </div>
-              <input type="text" class="form-control moneyform" name="driver_allowance_2[]" placeholder="0" required>
+              <input type="text" class="form-control moneyform" name="driver_allowance_2[]" placeholder="0">
             </div>
           </div>
           <div class="form-group">
