@@ -28,10 +28,11 @@ class Employee extends Model
 
     public function scopeGetCrewAttendance($query, $uuid)
     {
-        $query = DB::table("employee_attendance")
-            ->select('*')
-            ->where('employee_id', $uuid)
-            ->orderBy('id', 'desc')
+        $query = DB::table("employee_attendance AS attendance")
+            ->select('attendance.*', 'rw.numberid AS spj_number')
+            ->leftJoin("ops_roadwarrant AS rw", "rw.uuid", "=", "attendance.roadwarrant_uuid")
+            ->where('attendance.employee_id', $uuid)
+            ->orderBy('attendance.id', 'desc')
             ->get();
 
         return $query;
@@ -83,6 +84,7 @@ class Employee extends Model
             ->select(
                 'log.*',
                 'rw.status',
+                'rw.numberid AS spj_number',
                 'bus.name AS busname',
                 'bus.registration_number',
             )

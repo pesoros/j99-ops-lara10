@@ -102,7 +102,7 @@
           @foreach ($list as $key => $value)
             <tr>
               <td width="20" class="text-center">{{ intval($key) + 1 }}</td>
-              <td>{{ $value->roadwarrant_uuid }}</td>
+              <td>{{ $value->spj_number ?? $value->roadwarrant_uuid }}</td>
               <td>Time: {{ $value->check_in_time }}<br><a href="https://maps.google.com/?q={{ $value->check_in_lat }},{{ $value->check_in_long }}" target="_blank">Location [Google Maps]</a></td>
               <td>Time: {{ $value->check_out_time }}<br><a href="https://maps.google.com/?q={{ $value->check_out_lat }},{{ $value->check_out_long }}" target="_blank">Location [Google Maps]</a></td>
               <td>{{ $value->distance }} Km</td>
@@ -128,7 +128,7 @@
           @foreach ($driving_history as $key => $value)
             <tr>
               <td width="20" class="text-center">{{ $key + 1 }}</td>
-              <td>{{ $value->roadwarrant_uuid }}</td>
+              <td>{{ $value->spj_number ?? $value->roadwarrant_uuid }}</td>
               <td>{{ $value->busname }} <small class="text-muted">{{ $value->registration_number }}</small></td>
               <td>{{ $value->start_at ?? '-' }}</td>
               <td>{{ $value->finish_at ?? '-' }}</td>
