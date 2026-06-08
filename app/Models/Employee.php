@@ -76,4 +76,22 @@ class Employee extends Model
 
         return $query;
     }
+
+    public function scopeGetCrewDrivingHistory($query, $uuid)
+    {
+        $query = DB::table("ops_roadwarrant_driverlog AS log")
+            ->select(
+                'log.*',
+                'rw.status',
+                'bus.name AS busname',
+                'bus.registration_number',
+            )
+            ->leftJoin("ops_roadwarrant AS rw", "rw.uuid", "=", "log.roadwarrant_uuid")
+            ->leftJoin("v2_bus AS bus", "bus.uuid", "=", "rw.bus_uuid")
+            ->where('log.driver_id', $uuid)
+            ->orderBy('log.start_at', 'desc')
+            ->get();
+
+        return $query;
+    }
 }

@@ -181,6 +181,7 @@ class EmployeeCrewController extends Controller
         $data['title'] = 'Detail Crew';
         $data['current'] = Employee::getCrew($uuid);
         $data['list'] = Employee::getCrewAttendance($uuid);
+        $data['driving_history'] = Employee::getCrewDrivingHistory($uuid);
 
         foreach ($data['list'] as $key => $value) {
             if ($value->check_out_time == null) {

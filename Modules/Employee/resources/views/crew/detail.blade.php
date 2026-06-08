@@ -87,6 +87,7 @@
       </div>
     </div>
     <div class="card-body">
+      <h5 class="mb-2">History Login</h5>
       <table id="datatable-def" class="table table-bordered table-striped">
         <thead>
         <tr>
@@ -109,8 +110,68 @@
           @endforeach
         </tbody>
       </table>
+
+      @if (count($driving_history) > 0)
+      <h5 class="mt-4 mb-2">Driving History</h5>
+      <table id="datatable-driving" class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Ref SPJ</th>
+            <th>Bus</th>
+            <th>Start</th>
+            <th>Finish</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach ($driving_history as $key => $value)
+            <tr>
+              <td width="20" class="text-center">{{ $key + 1 }}</td>
+              <td>{{ $value->roadwarrant_uuid }}</td>
+              <td>{{ $value->busname }} <small class="text-muted">{{ $value->registration_number }}</small></td>
+              <td>{{ $value->start_at ?? '-' }}</td>
+              <td>{{ $value->finish_at ?? '-' }}</td>
+              <td>
+                @if (intval($value->status) === 0)
+                  <span class="badge badge-light">Draft</span>
+                @elseif (intval($value->status) === 1)
+                  <span class="badge badge-secondary">Waiting to Marker</span>
+                @elseif (intval($value->status) === 2)
+                  <span class="badge badge-info">Marker</span>
+                @elseif (intval($value->status) === 3)
+                  <span class="badge badge-primary">Aktif</span>
+                @elseif (intval($value->status) === 4)
+                  <span class="badge badge-success">Sudah di transfer</span>
+                @elseif (intval($value->status) === 5)
+                  <span class="badge badge-danger">Perjalanan selesai</span>
+                @elseif (intval($value->status) === 6)
+                  <span class="badge bg-orange">SPJ Selesai</span>
+                @else
+                  <span class="badge badge-light">-</span>
+                @endif
+              </td>
+            </tr>
+          @endforeach
+        </tbody>
+      </table>
+      @endif
     </div>
     <!-- /.card-body -->
   </div>
  
 @endsection
+
+@if (count($driving_history) > 0)
+@push('extra-scripts')
+<script>
+  $("#datatable-driving").DataTable({
+    "responsive": true,
+    "lengthChange": false,
+    "autoWidth": false,
+    "pageLength": 100,
+    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+  }).buttons().container().appendTo('#datatable-driving_wrapper .col-md-6:eq(0)');
+</script>
+@endpush
+@endif
