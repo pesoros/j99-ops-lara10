@@ -234,6 +234,7 @@
             <div class="mb-2 no-print">
               <button id="bulkTerimaBtn" class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i> Terima Tercentang</button>
               <button id="bulkTolakBtn" class="btn btn-sm btn-danger" disabled><i class="fas fa-times"></i> Tolak Tercentang</button>
+              <button id="exportExcelBtn" class="btn btn-sm btn-info"><i class="fas fa-file-excel"></i> Export Excel</button>
             </div>
             <table id="expense-table" class="table table-striped">
               <thead>
@@ -407,13 +408,16 @@
 @push('extra-scripts')
 <script type="text/javascript">
     $(function () {
-      $("#expense-table").DataTable({
+      var expenseTable = $("#expense-table").DataTable({
         "responsive": true,
         "paging": false,
         "searching": false,
         "info": false,
-        "dom": "Brt",
         "buttons": ["excel"]
+      });
+
+      $("#exportExcelBtn").on('click', function () {
+        expenseTable.button('.buttons-excel').trigger();
       });
 
       $('a.printPage').click(function(){
