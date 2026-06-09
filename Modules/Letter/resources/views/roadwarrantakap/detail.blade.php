@@ -257,8 +257,9 @@
             <div class="mb-2 no-print">
               <button id="bulkTerimaBtn" class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i> Terima Tercentang</button>
               <button id="bulkTolakBtn" class="btn btn-sm btn-danger" disabled><i class="fas fa-times"></i> Tolak Tercentang</button>
+              <button id="exportExcelBtn" class="btn btn-sm btn-info"><i class="fas fa-file-excel"></i> Export Excel</button>
             </div>
-            <table class="table table-striped">
+            <table id="expense-table" class="table table-striped">
               <thead>
               <tr>
                 <th width="3" class="no-print"><input type="checkbox" id="checkAll"></th>
@@ -457,6 +458,18 @@
 @push('extra-scripts')
 <script type="text/javascript">
     $(function () {
+      var expenseTable = $("#expense-table").DataTable({
+        "responsive": true,
+        "paging": false,
+        "searching": false,
+        "info": false,
+        "buttons": ["excel"]
+      });
+
+      $("#exportExcelBtn").on('click', function () {
+        expenseTable.button('.buttons-excel').trigger();
+      });
+
       const manifestData = @json($manifest);
       console.log(manifestData);
       
