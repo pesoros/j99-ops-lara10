@@ -409,13 +409,12 @@
     $(function () {
       $("#expense-table").DataTable({
         "responsive": true,
-        "lengthChange": false,
-        "autoWidth": false,
         "paging": false,
         "searching": false,
         "info": false,
+        "dom": "Brt",
         "buttons": ["excel"]
-      }).buttons().container().appendTo('#expense-table_wrapper .col-md-6:eq(0)');
+      });
 
       $('a.printPage').click(function(){
            window.print();
