@@ -121,6 +121,7 @@
             <th>Bus</th>
             <th>Start</th>
             <th>Finish</th>
+            <th>Location</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -132,6 +133,13 @@
               <td>{{ $value->busname }} <small class="text-muted">{{ $value->registration_number }}</small></td>
               <td>{{ $value->start_at ?? '-' }}</td>
               <td>{{ $value->finish_at ?? '-' }}</td>
+              <td>
+                @if ($value->latitude && $value->longitude)
+                  <a href="https://maps.google.com/?q={{ $value->latitude }},{{ $value->longitude }}" target="_blank">Location [Google Maps]</a>
+                @else
+                  -
+                @endif
+              </td>
               <td>
                 @if (intval($value->status) === 0)
                   <span class="badge badge-light">Draft</span>
