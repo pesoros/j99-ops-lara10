@@ -122,6 +122,7 @@
             <th>Start</th>
             <th>Finish</th>
             <th>Location</th>
+            <th>Durasi</th>
             <th>Jarak Tempuh</th>
             <th>Foto</th>
             <th>Status</th>
@@ -142,9 +143,8 @@
                   -
                 @endif
               </td>
-              <td>
-                {{ $value->distance !== null ? $value->distance.' Km' : '-' }}
-              </td>
+              <td>{{ $value->duration ?? '-' }}</td>
+              <td>{{ $value->distance !== null ? $value->distance.' Km' : '-' }}</td>
               <td>
                 @if (!empty($value->image))
                   <a href="{{ env('BACKEND_URL') }}uploads/driverlog/{{ $value->image }}" target="_blank">

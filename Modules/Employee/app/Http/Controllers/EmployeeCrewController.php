@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Employee;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Modules\Employee\app\Imports\CrewImport;
 use Modules\Employee\app\Exports\CrewTemplateExport;
@@ -184,6 +185,17 @@ class EmployeeCrewController extends Controller
         $data['driving_history'] = Employee::getCrewDrivingHistory($uuid);
 
         foreach ($data['driving_history'] as $key => $value) {
+            if ($value->start_at && $value->finish_at) {
+                $start = Carbon::parse($value->start_at);
+                $finish = Carbon::parse($value->finish_at);
+                $diff = $start->diff($finish);
+                $data['driving_history'][$key]->duration = $diff->days > 0
+                    ? $diff->days.'h '.$diff->h.'j '.$diff->i.'m'
+                    : $diff->h.'j '.$diff->i.'m';
+            } else {
+                $data['driving_history'][$key]->duration = null;
+            }
+
             if (!$value->latitude || !$value->longitude || !$value->checkout_latitude || !$value->checkout_longitude) {
                 $data['driving_history'][$key]->distance = null;
             } else {
