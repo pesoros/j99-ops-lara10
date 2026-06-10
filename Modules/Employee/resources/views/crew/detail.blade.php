@@ -122,6 +122,7 @@
             <th>Start</th>
             <th>Finish</th>
             <th>Location</th>
+            <th>Foto</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -136,6 +137,15 @@
               <td>
                 @if ($value->latitude && $value->longitude)
                   <a href="https://maps.google.com/?q={{ $value->latitude }},{{ $value->longitude }}" target="_blank">Location [Google Maps]</a>
+                @else
+                  -
+                @endif
+              </td>
+              <td>
+                @if (!empty($value->image))
+                  <a href="{{ env('BACKEND_URL') }}uploads/driverlog/{{ $value->image }}" target="_blank">
+                    <img src="{{ env('BACKEND_URL') }}uploads/driverlog/{{ $value->image }}" width="80" height="80" style="object-fit: cover;">
+                  </a>
                 @else
                   -
                 @endif
