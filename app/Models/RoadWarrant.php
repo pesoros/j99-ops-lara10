@@ -291,6 +291,7 @@ class RoadWarrant extends Model
     {
         $query = DB::table("manifest")
             ->select(
+                'manifest.id',
                 'manifest.uuid',
                 'manifest.status',
                 'manifest.trip_date',

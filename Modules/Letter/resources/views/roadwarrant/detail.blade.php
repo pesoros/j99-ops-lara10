@@ -178,7 +178,12 @@
                 </tr>
                 <tr>
                   <th width="250">Kilometer awal :</th>
-                  <td>{{ $roadwarrant->km_start ? 'Km '.$roadwarrant->km_start : '-' }}</td>
+                  <td>
+                    {{ $roadwarrant->km_start ? 'Km '.$roadwarrant->km_start : '-' }}
+                    @if (in_array(intval($roadwarrant->status), [5, 6]))
+                      <button type="button" class="btn btn-xs btn-warning ml-2" data-toggle="modal" data-target="#kmEditModal">Edit KM</button>
+                    @endif
+                  </td>
                 </tr>
                 <tr>
                   <th width="250">Kilometer akhir :</th>
@@ -374,6 +379,35 @@
 </div>
 
 <!-- Modal -->
+<!-- KM Edit Modal -->
+<div class="modal fade" id="kmEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Kilometer</h5>
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+      </div>
+      <form action="{{ url('letter/roadwarrant/km/'.$roadwarrant->uuid) }}" method="POST">
+        @csrf
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Kilometer Awal</label>
+            <input type="number" class="form-control" name="km_start" value="{{ $roadwarrant->km_start }}" placeholder="Masukkan KM awal">
+          </div>
+          <div class="form-group">
+            <label>Kilometer Akhir</label>
+            <input type="number" class="form-control" name="km_end" value="{{ $roadwarrant->km_end }}" placeholder="Masukkan KM akhir">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="markerPaymentModal" tabindex="-1" role="dialog" aria-labelledby="markerPaymentModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
