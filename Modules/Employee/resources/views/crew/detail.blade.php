@@ -122,6 +122,7 @@
             <th>Start</th>
             <th>Finish</th>
             <th>Location</th>
+            <th>Jarak Tempuh</th>
             <th>Foto</th>
             <th>Status</th>
           </tr>
@@ -140,6 +141,9 @@
                 @else
                   -
                 @endif
+              </td>
+              <td>
+                {{ $value->distance !== null ? $value->distance.' Km' : '-' }}
               </td>
               <td>
                 @if (!empty($value->image))

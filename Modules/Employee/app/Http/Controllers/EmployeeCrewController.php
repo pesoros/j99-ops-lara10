@@ -183,6 +183,20 @@ class EmployeeCrewController extends Controller
         $data['list'] = Employee::getCrewAttendance($uuid);
         $data['driving_history'] = Employee::getCrewDrivingHistory($uuid);
 
+        foreach ($data['driving_history'] as $key => $value) {
+            if (!$value->latitude || !$value->longitude || !$value->checkout_latitude || !$value->checkout_longitude) {
+                $data['driving_history'][$key]->distance = null;
+            } else {
+                $theta = $value->longitude - $value->checkout_longitude;
+                $dist = sin(deg2rad($value->latitude)) * sin(deg2rad($value->checkout_latitude)) + cos(deg2rad($value->latitude)) * cos(deg2rad($value->checkout_latitude)) * cos(deg2rad($theta));
+                $dist = acos($dist);
+                $dist = rad2deg($dist);
+                $miles = $dist * 60 * 1.1515;
+                $km = $miles * 1.609344;
+                $data['driving_history'][$key]->distance = round($km, 2);
+            }
+        }
+
         foreach ($data['list'] as $key => $value) {
             if ($value->check_out_time == null) {
                 $data['list'][$key]->distance = 0;
