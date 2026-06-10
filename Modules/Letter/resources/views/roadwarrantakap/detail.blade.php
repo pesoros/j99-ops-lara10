@@ -126,6 +126,7 @@
                       @if ($key > 0) <br> @endif
                       <div class="col-sm-12">
                         {{ dateFormat($item->trip_date) }} | {{ $item->trip_title }}
+                        <a href="{{ url('trip/manifest/detail/'.$item->uuid) }}" class="badge badge-info float-right" style="margin-left: 4px;">Lihat Manifest</a>
                         @if (intval($item->status) == 1 && intval($roadwarrant->status) == 4 && ($roleInfo->role_slug == 'super-user'))
                           <a href="{{ url('letter/roadwarrant/close/'.$roadwarrant->uuid.'/'.$item->uuid) }}" class="badge badge-warning float-right">Selesaikan Perjalanan</a>
                         @endif
@@ -150,7 +151,12 @@
                 </tr>
                 <tr>
                   <th width="250">Kilometer awal :</th>
-                  <td>{{ $roadwarrant->km_start ? 'Km '.$roadwarrant->km_start : '-' }}</td>
+                  <td>
+                    {{ $roadwarrant->km_start ? 'Km '.$roadwarrant->km_start : '-' }}
+                    @if (in_array(intval($roadwarrant->status), [5, 6]))
+                      <button type="button" class="btn btn-xs btn-warning ml-2" data-toggle="modal" data-target="#kmEditModal">Edit KM</button>
+                    @endif
+                  </td>
                 </tr>
                 <tr>
                   <th width="250">Kilometer akhir :</th>
@@ -432,6 +438,35 @@
       <br>
     </div><!-- /.col -->
   </div><!-- /.row -->
+</div>
+
+<!-- KM Edit Modal -->
+<div class="modal fade" id="kmEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Kilometer</h5>
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+      </div>
+      <form action="{{ url('letter/roadwarrant/km/'.$roadwarrant->uuid) }}" method="POST">
+        @csrf
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Kilometer Awal</label>
+            <input type="number" class="form-control" name="km_start" value="{{ $roadwarrant->km_start }}" placeholder="Masukkan KM awal">
+          </div>
+          <div class="form-group">
+            <label>Kilometer Akhir</label>
+            <input type="number" class="form-control" name="km_end" value="{{ $roadwarrant->km_end }}" placeholder="Masukkan KM akhir">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 <!-- Modal -->

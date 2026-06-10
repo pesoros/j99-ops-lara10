@@ -47,6 +47,7 @@ Route::middleware(['auth','has-permission'])->group(function () {
         Route::get('roadwarrant/withdraw/{category}/{uuid}', [LetterRoadWarrantController::class, 'withdrawRoadWarrant']);
         Route::post('roadwarrant/withdraw/{category}/{uuid}', [LetterRoadWarrantController::class, 'withdrawRoadWarrantStore']);
         Route::get('roadwarrant/show/detail/{category}/{uuid}', [LetterRoadWarrantController::class, 'detailRoadWarrant']);
+        Route::post('roadwarrant/km/{uuid}', [LetterRoadWarrantController::class, 'updateKm']);
         Route::get('roadwarrant/expense/statusupdate/{category}/{uuid}/{expense_uuid}/{status_id}', [LetterRoadWarrantController::class, 'expenseStatusUpdate']);
         Route::get('roadwarrant/expense/edit/{uuid}', [LetterRoadWarrantController::class, 'editRoadWarrantExpense']);
         Route::post('roadwarrant/expense/edit/{uuid}', [LetterRoadWarrantController::class, 'editRoadWarrantExpenseStore']);

@@ -579,6 +579,21 @@ class LetterRoadWarrantController extends Controller
         return back()->with('failed', 'Pengeluaran gagal di edit!');
     }
 
+    public function updateKm(Request $request, $uuid)
+    {
+        $request->validate([
+            'km_start' => 'nullable|numeric',
+            'km_end'   => 'nullable|numeric',
+        ]);
+
+        RoadWarrant::updateRoadWarrant($uuid, [
+            'km_start' => $request->km_start,
+            'km_end'   => $request->km_end,
+        ]);
+
+        return back()->with('success', 'Kilometer berhasil diperbarui!');
+    }
+
     public function sendBoardingPuloGebang($manifestData, $registrationNumber)
     {
         $passengers = Trip::getPassengerList($manifestData['trip_assign'], $manifestData['trip_date']);
