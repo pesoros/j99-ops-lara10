@@ -6,6 +6,7 @@
     @page { size: A4 landscape; margin: 10mm; }
     .table-responsive { overflow: visible !important; }
     .invoice { padding: 4px !important; }
+    #expense-table img { max-width: 40px !important; max-height: 40px !important; width: 40px !important; height: 40px !important; }
   }
 </style>
 @endpush
