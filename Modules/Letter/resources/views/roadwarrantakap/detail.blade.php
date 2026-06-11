@@ -1,15 +1,5 @@
 @extends('layouts.main', ['title' => $title ])
 
-@push('extra-styles')
-<style>
-  .img-print-label { display: none; }
-  @media print {
-    #expense-table td img { display: none; }
-    #expense-table td .img-print-label { display: inline !important; }
-  }
-</style>
-@endpush
-
 @section('content')
 @if (session('success'))
   <div class="alert alert-success alert-dismissible">
@@ -136,7 +126,7 @@
                       @if ($key > 0) <br> @endif
                       <div class="col-sm-12">
                         {{ dateFormat($item->trip_date) }} | {{ $item->trip_title }}
-                        <a href="{{ url('trip/manifest/detail/'.$item->id) }}" class="badge badge-info float-right no-print" style="margin-left: 4px;">Lihat Manifest</a>
+                        <a href="{{ url('trip/manifest/detail/'.$item->id) }}" class="badge badge-info float-right" style="margin-left: 4px;">Lihat Manifest</a>
                         @if (intval($item->status) == 1 && intval($roadwarrant->status) == 4 && ($roleInfo->role_slug == 'super-user'))
                           <a href="{{ url('letter/roadwarrant/close/'.$roadwarrant->uuid.'/'.$item->uuid) }}" class="badge badge-warning float-right">Selesaikan Perjalanan</a>
                         @endif
@@ -164,7 +154,7 @@
                   <td>
                     {{ $roadwarrant->km_start ? 'Km '.$roadwarrant->km_start : '-' }}
                     @if (in_array(intval($roadwarrant->status), [5, 6]))
-                      <button type="button" class="btn btn-xs btn-warning ml-2 no-print" data-toggle="modal" data-target="#kmEditModal">Edit KM</button>
+                      <button type="button" class="btn btn-xs btn-warning ml-2" data-toggle="modal" data-target="#kmEditModal">Edit KM</button>
                     @endif
                   </td>
                 </tr>
@@ -333,11 +323,20 @@
                     <td>{{ $expense->status == 1 ? "-" : (($expense->status == 0) ? "Ditolak" : "Diterima") }}</td>
                     <td>
                       @if (!empty($expense->file))
-                        <img src="{{ env('BACKEND_URL').'uploads/manifest/expense/'.$expense->file }}" class="img" width="150" height="150">
-                        <span class="img-print-label">Ada</span>
+                        <img
+                          src="{{ env('BACKEND_URL').'uploads/manifest/expense/'.$expense->file }}"
+                          class="img"
+                          width="150"
+                          height="150"
+                        >
                       @else
-                        <img src="{{ env('ADMINV1_URL').'assets/img/icons/empty.jpg' }}" class="img" width="150" height="150" style="object-fit: cover;">
-                        <span class="img-print-label">-</span>
+                        <img
+                          src="{{ env('ADMINV1_URL').'assets/img/icons/empty.jpg' }}"
+                          class="img"
+                          width="150"
+                          height="150"
+                          style="object-fit: cover;"
+                        >
                       @endif
                     </td>
                     <td>
@@ -364,38 +363,63 @@
                   @endif
                 @endforeach
               </tbody>
+              <tfoot>
+                <tr>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="1"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="4"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td class="text-right" colspan="3">Total Pemasukan :</td>
+                  <td class="text-right totalsum">{{ formatAmount($incomeSum) }}</td>
+                </tr>
+                <tr>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="1"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="4"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td class="text-right" colspan="3">Total Pengeluaran :</td>
+                  <td class="text-right totalsum">{{ formatAmount($spendSum) }}</td>
+                </tr>
+                <tr>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="1"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="4"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td class="text-right" colspan="3">Total Pemakaian :</td>
+                  <td class="text-right totalsum">{{ formatAmount($totalSum) }}</td>
+                </tr>
+                <tr>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="1"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="4"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td class="text-right" colspan="3">Uang Jalan :</td>
+                  <td class="text-right totalsum">{{ formatAmount($roadwarrant->total_allowance) }}</td>
+                </tr>
+                <tr>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="1"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="4"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td class="text-right" colspan="3">Belum terkonfirmasi :</td>
+                  <td class="text-right totalsum text-warning"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
+                </tr>
+                <tr>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="1"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="4"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td class="text-right" colspan="3">Sisah uang :</td>
+                  <td class="text-right totalsum"><b>{{ formatAmount($restMoney) }}</b></td>
+                </tr>
+              </tfoot>
             </table>
-
-            <div class="row mt-2">
-              <div class="col-12">
-                <table class="table table-striped">
-                  <tr>
-                    <td>Total Pemasukan</td>
-                    <td class="text-right">{{ formatAmount($incomeSum) }}</td>
-                  </tr>
-                  <tr>
-                    <td>Total Pengeluaran</td>
-                    <td class="text-right">{{ formatAmount($spendSum) }}</td>
-                  </tr>
-                  <tr>
-                    <td>Total Pemakaian</td>
-                    <td class="text-right">{{ formatAmount($totalSum) }}</td>
-                  </tr>
-                  <tr>
-                    <td>Uang Jalan</td>
-                    <td class="text-right">{{ formatAmount($roadwarrant->total_allowance) }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text-warning">Belum terkonfirmasi</td>
-                    <td class="text-right text-warning"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
-                  </tr>
-                  <tr>
-                    <td><b>Sisa uang</b></td>
-                    <td class="text-right"><b>{{ formatAmount($restMoney) }}</b></td>
-                  </tr>
-                </table>
-              </div>
-            </div>
           </div>
         </div>
         <!-- /.row -->
@@ -474,7 +498,6 @@
         "paging": false,
         "searching": false,
         "info": false,
-        "ordering": false,
         "buttons": ["excel"]
       });
 
