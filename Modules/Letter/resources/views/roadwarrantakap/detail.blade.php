@@ -1,5 +1,15 @@
 @extends('layouts.main', ['title' => $title ])
 
+@push('extra-styles')
+<style>
+  @media print {
+    @page { size: A4 landscape; margin: 10mm; }
+    .table-responsive { overflow: visible !important; }
+    .invoice { padding: 4px !important; }
+  }
+</style>
+@endpush
+
 @section('content')
 @if (session('success'))
   <div class="alert alert-success alert-dismissible">
