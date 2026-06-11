@@ -474,10 +474,11 @@
 <script type="text/javascript">
     $(function () {
       var expenseTable = $("#expense-table").DataTable({
-        "responsive": true,
+        "responsive": false,
         "paging": false,
         "searching": false,
         "info": false,
+        "ordering": false,
         "buttons": ["excel"]
       });
 
