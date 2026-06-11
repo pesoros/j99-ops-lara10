@@ -133,14 +133,17 @@
             <tr>
               <td width="20" class="text-center">{{ $key + 1 }}</td>
               <td>{{ $value->spj_number ?? $value->roadwarrant_uuid }}</td>
-              <td>{{ $value->busname }} <small class="text-muted">{{ $value->registration_number }}</small></td>
+              <td>{{ $value->busname }} <br><small class="text-muted">{{ $value->registration_number }}</small></td>
               <td>{{ $value->start_at ?? '-' }}</td>
               <td>{{ $value->finish_at ?? '-' }}</td>
               <td>
                 @if ($value->latitude && $value->longitude)
-                  <a href="https://maps.google.com/?q={{ $value->latitude }},{{ $value->longitude }}" target="_blank">Location [Google Maps]</a>
+                  <a href="https://maps.google.com/?q={{ $value->latitude }},{{ $value->longitude }}" target="_blank">Check In</a>
                 @else
                   -
+                @endif
+                @if ($value->checkout_latitude && $value->checkout_longitude)
+                  <br><a href="https://maps.google.com/?q={{ $value->checkout_latitude }},{{ $value->checkout_longitude }}" target="_blank">Check Out</a>
                 @endif
               </td>
               <td>{{ $value->duration ?? '-' }}</td>
