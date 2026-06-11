@@ -1,5 +1,15 @@
 @extends('layouts.main', ['title' => $title ])
 
+@push('extra-styles')
+<style>
+  @media print {
+    #expense-table td img { display: none; }
+    #expense-table td .img-print-label { display: inline !important; }
+  }
+  .img-print-label { display: none; }
+</style>
+@endpush
+
 @section('content')
 @if (session('success'))
   <div class="alert alert-success alert-dismissible">
@@ -126,7 +136,7 @@
                       @if ($key > 0) <br> @endif
                       <div class="col-sm-12">
                         {{ dateFormat($item->trip_date) }} | {{ $item->trip_title }}
-                        <a href="{{ url('trip/manifest/detail/'.$item->id) }}" class="badge badge-info float-right" style="margin-left: 4px;">Lihat Manifest</a>
+                        <a href="{{ url('trip/manifest/detail/'.$item->id) }}" class="badge badge-info float-right no-print" style="margin-left: 4px;">Lihat Manifest</a>
                         @if (intval($item->status) == 1 && intval($roadwarrant->status) == 4 && ($roleInfo->role_slug == 'super-user'))
                           <a href="{{ url('letter/roadwarrant/close/'.$roadwarrant->uuid.'/'.$item->uuid) }}" class="badge badge-warning float-right">Selesaikan Perjalanan</a>
                         @endif
@@ -154,7 +164,7 @@
                   <td>
                     {{ $roadwarrant->km_start ? 'Km '.$roadwarrant->km_start : '-' }}
                     @if (in_array(intval($roadwarrant->status), [5, 6]))
-                      <button type="button" class="btn btn-xs btn-warning ml-2" data-toggle="modal" data-target="#kmEditModal">Edit KM</button>
+                      <button type="button" class="btn btn-xs btn-warning ml-2 no-print" data-toggle="modal" data-target="#kmEditModal">Edit KM</button>
                     @endif
                   </td>
                 </tr>
@@ -323,20 +333,11 @@
                     <td>{{ $expense->status == 1 ? "-" : (($expense->status == 0) ? "Ditolak" : "Diterima") }}</td>
                     <td>
                       @if (!empty($expense->file))
-                        <img
-                          src="{{ env('BACKEND_URL').'uploads/manifest/expense/'.$expense->file }}"
-                          class="img"
-                          width="150"
-                          height="150"
-                        >
+                        <img src="{{ env('BACKEND_URL').'uploads/manifest/expense/'.$expense->file }}" class="img" width="150" height="150">
+                        <span class="img-print-label">Ada</span>
                       @else
-                        <img
-                          src="{{ env('ADMINV1_URL').'assets/img/icons/empty.jpg' }}"
-                          class="img"
-                          width="150"
-                          height="150"
-                          style="object-fit: cover;"
-                        >
+                        <img src="{{ env('ADMINV1_URL').'assets/img/icons/empty.jpg' }}" class="img" width="150" height="150" style="object-fit: cover;">
+                        <span class="img-print-label">-</span>
                       @endif
                     </td>
                     <td>
@@ -498,6 +499,7 @@
         "paging": false,
         "searching": false,
         "info": false,
+        "ordering": false,
         "buttons": ["excel"]
       });
 

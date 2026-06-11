@@ -181,7 +181,7 @@
                   <td>
                     {{ $roadwarrant->km_start ? 'Km '.$roadwarrant->km_start : '-' }}
                     @if (in_array(intval($roadwarrant->status), [5, 6]))
-                      <button type="button" class="btn btn-xs btn-warning ml-2" data-toggle="modal" data-target="#kmEditModal">Edit KM</button>
+                      <button type="button" class="btn btn-xs btn-warning ml-2 no-print" data-toggle="modal" data-target="#kmEditModal">Edit KM</button>
                     @endif
                   </td>
                 </tr>
