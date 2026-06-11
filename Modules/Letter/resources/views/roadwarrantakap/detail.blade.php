@@ -363,62 +363,33 @@
                   @endif
                 @endforeach
               </tbody>
-              <tfoot>
-                <tr>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="4"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td class="text-right" colspan="3">Total Pemasukan :</td>
-                  <td class="text-right totalsum">{{ formatAmount($incomeSum) }}</td>
-                </tr>
-                <tr>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="4"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td class="text-right" colspan="3">Total Pengeluaran :</td>
-                  <td class="text-right totalsum">{{ formatAmount($spendSum) }}</td>
-                </tr>
-                <tr>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="4"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td class="text-right" colspan="3">Total Pemakaian :</td>
-                  <td class="text-right totalsum">{{ formatAmount($totalSum) }}</td>
-                </tr>
-                <tr>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="4"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td class="text-right" colspan="3">Uang Jalan :</td>
-                  <td class="text-right totalsum">{{ formatAmount($roadwarrant->total_allowance) }}</td>
-                </tr>
-                <tr>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="4"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td class="text-right" colspan="3">Belum terkonfirmasi :</td>
-                  <td class="text-right totalsum text-warning"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
-                </tr>
-                <tr>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="4"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td class="text-right" colspan="3">Sisah uang :</td>
-                  <td class="text-right totalsum"><b>{{ formatAmount($restMoney) }}</b></td>
-                </tr>
-              </tfoot>
+            </table>
+
+            <table class="table table-striped">
+              <tr>
+                <td class="text-right">Total Pemasukan :</td>
+                <td class="text-right" width="200">{{ formatAmount($incomeSum) }}</td>
+              </tr>
+              <tr>
+                <td class="text-right">Total Pengeluaran :</td>
+                <td class="text-right">{{ formatAmount($spendSum) }}</td>
+              </tr>
+              <tr>
+                <td class="text-right">Total Pemakaian :</td>
+                <td class="text-right">{{ formatAmount($totalSum) }}</td>
+              </tr>
+              <tr>
+                <td class="text-right">Uang Jalan :</td>
+                <td class="text-right">{{ formatAmount($roadwarrant->total_allowance) }}</td>
+              </tr>
+              <tr>
+                <td class="text-right text-warning">Belum terkonfirmasi :</td>
+                <td class="text-right text-warning"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
+              </tr>
+              <tr>
+                <td class="text-right"><b>Sisa uang :</b></td>
+                <td class="text-right"><b>{{ formatAmount($restMoney) }}</b></td>
+              </tr>
             </table>
           </div>
         </div>
