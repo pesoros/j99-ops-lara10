@@ -282,7 +282,6 @@
                 <th width="3">No</th>
                 <th class="no-print">Aksi</th>
                 <th>Kategori</th>
-                <th>Deskripsi</th>
                 <th>Tanggal</th>
                 <th>Trip</th>
                 <th class="no-print">Koordinat (lat, long)</th>
@@ -319,8 +318,7 @@
                         ><i class="fas fa-pencil-alt"></i></a>
                       </div>
                     </td>
-                    <td>{{ $expense->category_name ?? '-' }}</td>
-                    <td>{{ $expense->description }}</td>
+                    <td>{{ $expense->category_name ?? '-' }}<br><small class="text-muted">{{ $expense->description }}</small></td>
                     <td>{{ $expense->created_at }}</td>
                     <td>{{ $expense->trip_title }}</td>
                     <td class="no-print">
