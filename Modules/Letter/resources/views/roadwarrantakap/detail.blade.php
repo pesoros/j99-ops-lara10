@@ -4,11 +4,6 @@
 <style>
   .img-print-label { display: none; }
   @media print {
-    @page { size: A4 landscape; margin: 10mm; }
-    body { font-size: 10px !important; }
-    .invoice { padding: 4px !important; }
-    #expense-table { width: 100% !important; table-layout: fixed; font-size: 9px !important; }
-    #expense-table th, #expense-table td { padding: 3px 4px !important; word-break: break-word; }
     #expense-table td img { display: none; }
     #expense-table td .img-print-label { display: inline !important; }
   }
