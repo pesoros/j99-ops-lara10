@@ -1,16 +1,5 @@
 @extends('layouts.main', ['title' => $title ])
 
-@push('extra-styles')
-<style>
-  @media print {
-    @page { size: A4 landscape; margin: 10mm; }
-    .table-responsive { overflow: visible !important; }
-    .invoice { padding: 4px !important; }
-    #expense-table img { max-width: 80px !important; max-height: 80px !important; width: 80px !important; height: 80px !important; }
-  }
-</style>
-@endpush
-
 @section('content')
 @if (session('success'))
   <div class="alert alert-success alert-dismissible">
@@ -283,6 +272,7 @@
                 <th width="3">No</th>
                 <th class="no-print">Aksi</th>
                 <th>Kategori</th>
+                <th>Deskripsi</th>
                 <th>Tanggal</th>
                 <th>Trip</th>
                 <th class="no-print">Koordinat (lat, long)</th>
@@ -319,7 +309,8 @@
                         ><i class="fas fa-pencil-alt"></i></a>
                       </div>
                     </td>
-                    <td>{{ $expense->category_name ?? '-' }}<br><small class="text-muted">{{ $expense->description }}</small></td>
+                    <td>{{ $expense->category_name ?? '-' }}</td>
+                    <td>{{ $expense->description }}</td>
                     <td>{{ $expense->created_at }}</td>
                     <td>{{ $expense->trip_title }}</td>
                     <td class="no-print">
@@ -372,33 +363,62 @@
                   @endif
                 @endforeach
               </tbody>
-            </table>
-
-            <table class="table table-striped">
-              <tr>
-                <td class="text-right">Total Pemasukan :</td>
-                <td class="text-right" width="200">{{ formatAmount($incomeSum) }}</td>
-              </tr>
-              <tr>
-                <td class="text-right">Total Pengeluaran :</td>
-                <td class="text-right">{{ formatAmount($spendSum) }}</td>
-              </tr>
-              <tr>
-                <td class="text-right">Total Pemakaian :</td>
-                <td class="text-right">{{ formatAmount($totalSum) }}</td>
-              </tr>
-              <tr>
-                <td class="text-right">Uang Jalan :</td>
-                <td class="text-right">{{ formatAmount($roadwarrant->total_allowance) }}</td>
-              </tr>
-              <tr>
-                <td class="text-right text-warning">Belum terkonfirmasi :</td>
-                <td class="text-right text-warning"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
-              </tr>
-              <tr>
-                <td class="text-right"><b>Sisa uang :</b></td>
-                <td class="text-right"><b>{{ formatAmount($restMoney) }}</b></td>
-              </tr>
+              <tfoot>
+                <tr>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="1"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="4"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td class="text-right" colspan="3">Total Pemasukan :</td>
+                  <td class="text-right totalsum">{{ formatAmount($incomeSum) }}</td>
+                </tr>
+                <tr>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="1"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="4"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td class="text-right" colspan="3">Total Pengeluaran :</td>
+                  <td class="text-right totalsum">{{ formatAmount($spendSum) }}</td>
+                </tr>
+                <tr>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="1"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="4"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td class="text-right" colspan="3">Total Pemakaian :</td>
+                  <td class="text-right totalsum">{{ formatAmount($totalSum) }}</td>
+                </tr>
+                <tr>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="1"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="4"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td class="text-right" colspan="3">Uang Jalan :</td>
+                  <td class="text-right totalsum">{{ formatAmount($roadwarrant->total_allowance) }}</td>
+                </tr>
+                <tr>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="1"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="4"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td class="text-right" colspan="3">Belum terkonfirmasi :</td>
+                  <td class="text-right totalsum text-warning"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
+                </tr>
+                <tr>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="1"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td colspan="4"></td>
+                  <td class="no-print" colspan="1"></td>
+                  <td class="text-right" colspan="3">Sisah uang :</td>
+                  <td class="text-right totalsum"><b>{{ formatAmount($restMoney) }}</b></td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>
@@ -474,11 +494,10 @@
 <script type="text/javascript">
     $(function () {
       var expenseTable = $("#expense-table").DataTable({
-        "responsive": false,
+        "responsive": true,
         "paging": false,
         "searching": false,
         "info": false,
-        "ordering": false,
         "buttons": ["excel"]
       });
 
