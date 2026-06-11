@@ -2,11 +2,16 @@
 
 @push('extra-styles')
 <style>
+  .img-print-label { display: none; }
   @media print {
+    @page { size: A4 landscape; margin: 10mm; }
+    body { font-size: 10px !important; }
+    .invoice { padding: 4px !important; }
+    #expense-table { width: 100% !important; table-layout: fixed; font-size: 9px !important; }
+    #expense-table th, #expense-table td { padding: 3px 4px !important; word-break: break-word; }
     #expense-table td img { display: none; }
     #expense-table td .img-print-label { display: inline !important; }
   }
-  .img-print-label { display: none; }
 </style>
 @endpush
 
@@ -366,9 +371,9 @@
               </tbody>
             </table>
 
-            <div class="row justify-content-end mt-2">
-              <div class="col-sm-4">
-                <table class="table table-sm table-bordered">
+            <div class="row mt-2">
+              <div class="col-12">
+                <table class="table table-striped">
                   <tr>
                     <td>Total Pemasukan</td>
                     <td class="text-right">{{ formatAmount($incomeSum) }}</td>
