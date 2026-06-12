@@ -248,7 +248,6 @@
                 <th width="3">No</th>
                 <th class="no-print">Aksi</th>
                 <th>Kategori</th>
-                <th>Deskripsi</th>
                 <th>Tanggal</th>
                 <th class="no-print">Koordinat (lat, long)</th>
                 <th>Status</th>
@@ -284,8 +283,7 @@
                         ><i class="fas fa-pencil-alt"></i></a>
                       </div>
                     </td>
-                    <td>{{ $expense->category_name ?? '-' }}</td>
-                    <td>{{ $expense->description }}</td>
+                    <td>{{ $expense->category_name ?? '-' }}<br><small class="text-muted">{{ $expense->description }}</small></td>
                     <td>{{ $expense->created_at }}</td>
                     <td class="no-print">
                       @if ($expense->location_lat)
@@ -337,26 +335,16 @@
                   @endif
                 @endforeach
               </tbody>
-              <tfoot>
-                <tr>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="3"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td class="text-right" colspan="3">Belum terkonfirmasi :</td>
-                  <td class="text-right text-warning"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
-                </tr>
-                <tr>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="3"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td class="text-right" colspan="3">Sisa uang :</td>
-                  <td class="text-right"><b>{{ formatAmount($summary) }}</b></td>
-                </tr>
-              </tfoot>
+            </table>
+            <table class="table table-striped w-100">
+              <tr>
+                <td class="text-right text-warning">Belum terkonfirmasi :</td>
+                <td class="text-right text-warning" width="200"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
+              </tr>
+              <tr>
+                <td class="text-right"><b>Sisa uang :</b></td>
+                <td class="text-right"><b>{{ formatAmount($summary) }}</b></td>
+              </tr>
             </table>
           </div>
         </div>
@@ -443,10 +431,11 @@
 <script type="text/javascript">
     $(function () {
       var expenseTable = $("#expense-table").DataTable({
-        "responsive": true,
+        "responsive": false,
         "paging": false,
         "searching": false,
         "info": false,
+        "ordering": false,
         "buttons": ["excel"]
       });
 
