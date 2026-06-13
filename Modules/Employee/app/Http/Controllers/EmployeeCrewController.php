@@ -184,7 +184,15 @@ class EmployeeCrewController extends Controller
         $data['list'] = Employee::getCrewAttendance($uuid);
         $data['driving_history'] = Employee::getCrewDrivingHistory($uuid);
 
+        $spj_totals = [];
+
         foreach ($data['driving_history'] as $key => $value) {
+            $spj_key = $value->spj_number ?? $value->roadwarrant_uuid;
+
+            if (!isset($spj_totals[$spj_key])) {
+                $spj_totals[$spj_key] = ['total_distance' => 0, 'total_minutes' => 0];
+            }
+
             if ($value->start_at && $value->finish_at) {
                 $start = Carbon::parse($value->start_at);
                 $finish = Carbon::parse($value->finish_at);
@@ -192,6 +200,7 @@ class EmployeeCrewController extends Controller
                 $data['driving_history'][$key]->duration = $diff->days > 0
                     ? $diff->days.'h '.$diff->h.'j '.$diff->i.'m'
                     : $diff->h.'j '.$diff->i.'m';
+                $spj_totals[$spj_key]['total_minutes'] += ($diff->days * 24 * 60) + ($diff->h * 60) + $diff->i;
             } else {
                 $data['driving_history'][$key]->duration = null;
             }
@@ -206,8 +215,11 @@ class EmployeeCrewController extends Controller
                 $miles = $dist * 60 * 1.1515;
                 $km = $miles * 1.609344;
                 $data['driving_history'][$key]->distance = round($km, 2);
+                $spj_totals[$spj_key]['total_distance'] += round($km, 2);
             }
         }
+
+        $data['spj_totals'] = $spj_totals;
 
         foreach ($data['list'] as $key => $value) {
             if ($value->check_out_time == null) {

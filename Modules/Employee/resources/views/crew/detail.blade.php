@@ -119,8 +119,7 @@
             <th>No</th>
             <th>Ref SPJ</th>
             <th>Bus</th>
-            <th>Start</th>
-            <th>Finish</th>
+            <th>Start / Finish</th>
             <th>Location</th>
             <th>Durasi</th>
             <th>Jarak Tempuh</th>
@@ -134,8 +133,10 @@
               <td width="20" class="text-center">{{ $key + 1 }}</td>
               <td>{{ $value->spj_number ?? $value->roadwarrant_uuid }}</td>
               <td>{{ $value->busname }} <br><small class="text-muted">{{ $value->registration_number }}</small></td>
-              <td>{{ $value->start_at ?? '-' }}</td>
-              <td>{{ $value->finish_at ?? '-' }}</td>
+              <td>
+                <small class="text-muted">Start:</small> {{ $value->start_at ?? '-' }}<br>
+                <small class="text-muted">Finish:</small> {{ $value->finish_at ?? '-' }}
+              </td>
               <td>
                 @if ($value->latitude && $value->longitude)
                   <a href="https://maps.google.com/?q={{ $value->latitude }},{{ $value->longitude }}" target="_blank">Check In</a>
@@ -174,6 +175,17 @@
                   <span class="badge bg-orange">SPJ Selesai</span>
                 @else
                   <span class="badge badge-light">-</span>
+                @endif
+                @php
+                  $spj_key = $value->spj_number ?? $value->roadwarrant_uuid;
+                  $totals = $spj_totals[$spj_key] ?? null;
+                @endphp
+                @if ($totals)
+                  <div class="mt-1" style="font-size:0.75rem; color:#6c757d;">
+                    {{ trim($current->first_name . ' ' . $current->second_name) }}<br>
+                    Total KM: {{ round($totals['total_distance'], 2) }} Km<br>
+                    Total Durasi: {{ floor($totals['total_minutes'] / 60) }}j {{ $totals['total_minutes'] % 60 }}m
+                  </div>
                 @endif
               </td>
             </tr>
