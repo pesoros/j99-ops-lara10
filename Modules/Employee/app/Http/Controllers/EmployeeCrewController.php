@@ -210,6 +210,7 @@ class EmployeeCrewController extends Controller
             } else {
                 $theta = $value->longitude - $value->checkout_longitude;
                 $dist = sin(deg2rad($value->latitude)) * sin(deg2rad($value->checkout_latitude)) + cos(deg2rad($value->latitude)) * cos(deg2rad($value->checkout_latitude)) * cos(deg2rad($theta));
+                $dist = min(1.0, max(-1.0, $dist));
                 $dist = acos($dist);
                 $dist = rad2deg($dist);
                 $miles = $dist * 60 * 1.1515;
