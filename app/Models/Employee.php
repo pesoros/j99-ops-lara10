@@ -78,6 +78,16 @@ class Employee extends Model
         return $query;
     }
 
+    public function scopeToggleCrewActive($query, $uuid)
+    {
+        $current = DB::table("employee_history")->where('id', $uuid)->value('is_active');
+        $query = DB::table("employee_history")
+            ->where('id', $uuid)
+            ->update(['is_active' => $current ? 0 : 1]);
+
+        return $query;
+    }
+
     public function scopeGetCrewDrivingHistory($query, $uuid)
     {
         $query = DB::table("ops_roadwarrant_driverlog AS log")

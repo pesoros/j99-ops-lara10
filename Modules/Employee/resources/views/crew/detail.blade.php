@@ -33,7 +33,12 @@
       <h3 class="card-title">{{ $title }}</h3>
       <div class="float-right">
           <a href="{{ url('employee/crew') }}" class="btn bg-gradient-primary btn-sm">Kembali</a>
-          @if (permissionCheck('edit')) <a href="{{ url('employee/crew/edit/'.$current->id) }}" class="btn btn-warning btn-sm">Edit</a> @endif
+          @if (permissionCheck('edit'))
+            <a href="{{ url('employee/crew/edit/'.$current->id) }}" class="btn btn-warning btn-sm">Edit</a>
+            <a href="{{ url('employee/crew/toggle-active/'.$current->id) }}" class="btn btn-sm {{ intval($current->is_active ?? 1) === 1 ? 'btn-secondary' : 'btn-primary' }}" onclick="return confirm('{{ intval($current->is_active ?? 1) === 1 ? 'Nonaktifkan' : 'Aktifkan' }} crew ini?')">
+              {{ intval($current->is_active ?? 1) === 1 ? 'Nonaktifkan' : 'Aktifkan' }}
+            </a>
+          @endif
       </div>
     </div>
     <div class="row">

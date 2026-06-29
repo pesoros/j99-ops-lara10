@@ -158,6 +158,13 @@ class EmployeeCrewController extends Controller
         return back()->with('success', 'Data crew berhasil diimport!');
     }
 
+    public function toggleActiveCrew($id)
+    {
+        Employee::toggleCrewActive($id);
+
+        return back()->with('success', 'Status crew berhasil diubah!');
+    }
+
     public function deleteCrew($id)
     {
         $crew = Employee::getCrew($id);
