@@ -11,8 +11,10 @@ use App\Models\RoadWarrant;
 use App\Models\Bus;
 use App\Models\Trip;
 use App\Models\Rest;
+use App\Models\ExpenseRecapApproval;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\DB;
 
 class LetterRoadWarrantController extends Controller
 {
@@ -260,6 +262,7 @@ class LetterRoadWarrantController extends Controller
             $data['totalSum'] = $spendSum - $incomeSum;
             $data['restMoney'] = $roadWarrant->total_allowance - $data['totalSum'] ;
             $data['roleInfo'] = Session('role_info_session');
+            $data['expenseRecapApproval'] = ExpenseRecapApproval::state($uuid);
 
             return view('letter::roadwarrantakap.detail', $data);
         } else if ($category === '2') {
@@ -275,6 +278,7 @@ class LetterRoadWarrantController extends Controller
 
             $data['isMarkerReady'] = true;
             $data['roleInfo'] = Session('role_info_session');
+            $data['expenseRecapApproval'] = ExpenseRecapApproval::state($uuid);
 
             return view('letter::roadwarrant.detail', $data);
         }
@@ -551,8 +555,27 @@ class LetterRoadWarrantController extends Controller
 
     public function expenseStatusUpdate(Request $request, $category, $uuid, $expense_uuid, $status_id)
     {
+        $expense = RoadWarrant::getExpense($expense_uuid);
+        $roadWarrant = RoadWarrant::getRoadWarrantAkap($uuid);
+
+        if (!$expense || $expense->roadwarrant_uuid !== $uuid || !$roadWarrant) {
+            return back()->with('failed', 'Transaksi tidak ditemukan pada SPJ ini.');
+        }
+
+        if (!in_array(intval($status_id), [0, 2], true)) {
+            return back()->with('failed', 'Status transaksi tidak valid.');
+        }
+
+        if (intval($roadWarrant->status) >= 6) {
+            return back()->with('failed', 'Transaksi tidak dapat diubah setelah LPJ selesai.');
+        }
+
         $updateExpense['status'] = $status_id;
         $saveComplaint = RoadWarrant::updateExpense($expense_uuid, $updateExpense);
+
+        if ($saveComplaint) {
+            ExpenseRecapApproval::invalidate($uuid, auth()->user()->uuid, 'Status transaksi diubah setelah proses persetujuan dimulai.');
+        }
 
         return back()->with('success', 'Status berhasil dirubah');
     }
@@ -566,6 +589,16 @@ class LetterRoadWarrantController extends Controller
 
     public function editRoadWarrantExpenseStore(Request $request, $uuid)
     {
+        $expense = RoadWarrant::getExpense($uuid);
+        if (!$expense) {
+            return back()->with('failed', 'Pengeluaran tidak ditemukan!');
+        }
+
+        $roadWarrant = RoadWarrant::getRoadWarrantAkap($expense->roadwarrant_uuid);
+        if (!$roadWarrant || intval($roadWarrant->status) >= 6) {
+            return back()->with('failed', 'Pengeluaran tidak dapat diubah setelah LPJ selesai.');
+        }
+
         $updateExpense = [
             'description'   =>  $request->description,
             'nominal'   =>  $request->nominal,
@@ -573,6 +606,7 @@ class LetterRoadWarrantController extends Controller
         $saveExpense = RoadWarrant::updateExpense($uuid, $updateExpense);
 
         if ($saveExpense) {
+            ExpenseRecapApproval::invalidate($expense->roadwarrant_uuid, auth()->user()->uuid, 'Data transaksi diubah setelah proses persetujuan dimulai.');
             return back()->with('success', 'Anda berhasil edit data Pengeluaran');
         }
 
@@ -628,6 +662,15 @@ class LetterRoadWarrantController extends Controller
 
     public function accurateLpj(Request $request, $uuid)
     {
+        $roadWarrant = RoadWarrant::getRoadWarrantAkap($uuid);
+        if (!$roadWarrant || intval($roadWarrant->status) !== 5) {
+            return back()->with('failed', 'LPJ hanya dapat dibuat setelah perjalanan selesai.');
+        }
+
+        if (!ExpenseRecapApproval::state($uuid)['is_approved']) {
+            return back()->with('failed', 'Rekap pengeluaran harus disetujui Operational dan Accounting terlebih dahulu.');
+        }
+
         $editRoadWarrantData = [
             'status'        =>  6,
             'closed_at'     =>  Carbon::now()
@@ -637,6 +680,64 @@ class LetterRoadWarrantController extends Controller
         $fetch = $this->httpPost($path, $uuid);
         
         return back()->with('success', 'Laporan LPJ berhasil!');
+    }
+
+    public function expenseRecapApproval(Request $request, $uuid)
+    {
+        $validated = $request->validate([
+            'decision' => ['required', 'in:approved,rejected'],
+            'note' => ['required', 'string', 'max:2000'],
+        ]);
+
+        $roadWarrant = RoadWarrant::getRoadWarrantAkap($uuid);
+        if (!$roadWarrant) {
+            return back()->with('failed', 'SPJ tidak ditemukan.');
+        }
+
+        if (intval($roadWarrant->status) !== 5) {
+            return back()->with('failed', 'Persetujuan rekap hanya dapat dimulai setelah perjalanan selesai.');
+        }
+
+        $roleInfo = Session('role_info_session');
+        $roleSlug = $roleInfo->role_slug ?? null;
+        $state = ExpenseRecapApproval::state($uuid);
+
+        if ($validated['decision'] === ExpenseRecapApproval::DECISION_APPROVED) {
+            $hasUnconfirmedExpense = RoadWarrant::getExpensesList($uuid)
+                ->contains(fn ($expense) => intval($expense->status) === 1);
+
+            if ($hasUnconfirmedExpense) {
+                return back()->with('failed', 'Semua transaksi harus dikonfirmasi sebelum rekap disetujui.');
+            }
+        }
+
+        if ($roleSlug === ExpenseRecapApproval::STAGE_OPERATIONAL) {
+            if (!in_array($state['status'], ['pending_operational', 'rejected_operational', 'rejected_accounting'], true)) {
+                return back()->with('failed', 'Rekap saat ini tidak menunggu persetujuan Operational.');
+            }
+            $stage = ExpenseRecapApproval::STAGE_OPERATIONAL;
+        } elseif ($roleSlug === ExpenseRecapApproval::STAGE_ACCOUNTING) {
+            if ($state['status'] !== 'pending_accounting') {
+                return back()->with('failed', 'Accounting hanya dapat memutuskan setelah disetujui Operational.');
+            }
+            $stage = ExpenseRecapApproval::STAGE_ACCOUNTING;
+        } else {
+            abort(403, 'Anda tidak berwenang menyetujui rekap pengeluaran.');
+        }
+
+        DB::transaction(function () use ($uuid, $stage, $roleSlug, $validated) {
+            ExpenseRecapApproval::record([
+                'uuid' => generateUuid(),
+                'roadwarrant_uuid' => $uuid,
+                'stage' => $stage,
+                'decision' => $validated['decision'],
+                'decided_by' => auth()->user()->uuid,
+                'role_slug' => $roleSlug,
+                'note' => $validated['note'],
+            ]);
+        });
+
+        return back()->with('success', 'Persetujuan rekap pengeluaran berhasil disimpan.');
     }
 
     public function deleteRoadWarrant($category, $uuid)

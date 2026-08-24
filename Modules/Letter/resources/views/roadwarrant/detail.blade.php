@@ -357,6 +357,7 @@
         <!-- /.row -->
       </div>
       <!-- /.invoice -->
+      @include('letter::roadwarrant._expense_recap_approval')
       <div class="row no-print">
         <div class="col-12">
           <a href="#" rel="noopener" target="_blank" class="btn btn-default printPage"><i class="fas fa-print"></i> Print</a>

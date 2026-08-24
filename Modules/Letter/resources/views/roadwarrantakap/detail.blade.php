@@ -53,7 +53,7 @@
                 @if (intval($roadwarrant->status) == 3 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'accounting'))
                   <a href="{{ url('letter/roadwarrant/withdraw/1/'.$roadwarrant->uuid) }}" class="btn bg-gradient-success float-right">Transfer uang perjalanan</a>
                 @endif
-                @if (intval($roadwarrant->status) == 5 && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'operational' || $roleInfo->role_slug == 'accounting'))
+                @if (intval($roadwarrant->status) == 5 && $expenseRecapApproval['is_approved'] && ($roleInfo->role_slug == 'super-user' || $roleInfo->role_slug == 'operational' || $roleInfo->role_slug == 'accounting'))
                   <a href="{{ url('letter/roadwarrant/accurate/lpj/'.$roadwarrant->uuid) }}" onclick="return confirm('Anda yakin?')" class="btn bg-gradient-warning float-right">Lapor LPJ perjalanan</a>
                 @endif
               @endif
@@ -418,6 +418,7 @@
         <!-- /.row -->
       </div>
       <!-- /.invoice -->
+      @include('letter::roadwarrant._expense_recap_approval')
       {{-- <div class="row">
         <div class="col-12">
           <p><strong>SISA UANG: Rp. {{$summary}}</strong></p>
