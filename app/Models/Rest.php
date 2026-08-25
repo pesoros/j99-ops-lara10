@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 class Rest extends Model
 {
@@ -216,11 +217,29 @@ class Rest extends Model
             'X-TTPG-KEY' => env('PULOGEBANG_KEY')
         ];
 
-        $fetch = $this->client->request(
-            'POST', env('PULOGEBANG_URL').'/boarding', [
-            'body' => json_encode($raw),
-            'headers' => $headers,
-        ])->getBody();
+        try {
+            $fetch = $this->client->request(
+                'POST', env('PULOGEBANG_URL').'/boarding', [
+                'body' => json_encode($raw),
+                'headers' => $headers,
+            ])->getBody();
+        } catch (RequestException $e) {
+            $response = $e->getResponse();
+
+            return (object) [
+                'status'    => false,
+                'skipped'   => true,
+                'http_code' => $response ? $response->getStatusCode() : null,
+                'error'     => $response ? $response->getBody()->getContents() : $e->getMessage(),
+            ];
+        } catch (\Exception $e) {
+            return (object) [
+                'status'    => false,
+                'skipped'   => true,
+                'http_code' => null,
+                'error'     => $e->getMessage(),
+            ];
+        }
 
         return json_decode($fetch);
     }

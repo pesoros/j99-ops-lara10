@@ -12,6 +12,7 @@ use App\Models\Bus;
 use App\Models\Trip;
 use App\Models\Rest;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 
 class LetterRoadWarrantController extends Controller
@@ -196,9 +197,14 @@ class LetterRoadWarrantController extends Controller
 
         $saveRoadWarrant = RoadWarrant::saveRoadWarrant($saveRoadWarrantData);
 
-        $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestData, $busData->registration_number);
-        if ($request->numberoftrip == "2") {
-            $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestDataReturn, $busData->registration_number);
+        try {
+            $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestData, $busData->registration_number);
+            if ($request->numberoftrip == "2") {
+                $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestDataReturn, $busData->registration_number);
+            }
+        } catch (\Exception $e) {
+            // Kegagalan kirim boarding ke TTPG tidak boleh membatalkan pembuatan SPJ.
+            Log::error('Boarding Pulo Gebang gagal dikirim: '.$e->getMessage());
         }
 
         if ($saveRoadWarrant) {
