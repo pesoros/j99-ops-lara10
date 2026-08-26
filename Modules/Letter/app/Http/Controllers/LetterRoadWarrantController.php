@@ -694,7 +694,7 @@ class LetterRoadWarrantController extends Controller
             return back()->with('failed', 'SPJ tidak ditemukan.');
         }
 
-        if (intval($roadWarrant->status) !== 5) {
+        if (intval($roadWarrant->status) < 5) {
             return back()->with('failed', 'Persetujuan rekap hanya dapat dimulai setelah perjalanan selesai.');
         }
 
