@@ -702,15 +702,6 @@ class LetterRoadWarrantController extends Controller
         $roleSlug = $roleInfo->role_slug ?? null;
         $state = ExpenseRecapApproval::state($uuid);
 
-        if ($validated['decision'] === ExpenseRecapApproval::DECISION_APPROVED) {
-            $hasUnconfirmedExpense = RoadWarrant::getExpensesList($uuid)
-                ->contains(fn ($expense) => intval($expense->status) === 1);
-
-            if ($hasUnconfirmedExpense) {
-                return back()->with('failed', 'Semua transaksi harus dikonfirmasi sebelum rekap disetujui.');
-            }
-        }
-
         if ($roleSlug === ExpenseRecapApproval::STAGE_OPERATIONAL) {
             if (!in_array($state['status'], ['pending_operational', 'rejected_operational', 'rejected_accounting'], true)) {
                 return back()->with('failed', 'Rekap saat ini tidak menunggu persetujuan Operational.');
