@@ -38,6 +38,9 @@ class LetterRoadWarrantController extends Controller
 
         foreach ($list as $item) {
             $item->fuels = RoadWarrant::getExpensesByRoadwarrantAndDescription($item->uuid, 'BBM');
+            $item->expense_recap_approval_status = intval($item->status) >= 5
+                ? ExpenseRecapApproval::state($item->uuid)['status']
+                : null;
         }
 
         $data['list'] = $list;
@@ -701,6 +704,15 @@ class LetterRoadWarrantController extends Controller
         $roleInfo = Session('role_info_session');
         $roleSlug = $roleInfo->role_slug ?? null;
         $state = ExpenseRecapApproval::state($uuid);
+
+        if ($validated['decision'] === ExpenseRecapApproval::DECISION_APPROVED) {
+            $hasUnconfirmedExpense = RoadWarrant::getExpensesList($uuid)
+                ->contains(fn ($expense) => intval($expense->status) === 1);
+
+            if ($hasUnconfirmedExpense) {
+                return back()->with('failed', 'Semua transaksi harus dikonfirmasi sebelum rekap disetujui.');
+            }
+        }
 
         if ($roleSlug === ExpenseRecapApproval::STAGE_OPERATIONAL) {
             if (!in_array($state['status'], ['pending_operational', 'rejected_operational', 'rejected_accounting'], true)) {

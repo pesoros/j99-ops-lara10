@@ -30,6 +30,7 @@
         <th>Nama Bus</th>
         <th>Rekening SPJ</th>
         <th>Status</th>
+        <th>Status Approval Pengeluaran</th>
         <th>Km Awal</th>
         <th>Km Akhir</th>
         <th>BBM</th>
@@ -64,6 +65,21 @@
                 <span class="badge badge-danger">Perjalanan selesai</span>
               @elseif (intval($value->status) === 6)
                 <span class="badge bg-orange">SPJ Selesai</span>
+              @endif
+            </td>
+            <td>
+              @if ($value->expense_recap_approval_status === 'pending_operational')
+                <span class="badge badge-warning">Menunggu Operational</span>
+              @elseif ($value->expense_recap_approval_status === 'rejected_operational')
+                <span class="badge badge-danger">Ditolak Operational</span>
+              @elseif ($value->expense_recap_approval_status === 'pending_accounting')
+                <span class="badge badge-info">Menunggu Accounting</span>
+              @elseif ($value->expense_recap_approval_status === 'rejected_accounting')
+                <span class="badge badge-danger">Ditolak Accounting</span>
+              @elseif ($value->expense_recap_approval_status === 'approved')
+                <span class="badge badge-success">Disetujui</span>
+              @else
+                <span class="badge badge-light">Belum tersedia</span>
               @endif
             </td>
             <td>
