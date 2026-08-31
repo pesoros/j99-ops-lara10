@@ -12,6 +12,7 @@ use App\Models\Bus;
 use App\Models\Trip;
 use App\Models\Rest;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class LetterRoadWarrantControllerOld extends Controller
 {
@@ -136,7 +137,12 @@ class LetterRoadWarrantControllerOld extends Controller
 
         $saveRoadWarrant = RoadWarrantOld::saveManifest($saveManifestData);
         $saveRoadWarrant = RoadWarrantOld::saveRoadWarrant($saveRoadWarrantData);
-        $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestData, $busData->registration_number);
+        try {
+            $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestData, $busData->registration_number);
+        } catch (\Exception $e) {
+            // Kegagalan kirim boarding ke TTPG tidak boleh membatalkan pembuatan SPJ.
+            Log::error('Boarding Pulo Gebang gagal dikirim: '.$e->getMessage());
+        }
 
         if ($saveRoadWarrant) {
             return back()->with('success', 'Anda berhasil membuat SPJ AKAP');

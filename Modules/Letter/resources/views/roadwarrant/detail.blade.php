@@ -178,7 +178,12 @@
                 </tr>
                 <tr>
                   <th width="250">Kilometer awal :</th>
-                  <td>{{ $roadwarrant->km_start ? 'Km '.$roadwarrant->km_start : '-' }}</td>
+                  <td>
+                    {{ $roadwarrant->km_start ? 'Km '.$roadwarrant->km_start : '-' }}
+                    @if (in_array(intval($roadwarrant->status), [5, 6]))
+                      <button type="button" class="btn btn-xs btn-warning ml-2 no-print" data-toggle="modal" data-target="#kmEditModal">Edit KM</button>
+                    @endif
+                  </td>
                 </tr>
                 <tr>
                   <th width="250">Kilometer akhir :</th>
@@ -234,15 +239,15 @@
             <div class="mb-2 no-print">
               <button id="bulkTerimaBtn" class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i> Terima Tercentang</button>
               <button id="bulkTolakBtn" class="btn btn-sm btn-danger" disabled><i class="fas fa-times"></i> Tolak Tercentang</button>
+              <button id="exportExcelBtn" class="btn btn-sm btn-info"><i class="fas fa-file-excel"></i> Export Excel</button>
             </div>
-            <table class="table table-striped">
+            <table id="expense-table" class="table table-striped">
               <thead>
               <tr>
                 <th width="3" class="no-print"><input type="checkbox" id="checkAll"></th>
                 <th width="3">No</th>
                 <th class="no-print">Aksi</th>
                 <th>Kategori</th>
-                <th>Deskripsi</th>
                 <th>Tanggal</th>
                 <th class="no-print">Koordinat (lat, long)</th>
                 <th>Status</th>
@@ -278,8 +283,7 @@
                         ><i class="fas fa-pencil-alt"></i></a>
                       </div>
                     </td>
-                    <td>{{ $expense->category_name ?? '-' }}</td>
-                    <td>{{ $expense->description }}</td>
+                    <td>{{ $expense->category_name ?? '-' }}<br><small class="text-muted">{{ $expense->description }}</small></td>
                     <td>{{ $expense->created_at }}</td>
                     <td class="no-print">
                       @if ($expense->location_lat)
@@ -331,26 +335,16 @@
                   @endif
                 @endforeach
               </tbody>
-              <tfoot>
-                <tr>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="3"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td class="text-right" colspan="3">Belum terkonfirmasi :</td>
-                  <td class="text-right text-warning"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
-                </tr>
-                <tr>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="3"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td class="text-right" colspan="3">Sisa uang :</td>
-                  <td class="text-right"><b>{{ formatAmount($summary) }}</b></td>
-                </tr>
-              </tfoot>
+            </table>
+            <table class="table table-striped w-100">
+              <tr>
+                <td class="text-right text-warning">Belum terkonfirmasi :</td>
+                <td class="text-right text-warning" width="200"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
+              </tr>
+              <tr>
+                <td class="text-right"><b>Sisa uang :</b></td>
+                <td class="text-right"><b>{{ formatAmount($summary) }}</b></td>
+              </tr>
             </table>
           </div>
         </div>
@@ -374,6 +368,35 @@
 </div>
 
 <!-- Modal -->
+<!-- KM Edit Modal -->
+<div class="modal fade" id="kmEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Kilometer</h5>
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+      </div>
+      <form action="{{ url('letter/roadwarrant/km/'.$roadwarrant->uuid) }}" method="POST">
+        @csrf
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Kilometer Awal</label>
+            <input type="number" class="form-control" name="km_start" value="{{ $roadwarrant->km_start }}" placeholder="Masukkan KM awal">
+          </div>
+          <div class="form-group">
+            <label>Kilometer Akhir</label>
+            <input type="number" class="form-control" name="km_end" value="{{ $roadwarrant->km_end }}" placeholder="Masukkan KM akhir">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="markerPaymentModal" tabindex="-1" role="dialog" aria-labelledby="markerPaymentModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -408,6 +431,19 @@
 @push('extra-scripts')
 <script type="text/javascript">
     $(function () {
+      var expenseTable = $("#expense-table").DataTable({
+        "responsive": false,
+        "paging": false,
+        "searching": false,
+        "info": false,
+        "ordering": false,
+        "buttons": ["excel"]
+      });
+
+      $("#exportExcelBtn").on('click', function () {
+        expenseTable.button('.buttons-excel').trigger();
+      });
+
       $('a.printPage').click(function(){
            window.print();
            return false;

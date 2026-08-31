@@ -53,6 +53,7 @@
           <th>No</th>
           <th>Nama</th>
           <th>Jabatan</th>
+          <th>Status</th>
           <th>Aksi</th>
         </tr>
         </thead>
@@ -63,11 +64,23 @@
               <td>{{ $value->first_name }} {{ $value->second_name }}</td>
               <td>{{ $value->position }}</td>
               <td>
+                @if (intval($value->is_active ?? 1) === 1)
+                  <span class="badge badge-success">Aktif</span>
+                @else
+                  <span class="badge badge-secondary">Nonaktif</span>
+                @endif
+              </td>
+              <td>
                 <div class="btn-group btn-block">
                   <a href="{{ url('employee/crew/detail/'.$value->id) }}" class="btn btn-success btn-sm">Detail</a>
-                  @if (permissionCheck('edit')) <a href="{{ url('employee/crew/edit/'.$value->id) }}" class="btn btn-warning btn-sm">Edit</a> @endif
+                  @if (permissionCheck('edit'))
+                    <a href="{{ url('employee/crew/edit/'.$value->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{{ url('employee/crew/toggle-active/'.$value->id) }}" class="btn btn-sm {{ intval($value->is_active ?? 1) === 1 ? 'btn-secondary' : 'btn-primary' }}" onclick="return confirm('{{ intval($value->is_active ?? 1) === 1 ? 'Nonaktifkan' : 'Aktifkan' }} crew ini?')">
+                      {{ intval($value->is_active ?? 1) === 1 ? 'Nonaktifkan' : 'Aktifkan' }}
+                    </a>
+                  @endif
                   @if (permissionCheck('delete'))
-                  <a href="{{ url('employee/crew/delete/'.$value->id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Hapus crew ini?')">Hapus</a>
+                    <a href="{{ url('employee/crew/delete/'.$value->id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Hapus crew ini?')">Hapus</a>
                   @endif
                 </div>
               </td>

@@ -527,13 +527,12 @@
   
   function datepicker1Change(value) {
     const dateConv = dayjs(value).format('YYYY-MM-DD')
-    const newMinDate = dayjs(value).add(1, 'day').format('YYYY-MM-DD')
-    const newMaxDate = dayjs(newMinDate).add(3, 'day').format('YYYY-MM-DD')
-    
+    const newMaxDate = dayjs(value).add(3, 'day').format('YYYY-MM-DD')
+
     $("#datepicker_return").datetimepicker("destroy");
     $('#datepicker_return').datetimepicker({
       format: 'DD/MM/YYYY',
-      minDate: newMinDate,
+      minDate: dateConv,
       maxDate: newMaxDate,
     });
 

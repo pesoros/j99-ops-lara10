@@ -113,6 +113,7 @@ class RoadWarrant extends Model
     {
         $query = DB::table("employee_history AS employee")
             ->select('employee.*')
+            ->where('employee.is_active', 1)
             ->orderBy('employee.first_name', 'ASC')
             ->get();
 
@@ -291,6 +292,7 @@ class RoadWarrant extends Model
     {
         $query = DB::table("manifest")
             ->select(
+                'manifest.id',
                 'manifest.uuid',
                 'manifest.status',
                 'manifest.trip_date',

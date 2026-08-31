@@ -13,6 +13,7 @@ use App\Models\Trip;
 use App\Models\Rest;
 use App\Models\ExpenseRecapApproval;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
 
@@ -201,9 +202,14 @@ class LetterRoadWarrantController extends Controller
 
         $saveRoadWarrant = RoadWarrant::saveRoadWarrant($saveRoadWarrantData);
 
-        $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestData, $busData->registration_number);
-        if ($request->numberoftrip == "2") {
-            $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestDataReturn, $busData->registration_number);
+        try {
+            $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestData, $busData->registration_number);
+            if ($request->numberoftrip == "2") {
+                $puloGebangBoarding = $this->sendBoardingPuloGebang($saveManifestDataReturn, $busData->registration_number);
+            }
+        } catch (\Exception $e) {
+            // Kegagalan kirim boarding ke TTPG tidak boleh membatalkan pembuatan SPJ.
+            Log::error('Boarding Pulo Gebang gagal dikirim: '.$e->getMessage());
         }
 
         if ($saveRoadWarrant) {
@@ -614,6 +620,21 @@ class LetterRoadWarrantController extends Controller
         }
 
         return back()->with('failed', 'Pengeluaran gagal di edit!');
+    }
+
+    public function updateKm(Request $request, $uuid)
+    {
+        $request->validate([
+            'km_start' => 'nullable|numeric',
+            'km_end'   => 'nullable|numeric',
+        ]);
+
+        RoadWarrant::updateRoadWarrant($uuid, [
+            'km_start' => $request->km_start,
+            'km_end'   => $request->km_end,
+        ]);
+
+        return back()->with('success', 'Kilometer berhasil diperbarui!');
     }
 
     public function sendBoardingPuloGebang($manifestData, $registrationNumber)

@@ -126,8 +126,9 @@
                       @if ($key > 0) <br> @endif
                       <div class="col-sm-12">
                         {{ dateFormat($item->trip_date) }} | {{ $item->trip_title }}
+                        <a href="{{ url('trip/manifest/detail/'.$item->id) }}" class="badge badge-info float-right no-print" style="margin-left: 4px;">Lihat Manifest</a>
                         @if (intval($item->status) == 1 && intval($roadwarrant->status) == 4 && ($roleInfo->role_slug == 'super-user'))
-                          <a href="{{ url('letter/roadwarrant/close/'.$roadwarrant->uuid.'/'.$item->uuid) }}" class="badge badge-warning float-right">Selesaikan Perjalanan</a>
+                          <a href="{{ url('letter/roadwarrant/close/'.$roadwarrant->uuid.'/'.$item->uuid) }}" class="badge badge-warning float-right no-print">Selesaikan Perjalanan</a>
                         @endif
                       </div>
                     @endforeach
@@ -150,7 +151,12 @@
                 </tr>
                 <tr>
                   <th width="250">Kilometer awal :</th>
-                  <td>{{ $roadwarrant->km_start ? 'Km '.$roadwarrant->km_start : '-' }}</td>
+                  <td>
+                    {{ $roadwarrant->km_start ? 'Km '.$roadwarrant->km_start : '-' }}
+                    @if (in_array(intval($roadwarrant->status), [5, 6]))
+                      <button type="button" class="btn btn-xs btn-warning ml-2 no-print" data-toggle="modal" data-target="#kmEditModal">Edit KM</button>
+                    @endif
+                  </td>
                 </tr>
                 <tr>
                   <th width="250">Kilometer akhir :</th>
@@ -257,15 +263,15 @@
             <div class="mb-2 no-print">
               <button id="bulkTerimaBtn" class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i> Terima Tercentang</button>
               <button id="bulkTolakBtn" class="btn btn-sm btn-danger" disabled><i class="fas fa-times"></i> Tolak Tercentang</button>
+              <button id="exportExcelBtn" class="btn btn-sm btn-info"><i class="fas fa-file-excel"></i> Export Excel</button>
             </div>
-            <table class="table table-striped">
+            <table id="expense-table" class="table table-striped">
               <thead>
               <tr>
                 <th width="3" class="no-print"><input type="checkbox" id="checkAll"></th>
                 <th width="3">No</th>
                 <th class="no-print">Aksi</th>
                 <th>Kategori</th>
-                <th>Deskripsi</th>
                 <th>Tanggal</th>
                 <th>Trip</th>
                 <th class="no-print">Koordinat (lat, long)</th>
@@ -302,8 +308,7 @@
                         ><i class="fas fa-pencil-alt"></i></a>
                       </div>
                     </td>
-                    <td>{{ $expense->category_name ?? '-' }}</td>
-                    <td>{{ $expense->description }}</td>
+                    <td>{{ $expense->category_name ?? '-' }}<br><small class="text-muted">{{ $expense->description }}</small></td>
                     <td>{{ $expense->created_at }}</td>
                     <td>{{ $expense->trip_title }}</td>
                     <td class="no-print">
@@ -356,62 +361,32 @@
                   @endif
                 @endforeach
               </tbody>
-              <tfoot>
-                <tr>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="4"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td class="text-right" colspan="3">Total Pemasukan :</td>
-                  <td class="text-right totalsum">{{ formatAmount($incomeSum) }}</td>
-                </tr>
-                <tr>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="4"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td class="text-right" colspan="3">Total Pengeluaran :</td>
-                  <td class="text-right totalsum">{{ formatAmount($spendSum) }}</td>
-                </tr>
-                <tr>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="4"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td class="text-right" colspan="3">Total Pemakaian :</td>
-                  <td class="text-right totalsum">{{ formatAmount($totalSum) }}</td>
-                </tr>
-                <tr>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="4"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td class="text-right" colspan="3">Uang Jalan :</td>
-                  <td class="text-right totalsum">{{ formatAmount($roadwarrant->total_allowance) }}</td>
-                </tr>
-                <tr>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="4"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td class="text-right" colspan="3">Belum terkonfirmasi :</td>
-                  <td class="text-right totalsum text-warning"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
-                </tr>
-                <tr>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="1"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td colspan="4"></td>
-                  <td class="no-print" colspan="1"></td>
-                  <td class="text-right" colspan="3">Sisah uang :</td>
-                  <td class="text-right totalsum"><b>{{ formatAmount($restMoney) }}</b></td>
-                </tr>
-              </tfoot>
+            </table>
+            <table class="table table-striped w-100">
+              <tr>
+                <td class="text-right">Total Pemasukan :</td>
+                <td class="text-right" width="200">{{ formatAmount($incomeSum) }}</td>
+              </tr>
+              <tr>
+                <td class="text-right">Total Pengeluaran :</td>
+                <td class="text-right">{{ formatAmount($spendSum) }}</td>
+              </tr>
+              <tr>
+                <td class="text-right">Total Pemakaian :</td>
+                <td class="text-right">{{ formatAmount($totalSum) }}</td>
+              </tr>
+              <tr>
+                <td class="text-right">Uang Jalan :</td>
+                <td class="text-right">{{ formatAmount($roadwarrant->total_allowance) }}</td>
+              </tr>
+              <tr>
+                <td class="text-right text-warning">Belum terkonfirmasi :</td>
+                <td class="text-right text-warning"><b>{{ formatAmount($unconfirmedSum) }}</b></td>
+              </tr>
+              <tr>
+                <td class="text-right"><b>Sisa uang :</b></td>
+                <td class="text-right"><b>{{ formatAmount($restMoney) }}</b></td>
+              </tr>
             </table>
           </div>
         </div>
@@ -432,6 +407,35 @@
       <br>
     </div><!-- /.col -->
   </div><!-- /.row -->
+</div>
+
+<!-- KM Edit Modal -->
+<div class="modal fade" id="kmEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Kilometer</h5>
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+      </div>
+      <form action="{{ url('letter/roadwarrant/km/'.$roadwarrant->uuid) }}" method="POST">
+        @csrf
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Kilometer Awal</label>
+            <input type="number" class="form-control" name="km_start" value="{{ $roadwarrant->km_start }}" placeholder="Masukkan KM awal">
+          </div>
+          <div class="form-group">
+            <label>Kilometer Akhir</label>
+            <input type="number" class="form-control" name="km_end" value="{{ $roadwarrant->km_end }}" placeholder="Masukkan KM akhir">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 <!-- Modal -->
@@ -458,6 +462,19 @@
 @push('extra-scripts')
 <script type="text/javascript">
     $(function () {
+      var expenseTable = $("#expense-table").DataTable({
+        "responsive": false,
+        "paging": false,
+        "searching": false,
+        "info": false,
+        "ordering": false,
+        "buttons": ["excel"]
+      });
+
+      $("#exportExcelBtn").on('click', function () {
+        expenseTable.button('.buttons-excel').trigger();
+      });
+
       const manifestData = @json($manifest);
       console.log(manifestData);
       

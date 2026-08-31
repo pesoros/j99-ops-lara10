@@ -28,10 +28,11 @@ class Employee extends Model
 
     public function scopeGetCrewAttendance($query, $uuid)
     {
-        $query = DB::table("employee_attendance")
-            ->select('*')
-            ->where('employee_id', $uuid)
-            ->orderBy('id', 'desc')
+        $query = DB::table("employee_attendance AS attendance")
+            ->select('attendance.*', 'rw.numberid AS spj_number')
+            ->leftJoin("ops_roadwarrant AS rw", "rw.uuid", "=", "attendance.roadwarrant_uuid")
+            ->where('attendance.employee_id', $uuid)
+            ->orderBy('attendance.id', 'desc')
             ->get();
 
         return $query;
@@ -73,6 +74,35 @@ class Employee extends Model
     public function scopeLogDeleteCrew($query, $data)
     {
         $query = DB::table("employee_delete_log")->insert($data);
+
+        return $query;
+    }
+
+    public function scopeToggleCrewActive($query, $uuid)
+    {
+        $current = DB::table("employee_history")->where('id', $uuid)->value('is_active');
+        $query = DB::table("employee_history")
+            ->where('id', $uuid)
+            ->update(['is_active' => $current ? 0 : 1]);
+
+        return $query;
+    }
+
+    public function scopeGetCrewDrivingHistory($query, $uuid)
+    {
+        $query = DB::table("ops_roadwarrant_driverlog AS log")
+            ->select(
+                'log.*',
+                'rw.status',
+                'rw.numberid AS spj_number',
+                'bus.name AS busname',
+                'bus.registration_number',
+            )
+            ->leftJoin("ops_roadwarrant AS rw", "rw.uuid", "=", "log.roadwarrant_uuid")
+            ->leftJoin("v2_bus AS bus", "bus.uuid", "=", "rw.bus_uuid")
+            ->where('log.driver_id', $uuid)
+            ->orderBy('log.start_at', 'desc')
+            ->get();
 
         return $query;
     }
