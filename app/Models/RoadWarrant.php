@@ -126,6 +126,10 @@ class RoadWarrant extends Model
             ->select('roadwarrant.uuid')
             ->join("manifest", "manifest.uuid", "=", "roadwarrant.manifest_uuid")
             ->where('manifest.trip_date', $date)
+            ->where(function ($query) {
+                $query->where('roadwarrant.status', '<', 5)
+                    ->orWhereNull('roadwarrant.status');
+            })
             ->where(function ($query) use ($driverid) {
                 $query->where('roadwarrant.driver_1', '=', $driverid)
                     ->orWhere('roadwarrant.driver_2', '=', $driverid)
@@ -144,6 +148,10 @@ class RoadWarrant extends Model
             ->join("v2_book AS book", "book.uuid", "=", "roadwarrant.manifest_uuid")
             ->where('book.start_date', '<=', $date)
             ->where('book.finish_date', '>=', $date)
+            ->where(function ($query) {
+                $query->where('roadwarrant.status', '<', 5)
+                    ->orWhereNull('roadwarrant.status');
+            })
             ->where(function ($query) use ($driverid) {
                 $query->where('roadwarrant.driver_1', '=', $driverid)
                     ->orWhere('roadwarrant.driver_2', '=', $driverid)
