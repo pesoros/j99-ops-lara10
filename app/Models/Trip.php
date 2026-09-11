@@ -23,7 +23,13 @@ class Trip extends Model
             )
             ->leftJoin('trip_assign as tras', 'manif.trip_assign', 'tras.id')
             ->leftJoin('trip as tr', 'tras.trip', 'tr.trip_id')
-            ->leftJoin("fleet_registration as freg", "freg.id", "=", "manif.fleet")
+            ->leftJoin("fleet_registration as freg", function ($join) {
+                // manif.fleet is varchar: legacy rows hold a numeric fleet_registration.id,
+                // newer rows hold a v2_bus uuid. Without this guard MySQL coerces the uuid
+                // to its leading digits and matches the wrong fleet_registration row.
+                $join->on("freg.id", "=", "manif.fleet")
+                    ->whereRaw("manif.fleet REGEXP '^[0-9]+$'");
+            })
             ->leftJoin("v2_bus as bus", "bus.uuid", "=", "manif.fleet")
             ->orderBy('manif.id', 'desc')
             ->take(300)
@@ -59,7 +65,13 @@ class Trip extends Model
             ->leftJoin("employee_history as emp1", "emp1.id", "=", "rw.driver_1")
             ->leftJoin("employee_history as emp2", "emp2.id", "=", "rw.driver_2")
             ->leftJoin("employee_history as emp3", "emp3.id", "=", "rw.codriver")
-            ->leftJoin("fleet_registration as freg", "freg.id", "=", "manif.fleet")
+            ->leftJoin("fleet_registration as freg", function ($join) {
+                // manif.fleet is varchar: legacy rows hold a numeric fleet_registration.id,
+                // newer rows hold a v2_bus uuid. Without this guard MySQL coerces the uuid
+                // to its leading digits and matches the wrong fleet_registration row.
+                $join->on("freg.id", "=", "manif.fleet")
+                    ->whereRaw("manif.fleet REGEXP '^[0-9]+$'");
+            })
             ->leftJoin("v2_bus as bus", "bus.uuid", "=", "manif.fleet")
             ->where('manif.id', $id)
             ->first();
