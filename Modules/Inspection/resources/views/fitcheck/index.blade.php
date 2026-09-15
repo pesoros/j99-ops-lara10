@@ -51,6 +51,7 @@
           <th>TD</th>
           <th>Suhu</th>
           <th>Status</th>
+          <th>TTD</th>
           <th>Dibuat Oleh</th>
           <th>Aksi</th>
         </tr>
@@ -70,6 +71,13 @@
                 <span class="badge badge-success">Fit</span>
               @else
                 <span class="badge badge-danger">Tidak Fit</span>
+              @endif
+            </td>
+            <td>
+              @if ($value->driver_signed_at)
+                <span class="badge badge-success" title="Ditandatangani {{ \Carbon\Carbon::parse($value->driver_signed_at)->format('d/m/Y H:i') }}">Ada</span>
+              @else
+                <span class="badge badge-secondary">Belum</span>
               @endif
             </td>
             <td>{{ $value->created_by_name ?? '-' }}</td>

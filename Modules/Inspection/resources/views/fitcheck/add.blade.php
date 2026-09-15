@@ -121,9 +121,11 @@
         </div>
       </div>
 
+      </div>
+
     </div>
     <div class="card-footer">
-      <button type="submit" class="btn btn-primary">Simpan</button>
+      <button type="submit" class="btn btn-primary">Lanjut ke Tanda Tangan <i class="fas fa-arrow-right"></i></button>
       <a href="{{ url('inspection/fit-check') }}" class="btn btn-secondary">Kembali</a>
     </div>
   </form>

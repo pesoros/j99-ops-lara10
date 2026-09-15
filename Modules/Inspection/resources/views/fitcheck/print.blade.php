@@ -150,6 +150,40 @@
     .badge-ok   { color: #1a7a3c; }
     .badge-warn { color: #c0392b; }
 
+    .sign-area {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px dashed #bbb;
+      text-align: center;
+    }
+    .sign-area .sign-caption {
+      font-size: 10px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: #666;
+      margin-bottom: 2px;
+    }
+    .sign-area .sign-img {
+      height: 70px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+    .sign-area .sign-blank {
+      height: 70px;
+    }
+    .sign-area .sign-name {
+      border-top: 1px solid #333;
+      display: inline-block;
+      min-width: 190px;
+      padding-top: 3px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .sign-area .sign-time {
+      font-size: 9px;
+      color: #888;
+      margin-top: 2px;
+    }
     .ticket-footer {
       background: #f8f8f8;
       padding: 10px 20px;
@@ -285,6 +319,21 @@
     </div>
 
     <div class="tear bottom"></div>
+
+    <div class="sign-area">
+      <div class="sign-caption">Tanda Tangan Pengemudi</div>
+      @if (!empty($record->driver_signature))
+        <img src="{{ $record->driver_signature }}" alt="Tanda tangan pengemudi" class="sign-img">
+      @else
+        <div class="sign-blank"></div>
+      @endif
+      <div class="sign-name">{{ $record->driver_name }}</div>
+      @if (!empty($record->driver_signed_at))
+        <div class="sign-time">
+          Ditandatangani {{ \Carbon\Carbon::parse($record->driver_signed_at)->format('d/m/Y H:i') }}
+        </div>
+      @endif
+    </div>
 
     <div class="ticket-footer">
       <div class="id-label">No. Dokumen</div>
