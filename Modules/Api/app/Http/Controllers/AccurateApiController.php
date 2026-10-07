@@ -89,7 +89,8 @@ class AccurateApiController extends Controller
             return $response->getBody()->getContents();
         }
 
-        return $getDbSession;
+        // The session is a credential for the accounting database: store it, never echo it.
+        return ['message' => 'db session refreshed'];
     }
     
     public function newtokenreceive(Request $request)

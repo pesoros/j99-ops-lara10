@@ -71,7 +71,8 @@
           endDate: `${year}-${monthPrepend}-31 23:59:59.000`
         }
         const headers = { 
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-API-KEY': @json(env('BE_REPORT_API_TOKEN'))
         }
 
         axios.post(`${apiUrl}report/allakapsales`, payload,{headers})

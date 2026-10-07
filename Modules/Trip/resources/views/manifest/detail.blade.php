@@ -216,6 +216,8 @@
     const passengerList = @json($passengerList);
     const passengersToRemind = passengerList.filter(passenger => passenger.reminderSucceed === null || passenger.reminderSucceed == 0);
     const reminderUrl = @json($reminderUrl);
+    // The backend refuses crm/reminder without the CRM key.
+    const reminderPost = (body) => axios.post(reminderUrl, body, { headers: { 'X-API-KEY': @json(env('BE_CRM_API_TOKEN')) } });
     const manifestId = @json($manifestId);
 
     function showLoading() {
@@ -227,7 +229,7 @@
     }
 
     function postReminder(ticketNumber) {
-        return axios.post(reminderUrl, {
+        return reminderPost({
             manifestId: manifestId,
             ticketNumber: ticketNumber
         });
