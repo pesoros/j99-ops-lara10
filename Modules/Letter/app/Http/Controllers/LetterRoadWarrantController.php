@@ -866,6 +866,7 @@ class LetterRoadWarrantController extends Controller
             'POST',
             env('BE_BASEURL') . '/manifest/v3/close',
             [
+                'headers'     => ['X-API-KEY' => env('BE_OPS_API_TOKEN')],
                 'form_params' => $raw,
             ]
         );
