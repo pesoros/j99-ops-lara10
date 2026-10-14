@@ -28,6 +28,7 @@
         <th>Tanggal Pergi</th>
         <th>Kategori Bus</th>
         <th>Nama Bus</th>
+        <th>Nama Driver</th>
         <th>Rekening SPJ</th>
         <th>Status</th>
         <th>Km Awal</th>
@@ -44,6 +45,13 @@
             <td>{{ $value->departure_date ? $value->departure_date : '-' }}</td>
             <td>{{ intval($value->category) === 1 ? 'AKAP' : 'Pariwisata' }}</td>
             <td>{{ $value->busname }} {{ $value->is_replacement_bus ? '(Bus Pengganti)' : '' }}</td>
+            <td>
+              Driver 1: {{ $value->driver_1_name ?: '-' }}
+              @if ($value->driver_2_name)
+                <br>
+                Driver 2: {{ $value->driver_2_name }}
+              @endif
+            </td>
             <td>
               {{ $value->tfName }} {{ $value->tfSecondName }}
               <br>

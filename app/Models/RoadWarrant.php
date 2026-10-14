@@ -14,6 +14,8 @@ class RoadWarrant extends Model
             ->select(
                 'roadwarrant.*',
                 'bus.name AS busname',
+                DB::raw("TRIM(CONCAT_WS(' ', driver_1.first_name, driver_1.second_name)) AS driver_1_name"),
+                DB::raw("TRIM(CONCAT_WS(' ', driver_2.first_name, driver_2.second_name)) AS driver_2_name"),
                 'book.start_date as pariwisata_start_date',
                 'tfto.first_name as tfName',
                 'tfto.second_name as tfSecondName',
@@ -23,6 +25,8 @@ class RoadWarrant extends Model
             ->join("v2_bus AS bus", "bus.uuid", "=", "roadwarrant.bus_uuid")
             ->leftJoin("v2_book AS book", "book.uuid", "=", "roadwarrant.manifest_uuid")
             ->leftJoin("employee_history AS tfto", "tfto.id", "=", "roadwarrant.transferto")
+            ->leftJoin("employee_history AS driver_1", "driver_1.id", "=", "roadwarrant.driver_1")
+            ->leftJoin("employee_history AS driver_2", "driver_2.id", "=", "roadwarrant.driver_2")
             ->orderBy('roadwarrant.id', 'DESC')
             ->take(1000);
 
