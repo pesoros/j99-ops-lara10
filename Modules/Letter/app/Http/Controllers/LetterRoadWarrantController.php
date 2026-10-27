@@ -413,7 +413,8 @@ class LetterRoadWarrantController extends Controller
         }
 
         $editRoadWarrant = DB::transaction(function () use ($uuid, $manifestTrips, $editRoadWarrantData) {
-            DB::table('ops_roadwarrant')->where('uuid', $uuid)->lockForUpdate()->firstOrFail();
+            $roadwarrant = DB::table('ops_roadwarrant')->where('uuid', $uuid)->lockForUpdate()->first();
+            abort_if($roadwarrant === null, 404, 'SPJ tidak ditemukan.');
             RoadWarrant::syncManifestTrips($uuid, $manifestTrips);
 
             return RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);

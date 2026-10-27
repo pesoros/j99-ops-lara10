@@ -141,4 +141,98 @@ class RoadWarrantTransactionsTest extends TestCase
         $this->assertSame(1, DB::table('manifest')->count());
         $this->assertSame('outbound', DB::table('manifest')->value('uuid'));
     }
+
+    private function prepareEditRequest(): \Illuminate\Http\Request
+    {
+        Schema::create('ops_roadwarrant', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('uuid')->unique();
+            foreach (['bus_uuid', 'category', 'driver_1', 'driver_2', 'codriver', 'resto_id',
+                'driver_allowance_1', 'codriver_allowance', 'trip_allowance', 'fuel_allowance',
+                'etoll_allowance', 'crew_meal_allowance', 'total_allowance', 'description',
+                'created_by', 'number_of_trip', 'transferto', 'is_replacement_bus',
+                'departure_date', 'transferto_changed'] as $column) {
+                $table->string($column)->nullable();
+            }
+        });
+        Schema::create('v2_bus', function (Blueprint $table) {
+            $table->string('uuid')->primary();
+            $table->string('email');
+            $table->timestamp('created_at')->nullable();
+        });
+        Schema::table('trip_assign', fn (Blueprint $table) => $table->integer('resto_id')->nullable());
+        Schema::table('manifest', function (Blueprint $table) {
+            $table->string('email_assign')->nullable();
+            $table->string('fleet')->nullable();
+        });
+        DB::table('ops_roadwarrant')->insert(['uuid' => 'spj', 'description' => 'Original']);
+        DB::table('v2_bus')->insert(['uuid' => 'bus', 'email' => 'bus@example.test']);
+        DB::table('trip')->insert(['trip_id' => 102, 'trip_title' => 'Bandung - Malang']);
+        DB::table('trip_assign')->insert(['id' => 93, 'trip' => 102, 'resto_id' => 12]);
+        $this->actingAs((new \App\Models\User())->forceFill(['uuid' => 'editor']));
+
+        return \Illuminate\Http\Request::create('/letter/roadwarrant/edit_akap/spj', 'POST', [
+            'numberoftrip' => '1', 'driver_1' => '10', 'driver_2' => '11', 'codriver' => '12',
+            'date' => '27/10/2026', 'bus_uuid' => 'bus', 'trip_assign' => '93',
+            'driver_allowance' => '100', 'codriver_allowance' => '100', 'trip_allowance' => '100',
+            'fuel_allowance' => '100', 'etoll_allowance' => '100', 'crew_meal_allowance' => '100',
+            'totalsum' => '600', 'description' => 'Edited', 'transferto' => '10', 'old_transferto' => '10',
+        ]);
+    }
+
+    public function test_confirm_edit_akap_updates_spj_and_keeps_manifest_and_expenses(): void
+    {
+        $request = $this->prepareEditRequest();
+        DB::table('manifest')->insert($this->manifest('outbound', 93, 3));
+        DB::table('trip_expenses')->insert(['roadwarrant_uuid' => 'spj', 'manifest_uuid' => 'outbound']);
+
+        $response = (new \Modules\Letter\app\Http\Controllers\LetterRoadWarrantController())
+            ->editRoadWarrantAkapStore($request, 'spj');
+
+        $this->assertSame(302, $response->getStatusCode());
+        $this->assertSame('Anda berhasil edit data SPJ AKAP', session('success'));
+        $this->assertSame('Edited', DB::table('ops_roadwarrant')->value('description'));
+        $manifest = DB::table('manifest')->sole();
+        $this->assertSame('outbound', $manifest->uuid);
+        $this->assertSame(3, (int) $manifest->status);
+        $this->assertSame('2026-10-27', $manifest->trip_date);
+        $this->assertSame('outbound', DB::table('trip_expenses')->value('manifest_uuid'));
+    }
+
+    public function test_confirm_edit_missing_spj_returns_404_without_changing_manifest(): void
+    {
+        $request = $this->prepareEditRequest();
+        DB::table('manifest')->insert($this->manifest('outbound', 93));
+
+        try {
+            (new \Modules\Letter\app\Http\Controllers\LetterRoadWarrantController())
+                ->editRoadWarrantAkapStore($request, 'missing');
+            $this->fail('A missing SPJ must return 404.');
+        } catch (\Symfony\Component\HttpKernel\Exception\HttpException $exception) {
+            $this->assertSame(404, $exception->getStatusCode());
+        }
+
+        $this->assertSame('Original', DB::table('ops_roadwarrant')->value('description'));
+        $this->assertSame('2026-10-26', DB::table('manifest')->value('trip_date'));
+    }
+
+    public function test_confirm_edit_rejects_removing_expensed_trip_without_partial_changes(): void
+    {
+        $request = $this->prepareEditRequest();
+        DB::table('manifest')->insert([$this->manifest('outbound', 93), $this->manifest('return', 106)]);
+        DB::table('trip_expenses')->insert(['roadwarrant_uuid' => 'spj', 'manifest_uuid' => 'return']);
+
+        try {
+            (new \Modules\Letter\app\Http\Controllers\LetterRoadWarrantController())
+                ->editRoadWarrantAkapStore($request, 'spj');
+            $this->fail('An expensed trip must not be removed.');
+        } catch (ValidationException $exception) {
+            $this->assertArrayHasKey('numberoftrip', $exception->errors());
+        }
+
+        $this->assertSame('Original', DB::table('ops_roadwarrant')->value('description'));
+        $this->assertSame(2, DB::table('manifest')->count());
+        $this->assertSame('2026-10-26', DB::table('manifest')->where('uuid', 'outbound')->value('trip_date'));
+    }
+
 }
