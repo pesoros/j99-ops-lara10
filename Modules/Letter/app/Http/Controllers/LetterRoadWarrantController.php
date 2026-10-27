@@ -13,6 +13,7 @@ use App\Models\Trip;
 use App\Models\Rest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Client;
 
 class LetterRoadWarrantController extends Controller
@@ -353,8 +354,6 @@ class LetterRoadWarrantController extends Controller
         $busData = Bus::getBus($request->bus_uuid);
         $numberOfCrew = isset($request->driver_2) ? 3 : 2;
 
-        $removeManifest = RoadWarrant::removeManifest($uuid);
-
         $tras = RoadWarrant::getTripAssign($request->trip_assign);
         $saveManifestData = [
             'uuid'                      =>  generateUuid(),
@@ -387,8 +386,8 @@ class LetterRoadWarrantController extends Controller
             'is_replacement_bus'        =>  $request->is_replacement_bus ?? 0,
             'departure_date'            =>  $trip_date
         ];
-        $saveRoadWarrant = RoadWarrant::saveManifest($saveManifestData);
-        
+        $manifestTrips = [$saveManifestData];
+
         if ($request->numberoftrip == "2") {
             $trip_date_return = Carbon::createFromFormat('d/m/Y', $request->date_return)->format('Y-m-d');
             $tras2 = RoadWarrant::getTripAssign($request->trip_assign_return);
@@ -406,14 +405,19 @@ class LetterRoadWarrantController extends Controller
             $editRoadWarrantData['resto_id_return'] = $tras2->resto_id;
             $editRoadWarrantData['departure_date'] = $trip_date.' - '.$trip_date_return;
 
-            $saveRoadWarrantReturn = RoadWarrant::saveManifest($saveManifestDataReturn);
+            $manifestTrips[] = $saveManifestDataReturn;
         }
 
         if (strval($request->transferto) === strval($request->old_transferto)) {
             $editRoadWarrantData['transferto_changed'] = 1;
         }
 
-        $editRoadWarrant = RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
+        $editRoadWarrant = DB::transaction(function () use ($uuid, $manifestTrips, $editRoadWarrantData) {
+            DB::table('ops_roadwarrant')->where('uuid', $uuid)->lockForUpdate()->firstOrFail();
+            RoadWarrant::syncManifestTrips($uuid, $manifestTrips);
+
+            return RoadWarrant::updateRoadWarrant($uuid, $editRoadWarrantData);
+        });
 
         if ($editRoadWarrant) {
             return back()->with('success', 'Anda berhasil edit data SPJ AKAP');

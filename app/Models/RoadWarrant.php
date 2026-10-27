@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Validation\ValidationException;
 
 class RoadWarrant extends Model
 {
@@ -260,6 +261,55 @@ class RoadWarrant extends Model
         return $query;
     }
 
+    public function scopeSyncManifestTrips($query, $roadwarrantUuid, array $trips)
+    {
+        $remaining = DB::table('manifest')
+            ->where('roadwarrant_uuid', $roadwarrantUuid)
+            ->orderBy('id')
+            ->lockForUpdate()
+            ->get()
+            ->keyBy('uuid');
+
+        // Match the trip first so reordering the outbound/return fields keeps its UUID.
+        $matched = [];
+        foreach ($trips as $index => $trip) {
+            $manifest = $remaining->first(fn ($item) => (string) $item->trip_assign === (string) $trip['trip_assign']);
+            if ($manifest) {
+                $matched[$index] = $manifest;
+                $remaining->forget($manifest->uuid);
+            }
+        }
+
+        foreach ($trips as $index => $trip) {
+            if (!isset($matched[$index]) && $remaining->isNotEmpty()) {
+                $matched[$index] = $remaining->first();
+                $remaining->forget($matched[$index]->uuid);
+            }
+        }
+
+        if ($remaining->isNotEmpty() && DB::table('trip_expenses')->whereIn('manifest_uuid', $remaining->keys())->exists()) {
+            throw ValidationException::withMessages([
+                'numberoftrip' => 'Trip yang sudah memiliki transaksi tidak dapat dihapus dari SPJ.',
+            ]);
+        }
+
+        foreach ($trips as $index => $trip) {
+            $trip['roadwarrant_uuid'] = $roadwarrantUuid;
+            if (isset($matched[$index])) {
+                // Keep status and identity; only update the editable trip fields.
+                unset($trip['uuid'], $trip['status']);
+                DB::table('manifest')->where('uuid', $matched[$index]->uuid)->update($trip);
+            } else {
+                $trip['uuid'] = generateUuid();
+                DB::table('manifest')->insert($trip);
+            }
+        }
+
+        if ($remaining->isNotEmpty()) {
+            DB::table('manifest')->whereIn('uuid', $remaining->keys())->delete();
+        }
+    }
+
     public function scopeUpdateBook($query, $uuid, $data)
     {
         $query = DB::table("v2_book")
@@ -314,6 +364,7 @@ class RoadWarrant extends Model
             ->leftJoin("trip_assign AS tras", "tras.id", "=", "manifest.trip_assign")
             ->leftJoin("trip", "trip.trip_id", "=", "tras.trip")
             ->where('manifest.roadwarrant_uuid', $roadwarrant_uuid)
+            ->orderBy('manifest.id')
             ->get();
 
         return $query;
@@ -407,9 +458,9 @@ class RoadWarrant extends Model
                 'tec.name as category_name',
             )
             ->where('expense.roadwarrant_uuid', $id)
-            ->join("manifest", "manifest.uuid", "=", "expense.manifest_uuid")
-            ->join("trip_assign as tras", "tras.id", "=", "manifest.trip_assign")
-            ->join("trip", "trip.trip_id", "=", "tras.trip")
+            ->leftJoin("manifest", "manifest.uuid", "=", "expense.manifest_uuid")
+            ->leftJoin("trip_assign as tras", "tras.id", "=", "manifest.trip_assign")
+            ->leftJoin("trip", "trip.trip_id", "=", "tras.trip")
             ->leftJoin('trip_expenses_category as tec', 'tec.id', '=', 'expense.category')
             ->orderBy('expense.id', 'ASC')
             ->get();

@@ -310,7 +310,7 @@
                     </td>
                     <td>{{ $expense->category_name ?? '-' }}<br><small class="text-muted">{{ $expense->description }}</small></td>
                     <td>{{ $expense->created_at }}</td>
-                    <td>{{ $expense->trip_title }}</td>
+                    <td>{{ $expense->trip_title ?? 'Trip tidak tersedia' }}</td>
                     <td class="no-print">
                       @if ($expense->location_lat)
                       <a href="https://www.google.com/maps/search/{{ $expense->location_lat }},{{ $expense->location_long }}?sa=X&ved=1t:242&ictx=111" target="_blank">{{ $expense->location_lat }}, {{ $expense->location_long }}</a>
